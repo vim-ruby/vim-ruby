@@ -1,3 +1,10 @@
+2003-09-09  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
+	* syntax/ruby.vim: highlight one line module, class, and method
+	definitions, using the ';' terminator, correctly; split
+	rubyClassOrModule into two new syntax groups - rubyClass and
+	rubyModule.
+
 2003-09-08  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
 	*  syntax/ruby.vim: add the @Spell cluster to support spell checking

@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	Ruby
 " Maintainer:	Doug Kearns <djkea2 at mugca.its.monash.edu.au>
-" Info:		$Id: ruby.vim,v 1.16 2003/09/08 15:39:09 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.17 2003/09/09 05:08:32 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -165,24 +165,26 @@ if version < 600
   syn region rubyString matchgroup=rubyStringDelimit start=+<<\(EOF\|'EOF'\|"EOF"\|`EOF`\)+hs=s+2		   end=+^EOF$+	    contains=rubyExprSubst fold
   syn region rubyString matchgroup=rubyStringDelimit start=+<<\(EOS\|'EOS'\|"EOS"\|`EOS`\)+hs=s+2		   end=+^EOS$+	    contains=rubyExprSubst fold
 else
-  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\|\(\.\|::\)\_s*\)\@<!<<\z(\h\w*\)\ze\s*$+hs=s+2 end=+^\z1$+ contains=rubyExprSubst fold
-  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\|\(\.\|::\)\_s*\)\@<!<<"\z(.*\)"\ze\s*$+hs=s+2  end=+^\z1$+ contains=rubyExprSubst fold
-  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\|\(\.\|::\)\_s*\)\@<!<<'\z(.*\)'\ze\s*$+hs=s+2  end=+^\z1$+			       fold
-  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\|\(\.\|::\)\_s*\)\@<!<<`\z(.*\)`\ze\s*$+hs=s+2  end=+^\z1$+ contains=rubyExprSubst fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+\(\(class\s*\|\(\.\|::\)\)\_s*\)\@<!<<\z(\h\w*\)\ze\s*$+hs=s+2 end=+^\z1$+ contains=rubyExprSubst fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+\(\(class\s*\|\(\.\|::\)\)\_s*\)\@<!<<"\z(.*\)"\ze\s*$+hs=s+2  end=+^\z1$+ contains=rubyExprSubst fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+\(\(class\s*\|\(\.\|::\)\)\_s*\)\@<!<<'\z(.*\)'\ze\s*$+hs=s+2  end=+^\z1$+			      fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+\(\(class\s*\|\(\.\|::\)\)\_s*\)\@<!<<`\z(.*\)`\ze\s*$+hs=s+2  end=+^\z1$+ contains=rubyExprSubst fold
 
-  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\|\(\.\|::\)\_s*\)\@<!<<-\z(\h\w*\)\ze\s*$+hs=s+3 end=+^\s*\zs\z1$+ contains=rubyExprSubst fold
-  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\|\(\.\|::\)\_s*\)\@<!<<-"\z(.*\)"\ze\s*$+hs=s+3  end=+^\s*\zs\z1$+ contains=rubyExprSubst fold
-  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\|\(\.\|::\)\_s*\)\@<!<<-'\z(.*\)'\ze\s*$+hs=s+3  end=+^\s*\zs\z1$+			      fold
-  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\|\(\.\|::\)\_s*\)\@<!<<-`\z(.*\)`\ze\s*$+hs=s+3  end=+^\s*\zs\z1$+ contains=rubyExprSubst fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+\(\(class\s*\|\(\.\|::\)\)\_s*\)\@<!<<-\z(\h\w*\)\ze\s*$+hs=s+3 end=+^\s*\zs\z1$+ contains=rubyExprSubst fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+\(\(class\s*\|\(\.\|::\)\)\_s*\)\@<!<<-"\z(.*\)"\ze\s*$+hs=s+3  end=+^\s*\zs\z1$+ contains=rubyExprSubst fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+\(\(class\s*\|\(\.\|::\)\)\_s*\)\@<!<<-'\z(.*\)'\ze\s*$+hs=s+3  end=+^\s*\zs\z1$+			     fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+\(\(class\s*\|\(\.\|::\)\)\_s*\)\@<!<<-`\z(.*\)`\ze\s*$+hs=s+3  end=+^\s*\zs\z1$+ contains=rubyExprSubst fold
 endif
 
 " Expensive Mode - colorize *end* according to opening statement
 if !exists("ruby_no_expensive")
-  syn region rubyFunction      matchgroup=rubyDefine start="^\s*def\s" matchgroup=NONE end="\ze\(\s\|(\|;\|$\)" skip="\.\|\(::\)" oneline fold
-  syn region rubyClassOrModule matchgroup=rubyDefine start="^\s*\(class\|module\)\s"   end="<\|$\|;\|\>"he=e-1 oneline fold
+  syn region rubyFunction matchgroup=rubyDefine start="\<def\s\+"    end="\ze\(\s\|(\|;\|$\)" oneline
+  syn region rubyClass    matchgroup=rubyDefine start="\<class\s\+"  end="\ze\(\s\|<\|;\|$\)" oneline
+  syn region rubyModule   matchgroup=rubyDefine start="\<module\s\+" end="\ze\(\s\|;\|$\)"    oneline
 
-  syn region rubyBlock start="^\s*def\s\+"rs=s		   matchgroup=rubyDefine end="\<end\>" contains=ALLBUT,rubyExprSubst,rubyTodo nextgroup=rubyFunction fold
-  syn region rubyBlock start="^\s*\(class\|module\)\>"rs=s matchgroup=rubyDefine end="\<end\>" contains=ALLBUT,rubyExprSubst,rubyTodo nextgroup=rubyClassOrModule fold
+  syn region rubyBlock start="\<def\>"    matchgroup=rubyDefine end="\(^\|;\)\s*\zs\<end\>" contains=ALLBUT,rubyExprSubst,rubyTodo nextgroup=rubyFunction fold
+  syn region rubyBlock start="\<class\>"  matchgroup=rubyDefine end="\(^\|;\)\s*\zs\<end\>" contains=ALLBUT,rubyExprSubst,rubyTodo nextgroup=rubyClass    fold
+  syn region rubyBlock start="\<module\>" matchgroup=rubyDefine end="\(^\|;\)\s*\zs\<end\>" contains=ALLBUT,rubyExprSubst,rubyTodo nextgroup=rubyModule   fold
 
   " modifiers
   syn match  rubyControl "\<\(if\|unless\|while\|until\)\>"
@@ -208,8 +210,9 @@ if !exists("ruby_no_expensive")
   exec "syn sync minlines=" . ruby_minlines
 
 else
-  syn region  rubyFunction      matchgroup=rubyControl start="^\s*def\s" matchgroup=NONE end="\ze\(\s\|(\|;\|$\)" skip="\.\|\(::\)" oneline fold
-  syn region  rubyClassOrModule matchgroup=rubyControl start="^\s*\(class\|module\)\s"   end="<\|$\|;\|\>"he=e-1 oneline fold
+  syn region  rubyFunction matchgroup=rubyDefine start="\<def\s\+"    end="\ze\(\s\|(\|;\|$\)" oneline
+  syn region  rubyClass    matchgroup=rubyDefine start="\<class\s\+"  end="\ze\(\s\|<\|;\|$\)" oneline
+  syn region  rubyModule   matchgroup=rubyDefine start="\<module\s\+" end="\ze\(\s\|;\|$\)"    oneline
   syn keyword rubyControl case begin do for if unless while until end
 endif
 
@@ -277,7 +280,8 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubyNumber			Number
   HiLink rubyBoolean			Boolean
   HiLink rubyException			Exception
-  HiLink rubyClassOrModule		Type
+  HiLink rubyClass			Type
+  HiLink rubyModule			Type
   HiLink rubyIdentifier			Identifier
   HiLink rubyClassVariable		rubyIdentifier
   HiLink rubyConstant			rubyIdentifier
