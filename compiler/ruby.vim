@@ -2,7 +2,7 @@
 " Language:	Ruby
 " Function:	Syntax check and/or error reporting
 " Maintainer:	Tim Hammerquist <timh at rubyforge.org>
-" Info:		$Id: ruby.vim,v 1.6 2003/09/03 03:46:52 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.7 2004/09/04 10:30:13 dkearns Exp $
 " URL:		http://vim-ruby.rubyforge.org
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -32,12 +32,15 @@
 "   This is my first experience with 'errorformat' and compiler plugins and
 "   I welcome any input from more experienced (or clearer-thinking)
 "   individuals.
-" ----------------------------------------------------------------------------
 
 if exists("current_compiler")
   finish
 endif
 let current_compiler = "ruby"
+
+if exists(":CompilerSet") != 2		" older Vim always used :setlocal
+  command -nargs=* CompilerSet setlocal <args>
+endif
 
 let s:cpo_save = &cpo
 set cpo-=C
@@ -45,15 +48,15 @@ set cpo-=C
 " default settings runs script normally
 " add '-c' switch to run syntax check only:
 "
-"   setlocal makeprg=ruby\ -wc\ $*
+"   CompilerSet makeprg=ruby\ -wc\ $*
 "
 " or add '-c' at :make command line:
 "
 "   :make -c %<CR>
 "
-setlocal makeprg=ruby\ -w\ $*
+CompilerSet makeprg=ruby\ -w\ $*
 
-setlocal errorformat=
+CompilerSet errorformat=
     \%+E%f:%l:\ parse\ error,
     \%W%f:%l:\ warning:\ %m,
     \%E%f:%l:in\ %*[^:]:\ %m,

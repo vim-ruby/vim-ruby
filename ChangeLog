@@ -1,3 +1,8 @@
+2004-09-04  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
+	* compiler/rubyunit.vim, compiler/ruby.vim: update to use new
+	CompilerSet command
+
 2004-05-19  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
 	* compiler/rubyunit.vim: match assert messages
