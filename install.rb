@@ -31,7 +31,7 @@
 # Known issues (summarised by Hugh):
 #   Only checks the places I could think of at the time.
 #   Doesn't bother to preserve the old files in any way.
-#   Doesn't ask the user if none of the directoriss apply, but that
+#   Doesn't ask the user if none of the directories apply, but that
 #       would make it interactive.
 #   Should it say "Job Done" or something? Silent success is a unix
 #       idiom, but not so on Win*.
