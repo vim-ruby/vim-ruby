@@ -3,6 +3,13 @@
 	* indent/ruby.vim: Fixed bugs #89 and #102.
 	* syntax/ruby.vim: The $' and $" variables weren't being matched if
 	ruby_no_identifiers was on.  This messed up string matching.
+	* indent/ruby.vim: Basically did a total rewrite in the process.
+	Everything is well documented now, and should be rather simple to
+	understand.  There is probably room for optimization still, but it
+	works rather fast, indenting tk.rb (5200+ lines) in under 15 seconds.
+	I'm betting searchpair() may be executing a bit too often still, but a
+	lot of special cases have now been taken care of.  This version also
+	fixes bug #59 and #71.
 
 2003-10-03  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
