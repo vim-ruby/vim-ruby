@@ -1,3 +1,9 @@
+2003-09-25  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
+	* syntax/ruby.vim: link the rubyNoInterpolation syntax group to the
+	rubyString; merge rubyHexadecimal, rubyDecimal, rubyOctal, rubyBinary
+	into rubyInteger.
+
 2003-09-22  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
 	* syntax/ruby.vim: link the rubyOperator syntax group to the Operator
