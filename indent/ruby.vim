@@ -22,10 +22,18 @@ if exists("*GetRubyIndent")
   finish
 endif
 
-" Check if the character at lnum:col is inside a string or ocmment.
+" Check if the character at lnum:col is inside a string or comment.
 function s:IsInStringOrComment(lnum, col)
   return synIDattr(synID(a:lnum, a:col, 0), 'name') =~ 
 	\'\<ruby\%(String\|StringDelimit\|Number\|ExprSubst\|Comment\)\>'
+endfunction
+
+" Check if the character at lnum:col is inside a string or ocmment.
+" Works like s:IsInStringOrComment(), with the difference that string-delimits
+" are not matched.
+function s:IsInStringOrComment2(lnum, col)
+  return synIDattr(synID(a:lnum, a:col, 0), 'name') =~ 
+	\'\<ruby\%(String\|Number\|ExprSubst\|Comment\)\>'
 endfunction
 
 " These comma-separated list of words at the beginning of a line add a level
@@ -76,15 +84,17 @@ function s:PrevNonBlank(lnum)
   let lnum = prevnonblank(a:lnum)
   while lnum > 0
     let line = getline(lnum)
-    if line =~ '^=end$'
-      let in_block =1
+    " If the line is the end of an embedded document, beginning skipping.
+    if !in_block && line =~ '^=end$'
+      let in_block = 1
+    " Else, if the line is the beginning of an embedded document, end
+    " skipping.
     elseif in_block && line =~ '^=begin$'
       let in_block = 0
-    elseif !in_block
-      let line = substitute(line, '\s*#.*$', '', '')
-      if line !~ '^$'
-	break
-      endif
+    " Otherwise, if we aren't in an embedded document, check if the line is a
+    " comment line, and, if so, skip it.
+    elseif !in_block && line !~ '^\s*#.*$'
+      break
     endif
     let lnum = prevnonblank(lnum - 1)
   endwhile
@@ -110,8 +120,11 @@ function GetRubyIndent()
   let col = match(line, '^\s*\zs[]})]') + 1
   if col > 0 && !s:IsInStringOrComment(v:lnum, col)
     execute 'normal! 0'.(col - 1).'l'
+    " If it was a parentheses, search for its match and indent to its level.
     if line[col - 1] == ')' && searchpair('(', '', ')', 'bW', s:skip_expr) > 0
       let ind = virtcol('.') - 1
+    " Else, if it was a brace, search for its match and find the line to which
+    " it belongs and indent to that lines level.
     elseif line[col - 1] == '}'
 	  \ && searchpair('{', '', '}', 'bW', s:skip_expr) > 0
       let p_lnum = line('.')
@@ -135,14 +148,16 @@ function GetRubyIndent()
 	endif
       endwhile
       let ind = indent(p_lnum)
-    elseif && searchpair('\[', '', '\]', 'bW', s:skip_expr) > 0
+    " Otherwise, it was a bracket, so search for it and indent to the matching
+    " lines level.
+    elseif searchpair('\[', '', '\]', 'bW', s:skip_expr) > 0
       let ind = indent('.')
     end
     execute 'normal! '.v:lnum.'G0'.(vcol - ).'l'
   endif
 
   " If we get a =begin, =end, or here-doc ender set deindent to first column.
-  " XXX: skip here-docs for the moment: \|EO[FSL]\|EOHELP
+  " XXX: skip here-docs at the moment: \|EO[FSL]\|EOHELP
   let col = match(line, '^\s*\zs\(=begin\|=end\)') + 1
   if col > 0 && !s:IsInStringOrComment(v:lnum, col)
     let ind = 0
@@ -154,6 +169,7 @@ function GetRubyIndent()
 	\'^\s*\zs\(ensure\>\|else\>\|rescue\>\|elsif\>\|when\>\|end\>\)') + 1
   if col > 0 && !s:IsInStringOrComment(v:lnum, col)
     normal 0
+    " Find the matching parent statement to it
     if searchpair('\<def\>\|\<do\>\|\<if\>\|\<unless\>\|\<case\>\|' . 
 	  \'\<begin\>\|\<until\>\|\<for\>\|\<while\>\|\<class\>\|\<module\>', 
 	  \'\<ensure\>\|\<else\>\|\<rescue\>\|\<elsif\>\|\<when\>', '\<end\>',
@@ -163,9 +179,14 @@ function GetRubyIndent()
     execute 'normal! '.v:lnum.'G0'.(vcol - 1).'l'
   endif
 
+  " If we got some indentation, use it
   if ind != -1
     return ind
-  elseif s:IsInStringOrComment(v:lnum, matchend(line, '^\s*') + 1)
+  " Otherwise, check if we are in a multi-line string or line-comment and, if
+  " so, skip it.
+  " TODO: this needs more checking though
+  elseif s:IsInStringOrComment2(v:lnum, matchend(line, '^\s*') + 1)
+	\ || s:IsInStringOrComment2(v:lnum - 1, strlen(getline(v:lnum - 1)))
     return indent('.')
   endif
 
@@ -197,6 +218,7 @@ function GetRubyIndent()
 
   " If the previous line ended in a brackets, get the indent of the line
   " that opened it.
+  " TODO: add comments to this part
   if !did_kw_indent
     let bcol = match(line,
 	  \'[]})]\s*\(\(\<if\>\|\<unless\>\|\<until\>\|\<while\>\|#\).*\)\=$') + 1
