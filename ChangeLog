@@ -1,3 +1,10 @@
+2004-09-20  Gavin Sinclair <gsinclair@soyabean.com.au>
+
+	* bin/vim-ruby-install.rb: added
+	* Rakefile: 'rake package' generates TGZ and GEM
+	* install.rb: removed
+	* build.rb: removed
+
 2004-09-04  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
 	* compiler/rubyunit.vim, compiler/ruby.vim: update to use new
