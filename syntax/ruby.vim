@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	Ruby
 " Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
-" Info:		$Id: ruby.vim,v 1.40 2005/03/23 22:19:44 gsinclair Exp $
+" Info:		$Id: ruby.vim,v 1.41 2005/03/23 22:37:24 gsinclair Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -63,7 +63,7 @@ if !exists("ruby_no_identifiers")
   syn match  rubySymbol			":\@<!:\$\%(-.\|[`~<=>_,;:!?/.'"@$*\&+0]\)"
   syn match  rubySymbol			":\@<!:\%(\$\|@@\=\)\=\h\w*[?!=]\="
   syn region rubySymbol			start=":\@<!:\"" end="\"" skip="\\\\\|\\\""
-  syn match  rubyIterator		"|[ ,a-zA-Z0-9_*]\+|"	display
+  syn match  rubyIterator		"|[ ,a-zA-Z0-9_*()]\+|" display
 
   syn match rubyPredefinedVariable #$[!$&"'*+,./0:;<=>?@\_`~1-9]#
   syn match rubyPredefinedVariable "$-[0FIKadilpvw]"									display
