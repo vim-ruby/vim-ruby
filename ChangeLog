@@ -1,3 +1,7 @@
+2003-09-30  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
+	* etc/website/index.html: update DJK's current location.
+
 2003-09-26  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
 	* etc/website/index.html: close the open PRE element and add a DOCTYPE
@@ -17,7 +21,7 @@
 
 2003-09-25  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
-	* syntax/ruby.vim: link the rubyNoInterpolation syntax group to the
+	* syntax/ruby.vim: link the rubyNoInterpolation syntax group to
 	rubyString; merge rubyHexadecimal, rubyDecimal, rubyOctal, rubyBinary
 	into rubyInteger.
 
@@ -28,7 +32,7 @@
 
 2003-09-21  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
-	* syntax/ruby.vim: match regexp after split, scan, sub and gsub.
+	* syntax/ruby.vim: match regexps after split, scan, sub and gsub.
 
 2003-09-21  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
