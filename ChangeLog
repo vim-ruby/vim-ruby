@@ -1,3 +1,8 @@
+2004-11-28  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* compiler/ruby.vim, compiler/rubyunit.vim, syntax/ruby.vim: update
+	DJK's email address
+
 2004-10-01  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
 	* syntax/ruby.vim: match regexp values in hash literals

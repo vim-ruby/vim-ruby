@@ -1,6 +1,6 @@
 " Vim syntax file
 " Language:	Ruby
-" Maintainer:	Doug Kearns <djkea2 at mugca.its.monash.edu.au>
+" Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
 " Info:		$Id$
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site

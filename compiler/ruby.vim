@@ -20,7 +20,7 @@
 "
 " Contributors:
 "   Hugh Sasse <hgs@dmu.ac.uk>
-"   Doug Kearns <djkea2@mugca.its.monash.edu.au>
+"   Doug Kearns <djkea2@gus.gscit.monash.edu.au>
 "
 " Todo:
 "   match error type %m
