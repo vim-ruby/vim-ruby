@@ -25,6 +25,7 @@ setlocal makeprg=ruby
 setlocal errorformat=\%Etest%[%^\ ]%#(%[%^\ ]%#)\ [%f:%l]:,
 		     \%E\ %\\+%f:%l:in\ %.%#,
 		     \%Z%m%\\%.,
+		     \%C%m%\\%.,
 		     \%-GLoaded%.%#,
 		     \%-GStarted%.%#,
 		     \%-G%[EF%.]%.%#,
