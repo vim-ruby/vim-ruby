@@ -1,11 +1,17 @@
 " Vim indent file
 " Language:	Ruby
-" Maintainer:	Gavin Sinclair <gsinclair@soyabean.com.au>
-" Last Change:	2003 May 11
-" URL: www.soyabean.com.au/gavin/vim/index.html
-" Changes: (since vim 6.1)
-"  - indentation after a line ending in comma, etc, (even in a comment) was
-"    broken, now fixed (2002/08/14)
+" Maintainer:	Gavin Sinclair <gsinclair at soyabean.com.au>
+" Developer:    Nikolai Weibull <lone-star at home.se>
+" Info:         $Header: /var/cvs/vim-ruby/vim-ruby/indent/ruby.vim,v 1.7 2003/08/06 14:37:49 gsinclair Exp $
+" URL:          http://vim-ruby.sourceforge.net
+" Anon CVS:     See above site 
+" Licence:      GPL (http://www.gnu.org)
+" Disclaimer: 
+"    This program is distributed in the hope that it will be useful,
+"    but WITHOUT ANY WARRANTY; without even the implied warranty of
+"    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+"    GNU General Public License for more details.
+" ---------------------------------------------------------------------------- 
 
 " Only load this indent file when no other was loaded.
 if exists("b:did_indent")
@@ -29,7 +35,7 @@ function s:IsInStringOrComment(lnum, col)
 	\'\|Documentation\)\>'
 endfunction
 
-" Check if the character at lnum:col is inside a string or ocmment.
+" Check if the character at lnum:col is inside a string or comment.
 " Works like s:IsInStringOrComment(), with the difference that string-delimits
 " are not matched.
 function s:IsInStringOrComment2(lnum, col)
@@ -367,6 +373,6 @@ function GetRubyIndent()
   endif
 
   return ind
-endfunction
+endfunction   " GetRubyIndent()
 
 " vim:sw=2
