@@ -240,8 +240,8 @@ else
   syn match  rubySharpBang "\%^#!.*"
 endif
 syn keyword rubyTodo          FIXME NOTE TODO XXX contained
-syn match   rubyComment       "#.*" contains=rubySharpBang,rubyTodo
-syn region  rubyDocumentation start="^=begin" end="^=end.*$" contains=rubyTodo fold
+syn match   rubyComment       "#.*" contains=rubySharpBang,rubyTodo,@Spell
+syn region  rubyDocumentation start="^=begin" end="^=end.*$" contains=rubyTodo,@Spell fold
 
 " Note: this is a hack to prevent 'keywords' being highlighted as such when called as methods
 syn match rubyKeywordAsMethod "\.\@<!\.\(\s*\n\s*\)*\(alias\|and\|begin\|break\|case\|class\|def\|defined\|do\|else\)\>"	    transparent contains=NONE
