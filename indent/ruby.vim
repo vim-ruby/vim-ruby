@@ -82,10 +82,11 @@ let s:end_skip_expr = s:skip_expr .
       \ ' && getline(".") =~ "^\\s*\\<while\\|until\\|for\\>")'
 
 " Regex that defines continuation lines, not including (, {, or [.
-let s:continuation_regex = '\%([\\*+/.,=-]\|\W[|&?]\|||\|&&\)\s*\%(#.*\)\=$'
+let s:continuation_regex = '\%([\\*+/.,=:-]\|\W[|&?]\|||\|&&\)\s*\%(#.*\)\=$'
 
 " Regex that defines continuation lines.
-let s:continuation_regex2 = '\%([\\*+/.,=({[-]\|\W[|&?]\|||\|&&\)\s*\%(#.*\)\=$'
+let s:continuation_regex2 =
+      \ '\%([\\*+/.,=:({[-]\|\W[|&?]\|||\|&&\)\s*\%(#.*\)\=$'
 
 " Regex that defines blocks.
 let s:block_regex =
@@ -218,8 +219,8 @@ function GetRubyIndent()
   let col = matchend(line, '^\s*[]})]')
   if col > 0 && !s:IsInStringOrComment(v:lnum, col)
     call s:GotoLineCol(v:lnum, col - 1)
-    let brackets = strpart('(){}[]', stridx(')}]', line[col - 1]) * 2, 2)
-    if searchpair(brackets[0], '', brackets[1], 'bW', s:skip_expr) > 0
+    let bs = strpart('(){}[]', stridx(')}]', line[col - 1]) * 2, 2)
+    if searchpair(escape(bs[0], '\['), '', bs[1], 'bW', s:skip_expr) > 0
       let ind = line[col-1]==')' ? virtcol('.')-1 : indent(s:GetMSL(line('.')))
     endif
     return ind
