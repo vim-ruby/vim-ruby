@@ -2,7 +2,7 @@
 " Language:	Ruby
 " Maintainer:	Gavin Sinclair <gsinclair at soyabean.com.au>
 " Developer:	Nikolai Weibull <lone-star at home.se>
-" Info:		$Id: ruby.vim,v 1.11 2003/09/09 05:37:42 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.12 2003/09/26 12:29:16 pcp Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -31,7 +31,7 @@ endif
 " Check if the character at lnum:col is inside a string or comment.
 function s:IsInStringOrComment(lnum, col)
   return synIDattr(synID(a:lnum, a:col, 0), 'name') =~ 
-	\'\<ruby\%(String\|StringDelimiter\|Number\|ExprSubst\|Comment'.
+	\'\<ruby\%(String\|StringDelimiter\|ASCIICode\|ExprSubst\|Comment'.
 	\'\|Documentation\)\>'
 endfunction
 
@@ -40,7 +40,7 @@ endfunction
 " are not matched.
 function s:IsInStringOrComment2(lnum, col)
   return synIDattr(synID(a:lnum, a:col, 0), 'name') =~ 
-	\'\<ruby\%(String\|Number\|ExprSubst\|Comment\)\>'
+	\'\<ruby\%(String\|ExprSubst\|Comment\|Documentation\)\>'
 endfunction
 
 " These comma-separated list of words at the beginning of a line add a level
@@ -74,14 +74,19 @@ call s:BuildIndentKeywords()
 
 " Regular expression for continuations.
 " XXX: add ( to this list?
-let s:continuation_regexp = '[\*+/.,=(-]\s*\(#.*\)\=$'
+" XXX: there's a problem with some things where we are indenting for brackets,
+" but also get for continuation (of ,). Two uncertain items are in this list,
+" [ and {
+let s:continuation_regexp = '[\\*+/.,=({[-]\s*\(#.*\)\=$'
 
 " Regular expression for blocks.  We can't check for {, it's done in another
 " place.
-let s:block_regexp = '\<do\>\s*\(|\(\*\=\h\w*\(,\s*\)\=\)\+|\s*\)\=\(#.*\)\=$'
+let s:block_regexp = '\<do\>\s*\(|\([*@]\=\h\w*\(,\s*\)\=\)\+|\s*\)\=\(#.*\)\=$'
 
 " Expression used to check whether we should skip a match with searchpair().
-let s:skip_expr = 'synIDattr(synID(line("."), col("."), 0), "name") =~ "\\<ruby\\%(String\\|StringDelimiter\\|Number\\|ExprSubst\\|Comment\\|Documentation\\)\\>"'
+" XXX: this should be expanded some how with class and module to avoid
+" confusion with object.class.foo stuff.
+let s:skip_expr = 'synIDattr(synID(line("."), col("."), 0), "name") =~ "\\<ruby\\%(String\\|StringDelimiter\\|ASCIICode\\|ExprSubst\\|Comment\\|Documentation\\)\\>"'
 let s:end_skip_expr = s:skip_expr.' || (expand("<cword>") =~ "\\<if\\>\\|\\<unless\\>\\|\\<while\\>\\|\\<until\\>" && getline(".") !~ "^\\s*\\<".expand("<cword>")."\\>" && getline(".") !~ expand("<cword>")."\\>.*\\<end\\>")'
 
 " Find the previous non-blank line which isn't a comment-line or in a comment
@@ -175,7 +180,7 @@ function GetRubyIndent()
   " If we get a =begin, =end, or here-doc ender set deindent to first column.
   " XXX: skip here-docs at the moment: \|EO[FSL]\|EOHELP
   let col = match(line, '^\s*\zs\(=begin\|=end\)') + 1
-  if col > 0 && !s:IsInStringOrComment(v:lnum, col)
+  if col > 0
     let ind = 0
   endif
 
@@ -308,6 +313,8 @@ function GetRubyIndent()
     let ccol = match(line, s:continuation_regexp) + 1
     if ccol > 0 && !s:IsInStringOrComment(lnum, ccol)
       let ind = ind + &sw
+" XXX:
+      let did_con_indent = 1
     endif
   endif
 
@@ -336,11 +343,11 @@ function GetRubyIndent()
       let ind = virtcol('.')
       let did_virt_indent = 1
     " Or, if we are inside a pair of braces or brackets, add one level.
-    elseif strridx(substitute(my_line, '{[^}]*}', '', 'g'), '{') > -1
+    elseif !did_con_indent && strridx(substitute(my_line, '{[^}]*}', '', 'g'), '{') > -1
 	  \ && !s:IsInStringOrComment(lnum, 1)
-      let ind = ind + &sw
+       let ind = ind + &sw
       let did_virt_indent = 1
-    elseif strridx(substitute(my_line, '\[[^]]*\]', '', 'g'), '[') > -1
+    elseif !did_con_endint && strridx(substitute(my_line, '\[[^]]*\]', '', 'g'), '[') > -1
 	  \ && !s:IsInStringOrComment(lnum, 1)
       let ind = ind + &sw
       let did_virt_indent = 1
@@ -350,6 +357,7 @@ function GetRubyIndent()
 
   " If the far previous line contained an opening bracket, and we are still in
   " it, add one level of indent.
+  " TODO: do we really need to check for did_con_indent here?  don't think so
   if !did_virt_indent && p_line =~ '[[({]'
     " TODO: use s:GotoLineCol()
     execute 'normal! '.p_lnum.'G$'
@@ -362,10 +370,10 @@ function GetRubyIndent()
 	  \ && searchpair('(', '', ')', 'bW', s:skip_expr) > 0
       let ind = virtcol('.')
     " Or, if we are inside a pair of braces or brackets, add one level.
-    elseif strridx(substitute(my_line, '{[^}]*}', '', 'g'), '{') > -1
+    elseif !did_con_indent && strridx(substitute(my_line, '{[^}]*}', '', 'g'), '{') > -1
 	  \ && !s:IsInStringOrComment(lnum, 1)
       let ind = ind + &sw
-    elseif strridx(substitute(my_line, '\[[^]]*\]', '', 'g'), '[') > -1
+    elseif !did_con_indent && strridx(substitute(my_line, '\[[^]]*\]', '', 'g'), '[') > -1
 	  \ && !s:IsInStringOrComment(lnum, 1)
       let ind = ind + &sw
     endif
