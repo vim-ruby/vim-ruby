@@ -1,4 +1,10 @@
-2004-04-27  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+2004-04-29  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
+	* filetype/filetype.vim: move matching of [Rr]akefile* to a separate
+	section which is located later in the file to avoid incorrectly
+	matching other filetypes prefixed with [Rr]akefile
+
+2005-04-27  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
 	* filetype/filetype.vim: match 'rakefile' as a Rakefile
 
