@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	Ruby
 " Maintainer:	Doug Kearns <djkea2 at mugca.its.monash.edu.au>
-" Info:		$Id: ruby.vim,v 1.20 2003/09/11 06:51:25 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.21 2003/09/11 14:25:47 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -138,9 +138,9 @@ if !exists("ruby_no_expensive")
   exec "syn sync minlines=" . ruby_minlines
 
 else
-  syn region  rubyFunction matchgroup=rubyDefine start="\<def\s\+"    end="\ze\(\s\|(\|;\|$\)" oneline
-  syn region  rubyClass    matchgroup=rubyDefine start="\<class\s\+"  end="\ze\(\s\|<\|;\|$\)" oneline
-  syn region  rubyModule   matchgroup=rubyDefine start="\<module\s\+" end="\ze\(\s\|;\|$\)"    oneline
+  syn region  rubyFunction matchgroup=rubyControl start="\<def\s\+"    end="\ze\(\s\|(\|;\|$\)" oneline
+  syn region  rubyClass    matchgroup=rubyControl start="\<class\s\+"  end="\ze\(\s\|<\|;\|$\)" oneline
+  syn region  rubyModule   matchgroup=rubyControl start="\<module\s\+" end="\ze\(\s\|;\|$\)"    oneline
   syn keyword rubyControl case begin do for if unless while until end
 endif
 
