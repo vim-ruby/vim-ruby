@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	Ruby
 " Maintainer:	Doug Kearns <djkea2 at mugca.its.monash.edu.au>
-" Info:		$Id: ruby.vim,v 1.36 2004/04/23 14:11:54 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.37 2004/05/12 13:35:07 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -24,11 +24,7 @@ elseif exists("b:current_syntax")
   finish
 endif
 
-if version < 600 && exists("ruby_fold")
-  unlet ruby_fold
-endif
-
-if exists("ruby_fold")
+if has("folding") && exists("ruby_fold")
   setlocal foldmethod=syntax
 endif
 
@@ -264,4 +260,4 @@ endif
 
 let b:current_syntax = "ruby"
 
-" vim: nowrap tabstop=8 ff=unix
+" vim: nowrap ts=8 ff=unix

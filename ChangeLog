@@ -1,3 +1,8 @@
+2004-05-12  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
+	* syntax/ruby.vim: check for the folding feature rather than just the
+	vim version when testing if the foldmethod should be set to syntax
+
 2004-05-11  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
 	* compiler/rubyunit.vim: add a initial support for parsing Test::Unit
