@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	Ruby
 " Maintainer:	Doug Kearns <djkea2 at mugca.its.monash.edu.au>
-" Info:		$Id: ruby.vim,v 1.30 2003/09/30 13:09:50 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.31 2003/10/03 10:22:54 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -215,7 +215,7 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubyInteger			Number
   HiLink rubyASCIICode			rubyInteger
   HiLink rubyFloat			Float
-  HiLink rubyBoolean			Boolean
+  HiLink rubyBoolean			rubyPseudoVariable
   HiLink rubyException			Exception
   HiLink rubyClass			Type
   HiLink rubyModule			Type
@@ -235,6 +235,7 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubyAccess			Statement
   HiLink rubyAttribute			Statement
   HiLink rubyEval			Statement
+  HiLink rubyPseudoVariable		Constant
 
   HiLink rubyComment			Comment
   HiLink rubyData			Comment

@@ -1,8 +1,12 @@
+2003-10-03  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
+	* syntax/ruby.vim: link rubyBoolean to rubyPseudoVariable; link
+	rubyPseudoVariable to the Constant highlight group.
+
 2003-09-30  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
 	* syntax/ruby.vim: create rubyPseudoVariable syntax group; move self,
-	nil, __LINE__ and __FILE_ to rubyPseudoVariable; link rubyBoolean to
-	rubyPseudoVariable.
+	nil, __LINE__ and __FILE_ to rubyPseudoVariable.
 
 2003-09-30  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
