@@ -1,7 +1,7 @@
 " Vim compiler file
 " Language:	Test::Unit - Ruby Unit Testing Framework
 " Maintainer:	Doug Kearns <djkea2 at mugca.its.monash.edu.au>
-" Info:		$Id: rubyunit.vim,v 1.2 2004/05/11 08:29:23 dkearns Exp $
+" Info:		$Id: rubyunit.vim,v 1.3 2004/05/19 07:57:57 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -25,6 +25,7 @@ setlocal makeprg=ruby
 setlocal errorformat=\%Etest%[%^\ ]%#(%[%^\ ]%#)\ [%f:%l]:,
 		     \%E\ %\\+%f:%l:in\ %.%#,
 		     \%Z%m%\\%.,
+		     \%C%m%\\%.,
 		     \%-GLoaded%.%#,
 		     \%-GStarted%.%#,
 		     \%-G%[EF%.]%.%#,
