@@ -1,5 +1,10 @@
 2003-09-11  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
+	* syntax/ruby.vim: fix my accidental redefinition of the
+	ruby_no_expensive matchgroups.
+
+2003-09-11  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
 	* syntax/ruby.vim: improve support for symbols, integers and floating
 	point numbers; add the display argument to :syntax where appropriate.
 

@@ -138,9 +138,9 @@ if !exists("ruby_no_expensive")
   exec "syn sync minlines=" . ruby_minlines
 
 else
-  syn region  rubyFunction matchgroup=rubyDefine start="\<def\s\+"    end="\ze\(\s\|(\|;\|$\)" oneline
-  syn region  rubyClass    matchgroup=rubyDefine start="\<class\s\+"  end="\ze\(\s\|<\|;\|$\)" oneline
-  syn region  rubyModule   matchgroup=rubyDefine start="\<module\s\+" end="\ze\(\s\|;\|$\)"    oneline
+  syn region  rubyFunction matchgroup=rubyControl start="\<def\s\+"    end="\ze\(\s\|(\|;\|$\)" oneline
+  syn region  rubyClass    matchgroup=rubyControl start="\<class\s\+"  end="\ze\(\s\|<\|;\|$\)" oneline
+  syn region  rubyModule   matchgroup=rubyControl start="\<module\s\+" end="\ze\(\s\|;\|$\)"    oneline
   syn keyword rubyControl case begin do for if unless while until end
 endif
 
