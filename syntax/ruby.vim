@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	Ruby
 " Maintainer:	Doug Kearns <djkea2 at mugca.its.monash.edu.au>
-" Info:         $Id: ruby.vim,v 1.4 2003/08/16 12:09:24 dkearns Exp $
+" Info:         $Id: ruby.vim,v 1.5 2003/08/18 08:21:08 dkearns Exp $
 " URL:          http://vim-ruby.sourceforge.net
 " Anon CVS:     See above site 
 " Licence:      GPL (http://www.gnu.org)
@@ -196,7 +196,7 @@ if !exists("ruby_no_expensive")
   syn region rubyNoDoBlock matchgroup=rubyControl start="\<\(case\|begin\)\>" start="^\s*\(if\|unless\)\>" start=";\s*\(if\|unless\)\>"hs=s+1 end="\<end\>" contains=ALLBUT,rubyExprSubst,rubyTodo fold
 
   " statement with optional *do*
-  syn region rubyOptDoBlock matchgroup=rubyControl start="\<for\>" start="^\s*\(while\|until\)\>" start=";\s*\(while\|until\)\>"hs=s+1 end="\<end\>" contains=ALLBUT,rubyExprSubst,rubyTodo,rubyDoBlock,rubyCurlyBlock fold
+  syn region rubyOptDoBlock matchgroup=rubyControl start="\<for\>" start="^\s*\(while\|until\)\>" start=";\s*\(while\|until\)\>"hs=s+1 end="\<end\>" contains=ALLBUT,rubyExprSubst,rubyTodo fold
 
   if !exists("ruby_minlines")
     let ruby_minlines = 50
