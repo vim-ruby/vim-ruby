@@ -80,6 +80,8 @@ stub = PREFIXSTUB.detect { |x| File.exist?(x) and File.directory?(x) }
 
 prefix = Dir.glob("#{stub}/vim*").select { |x| x =~ /vim\d+/ }.sort[-1]
 
+puts "Determined Vim location: #{prefix}"
+
 f = "ruby.vim"
 
 pairs = [
