@@ -1,5 +1,9 @@
 2003-09-21  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
+	* syntax/ruby.vim: match regexp after split, scan, sub and gsub.
+
+2003-09-21  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
 	* syntax/ruby.vim: highlight escaped string interpolation correctly;
 	allow hexadecimal and octal escape sequences to match with less than 3
 	and 2 digits respectively; split rubyExprSubst into multiple syntax
