@@ -5,7 +5,9 @@
 	Now it simply indents with zero width (to match =begin) by default.
 	Otherwise acts like 'autoindent'.  Also fixed a problem with | and &
 	not being recognized as continuation lines.  This may cause problems
-	with do blocks, we'll see
+	with do blocks, we'll see.
+	* indent/ruby.vim: In response to previous note.  It proved fatal.
+	Fixed now.
 
 2003-10-14  Nikolai Weibull  <source@pcppopper.org>
 
