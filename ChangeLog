@@ -1,3 +1,9 @@
+2005-04-04  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* syntax/doc/ruby.txt: add documentation for the ruby_space_errors,
+	ruby_no_trail_space_error and ruby_no_tab_space_error configuration
+	variables
+
 2005-03-31  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* syntax/ruby.vim: add configurable highlighting of trailing space and
