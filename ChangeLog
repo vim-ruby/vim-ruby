@@ -1,3 +1,8 @@
+2003-11-06  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
+	* syntax/ruby.vim: add support for the new decimal and octal base
+	indicators and capitalization of all base indicators.
+
 2003-10-20  Nikolai Weibull  <source@pcppopper.org>
 
 	* indent/ruby.vim: Added support for ?: multilining, such as

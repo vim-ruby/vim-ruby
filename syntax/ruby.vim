@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	Ruby
 " Maintainer:	Doug Kearns <djkea2 at mugca.its.monash.edu.au>
-" Info:		$Id: ruby.vim,v 1.34 2003/10/14 10:36:10 pcp Exp $
+" Info:		$Id: ruby.vim,v 1.35 2003/11/06 09:01:25 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -36,10 +36,10 @@ syn cluster rubyStringSpecial contains=rubyInterpolation,rubyNoInterpolation,rub
 
 " Numbers and ASCII Codes
 syn match rubyASCIICode	"\w\@<!\%(?\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\=\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)\)"
-syn match rubyInteger	"\<0x\x\+\%(_\x\+\)*\>"									display
-syn match rubyInteger	"\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\>"							display
-syn match rubyInteger	"\<0\o\+\%(_\o\+\)*\>"									display
-syn match rubyInteger	"\<0b[01]\+\%(_[01]\+\)*\>"								display
+syn match rubyInteger	"\<0[xX]\x\+\%(_\x\+\)*\>"								display
+syn match rubyInteger	"\<\%(0[dD]\)\=\%(0\|[1-9]\d*\%(_\d\+\)*\)\>"						display
+syn match rubyInteger	"\<0[oO]\=\o\+\%(_\o\+\)*\>"								display
+syn match rubyInteger	"\<0[bB][01]\+\%(_[01]\+\)*\>"								display
 syn match rubyFloat	"\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\.\d\+\%(_\d\+\)*\>"					display
 syn match rubyFloat	"\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\%(\.\d\+\%(_\d\+\)*\)\=\%([eE][-+]\=\d\+\%(_\d\+\)*\)\>"	display
 
