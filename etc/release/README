@@ -1,0 +1,12 @@
+cvsrelease is a wicked shell script for creating tarballs and/or zips from
+CVS.  It is very flexible, allowing arbitrary scripts to be executed on the
+temporary export tree before archiving it.  One such application of this would
+be the removal of some files from the "stable" version.
+
+release.sh is my wrapper around cvsrelease.  The main benefit is that it
+deduces the CVS root from the local working directory.  It contains usage
+information.  When required, I will amend this, and add whatever other scripts
+are needed, to produce stable and development releases for us.
+
+Gavin Sinclair, 2003-09-26
+
