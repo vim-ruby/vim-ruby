@@ -1,13 +1,20 @@
 " Vim syntax file
-" Language:		Ruby
-" Maintainer:		Doug Kearns
+" Language:	Ruby
+" Maintainer:	Doug Kearns <djkea2 at mugca.its.monash.edu.au>
+" Info:         $Id$
+" URL:          http://vim-ruby.sourceforge.net
+" Anon CVS:     See above site 
+" Licence:      GPL (http://www.gnu.org)
+" Disclaimer: 
+"    This program is distributed in the hope that it will be useful,
+"    but WITHOUT ANY WARRANTY; without even the implied warranty of
+"    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+"    GNU General Public License for more details.
+" ---------------------------------------------------------------------------- 
+"
 " Previous Maintainer:	Mirko Nasato
-" Last Change:		2003 May 31
-" URL:			http://mugca.its.monash.edu.au/~djkea2/vim/syntax/ruby.vim
-
-" $Id$
-
 " Thanks to perl.vim authors, and to Reimer Behrends. :-) (MN)
+" ---------------------------------------------------------------------------- 
 
 " For version 5.x: Clear all syntax items
 " For version 6.x: Quit when a syntax file was already loaded
