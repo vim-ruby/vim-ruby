@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	Ruby
 " Maintainer:	Doug Kearns <djkea2 at mugca.its.monash.edu.au>
-" Info:		$Id: ruby.vim,v 1.19 2003/09/09 11:53:17 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.20 2003/09/11 06:51:25 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -25,33 +25,38 @@ elseif exists("b:current_syntax")
 endif
 
 " Expression Substitution and Backslash Notation
-syn match rubyExprSubst "\\\\\|\(\(\\M-\\C-\|\\c\|\\C-\|\\M-\)\w\)\|\(\\\o\{3}\|\\x\x\{2}\|\\[abefnrstv]\)" contained
-syn match rubyExprSubst "#{[^}]*}" contained
-syn match rubyExprSubst "#\(\$\|@@\=\)\w\+" contained
+syn match rubyExprSubst "\\\\\|\(\(\\M-\\C-\|\\c\|\\C-\|\\M-\)\w\)\|\(\\\o\{3}\|\\x\x\{2}\|\\[abefnrstv]\)" contained display
+syn match rubyExprSubst "#{[^}]*}"									    contained display
+syn match rubyExprSubst "#\(\$\|@@\=\)\w\+"								    contained display
 
 " Numbers and ASCII Codes
-syn match rubyNumber "\w\@<!\(?\(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\=\(\\\o\{3}\|\\x\x\{2}\|\\\=\S\)\)"
-syn match rubyNumber "\<\(0x\x\+\|0b[01]\+\|0\o\+\|0\.\d\+\|0\|[1-9][\.0-9_]*\)\>"
+syn match rubyInteger "\w\@<!\(?\(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\=\(\\\o\{3}\|\\x\x\{2}\|\\\=\S\)\)"
+syn match rubyInteger "\<\(0x\x\+\(_\x\+\)*\|0b[01]\+\(_[01]\+\)*\|0\o\+\(_\o\+\)*\|[1-9]\+\(_\d\+\)*\)\>"	display
+syn match rubyFloat   "\<\d\+\(_\d\+\)*\.\d\+\(_\d\+\)*\>"							display
+syn match rubyFloat   "\<\(\d\+\(_\d\+\)*\(\.\d\+\(_\d\+\)*\)\=\)\([eE][-+]\=\(\d\+\(_\d\+\)*\)\+\)\>"		display
 
 " Identifiers
-syn match rubyLocalVariableOrMethod "[_[:lower:]][_[:alnum:]]*[?!=]\=" transparent contains=NONE
+syn match rubyLocalVariableOrMethod "[_[:lower:]][_[:alnum:]]*[?!=]\=" contains=NONE display transparent
 
 if !exists("ruby_no_identifiers")
-  syn match rubyConstant		"\(::\)\=\zs\u\w*"
-  syn match rubyClassVariable		"@@\h\w*"
-  syn match rubyInstanceVariable	"@\h\w*"
-  syn match rubyGlobalVariable		"$\(\h\w*\|-.\)"
-  syn match rubySymbol			":\@<!:\(\$\|@@\=\)\=\h\w*[?!=]\="
-  syn match rubyIterator		"|[ ,a-zA-Z0-9_*]\+|"
+  syn match  rubyConstant		"\(::\)\=\zs\u\w*"	display
+  syn match  rubyClassVariable		"@@\h\w*"		display
+  syn match  rubyInstanceVariable	"@\h\w*"		display
+  syn match  rubyGlobalVariable		"$\(\h\w*\|-.\)"
+  syn match  rubySymbol			":\@<!:\(\^\|\~\|<<\|<=>\|<=\|<\|===\|==\|=\~\|>>\|>=\|>\||\|-@\|-\|/\|\[]=\|\[]\|\*\*\|\*\|&\|%\|+@\|+\|`\)"
+  syn match  rubySymbol			":\@<!:\$\(-.\|[`~<=>_,;:!?/.'"@$*\&+0]\)"
+  syn match  rubySymbol			":\@<!:\(\$\|@@\=\)\=\h\w*[?!=]\="
+  syn region rubySymbol			start=":\@<!:\"" end="\"" skip="\\\\\|\\\""
+  syn match  rubyIterator		"|[ ,a-zA-Z0-9_*]\+|"	display
 
-  syn match rubyPredefinedVariable "$[!"$&'*+,./0:;<=>?@\\_`~1-9]"
-  syn match rubyPredefinedVariable "$-[0FIKadilpvw]"
-  syn match rubyPredefinedVariable "$\(deferr\|defout\|stderr\|stdin\|stdout\)\>"
-  syn match rubyPredefinedVariable "$\(DEBUG\|FILENAME\|KCODE\|LOAD_PATH\|SAFE\|VERBOSE\)\>"
-  syn match rubyPredefinedConstant "__\(FILE\|LINE\)__\>"
-  syn match rubyPredefinedConstant "\<\(::\)\=\zs\(MatchingData\|ARGF\|ARGV\|ENV\)\>"
-  syn match rubyPredefinedConstant "\<\(::\)\=\zs\(DATA\|FALSE\|NIL\|RUBY_PLATFORM\|RUBY_RELEASE_DATE\)\>"
-  syn match rubyPredefinedConstant "\<\(::\)\=\zs\(RUBY_VERSION\|STDERR\|STDIN\|STDOUT\|TOPLEVEL_BINDING\|TRUE\)\>"
+  syn match rubyPredefinedVariable "$[!"$&'*+,./0:;<=>?@\_`~1-9]"
+  syn match rubyPredefinedVariable "$-[0FIKadilpvw]"									display
+  syn match rubyPredefinedVariable "$\(deferr\|defout\|stderr\|stdin\|stdout\)\>"					display
+  syn match rubyPredefinedVariable "$\(DEBUG\|FILENAME\|KCODE\|LOAD_PATH\|SAFE\|VERBOSE\)\>"				display
+  syn match rubyPredefinedConstant "__\(FILE\|LINE\)__\>"								display
+  syn match rubyPredefinedConstant "\<\(::\)\=\zs\(MatchingData\|ARGF\|ARGV\|ENV\)\>"					display
+  syn match rubyPredefinedConstant "\<\(::\)\=\zs\(DATA\|FALSE\|NIL\|RUBY_PLATFORM\|RUBY_RELEASE_DATE\)\>"		display
+  syn match rubyPredefinedConstant "\<\(::\)\=\zs\(RUBY_VERSION\|STDERR\|STDIN\|STDOUT\|TOPLEVEL_BINDING\|TRUE\)\>"	display
   "Obsolete Global Constants
   "syn match rubyPredefinedConstant "\<\(::\)\=\zs\(PLATFORM\|RELEASE_DATE\|VERSION\)\>"
   "syn match rubyPredefinedConstant "\<\(::\)\=\zs\(NotImplementError\)\>"
@@ -110,7 +115,7 @@ if !exists("ruby_no_expensive")
   syn region rubyBlock start="\<module\>" matchgroup=rubyDefine end="\(^\|;\)\s*\zs\<end\>" contains=ALLBUT,rubyExprSubst,rubyTodo nextgroup=rubyModule   fold
 
   " modifiers
-  syn match  rubyControl "\<\(if\|unless\|while\|until\)\>"
+  syn match  rubyControl "\<\(if\|unless\|while\|until\)\>" display
 
   " *do* requiring *end*
   syn region rubyDoBlock matchgroup=rubyControl start="\(\<\(for\|until\|while\)\s.*\s\)\@<!do\>" end="\<end\>" contains=ALLBUT,rubyExprSubst,rubyTodo fold
@@ -143,7 +148,7 @@ endif
 " Note: the following keywords have already been defined:
 " begin case class def do end for if module unless until while __FILE_ __LINE__
 syn keyword rubyControl  and break else elsif ensure in next not or redo rescue retry return then when
-syn match   rubyKeyword  "\<defined?"
+syn match   rubyOperator "\<defined?" display
 syn keyword rubyKeyword  alias super undef yield
 syn keyword rubyBoolean  true false self nil
 syn keyword rubyBeginEnd BEGIN END
@@ -160,7 +165,7 @@ if !exists("ruby_no_special_methods")
 endif
 
 " Comments and Documentation
-syn match   rubySharpBang     "\%^#!.*"
+syn match   rubySharpBang     "\%^#!.*" display
 syn keyword rubyTodo          FIXME NOTE TODO XXX contained
 syn match   rubyComment       "#.*" contains=rubySharpBang,rubyTodo,@Spell
 syn region  rubyDocumentation start="^=begin" end="^=end.*$" contains=rubyTodo,@Spell fold
@@ -196,7 +201,8 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubyFunction			Function
   HiLink rubyControl			Statement
   HiLink rubyInclude			Include
-  HiLink rubyNumber			Number
+  HiLink rubyInteger			Number
+  HiLink rubyFloat			Float
   HiLink rubyBoolean			Boolean
   HiLink rubyException			Exception
   HiLink rubyClass			Type
@@ -211,22 +217,21 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubyPredefinedConstant		rubyPredefinedIdentifier
   HiLink rubyPredefinedVariable		rubyPredefinedIdentifier
   HiLink rubySymbol			rubyIdentifier
-  HiLink rubySharpBang			PreProc
   HiLink rubyKeyword			Keyword
   HiLink rubyBeginEnd			Statement
   HiLink rubyAccess			Statement
   HiLink rubyAttribute			Statement
   HiLink rubyEval			Statement
 
-  HiLink rubyString			String
-  HiLink rubyStringDelimiter		Delimiter
-  HiLink rubyExprSubst			Special
-
   HiLink rubyComment			Comment
-  HiLink rubyDocumentation		Comment
-  HiLink rubyTodo			Todo
   HiLink rubyData			Comment
   HiLink rubyDataDirective		Delimiter
+  HiLink rubyDocumentation		Comment
+  HiLink rubyExprSubst			Special
+  HiLink rubySharpBang			PreProc
+  HiLink rubyStringDelimiter		Delimiter
+  HiLink rubyString			String
+  HiLink rubyTodo			Todo
 
   delcommand HiLink
 endif
