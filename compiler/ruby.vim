@@ -32,6 +32,7 @@
 "   This is my first experience with 'errorformat' and compiler plugins and
 "   I welcome any input from more experienced (or clearer-thinking)
 "   individuals.
+" ----------------------------------------------------------------------------
 
 if exists("current_compiler")
   finish
