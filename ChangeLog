@@ -1,3 +1,9 @@
+2003-09-02  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
+	* syntax/ruby.vim: make sure that the optional do after for, until or
+	while is not matched as the beginning of a do/end code block; also
+	highlight the optional ':' for these loop constructs.
+
 2003-08-28  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
 	* syntax/ruby.vim: add folding support to embedded data sections after
