@@ -1,3 +1,8 @@
+2003-09-18  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
+	* syntax/ruby.vim: replace all patterns surrounded by \(\) with \%(\)
+	when the sub-expression is not used.
+
 2003-09-18  Gavin Sinclair <gsinclair@soyabean.com.au>
 
 	* install.rb: Included comments and USAGE string from revisino 1.1.
