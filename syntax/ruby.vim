@@ -27,7 +27,7 @@ endif
 " Expression Substitution and Backslash Notation
 syn match rubyExprSubst "\\\\\|\(\(\\M-\\C-\|\\c\|\\C-\|\\M-\)\w\)\|\(\\\o\{3}\|\\x\x\{2}\|\\[abefnrstv]\)" contained
 syn match rubyExprSubst "#{[^}]*}" contained
-syn match rubyExprSubst "#[$@]\w\+" contained
+syn match rubyExprSubst "#\(\$\|@@\=\)\w\+" contained
 
 " Numbers and ASCII Codes
 syn match rubyNumber "\w\@<!\(?\(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\=\(\\\o\{3}\|\\x\x\{2}\|\\\=\S\)\)"
