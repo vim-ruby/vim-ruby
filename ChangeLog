@@ -1,4 +1,4 @@
-2003-09-17  Gavin Sinclair  <Gavin Sinclair@nosedog>
+2003-09-17  Gavin Sinclair  <gsinclair@soyabean.com.au>
 
 	* install.rb: replace with Hugh Sasse's contribution.  Alpha state
 	until tested, and with several issues and todos listed.
