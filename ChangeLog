@@ -1,5 +1,11 @@
 2003-09-18  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
+	* syntax/ruby.vim: improve float and decimal matching; split
+	rubyInteger into multiple syntax groups - rubyASCIICode,
+	rubyHexadecimal, rubyDecimal, rubyOctal, rubyBinary.
+
+2003-09-18  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
 	* syntax/ruby.vim: replace all patterns surrounded by \(\) with \%(\)
 	when the sub-expression is not used.
 
