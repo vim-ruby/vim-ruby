@@ -1,8 +1,16 @@
 " Vim filetype plugin
-" Language:     Ruby
-" Maintainer:   Gavin Sinclair <gsinclair@soyabean.com.au>
-" Last Change:  2002/08/12
-" URL: www.soyabean.com.au/gavin/vim/index.html
+" Language:	Ruby
+" Maintainer:	Gavin Sinclair <gsinclair at soyabean.com.au>
+" Info:         $Id: ruby.vim,v 1.2 2003/08/06 14:41:41 gsinclair Exp $
+" URL:          http://vim-ruby.sourceforge.net
+" Anon CVS:     See above site 
+" Licence:      GPL (http://www.gnu.org)
+" Disclaimer: 
+"    This program is distributed in the hope that it will be useful,
+"    but WITHOUT ANY WARRANTY; without even the implied warranty of
+"    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+"    GNU General Public License for more details.
+" ---------------------------------------------------------------------------- 
 
 " Only do this when not done yet for this buffer
 if (exists("b:did_ftplugin"))
