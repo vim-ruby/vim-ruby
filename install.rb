@@ -52,10 +52,10 @@
 
 require "ftools"
 
-#
-# This USAGE string does not apply to the current implementation, but it is a
-# good guide for future work.
-#
+  #
+  # This USAGE string does not apply to the current implementation, but it is a
+  # good guide for future work.
+  #
 USAGE = <<-EOF
 Usage: ruby install.rb [options]
 
@@ -67,16 +67,18 @@ Usage: ruby install.rb [options]
    -f      no confirmations
 EOF
 
-PREFIXSTUB=["/usr/local/share/vim",
-        "/usr/local/vim",
-        "/usr/share/vim",
-        "/usr/vim",
-        "/opt/share/vim",
-        "/opt/vim"]
+PREFIXSTUB=[
+  "/usr/local/share/vim",
+  "/usr/local/vim",
+  "/usr/share/vim",
+  "/usr/vim",
+  "/opt/share/vim",
+  "/opt/vim"
+]
 
 stub = PREFIXSTUB.detect { |x| File.exist?(x) and File.directory?(x) }
 
-prefix = Dir.glob("#{stub}/vim*").sort[-1]
+prefix = Dir.glob("#{stub}/vim*").select { |x| x =~ /vim\d+/ }.sort[-1]
 
 f = "ruby.vim"
 
@@ -88,19 +90,24 @@ pairs = [
 ]
 
 pairs.each do |from, to|
+  if File.exists?(to)
     unless File.compare(from, to)
         # If it is the same don't bother copying.
-        if File.exist?(to) and File.mtime(to) > File.mtime(from)
-            # If the file to replace is newer, it could be someone's interim
-            # patch, We assume they want to keep it, unless this is
-            # called with -f. Warn about not doing so otherwise.
-            if ARGV.include?("-f")
-                File.install(from, to)
-            else
-                $stderr.puts "#{to} is newer than #{from}. `#{$0} -f` to force replacement"
-            end
+      if File.exist?(to) and File.mtime(to) > File.mtime(from)
+          # If the file to replace is newer, it could be someone's interim
+          # patch, We assume they want to keep it, unless this is
+          # called with -f. Warn about not doing so otherwise.
+        if ARGV.include?("-f")
+          File.install(from, to)
         else
-            File.install(from, to)
+          $stderr.puts "#{to} is newer than #{from}. `#{$0} -f` to force replacement"
         end
+      else
+        File.install(from, to)
+      end
     end
+  else
+    File.install(from, to)
+  end
 end
+
