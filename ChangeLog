@@ -1,6 +1,11 @@
 2003-09-17  Gavin Sinclair  <gsinclair@soyabean.com.au>
 
-	* install.rb: replace with Hugh Sasse's contribution.  Alpha state
+	* ftplugin/ruby.vim: implemented matchit support (thanks to Ned Konz
+	and Hugh Sasse).
+
+2003-09-17  Gavin Sinclair  <gsinclair@soyabean.com.au>
+
+	* install.rb: replaced with Hugh Sasse's contribution.  Alpha state
 	until tested, and with several issues and todos listed.
 
 2003-09-11  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
