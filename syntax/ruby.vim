@@ -28,6 +28,15 @@ if has("folding") && exists("ruby_fold")
   setlocal foldmethod=syntax
 endif
 
+if exists("ruby_space_errors")
+  if !exists("ruby_no_trail_space_error")
+    syn match rubySpaceError display excludenl "\s\+$"
+  endif
+  if !exists("ruby_no_tab_space_error")
+    syn match rubySpaceError display " \+\t"me=e-1
+  endif
+endif
+
 " Expression Substitution and Backslash Notation
 syn match rubyEscape		"\\\\\|\\[abefnrstv]\|\\\o\{1,3}\|\\x\x\{1,2}"								contained display
 syn match rubyEscape		"\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)"	contained display
@@ -188,8 +197,8 @@ endif
 " Comments and Documentation
 syn match   rubySharpBang     "\%^#!.*" display
 syn keyword rubyTodo          FIXME NOTE TODO XXX contained
-syn match   rubyComment       "#.*" contains=rubySharpBang,rubyTodo,@Spell
-syn region  rubyDocumentation start="^=begin" end="^=end.*$" contains=rubyTodo,@Spell fold
+syn match   rubyComment       "#.*" contains=rubySharpBang,rubySpaceError,rubyTodo,@Spell
+syn region  rubyDocumentation start="^=begin" end="^=end.*$" contains=rubySpaceError,rubyTodo,@Spell fold
 
 " Note: this is a hack to prevent 'keywords' being highlighted as such when called as methods
 syn match rubyKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(alias\|and\|begin\|break\|case\|class\|def\|defined\|do\|else\)\>"			transparent contains=NONE
@@ -259,6 +268,9 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubyStringDelimiter		Delimiter
   HiLink rubyString			String
   HiLink rubyTodo			Todo
+
+  HiLink rubyError			Error
+  HiLink rubySpaceError			rubyError
 
   delcommand HiLink
 endif
