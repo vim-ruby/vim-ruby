@@ -1,17 +1,17 @@
 " Vim compiler file
 " Language:	Ruby
-" Function:     Syntax check and/or error reporting
-" Maintainer:   Tim Hammerquist <saiyix@rubyforge.org>
-" Info:         $Id: ruby.vim,v 1.4 2003/08/13 17:38:11 saiyix Exp $
-" URL:          http://vim-ruby.rubyforge.org
-" Anon CVS:     See above site 
-" Licence:      GPL (http://www.gnu.org)
-" Disclaimer: 
+" Function:	Syntax check and/or error reporting
+" Maintainer:	Tim Hammerquist <saiyix@rubyforge.org>
+" Info:		$Id: ruby.vim,v 1.5 2003/08/18 09:52:48 dkearns Exp $
+" URL:		http://vim-ruby.rubyforge.org
+" Anon CVS:	See above site
+" Licence:	GPL (http://www.gnu.org)
+" Disclaimer:
 "    This program is distributed in the hope that it will be useful,
 "    but WITHOUT ANY WARRANTY; without even the implied warranty of
 "    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 "    GNU General Public License for more details.
-" ---------------------------------------------------------------------------- 
+" ----------------------------------------------------------------------------
 "
 " Changelog:
 " 0.2:  script saves and restores 'cpoptions' value to prevent problems with
@@ -32,7 +32,7 @@
 "   This is my first experience with 'errorformat' and compiler plugins and
 "   I welcome any input from more experienced (or clearer-thinking)
 "   individuals.
-" ---------------------------------------------------------------------------- 
+" ----------------------------------------------------------------------------
 
 if exists("current_compiler")
   finish
