@@ -1,3 +1,7 @@
+2004-04-27  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
+	* filetype/filetype.vim: match 'rakefile' as a Rakefile
+
 2004-04-23  Ward Wouts  <ward@wizeazz.nl> 
 
 	* syntax/ruby.vim: add ruby_fold variable to control the setting of
