@@ -2,7 +2,7 @@
 " Language:	Ruby
 " Maintainer:	Gavin Sinclair <gsinclair at soyabean.com.au>
 " Developer:	Nikolai Weibull <lone-star at home.se>
-" Info:		$Id: ruby.vim,v 1.21 2003/10/20 01:02:13 pcp Exp $
+" Info:		$Id: ruby.vim,v 1.22 2005/03/23 23:35:31 gsinclair Exp $
 " URL:		http://vim-ruby.rubyforge.org/
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org/)
@@ -37,19 +37,19 @@ endif
 
 " Regex of synax group names that are or delimit string or are comments.
 let s:syng_strcom = '\<ruby\%(String\|StringDelimiter\|ASCIICode' .
-      \ '\|Interpolation\|NoInterpolation\|Escape\|Comment\|Documentation\)\>'
+      \ '\|Interpolation\|NoInterpolation\|NestedBrackets\|Escape\|Comment\|Documentation\)\>'
 
 " Regex of syntax group names that are strings or comments.
 let s:syng_strcom2 = '\<ruby\%(String' .
-      \ '\|Interpolation\|NoInterpolation\|Escape\|Comment\|Documentation\)\>'
+      \ '\|Interpolation\|NoInterpolation\|NestedBrackets\|Escape\|Comment\|Documentation\)\>'
 
 " Regex of syntax group names that are strings.
 let s:syng_string =
-      \ '\<ruby\%(String\|Interpolation\|NoInterpolation\|Escape\)\>'
+      \ '\<ruby\%(String\|Interpolation\|NoInterpolation\|NestedBrackets\|Escape\)\>'
 
 " Regex of syntax group names that are strings or documentation.
 let s:syng_stringdoc =
-  \'\<ruby\%(String\|Interpolation\|NoInterpolation\|Escape\|Documentation\)\>'
+  \'\<ruby\%(String\|Interpolation\|NoInterpolation\|NestedBrackets\|Escape\|Documentation\)\>'
 
 " Expression used to check whether we should skip a match with searchpair().
 let s:skip_expr =
