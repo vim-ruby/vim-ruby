@@ -1,3 +1,8 @@
+2004-04-07  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
+	* filetype/filetype.vim: added RubyGems specification and installation
+	files and Rakefiles
+
 2004-04-01  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
 	* compiler/rubyunit.vim: added a new compiler plugin for Test::Unit
