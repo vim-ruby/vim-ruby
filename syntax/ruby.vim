@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	Ruby
 " Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
-" Info:		$Id: ruby.vim,v 1.41 2005/03/23 22:37:24 gsinclair Exp $
+" Info:		$Id: ruby.vim,v 1.42 2005/03/30 15:10:25 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -26,6 +26,15 @@ endif
 
 if has("folding") && exists("ruby_fold")
   setlocal foldmethod=syntax
+endif
+
+if exists("ruby_space_errors")
+  if !exists("ruby_no_trail_space_error")
+    syn match rubySpaceError display excludenl "\s\+$"
+  endif
+  if !exists("ruby_no_tab_space_error")
+    syn match rubySpaceError display " \+\t"me=e-1
+  endif
 endif
 
 " Expression Substitution and Backslash Notation
@@ -188,8 +197,8 @@ endif
 " Comments and Documentation
 syn match   rubySharpBang     "\%^#!.*" display
 syn keyword rubyTodo          FIXME NOTE TODO XXX contained
-syn match   rubyComment       "#.*" contains=rubySharpBang,rubyTodo,@Spell
-syn region  rubyDocumentation start="^=begin" end="^=end.*$" contains=rubyTodo,@Spell fold
+syn match   rubyComment       "#.*" contains=rubySharpBang,rubySpaceError,rubyTodo,@Spell
+syn region  rubyDocumentation start="^=begin" end="^=end.*$" contains=rubySpaceError,rubyTodo,@Spell fold
 
 " Note: this is a hack to prevent 'keywords' being highlighted as such when called as methods
 syn match rubyKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(alias\|and\|begin\|break\|case\|class\|def\|defined\|do\|else\)\>"			transparent contains=NONE
@@ -259,6 +268,9 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubyStringDelimiter		Delimiter
   HiLink rubyString			String
   HiLink rubyTodo			Todo
+
+  HiLink rubyError			Error
+  HiLink rubySpaceError			rubyError
 
   delcommand HiLink
 endif

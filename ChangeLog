@@ -1,3 +1,8 @@
+2005-03-31  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* syntax/ruby.vim: add configurable highlighting of trailing space and
+	'space before tab' errors (Tilman Sauerbeck)
+
 2005-03-24  Gavin Sinclair <gsinclair@soyabean.com.au>
 
 	* syntax/ruby.vim: Improved hilighting of %{...} strings with
