@@ -1,7 +1,7 @@
 " Vim compiler file
 " Language:	Test::Unit - Ruby Unit Testing Framework
-" Maintainer:	Doug Kearns <djkea2 at mugca.its.monash.edu.au>
-" Info:		$Id: rubyunit.vim,v 1.4 2004/09/04 10:30:13 dkearns Exp $
+" Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
+" Info:		$Id: rubyunit.vim,v 1.5 2004/11/27 14:44:37 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)

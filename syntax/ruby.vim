@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	Ruby
-" Maintainer:	Doug Kearns <djkea2 at mugca.its.monash.edu.au>
-" Info:		$Id: ruby.vim,v 1.38 2004/09/30 14:44:27 dkearns Exp $
+" Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
+" Info:		$Id: ruby.vim,v 1.39 2004/11/27 14:44:37 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)

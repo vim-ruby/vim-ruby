@@ -2,7 +2,7 @@
 " Language:	Ruby
 " Function:	Syntax check and/or error reporting
 " Maintainer:	Tim Hammerquist <timh at rubyforge.org>
-" Info:		$Id: ruby.vim,v 1.8 2004/09/05 06:00:46 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.9 2004/11/27 14:44:37 dkearns Exp $
 " URL:		http://vim-ruby.rubyforge.org
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -20,7 +20,7 @@
 "
 " Contributors:
 "   Hugh Sasse <hgs@dmu.ac.uk>
-"   Doug Kearns <djkea2@mugca.its.monash.edu.au>
+"   Doug Kearns <djkea2@gus.gscit.monash.edu.au>
 "
 " Todo:
 "   match error type %m
