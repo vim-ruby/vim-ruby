@@ -23,16 +23,16 @@ set cpo-=C
 setlocal makeprg=ruby
 
 setlocal errorformat=\%Etest%[%^\ ]%#(%[%^\ ]%#)\ [%f:%l]:,
-                     \%Z%m%\\%.,
-                     \%C%m%\\%.,
-                     \%-GLoaded%.%#,
-                     \%-GStarted%.%#,
-                     \%-G%[EF%.]%.%#,
-                     \%-GFinished\ in%.%#,
-                     \%-G\ %\\+%\\d%\\+)\ Failure:,
-                     \%-G\ %\\+%\\d%\\+)\ Error:
+		     \%E\ %\\+%f:%l:in\ %.%#,
+		     \%Z%m%\\%.,
+		     \%-GLoaded%.%#,
+		     \%-GStarted%.%#,
+		     \%-G%[EF%.]%.%#,
+		     \%-GFinished\ in%.%#,
+		     \%-G\ %\\+%\\d%\\+)\ Failure:,
+		     \%-G\ %\\+%\\d%\\+)\ Error:
 
 let &cpo = s:cpo_save
 unlet s:cpo_save
 
-" vim: nowrap tabstop=8 ff=unix
+" vim: nowrap ts=8 ff=unix
