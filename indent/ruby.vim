@@ -2,7 +2,7 @@
 " Language:	Ruby
 " Maintainer:	Gavin Sinclair <gsinclair at soyabean.com.au>
 " Developer:	Nikolai Weibull <lone-star at home.se>
-" Info:		$Id: ruby.vim,v 1.14 2003/10/09 23:00:27 pcp Exp $
+" Info:		$Id: ruby.vim,v 1.15 2003/10/10 22:45:12 pcp Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -212,8 +212,11 @@ function GetRubyIndent()
   if col > 0 && !s:IsInStringOrComment(v:lnum, col)
     call s:GotoLineCol(v:lnum, 0)
     " Find the matching parent statement to it
+    " XXX: fixed the .class problem here, but I don't know if its the best way
+    " to do it
     if searchpair('\<def\>\|\<do\>\|\<if\>\|\<unless\>\|\<case\>\|' . 
-	  \'\<begin\>\|\<until\>\|\<for\>\|\<while\>\|\<class\>\|\<module\>', 
+	  \'\<begin\>\|\<until\>\|\<for\>\|\<while\>\|' .
+	  \'\<\.\@<!class\>\|\<\.\@<!module\>', 
 	  \'\<ensure\>\|\<else\>\|\<rescue\>\|\<elsif\>\|\<when\>', '\<end\>',
 	  \'bW', s:end_skip_expr) > 0
       let ind = indent('.')
