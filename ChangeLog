@@ -1,3 +1,7 @@
+2003-10-18  Nikolai Weibull  <source@pcppopper.org>
+
+	* indent/ruby.vim: Fixed a silly bug with the [] matching.
+
 2003-10-17  Gavin Sinclair <gsinclair@soyabean.com.au>
 
 	* README: Minor addition.
