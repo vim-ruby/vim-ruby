@@ -196,7 +196,7 @@ if !exists("ruby_no_expensive")
   syn region rubyNoDoBlock matchgroup=rubyControl start="\<\(case\|begin\)\>" start="^\s*\(if\|unless\)\>" start=";\s*\(if\|unless\)\>"hs=s+1 end="\<end\>" contains=ALLBUT,rubyExprSubst,rubyTodo fold
 
   " statement with optional *do*
-  syn region rubyOptDoBlock matchgroup=rubyControl start="\<for\>" start="^\s*\(while\|until\)\>" start=";\s*\(while\|until\)\>"hs=s+1 end="\<end\>" contains=ALLBUT,rubyExprSubst,rubyTodo,rubyDoBlock,rubyCurlyBlock fold
+  syn region rubyOptDoBlock matchgroup=rubyControl start="\<for\>" start="^\s*\(while\|until\)\>" start=";\s*\(while\|until\)\>"hs=s+1 end="\<end\>" contains=ALLBUT,rubyExprSubst,rubyTodo fold
 
   if !exists("ruby_minlines")
     let ruby_minlines = 50
