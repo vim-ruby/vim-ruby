@@ -2,6 +2,20 @@
 #
 # Script to install the vim files in a useful directory.
 #
+# This program will take the files
+#   compiler/ruby.vim
+#   ftplugin/ruby.vim
+#   indent/ruby.vim
+#   syntax/ruby.vim
+# and install them in a place where Vim can see them.  If the environment
+# variable $VIM exists, it is assumed to point to, e.g. /usr/share/vim/vim62, so
+# the files can be placed in $VIM/syntax, etc.  But it is unlikely that $VIM is
+# defined, so this program will guess a few locations, using Unix and Windows
+# sensibilities.  It will, in fact, default to the user's ~/.vim or
+# $HOME/vimfiles.
+#
+# ------------------------------------------------------------------------------
+#
 # Revision: $Id$
 # Status: alpha
 #
@@ -11,6 +25,8 @@
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #    GNU General Public License for more details.
+#
+# ------------------------------------------------------------------------------
 #
 # Known issues (summarised by Hugh):
 #   Only checks the places I could think of at the time.
@@ -31,8 +47,25 @@
 #   TODO: improve banner at the top with some of the nice doco from
 #       revision 1.1
 #
+# ------------------------------------------------------------------------------
+#
 
 require "ftools"
+
+#
+# This USAGE string does not apply to the current implementation, but it is a
+# good guide for future work.
+#
+USAGE = <<-EOF
+Usage: ruby install.rb [options]
+
+ Options:
+   -g      install in global vim configuration directory
+   -u      install in user's (i.e. your) vim configuration directory (default)
+   -d DIR  install in DIR
+   -i      confirm before doing anything, especially overwriting files
+   -f      no confirmations
+EOF
 
 PREFIXSTUB=["/usr/local/share/vim",
         "/usr/local/vim",
