@@ -2,7 +2,7 @@
 " Language:	Ruby
 " Maintainer:	Gavin Sinclair <gsinclair at soyabean.com.au>
 " Developer:	Nikolai Weibull <lone-star at home.se>
-" Info:		$Id: ruby.vim,v 1.19 2003/10/15 15:14:26 pcp Exp $
+" Info:		$Id: ruby.vim,v 1.20 2003/10/15 15:23:41 pcp Exp $
 " URL:		http://vim-ruby.rubyforge.org/
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org/)
@@ -82,10 +82,10 @@ let s:end_skip_expr = s:skip_expr .
       \ ' && getline(".") =~ "^\\s*\\<while\\|until\\|for\\>")'
 
 " Regex that defines continuation lines, not including (, {, or [.
-let s:continuation_regex = '\%([\\*+/.,=|&-]\|\W?\|||\|&&\)\s*\%(#.*\)\=$'
+let s:continuation_regex = '\%([\\*+/.,=-]\|\W[|&?]\|||\|&&\)\s*\%(#.*\)\=$'
 
 " Regex that defines continuation lines.
-let s:continuation_regex2 = '\%([\\*+/.,=({[|&-]\|\W?\|||\|&&\)\s*\%(#.*\)\=$'
+let s:continuation_regex2 = '\%([\\*+/.,=({[-]\|\W[|&?]\|||\|&&\)\s*\%(#.*\)\=$'
 
 " Regex that defines blocks.
 let s:block_regex =
