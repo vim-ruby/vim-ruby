@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	Ruby
 " Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
-" Info:		$Id: ruby.vim,v 1.39 2004/11/27 14:44:37 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.40 2005/03/23 22:19:44 gsinclair Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -35,8 +35,12 @@ syn match rubyInterpolation	"#{[^}]*}"				contained
 syn match rubyInterpolation	"#\%(\$\|@@\=\)\w\+"			contained display
 syn match rubyNoInterpolation	"\\#{[^}]*}"				contained
 syn match rubyNoInterpolation	"\\#\%(\$\|@@\=\)\w\+"			contained display
+syn region rubyNestedBrackets	start="("	end=")"		skip="\\\\\|\\)"	contained	contains=@rubyStringSpecial
+syn region rubyNestedBrackets	start="{"	end="}"		skip="\\\\\|\\}"	contained	contains=@rubyStringSpecial
+syn region rubyNestedBrackets	start="<"	end=">"		skip="\\\\\|\\>"	contained	contains=@rubyStringSpecial
+syn region rubyNestedBrackets	start="\["	end="\]"	skip="\\\\\|\\\]"	contained	contains=@rubyStringSpecial
 
-syn cluster rubyStringSpecial contains=rubyInterpolation,rubyNoInterpolation,rubyEscape
+syn cluster rubyStringSpecial contains=rubyInterpolation,rubyNoInterpolation,rubyEscape,rubyNestedBrackets
 
 " Numbers and ASCII Codes
 syn match rubyASCIICode	"\w\@<!\%(?\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\=\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)\)"
@@ -250,6 +254,7 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubyEscape			Special
   HiLink rubyInterpolation		Special
   HiLink rubyNoInterpolation		rubyString
+  HiLink rubyNestedBrackets		rubyString
   HiLink rubySharpBang			PreProc
   HiLink rubyStringDelimiter		Delimiter
   HiLink rubyString			String
