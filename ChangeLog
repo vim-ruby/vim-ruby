@@ -1,3 +1,9 @@
+2003-10-14  Nikolai Weibull  <source@pcppopper.org>
+
+	* syntax/ruby.vim: Readded matching of $' and $" when
+	ruby_no_identifiers was off.  Got accidentaly removed with previous
+	fix.
+
 2003-10-13  Nikolai Weibull  <source@pcppopper.org>
 
 	* indent/ruby.vim: General cleanup, speedup, fixup.  Fixes bug #62.
