@@ -1,3 +1,9 @@
+2003-09-26  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
+	* indent/ruby.vim: update references to rubyExprSubst - this syntax
+	group has been split into rubyInterpolation, rubyNoInterpolation and
+	rubyEscape.
+
 2003-09-26  Gavin Sinclair <gsinclair@soyabean.com.au>
 
 	* etc/release/*: added to aid in the production of releases.

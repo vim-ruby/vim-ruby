@@ -2,7 +2,7 @@
 " Language:	Ruby
 " Maintainer:	Gavin Sinclair <gsinclair at soyabean.com.au>
 " Developer:	Nikolai Weibull <lone-star at home.se>
-" Info:		$Id: ruby.vim,v 1.12 2003/09/26 12:29:16 pcp Exp $
+" Info:		$Id: ruby.vim,v 1.13 2003/09/26 13:19:39 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -31,8 +31,8 @@ endif
 " Check if the character at lnum:col is inside a string or comment.
 function s:IsInStringOrComment(lnum, col)
   return synIDattr(synID(a:lnum, a:col, 0), 'name') =~ 
-	\'\<ruby\%(String\|StringDelimiter\|ASCIICode\|ExprSubst\|Comment'.
-	\'\|Documentation\)\>'
+	\'\<ruby\%(String\|StringDelimiter\|ASCIICode\|Interpolation'.
+	\'\|NoInterpolation\|Escape\|Comment\|Documentation\)\>'
 endfunction
 
 " Check if the character at lnum:col is inside a string or comment.
@@ -40,7 +40,8 @@ endfunction
 " are not matched.
 function s:IsInStringOrComment2(lnum, col)
   return synIDattr(synID(a:lnum, a:col, 0), 'name') =~ 
-	\'\<ruby\%(String\|ExprSubst\|Comment\|Documentation\)\>'
+	\'\<ruby\%(String\|Interpolation\|NoInterpolation\|Escape\|Comment'.
+	\'\|Documentation\)\>'
 endfunction
 
 " These comma-separated list of words at the beginning of a line add a level
@@ -86,7 +87,7 @@ let s:block_regexp = '\<do\>\s*\(|\([*@]\=\h\w*\(,\s*\)\=\)\+|\s*\)\=\(#.*\)\=$'
 " Expression used to check whether we should skip a match with searchpair().
 " XXX: this should be expanded some how with class and module to avoid
 " confusion with object.class.foo stuff.
-let s:skip_expr = 'synIDattr(synID(line("."), col("."), 0), "name") =~ "\\<ruby\\%(String\\|StringDelimiter\\|ASCIICode\\|ExprSubst\\|Comment\\|Documentation\\)\\>"'
+let s:skip_expr = 'synIDattr(synID(line("."), col("."), 0), "name") =~ "\\<ruby\\%(String\\|StringDelimiter\\|ASCIICode\\|Interpolation\\|NoInterpolation\\|Escape\\|Comment\\|Documentation\\)\\>"'
 let s:end_skip_expr = s:skip_expr.' || (expand("<cword>") =~ "\\<if\\>\\|\\<unless\\>\\|\\<while\\>\\|\\<until\\>" && getline(".") !~ "^\\s*\\<".expand("<cword>")."\\>" && getline(".") !~ expand("<cword>")."\\>.*\\<end\\>")'
 
 " Find the previous non-blank line which isn't a comment-line or in a comment
