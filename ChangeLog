@@ -1,3 +1,7 @@
+2003-09-03  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
+	* compiler/ruby.vim: update the maintainer's email address.
+
 2003-09-02  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
 	* syntax/ruby.vim: make sure that the optional do after for, until or
