@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	Ruby
 " Maintainer:	Doug Kearns <djkea2 at mugca.its.monash.edu.au>
-" Info:		$Id: ruby.vim,v 1.13 2003/08/28 14:36:01 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.14 2003/09/02 09:45:08 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -184,11 +184,11 @@ if !exists("ruby_no_expensive")
   syn region rubyBlock start="^\s*def\s\+"rs=s		   matchgroup=rubyDefine end="\<end\>" contains=ALLBUT,rubyExprSubst,rubyTodo nextgroup=rubyFunction fold
   syn region rubyBlock start="^\s*\(class\|module\)\>"rs=s matchgroup=rubyDefine end="\<end\>" contains=ALLBUT,rubyExprSubst,rubyTodo nextgroup=rubyClassOrModule fold
 
-  " modifiers + redundant *do*
-  syn match  rubyControl "\<\(if\|unless\|while\|until\|do\)\>"
+  " modifiers
+  syn match  rubyControl "\<\(if\|unless\|while\|until\)\>"
 
   " *do* requiring *end*
-  syn region rubyDoBlock matchgroup=rubyControl start="\<do\>" end="\<end\>" contains=ALLBUT,rubyExprSubst,rubyTodo fold
+  syn region rubyDoBlock matchgroup=rubyControl start="\(\<\(for\|until\|while\)\s.*\s\)\@<!do\>" end="\<end\>" contains=ALLBUT,rubyExprSubst,rubyTodo fold
 
   " *{* requiring *}*
   syn region rubyCurlyBlock start="{" end="}" contains=ALLBUT,rubyExprSubst,rubyTodo fold
@@ -198,6 +198,9 @@ if !exists("ruby_no_expensive")
 
   " statement with optional *do*
   syn region rubyOptDoBlock matchgroup=rubyControl start="\<for\>" start="^\s*\(while\|until\)\>" start=";\s*\(while\|until\)\>"hs=s+1 end="\<end\>" contains=ALLBUT,rubyExprSubst,rubyTodo fold
+  
+  " optional *do*
+  syn match  rubyControl "\(\<\(for\|until\|while\)\s.*\s\)\@<=\(do\|:\)\>"
 
   if !exists("ruby_minlines")
     let ruby_minlines = 50
