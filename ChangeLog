@@ -1,5 +1,11 @@
 2003-09-09  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
+	* syntax/ruby.vim: remove Vim 5.x specific sections and simplify the
+	generalized string, regular expression, symbol, and word list literal
+	syntax groups.
+
+2003-09-09  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
 	* indent/ruby.vim, syntax/ruby.vim: rename the rubyStringDelimit
 	syntax group rubyStringDelimiter.
 
