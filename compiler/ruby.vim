@@ -66,4 +66,4 @@ setlocal errorformat=
 let &cpo = s:cpo_save
 unlet s:cpo_save
 
-" vim: ft=vim
+" vim: ft=vim ff=unix

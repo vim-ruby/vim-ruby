@@ -20,3 +20,5 @@ let b:did_ftplugin = 1
 
 " There are no known setting particularly appropriate for Ruby.  Please
 " contact the maintainer if you think of some.
+
+" vim: ff=unix

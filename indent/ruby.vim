@@ -375,4 +375,4 @@ function GetRubyIndent()
   return ind
 endfunction   " GetRubyIndent()
 
-" vim:sw=2
+" vim:sw=2 ff=unix
