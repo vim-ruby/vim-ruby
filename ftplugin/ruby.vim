@@ -26,10 +26,40 @@ let b:did_ftplugin = 1
 if exists("loaded_matchit") && !exists("b:match_words")
   let b:match_ignorecase = 0
   let b:match_words =
-	\ '\%(\%(\%(^\|[;=]\)\s*\)\@<=\%(class\|module\|while\|begin\|until' .
-	\ '\|for\|if\|unless\|def\|case\)\|\<do\)\>:' .
-	\ '\<\%(else\|elsif\|ensure\|rescue\|when\)\>:' .
-	\ '\%(^\|[^.]\)\@<=\<end\>'
+     \ '\%(\%(\%(^\|[;=]\)\s*\)\@<=\%(class\|module\|while\|begin\|until' .
+     \ '\|for\|if\|unless\|def\|case\)\|\<do\)\>:' .
+     \ '\<\%(else\|elsif\|ensure\|rescue\|when\)\>:' .
+     \ '\%(^\|[^.]\)\@<=\<end\>'
 endif
+
+"
+" Instructions for enabling "matchit" support:
+"
+" 1. Look for the latest "matchit" plugin at
+"
+"         http://www.vim.org/scripts/script.php?script_id=39
+"
+"    It is also packaged with Vim, in the $VIMRUNTIME/macros directory.
+"
+" 2. Copy "matchit.txt" into a "doc" directory (e.g. $HOME/.vim/doc).
+"
+" 3. Copy "matchit.vim" into a "plugin" directory (e.g. $HOME/.vim/plugin).
+"
+" 4. Ensure this file (ftplugin/ruby.vim) is installed.
+"
+" 5. Ensure you have this line in your $HOME/.vimrc:
+"         filetype plugin on
+"
+" 6. Restart Vim and create the matchit documentation:
+"
+"         :helptags ~/.vim/doc
+"
+"    Now you can do ":help matchit", and you should be able to use "%" on Ruby
+"    keywords.  Try ":echo b:match_words" to be sure.
+"
+" Thanks to Mark J. Reed for the instructions.  See ":help vimrc" for the
+" locations of plugin directories, etc., as there are several options, and it
+" differs on Windows.  Email gsinclair@soyabean.com.au if you need help.
+"
 
 " vim: sw=2 sts=2 ts=8 ff=unix:

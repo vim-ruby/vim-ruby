@@ -1,3 +1,7 @@
+2004-01-11  Gavin Sinclair <gsinclair@soyabean.com.au>
+
+	* ftplugin/ruby.vim: Added matchit instructions.
+
 2003-11-06  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
 	* README: update DJK's current location.
