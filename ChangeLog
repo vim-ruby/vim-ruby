@@ -1,3 +1,9 @@
+2003-09-26  Gavin Sinclair <gsinclair@soyabean.com.au>
+
+	* etc/release/*: added to aid in the production of releases.
+	* etc/website/*: now anyone can have a crack at the
+	  vim.ruby.rubyforge.org website!
+
 2003-09-25  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
 	* syntax/ruby.vim: link the rubyNoInterpolation syntax group to the
