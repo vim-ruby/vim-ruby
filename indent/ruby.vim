@@ -2,7 +2,7 @@
 " Language:	Ruby
 " Maintainer:	Gavin Sinclair <gsinclair at soyabean.com.au>
 " Developer:    Nikolai Weibull <lone-star at home.se>
-" Info:         $Id: ruby.vim,v 1.8 2003/08/06 14:38:53 gsinclair Exp $
+" Info:         $Id: ruby.vim,v 1.9 2003/08/09 04:55:58 gsinclair Exp $
 " URL:          http://vim-ruby.sourceforge.net
 " Anon CVS:     See above site 
 " Licence:      GPL (http://www.gnu.org)
@@ -375,4 +375,4 @@ function GetRubyIndent()
   return ind
 endfunction   " GetRubyIndent()
 
-" vim:sw=2
+" vim:sw=2 ff=unix
