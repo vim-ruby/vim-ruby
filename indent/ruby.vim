@@ -2,7 +2,7 @@
 " Language:	Ruby
 " Maintainer:	Gavin Sinclair <gsinclair at soyabean.com.au>
 " Developer:	Nikolai Weibull <lone-star at home.se>
-" Info:		$Id: ruby.vim,v 1.16 2003/10/12 14:02:30 pcp Exp $
+" Info:		$Id: ruby.vim,v 1.17 2003/10/13 01:31:10 pcp Exp $
 " URL:		http://vim-ruby.rubyforge.org/
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org/)
@@ -35,44 +35,57 @@ endif
 " 1. Variables {{{1
 " ============
 
-" Items in this regex are syntax groups that delimit strings or comments.
-let s:skip_regex = '\<ruby\%(String\|StringDelimiter\|ASCIICode' .
+" Regex of synax group names that are or delimit string or are comments.
+let s:syng_strcom = '\<ruby\%(String\|StringDelimiter\|ASCIICode' .
       \ '\|Interpolation\|NoInterpolation\|Escape\|Comment\|Documentation\)\>'
 
-" Items in this regex are syntax groups that delimit strings or comments but
-" in a less general fashion.
-let s:skip_regex2 = '\<ruby\%(String' .
+" Regex of syntax group names that are strings or comments.
+let s:syng_strcom2 = '\<ruby\%(String' .
       \ '\|Interpolation\|NoInterpolation\|Escape\|Comment\|Documentation\)\>'
 
-" Items in this regex are syntax groups that delimit strings.
-let s:skip_regex3 = '\<ruby\%(String' .
-      \ '\|Interpolation\|NoInterpolation\|Escape\)\>'
-
-" This regex is used for matching words that, at the start of a line, add
-" a level of indent.
-let s:ruby_indent_keywords = '^\s*\%(\zs\<\%(module\|class\|def\|if\|for' .
-      \ '\|while\|until\|else\|elsif\|case\|when\|unless\|begin\|ensure' .
-      \ '\|rescue\)\>\|\h\w*\s*=\s*\zs\<\%(if\|unless\|while\|until\)\)'
-
-" Regular expression for continuations.
-let s:continuation_regexp = '\%([\\*+/.,=-]\|\W?\|||\|&&\)\s*\%(#.*\)\=$'
-let s:continuation_regexp2 = '\%([\\*+/.,=({[-]\|\W?\|||\|&&\)\s*\%(#.*\)\=$'
-
-" Regular expression for blocks.  We can't check for {, it's done in another
-" place.
-let s:block_regexp = '\%(\<do\>\|{\)\s*\%(|\%([*@]\=\h\w*,\=\s*\)\+|\)\=\s*' .
-      \ '\%(#.*\)\=$'
+" Regex of syntax group names that are strings.
+let s:syng_string =
+      \ '\<ruby\%(String\|Interpolation\|NoInterpolation\|Escape\)\>'
 
 " Expression used to check whether we should skip a match with searchpair().
-let s:skip_expr = 'synIDattr(synID(line("."), col("."), 0), "name") =~ ' .
-      \ "'".s:skip_regex."'"
+let s:skip_expr =
+      \ "synIDattr(synID(line('.'),col('.'),0),'name') =~ '".s:syng_strcom."'"
 
-" Expression used for searchpair() call for finding match for 'end'.
+" Regex used for words that, at the start of a line, add a level of indent.
+let s:ruby_indent_keywords = '^\s*\%(\zs\<\%(module\|class\|def\|if\|for' .
+      \ '\|while\|until\|else\|elsif\|case\|when\|unless\|begin\|ensure' .
+      \ '\|rescue\)\>\|\h\w*\s*=\s*\zs\<\%(if\|unless\)\>\)'
+
+" Regex used for words that, at the start of a line, remove a level of indent.
+let s:ruby_deindent_keywords =
+      \ '^\s*\zs\<\%(ensure\|else\|rescue\|elsif\|when\|end\)\>'
+
+" Regex that defines the start-match for the 'end' keyword.
+let s:end_start_regex = '\%(^\s*\%(\zs\<\%(module\|class\|def\|if\|for' .
+      \ '\|while\|until\|case\|unless\|begin\)\>' .
+      \ '\|\h\w*\s*=\s*\zs\<\%(if\|unless\)\>\)' .
+      \ '\|\<do\>\)'
+
+" Regex that defines the middle-match for the 'end' keyword.
+let s:end_middle_regex = '\<\%(ensure\|else\|rescue\|when\|elsif\)\>'
+
+" Regex that defines the end-match for the 'end' keyword.
+let s:end_end_regex = '\<end\>\s*\%(#.*\)\=$'
+
+" Expression used for searchpair() call for finding match for 'end' keyword.
 let s:end_skip_expr = s:skip_expr .
-      \ ' || (expand("<cword>") =~ "\\<\\(if\\|unless\\|while\\|until\\)\\>"' .
-      \ ' && getline(".") !~ "^\\s*\\<".expand("<cword>")."\\>"' .
-      \ ' && getline(".") !~ "\\h\\w*\\s*=\\s*\\<".expand("<cword>")."\\>"' .
-      \ ' && getline(".") !~ expand("<cword>")."\\>.*\\<end\\>")'
+      \ ' || (expand("<cword>") == "do"' .
+      \ ' && getline(".") =~ "^\\s*\\<while\\|until\\|for\\>")'
+
+" Regex that defines continuation lines, not including (, {, or [.
+let s:continuation_regex = '\%([\\*+/.,=-]\|\W?\|||\|&&\)\s*\%(#.*\)\=$'
+
+" Regex that defines continuation lines.
+let s:continuation_regex2 = '\%([\\*+/.,=({[-]\|\W?\|||\|&&\)\s*\%(#.*\)\=$'
+
+" Regex that defines blocks.
+let s:block_regex =
+      \ '\%(\<do\>\|{\)\s*\%(|\%([*@]\=\h\w*,\=\s*\)\+|\)\=\s*\%(#.*\)\=$'
 
 " 2. Auxiliary Functions {{{1
 " ======================
@@ -88,55 +101,54 @@ endfunction
 
 " Check if the character at lnum:col is inside a string, comment, or is ascii.
 function s:IsInStringOrComment(lnum, col)
-  return synIDattr(synID(a:lnum, a:col, 0), 'name') =~ s:skip_regex
+  return synIDattr(synID(a:lnum, a:col, 0), 'name') =~ s:syng_strcom
 endfunction
 
 " Check if the character at lnum:col is inside a string or comment.
 function s:IsInStringOrComment2(lnum, col)
-  return synIDattr(synID(a:lnum, a:col, 0), 'name') =~ s:skip_regex2
+  return synIDattr(synID(a:lnum, a:col, 0), 'name') =~ s:syng_strcom2
 endfunction
 
 " Check if the character at lnum:col is inside a string.
 function s:IsInString(lnum, col)
-  return synIDattr(synID(a:lnum, a:col, 0), 'name') =~ s:skip_regex3
+  return synIDattr(synID(a:lnum, a:col, 0), 'name') =~ s:syng_string
 endfunction
 
-" Find the previous non-blank line which isn't a comment-line or in a comment
-" block.
+" Find line above 'lnum' that isn't empty, in a comment, or in a string.
 function s:PrevNonBlankNonString(lnum)
   let in_block = 0
   let lnum = prevnonblank(a:lnum)
   while lnum > 0
+    " Go in and out of blocks comments as necessary.
+    " If the line isn't empty (with opt. comment) or in a string, end search.
     let line = getline(lnum)
-    " Go in and out of blocks depending on if the line matches this.
-    " Also skip the line if it contains only whitespace and a comment.
-    " Lastly, skip it if it is in a multi-line string.
-    if !in_block && line =~ '^=end$'
-      let in_block = 1
-    elseif in_block && line =~ '^=begin$'
-      let in_block = 0
-    elseif !in_block && line !~ '^\s*#.*$'
-	  \ && !(s:IsInStringOrComment(lnum, 1)
-	  \ && s:IsInStringOrComment(lnum, strlen(getline(lnum))))
-      break
+    if in_block
+      if line =~ '^=begin$'
+	let in_block = 0
+      endif
+    else
+      if line =~ '^=end$'
+	let in_block = 1
+      elseif line !~ '^\s*#.*$' && !(s:IsInStringOrComment(lnum, 1)
+	  \ && s:IsInStringOrComment(lnum, strlen(line)))
+	break
+      endif
     endif
     let lnum = prevnonblank(lnum - 1)
   endwhile
   return lnum
 endfunction
 
-" Get the Most Significant Line before lnum.  This is the line that started
-" the continuation lnum may be a part of.
+" Find line above 'lnum' that started the continuation 'lnum' may be part of.
 function s:GetMSL(lnum)
   " Start on the line we're at and use its indent.
   let msl = a:lnum
   let lnum = s:PrevNonBlankNonString(a:lnum - 1)
   while lnum > 0
-    " If we have a continuation line which isn't in a string, use that
-    " lines instead of the one we previously had.
-    " Otherwise, we are done.
+    " If we have a continuation line, or we're in a string, use line as MSL.
+    " Otherwise, terminate search as we have found our MSL already.
     let line = getline(lnum)
-    let col = match(line, s:continuation_regexp2) + 1
+    let col = match(line, s:continuation_regex2) + 1
     if (col > 0 && !s:IsInStringOrComment(lnum, col))
 	  \ || s:IsInString(lnum, strlen(line))
       let msl = lnum
@@ -148,27 +160,30 @@ function s:GetMSL(lnum)
   return msl
 endfunction
 
-" Check if line has more opening parentheses than closing
-function s:LineHasOpeningParen(lnum)
-  let lnum = a:lnum
-  let line = getline(lnum)
-  let i = 0
-  let n = strlen(line)
+" Check if line 'lnum' has more opening brackets than closing ones.
+function s:LineHasOpeningBrackets(lnum)
   let open_0 = 0
   let open_2 = 0
   let open_4 = 0
-  while i < n
-    let idx = stridx('(){}[]', line[i])
-    if idx > -1 && !s:IsInStringOrComment(lnum, i + 1)
+  let line = getline(a:lnum)
+  let pos = match(line, '[][(){}]', 0)
+  while pos != -1
+    if !s:IsInStringOrComment(a:lnum, pos + 1)
+      let idx = stridx('(){}[]', line[pos])
       if idx % 2 == 0
 	let open_{idx} = open_{idx} + 1
       else
 	let open_{idx - 1} = open_{idx - 1} - 1
       endif
     endif
-    let i = i + 1
+    let pos = match(line, '[][(){}]', pos + 1)
   endwhile
   return (open_0 > 0) . (open_2 > 0) . (open_4 > 0)
+endfunction
+
+function s:Match(lnum, regex)
+  let col = match(getline(a:lnum), a:regex) + 1
+  return col > 0 && !s:IsInStringOrComment(a:lnum, col) ? col : 0
 endfunction
 
 " 3. GetRubyIndent Function {{{1
@@ -189,47 +204,28 @@ function GetRubyIndent()
   let ind = -1
 
   " If we got a closing bracket on an empty line, find its match and indent
-  " according to it.
-  let col = match(line, '^\s*\zs[]})]') + 1
+  " according to it.  For parentheses we indent to its column - 1, for the
+  " others we indent to the containing line's MSL's level.  Return -1 if fail.
+  let col = matchend(line, '^\s*[]})]')
   if col > 0 && !s:IsInStringOrComment(v:lnum, col)
     call s:GotoLineCol(v:lnum, col - 1)
-    " If it was a parentheses, search for its match and indent to its level.
-    " If it was a brace or bracket, search for its match and indent to that
-    " lines level.
-    if line[col - 1] == ')' && searchpair('(', '', ')', 'bW', s:skip_expr) > 0
-      let ind = virtcol('.') - 1
-    else
-      let begin = '{'
-      let end = '}'
-      if line[col - 1] == ']'
-	let begin = '['
-	let end = ']'
-      endif
-      " If we find a matching brace/bracket, we need to find the line it
-      " belongs to and indent to that line's level of indent.
-      if searchpair(begin, '', end, 'bW', s:skip_expr) > 0
-	let ind = indent(s:GetMSL(line('.')))
-      endif
+    let brackets = strpart('(){}[]', stridx(')}]', line[col - 1]) * 2, 2)
+    if searchpair(brackets[0], '', brackets[1], 'bW', s:skip_expr) > 0
+      let ind = line[col-1]==')' ? virtcol('.')-1 : indent(s:GetMSL(line('.')))
     endif
     return ind
   endif
 
   " If we have a =begin or =end set indent to first column.
-  let col = match(line, '^\s*\zs\%(=begin\|=end\)$') + 1
-  if col > 0
+  if match(line, '^\s*\%(=begin\|=end\)$') != -1
     return 0
   endif
 
-  " If we have a deindenting keyword on an empty line, find its match and
-  " indent to its level.
-  let col = match(line,
-	\ '^\s*\zs\<\%(ensure\|else\|rescue\|elsif\|when\|end\)\>') + 1
-  if col > 0 && !s:IsInStringOrComment(v:lnum, col)
+  " If we have a deindenting keyword, find its match and indent to its level.
+  if s:Match(v:lnum, s:ruby_deindent_keywords)
     call s:GotoLineCol(v:lnum, 0)
-    if searchpair('\<\%(def\|do\|if\|unless\|case\|begin\|until\|for\|while' .
-	  \ '\|\.\@<!class\|\.\@<!module\)\>',
-	  \ '\<\%(ensure\|else\|rescue\|when\|elsif\)\>', '\<end\>', 'bW',
-	  \ s:end_skip_expr) > 0
+    if searchpair(s:end_start_regex, s:end_middle_regex, s:end_end_regex, 'bW',
+	    \ s:end_skip_expr) > 0
       let ind = indent('.')
     endif
     return ind
@@ -256,19 +252,17 @@ function GetRubyIndent()
   let ind = indent(lnum)
 
   " If the previous line ended with a block opening, add a level of indent.
-  let col = match(line, s:block_regexp) + 1
-  if col > 0 && !s:IsInStringOrComment(lnum, col)
+  if s:Match(lnum, s:block_regex)
     return indent(s:GetMSL(lnum)) + &sw
   endif
 
   " If the previous line contained an opening bracket, and we are still in it,
-  " add one level of indent.
+  " add indent depending on the bracket type.
   if line =~ '[[({]'
-    let counts = s:LineHasOpeningParen(lnum)
-    if counts[0] == '1'
-	  \&& searchpair('(', '', ')', 'bW', s:skip_expr) > 0
+    let counts = s:LineHasOpeningBrackets(lnum)
+    if counts[0] == '1' && searchpair('(', '', ')', 'bW', s:skip_expr) > 0
       return virtcol('.')
-    elseif (counts[1] == '1' || counts[2] == '1')
+    elseif counts[1] == '1' || counts[2] == '1'
       return ind + &sw
     else
       call s:GotoLineCol(v:lnum, vcol - 1)
@@ -278,39 +272,35 @@ function GetRubyIndent()
   " 3.4. Work on the MSL line. {{{2
   " --------------------------
 
+  " Set up variables to use and search for MSL to the previous line.
   let p_lnum = lnum
   let lnum = s:GetMSL(lnum)
 
-  " Continuation line
-  let ccol = match(line, s:continuation_regexp) + 1
-  if lnum != p_lnum && ccol > 0 && !s:IsInStringOrComment(p_lnum, ccol)
-	\ || s:IsInString(p_lnum, strlen(line))
-    return ind
+  " If the previous line wasn't a MSL and is continuation return its indent.
+  " TODO: the || s:IsInString() thing worries me a bit.
+  if p_lnum != lnum
+    if s:Match(p_lnum,s:continuation_regex)||s:IsInString(p_lnum,strlen(line))
+      return ind
+    endif
   endif
 
+  " Set up more variables, now that we know we wasn't continuation bound.
   let line = getline(lnum)
   let msl_ind = indent(lnum)
-"  if indent(lnum) < ind
-"    let ind = indent(lnum)
-"  endif
 
-  " If the previous line began with an indenting keyword, add a level of
-  " indent.
+  " If the MSL line had an indenting keyword in it, add a level of indent.
   " TODO: this does not take into account contrived things such as
   " module Foo; class Bar; end
-  let col = match(line, s:ruby_indent_keywords) + 1
-  if col > 0 && !s:IsInStringOrComment(lnum, col)
+  if s:Match(lnum, s:ruby_indent_keywords)
     let ind = msl_ind + &sw
-    let col = match(line, '\<end\>\s*\%(#.*\)\=$') + 1
-    if col > 0 && !s:IsInStringOrComment(lnum, col)
+    if s:Match(lnum, s:end_end_regex)
       let ind = ind - &sw
     endif
     return ind
   endif
 
   " If the previous line ended with [*+/.-=], indent one extra level.
-  let ccol = match(line, s:continuation_regexp) + 1
-  if ccol > 0 && !s:IsInStringOrComment(lnum, ccol)
+  if s:Match(lnum, s:continuation_regex)
     if lnum == p_lnum
       let ind = msl_ind + &sw
     else
