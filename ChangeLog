@@ -1,3 +1,7 @@
+2004-02-08  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
+	* etc/website/index.html: convert to valid HTML 4.01 Strict.
+
 2004-01-11  Gavin Sinclair <gsinclair@soyabean.com.au>
 
 	* ftplugin/ruby.vim: Added matchit instructions.
