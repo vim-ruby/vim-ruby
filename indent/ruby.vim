@@ -2,7 +2,7 @@
 " Language:	Ruby
 " Maintainer:	Gavin Sinclair <gsinclair at soyabean.com.au>
 " Developer:    Nikolai Weibull <lone-star at home.se>
-" Info:         $Header$
+" Info:         $Id$
 " URL:          http://vim-ruby.sourceforge.net
 " Anon CVS:     See above site 
 " Licence:      GPL (http://www.gnu.org)
