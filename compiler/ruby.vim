@@ -1,9 +1,9 @@
 " Vim compiler file
 " Language:	Ruby
 " Function:     Syntax check and/or error reporting
-" Maintainer:   Tim Hammerquist <timmy@cpan.org>
-" Info:         $Id: ruby.vim,v 1.3 2003/08/09 04:55:58 gsinclair Exp $
-" URL:          http://vim-ruby.sourceforge.net
+" Maintainer:   Tim Hammerquist <saiyix@rubyforge.org>
+" Info:         $Id: ruby.vim,v 1.4 2003/08/13 17:38:11 saiyix Exp $
+" URL:          http://vim-ruby.rubyforge.org
 " Anon CVS:     See above site 
 " Licence:      GPL (http://www.gnu.org)
 " Disclaimer: 
