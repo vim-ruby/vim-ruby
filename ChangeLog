@@ -1,3 +1,9 @@
+2005-04-05  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* syntax/ruby.vim: match rubyNested*, and rubyDelimEscape as
+	transparent items; add closing escaped delimiters to rubyDelimEscape
+	syntax group
+
 2005-04-04  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* syntax/ruby.vim: highlight nested delimiters in generalized quotes
