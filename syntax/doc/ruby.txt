@@ -20,5 +20,5 @@ Finally, if you do not like to see too many color items around, you can define
 "ruby_no_identifiers": >                                
         :let ruby_no_identifiers = 1
 This will prevent highlighting of special identifiers like "ConstantName",
-"$global_var", "@instace_var", "| iterator |", and ":symbol".
+"$global_var", "@@class_var", "@instance_var", "| iterator |", and ":symbol".
 

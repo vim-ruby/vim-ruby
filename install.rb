@@ -16,7 +16,7 @@
 #
 # ------------------------------------------------------------------------------
 #
-# Revision: $Id: install.rb,v 1.3 2003/09/18 08:28:24 gsinclair Exp $
+# Revision: $Id: install.rb,v 1.4 2003/09/19 11:39:10 dkearns Exp $
 # Status: alpha
 #
 # This was contributed by Hugh Sasse and is *UNTESTED*.  Usual disclaimers apply.
@@ -31,7 +31,7 @@
 # Known issues (summarised by Hugh):
 #   Only checks the places I could think of at the time.
 #   Doesn't bother to preserve the old files in any way.
-#   Doesn't ask the user if none of the directoriss apply, but that
+#   Doesn't ask the user if none of the directories apply, but that
 #       would make it interactive.
 #   Should it say "Job Done" or something? Silent success is a unix
 #       idiom, but not so on Win*.
