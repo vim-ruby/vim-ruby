@@ -1,11 +1,16 @@
+2004-04-23  Ward Wouts  <ward@wizeazz.nl> 
+
+	* syntax/ruby.vim: add ruby_fold variable to control the setting of
+	the foldmethod option
+
 2004-04-07  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
-	* filetype/filetype.vim: added RubyGems specification and installation
+	* filetype/filetype.vim: add RubyGems specification and installation
 	files and Rakefiles
 
 2004-04-01  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
-	* compiler/rubyunit.vim: added a new compiler plugin for Test::Unit
+	* compiler/rubyunit.vim: add a new compiler plugin for Test::Unit
 
 2004-03-23  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 

@@ -24,6 +24,14 @@ elseif exists("b:current_syntax")
   finish
 endif
 
+if version < 600 && exists("ruby_fold")
+  unlet ruby_fold
+endif
+
+if exists("ruby_fold")
+  setlocal foldmethod=syntax
+endif
+
 " Expression Substitution and Backslash Notation
 syn match rubyEscape		"\\\\\|\\[abefnrstv]\|\\\o\{1,3}\|\\x\x\{1,2}"								contained display
 syn match rubyEscape		"\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)"	contained display
