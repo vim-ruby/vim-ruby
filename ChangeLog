@@ -1,3 +1,7 @@
+2004-10-01  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
+	* syntax/ruby.vim: match regexp values in hash literals
+
 2004-09-20  Gavin Sinclair <gsinclair@soyabean.com.au>
 
 	* bin/vim-ruby-install.rb: added
