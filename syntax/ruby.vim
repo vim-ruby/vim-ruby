@@ -219,11 +219,12 @@ syn keyword rubyBeginEnd BEGIN END
 
 " Special Methods
 if !exists("ruby_no_special_methods")
-  syn match   rubyInclude   "^\s*include\>"
+  syn match   rubyInclude   "^\s*\(extend\|include\)\>"
   syn keyword rubyInclude   load require
   syn keyword rubyControl   loop
   syn keyword rubyException raise fail catch throw
   syn keyword rubyKeyword   lambda proc
+  syn keyword rubyAccess    public protected private
 endif
 
 " Comments and Documentation
@@ -278,6 +279,7 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubySharpBang			PreProc
   HiLink rubyKeyword			Keyword
   HiLink rubyBeginEnd			Statement
+  HiLink rubyAccess			Statement
 
   HiLink rubyString			String
   HiLink rubyStringDelimit		Delimiter

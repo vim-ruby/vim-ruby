@@ -1,5 +1,10 @@
 2003-08-21  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
+	* syntax/ruby.vim: add access control methods (public, protected and
+	private) to a new rubyAccess syntax group.
+
+2003-08-21  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
 	* syntax/ruby.vim: no longer match NotImplementError as a predefined
 	global constant; move rubyTodo to the Comments and Documentation
 	section; create a Special Methods section and add the
