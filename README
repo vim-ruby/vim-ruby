@@ -45,6 +45,9 @@ How you get these files into Vim:
 
 Understanding the configuration files:
   - See www.rubygarden.org/ruby?VimRubySupport
+  - Email any one of us or ruby-talk if you want more information added to
+    this page.
+
 
 CVS topics:
   - Files are tagged according to which version of Vim they are released in.
