@@ -1,3 +1,7 @@
+2003-09-08  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
+	* syntax/ruby.vim: add support for the new %s() symbol literal.
+
 2003-09-03  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
 	* compiler/ruby.vim: update the maintainer's email address.

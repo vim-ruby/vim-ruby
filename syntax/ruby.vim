@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	Ruby
 " Maintainer:	Doug Kearns <djkea2 at mugca.its.monash.edu.au>
-" Info:		$Id: ruby.vim,v 1.14 2003/09/02 09:45:08 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.15 2003/09/08 14:18:41 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -88,33 +88,33 @@ syn region rubyString matchgroup=rubyStringDelimit start="%r<"  end=">[iomx]*"  
 syn region rubyString matchgroup=rubyStringDelimit start="%r\[" end="\][iomx]*" skip="\\\\\|\\\]" contains=rubyExprSubst fold
 syn region rubyString matchgroup=rubyStringDelimit start="%r("  end=")[iomx]*"  skip="\\\\\|\\)"  contains=rubyExprSubst fold
 
-" Generalized Single Quoted String and Array of Strings
-syn region rubyString matchgroup=rubyStringDelimit start="%[wq]!"  end="!"  skip="\\\\\|\\!"	fold
-syn region rubyString matchgroup=rubyStringDelimit start="%[wq]\"" end="\"" skip="\\\\\|\\\""	fold
-syn region rubyString matchgroup=rubyStringDelimit start="%[wq]#"  end="#"  skip="\\\\\|\\#"	fold
-syn region rubyString matchgroup=rubyStringDelimit start="%[wq]\$" end="\$" skip="\\\\\|\\\$"	fold
-syn region rubyString matchgroup=rubyStringDelimit start="%[wq]%"  end="%"  skip="\\\\\|\\%"	fold
-syn region rubyString matchgroup=rubyStringDelimit start="%[wq]&"  end="&"  skip="\\\\\|\\&"	fold
-syn region rubyString matchgroup=rubyStringDelimit start="%[wq]'"  end="'"  skip="\\\\\|\\'"	fold
-syn region rubyString matchgroup=rubyStringDelimit start="%[wq]\*" end="\*" skip="\\\\\|\\\*"	fold
-syn region rubyString matchgroup=rubyStringDelimit start="%[wq]+"  end="+"  skip="\\\\\|\\+"	fold
-syn region rubyString matchgroup=rubyStringDelimit start="%[wq]-"  end="-"  skip="\\\\\|\\-"	fold
-syn region rubyString matchgroup=rubyStringDelimit start="%[wq]\." end="\." skip="\\\\\|\\\."	fold
-syn region rubyString matchgroup=rubyStringDelimit start="%[wq]/"  end="/"  skip="\\\\\|\\/"	fold
-syn region rubyString matchgroup=rubyStringDelimit start="%[wq]:"  end=":"  skip="\\\\\|\\:"	fold
-syn region rubyString matchgroup=rubyStringDelimit start="%[wq];"  end=";"  skip="\\\\\|\\;"	fold
-syn region rubyString matchgroup=rubyStringDelimit start="%[wq]="  end="="  skip="\\\\\|\\="	fold
-syn region rubyString matchgroup=rubyStringDelimit start="%[wq]?"  end="?"  skip="\\\\\|\\?"	fold
-syn region rubyString matchgroup=rubyStringDelimit start="%[wq]@"  end="@"  skip="\\\\\|\\@"	fold
-syn region rubyString matchgroup=rubyStringDelimit start="%[wq]\\" end="\\"			fold
-syn region rubyString matchgroup=rubyStringDelimit start="%[wq]\^" end="\^" skip="\\\\\|\\\^"	fold
-syn region rubyString matchgroup=rubyStringDelimit start="%[wq]`"  end="`"  skip="\\\\\|\\`"	fold
-syn region rubyString matchgroup=rubyStringDelimit start="%[wq]|"  end="|"  skip="\\\\\|\\|"	fold
-syn region rubyString matchgroup=rubyStringDelimit start="%[wq]\~" end="\~" skip="\\\\\|\\\~"	fold
-syn region rubyString matchgroup=rubyStringDelimit start="%[wq]{"  end="}"  skip="\\\\\|\\}"	fold
-syn region rubyString matchgroup=rubyStringDelimit start="%[wq]<"  end=">"  skip="\\\\\|\\>"	fold
-syn region rubyString matchgroup=rubyStringDelimit start="%[wq]\[" end="\]" skip="\\\\\|\\\]"	fold
-syn region rubyString matchgroup=rubyStringDelimit start="%[wq]("  end=")"  skip="\\\\\|\\)"	fold
+" Generalized Single Quoted String, Symbol and Array of Strings
+syn region rubyString matchgroup=rubyStringDelimit start="%[qsw]!"  end="!"  skip="\\\\\|\\!"	fold
+syn region rubyString matchgroup=rubyStringDelimit start="%[qsw]\"" end="\"" skip="\\\\\|\\\""	fold
+syn region rubyString matchgroup=rubyStringDelimit start="%[qsw]#"  end="#"  skip="\\\\\|\\#"	fold
+syn region rubyString matchgroup=rubyStringDelimit start="%[qsw]\$" end="\$" skip="\\\\\|\\\$"	fold
+syn region rubyString matchgroup=rubyStringDelimit start="%[qsw]%"  end="%"  skip="\\\\\|\\%"	fold
+syn region rubyString matchgroup=rubyStringDelimit start="%[qsw]&"  end="&"  skip="\\\\\|\\&"	fold
+syn region rubyString matchgroup=rubyStringDelimit start="%[qsw]'"  end="'"  skip="\\\\\|\\'"	fold
+syn region rubyString matchgroup=rubyStringDelimit start="%[qsw]\*" end="\*" skip="\\\\\|\\\*"	fold
+syn region rubyString matchgroup=rubyStringDelimit start="%[qsw]+"  end="+"  skip="\\\\\|\\+"	fold
+syn region rubyString matchgroup=rubyStringDelimit start="%[qsw]-"  end="-"  skip="\\\\\|\\-"	fold
+syn region rubyString matchgroup=rubyStringDelimit start="%[qsw]\." end="\." skip="\\\\\|\\\."	fold
+syn region rubyString matchgroup=rubyStringDelimit start="%[qsw]/"  end="/"  skip="\\\\\|\\/"	fold
+syn region rubyString matchgroup=rubyStringDelimit start="%[qsw]:"  end=":"  skip="\\\\\|\\:"	fold
+syn region rubyString matchgroup=rubyStringDelimit start="%[qsw];"  end=";"  skip="\\\\\|\\;"	fold
+syn region rubyString matchgroup=rubyStringDelimit start="%[qsw]="  end="="  skip="\\\\\|\\="	fold
+syn region rubyString matchgroup=rubyStringDelimit start="%[qsw]?"  end="?"  skip="\\\\\|\\?"	fold
+syn region rubyString matchgroup=rubyStringDelimit start="%[qsw]@"  end="@"  skip="\\\\\|\\@"	fold
+syn region rubyString matchgroup=rubyStringDelimit start="%[qsw]\\" end="\\"			fold
+syn region rubyString matchgroup=rubyStringDelimit start="%[qsw]\^" end="\^" skip="\\\\\|\\\^"	fold
+syn region rubyString matchgroup=rubyStringDelimit start="%[qsw]`"  end="`"  skip="\\\\\|\\`"	fold
+syn region rubyString matchgroup=rubyStringDelimit start="%[qsw]|"  end="|"  skip="\\\\\|\\|"	fold
+syn region rubyString matchgroup=rubyStringDelimit start="%[qsw]\~" end="\~" skip="\\\\\|\\\~"	fold
+syn region rubyString matchgroup=rubyStringDelimit start="%[qsw]{"  end="}"  skip="\\\\\|\\}"	fold
+syn region rubyString matchgroup=rubyStringDelimit start="%[qsw]<"  end=">"  skip="\\\\\|\\>"	fold
+syn region rubyString matchgroup=rubyStringDelimit start="%[qsw]\[" end="\]" skip="\\\\\|\\\]"	fold
+syn region rubyString matchgroup=rubyStringDelimit start="%[qsw]("  end=")"  skip="\\\\\|\\)"	fold
 
 " Generalized Double Quoted String and Array of Strings and Shell Command Output
 syn region rubyString matchgroup=rubyStringDelimit start="%[QWx]\=!"  end="!"  skip="\\\\\|\\!"  contains=rubyExprSubst	fold
