@@ -1,3 +1,11 @@
+2003-08-24  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
+	* syntax/ruby.vim: add $deferr to rubyPredefinedVariable; add several
+	new methods (abort, at_exit, attr, attr_accessor, attr_reader,
+	attr_writer, autoload, callcc, caller, exit, extend, fork, eval,
+	class_eval, instance_eval, module_eval, private, protected, public,
+	trap) to the Special Methods section.
+
 2003-08-21  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
 	* syntax/ruby.vim: add access control methods (public, protected and
