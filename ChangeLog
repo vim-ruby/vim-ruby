@@ -1,5 +1,10 @@
 2003-09-26  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
+	* etc/website/index.html: close the open PRE element and add a DOCTYPE
+	declaration.
+
+2003-09-26  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
 	* indent/ruby.vim: update references to rubyExprSubst - this syntax
 	group has been split into rubyInterpolation, rubyNoInterpolation and
 	rubyEscape.
