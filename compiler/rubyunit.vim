@@ -1,7 +1,7 @@
 " Vim compiler file
 " Language:	Test::Unit - Ruby Unit Testing Framework
 " Maintainer:	Doug Kearns <djkea2 at mugca.its.monash.edu.au>
-" Info:		$Id: rubyunit.vim,v 1.1 2004/04/01 10:39:48 dkearns Exp $
+" Info:		$Id: rubyunit.vim,v 1.2 2004/05/11 08:29:23 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -23,16 +23,16 @@ set cpo-=C
 setlocal makeprg=ruby
 
 setlocal errorformat=\%Etest%[%^\ ]%#(%[%^\ ]%#)\ [%f:%l]:,
-                     \%Z%m%\\%.,
-                     \%C%m%\\%.,
-                     \%-GLoaded%.%#,
-                     \%-GStarted%.%#,
-                     \%-G%[EF%.]%.%#,
-                     \%-GFinished\ in%.%#,
-                     \%-G\ %\\+%\\d%\\+)\ Failure:,
-                     \%-G\ %\\+%\\d%\\+)\ Error:
+		     \%E\ %\\+%f:%l:in\ %.%#,
+		     \%Z%m%\\%.,
+		     \%-GLoaded%.%#,
+		     \%-GStarted%.%#,
+		     \%-G%[EF%.]%.%#,
+		     \%-GFinished\ in%.%#,
+		     \%-G\ %\\+%\\d%\\+)\ Failure:,
+		     \%-G\ %\\+%\\d%\\+)\ Error:
 
 let &cpo = s:cpo_save
 unlet s:cpo_save
 
-" vim: nowrap tabstop=8 ff=unix
+" vim: nowrap ts=8 ff=unix
