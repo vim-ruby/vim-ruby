@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	Ruby
 " Maintainer:	Doug Kearns <djkea2 at mugca.its.monash.edu.au>
-" Info:		$Id: ruby.vim,v 1.27 2003/09/21 14:24:27 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.28 2003/09/22 12:19:34 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -234,6 +234,7 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubyPredefinedVariable		rubyPredefinedIdentifier
   HiLink rubySymbol			rubyIdentifier
   HiLink rubyKeyword			Keyword
+  HiLink rubyOperator			Operator
   HiLink rubyBeginEnd			Statement
   HiLink rubyAccess			Statement
   HiLink rubyAttribute			Statement
