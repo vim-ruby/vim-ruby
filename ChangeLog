@@ -1,3 +1,8 @@
+2003-08-26  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
+	* syntax/ruby.vim: fix shebang highlighting which was being ignored
+	all together.
+
 2003-08-25  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
 	* syntax/ruby.vim: add the new %W() word list literal with

@@ -232,12 +232,12 @@ endif
 
 " Comments and Documentation
 if version < 600
-  syn match  rubySharpBang "#!.*"
+  syn match  rubySharpBang "^#!.*" contained
 else
   syn match  rubySharpBang "\%^#!.*"
 endif
 syn keyword rubyTodo          FIXME NOTE TODO XXX contained
-syn match   rubyComment       "#.*" contains=rubyTodo
+syn match   rubyComment       "#.*" contains=rubySharpBang,rubyTodo
 syn region  rubyDocumentation start="^=begin" end="^=end.*$" contains=rubyTodo fold
 
 " Note: this is a hack to prevent 'keywords' being highlighted as such when called as methods
