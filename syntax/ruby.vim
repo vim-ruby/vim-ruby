@@ -111,11 +111,12 @@ syn region rubyString matchgroup=rubyStringDelimiter start=+\%(\%(class\s*\|\%(\
 if !exists("ruby_no_expensive")
   syn region rubyFunction matchgroup=rubyDefine start="\<def\s\+"    end="\ze\%(\s\|(\|;\|$\)" oneline
   syn region rubyClass    matchgroup=rubyDefine start="\<class\s\+"  end="\ze\%(\s\|<\|;\|$\)" oneline
+  syn match  rubyDefine   "\<class\ze<<"
   syn region rubyModule   matchgroup=rubyDefine start="\<module\s\+" end="\ze\%(\s\|;\|$\)"    oneline
 
-  syn region rubyBlock start="\<def\>"    matchgroup=rubyDefine end="\%(^\|;\)\s*\zs\<end\>" contains=ALLBUT,rubyExprSubst,rubyTodo nextgroup=rubyFunction fold
-  syn region rubyBlock start="\<class\>"  matchgroup=rubyDefine end="\%(^\|;\)\s*\zs\<end\>" contains=ALLBUT,rubyExprSubst,rubyTodo nextgroup=rubyClass    fold
-  syn region rubyBlock start="\<module\>" matchgroup=rubyDefine end="\%(^\|;\)\s*\zs\<end\>" contains=ALLBUT,rubyExprSubst,rubyTodo nextgroup=rubyModule   fold
+  syn region rubyBlock start="\<def\>"    matchgroup=rubyDefine end="\<end\>" contains=ALLBUT,rubyExprSubst,rubyTodo nextgroup=rubyFunction fold
+  syn region rubyBlock start="\<class\>"  matchgroup=rubyDefine end="\<end\>" contains=ALLBUT,rubyExprSubst,rubyTodo nextgroup=rubyClass    fold
+  syn region rubyBlock start="\<module\>" matchgroup=rubyDefine end="\<end\>" contains=ALLBUT,rubyExprSubst,rubyTodo nextgroup=rubyModule   fold
 
   " modifiers
   syn match  rubyControl "\<\%(if\|unless\|while\|until\)\>" display
@@ -143,6 +144,7 @@ if !exists("ruby_no_expensive")
 else
   syn region  rubyFunction matchgroup=rubyControl start="\<def\s\+"    end="\ze\%(\s\|(\|;\|$\)" oneline
   syn region  rubyClass    matchgroup=rubyControl start="\<class\s\+"  end="\ze\%(\s\|<\|;\|$\)" oneline
+  syn match   rubyControl  "\<class\ze<<"
   syn region  rubyModule   matchgroup=rubyControl start="\<module\s\+" end="\ze\%(\s\|;\|$\)"    oneline
   syn keyword rubyControl case begin do for if unless while until end
 endif
