@@ -1,3 +1,10 @@
+2003-10-15  Nikolai Weibull  <source@pcppopper.org>
+
+	* indent/ruby.vim: Fixed bug #114.  Also fixed a related problem with
+	documentation blocks.  They would indent relative to the other code.
+	Now it simply indents with zero width (to match =begin) by default.
+	Otherwise acts like 'autoindent'.
+
 2003-10-14  Nikolai Weibull  <source@pcppopper.org>
 
 	* syntax/ruby.vim: Readded matching of $' and $" when
