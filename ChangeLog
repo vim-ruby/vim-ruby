@@ -1,6 +1,11 @@
 2005-04-04  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
-	* syntax//ruby.vim: minor improvement to block parameter highlighting
+	* syntax/ruby.vim: highlight nested delimiters in generalized quotes
+	(Bertram Scharpf and Ken Miller)
+
+2005-04-04  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* syntax/ruby.vim: minor improvement to block parameter highlighting
 
 2005-04-04  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
