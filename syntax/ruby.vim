@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	Ruby
 " Maintainer:	Doug Kearns <djkea2 at mugca.its.monash.edu.au>
-" Info:		$Id: ruby.vim,v 1.12 2003/08/27 08:10:19 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.13 2003/08/28 14:36:01 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -254,7 +254,7 @@ syn match rubyKeywordAsMethod "\.\@<!\.\(\s*\n\s*\)*\(load\|loop\|private\|proc\
 syn match rubyKeywordAsMethod "\.\@<!\.\(\s*\n\s*\)*\(public\|require\|raise\|throw\|trap\)\>"			transparent contains=NONE
 
 " __END__ Directive
-syn region rubyData matchgroup=rubyDataDirective start="^__END__$" matchgroup=NONE end="." skip="."
+syn region rubyData matchgroup=rubyDataDirective start="^__END__$" matchgroup=NONE end="." skip="." fold
 
 " Define the default highlighting.
 " For version 5.7 and earlier: only when not done already

@@ -1,3 +1,8 @@
+2003-08-28  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
+	* syntax/ruby.vim: add folding support to embedded data sections after
+	an __END__ directive.
+
 2003-08-27  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
 	* syntax/ruby.vim: don't allow '<<' after '.' or '::' to match as the
