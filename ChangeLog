@@ -1,3 +1,8 @@
+2005-03-24  Gavin Sinclair <gsinclair@soyabean.com.au>
+
+	* syntax/ruby.vim: Improved hilighting of %{...} strings with
+	delimiters (Ken Miller).
+
 2004-11-28  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* compiler/ruby.vim, compiler/rubyunit.vim, syntax/ruby.vim: update
