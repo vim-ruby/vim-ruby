@@ -1,6 +1,8 @@
 2003-10-12  Nikolai Weibull  <source@pcppopper.org>
 
 	* indent/ruby.vim: Fixed bugs #89 and #102.
+	* syntax/ruby.vim: The $' and $" variables weren't being matched if
+	ruby_no_identifiers was on.  This messed up string matching.
 
 2003-10-03  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
