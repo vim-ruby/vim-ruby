@@ -46,7 +46,7 @@ if !exists("ruby_no_identifiers")
 
   syn match rubyPredefinedVariable "$[!"$&'*+,./0:;<=>?@\\_`~1-9]"
   syn match rubyPredefinedVariable "$-[0FIKadilpvw]"
-  syn match rubyPredefinedVariable "$\(defout\|stderr\|stdin\|stdout\)\>"
+  syn match rubyPredefinedVariable "$\(deferr\|defout\|stderr\|stdin\|stdout\)\>"
   syn match rubyPredefinedVariable "$\(DEBUG\|FILENAME\|KCODE\|LOAD_PATH\|SAFE\|VERBOSE\)\>"
   syn match rubyPredefinedConstant "__\(FILE\|LINE\)__\>"
   syn match rubyPredefinedConstant "\<\(::\)\=\zs\(MatchingData\|ARGF\|ARGV\|ENV\)\>"
@@ -211,6 +211,8 @@ else
 endif
 
 " Keywords
+" Note: the following keywords have already been defined:
+" begin case class def do end for if module unless until while __FILE_ __LINE__
 syn keyword rubyControl  and break else elsif ensure in next not or redo rescue retry return then when
 syn match   rubyKeyword  "\<defined?"
 syn keyword rubyKeyword  alias super undef yield
@@ -219,12 +221,13 @@ syn keyword rubyBeginEnd BEGIN END
 
 " Special Methods
 if !exists("ruby_no_special_methods")
-  syn match   rubyInclude   "^\s*\(extend\|include\)\>"
-  syn keyword rubyInclude   load require
-  syn keyword rubyControl   loop
-  syn keyword rubyException raise fail catch throw
-  syn keyword rubyKeyword   lambda proc
   syn keyword rubyAccess    public protected private
+  syn keyword rubyAttribute attr attr_accessor attr_reader attr_writer
+  syn keyword rubyControl   abort at_exit exit fork loop trap
+  syn keyword rubyEval      eval class_eval instance_eval module_eval
+  syn keyword rubyException raise fail catch throw
+  syn keyword rubyInclude   autoload extend include load require
+  syn keyword rubyKeyword   callcc caller lambda proc
 endif
 
 " Comments and Documentation
@@ -237,12 +240,18 @@ syn keyword rubyTodo          FIXME NOTE TODO XXX contained
 syn match   rubyComment       "#.*" contains=rubyTodo
 syn region  rubyDocumentation start="^=begin" end="^=end.*$" contains=rubyTodo fold
 
-" Note: this is a hack to prevent 'keywords' being highlighted as such when used as method names
-syn match rubyKeywordAsMethod "\.\@<!\.\(\s*\n\s*\)*\(alias\|and\|begin\|break\|case\|catch\|class\|def\|do\|elsif\)\>"        transparent contains=NONE
-syn match rubyKeywordAsMethod "\.\@<!\.\(\s*\n\s*\)*\(else\|fail\|false\|ensure\|for\|end\|if\|in\|include\|lambda\)\>"        transparent contains=NONE
-syn match rubyKeywordAsMethod "\.\@<!\.\(\s*\n\s*\)*\(load\|loop\|module\|next\|nil\|not\|or\|proc\|raise\|require\)\>"        transparent contains=NONE
-syn match rubyKeywordAsMethod "\.\@<!\.\(\s*\n\s*\)*\(redo\|rescue\|retry\|return\|self\|super\|then\|throw\|true\|unless\)\>" transparent contains=NONE
-syn match rubyKeywordAsMethod "\.\@<!\.\(\s*\n\s*\)*\(undef\|until\|when\|while\|yield\|BEGIN\|END\|__FILE__\|__LINE__\)\>"    transparent contains=NONE
+" Note: this is a hack to prevent 'keywords' being highlighted as such when called as methods
+syn match rubyKeywordAsMethod "\.\@<!\.\(\s*\n\s*\)*\(alias\|and\|begin\|break\|case\|class\|def\|defined\|do\|else\)\>"	    transparent contains=NONE
+syn match rubyKeywordAsMethod "\.\@<!\.\(\s*\n\s*\)*\(elsif\|end\|ensure\|false\|for\|if\|in\|module\|next\|nil\)\>"		    transparent contains=NONE
+syn match rubyKeywordAsMethod "\.\@<!\.\(\s*\n\s*\)*\(not\|or\|redo\|rescue\|retry\|return\|self\|super\|then\|true\)\>"	    transparent contains=NONE
+syn match rubyKeywordAsMethod "\.\@<!\.\(\s*\n\s*\)*\(undef\|unless\|until\|when\|while\|yield\|BEGIN\|END\|__FILE__\|__LINE__\)\>" transparent contains=NONE
+
+syn match rubyKeywordAsMethod "\.\@<!\.\(\s*\n\s*\)*\(abort\|at_exit\|attr\|attr_accessor\|attr_reader\)\>"	transparent contains=NONE
+syn match rubyKeywordAsMethod "\.\@<!\.\(\s*\n\s*\)*\(attr_writer\|autoload\|callcc\|catch\|caller\)\>"		transparent contains=NONE
+syn match rubyKeywordAsMethod "\.\@<!\.\(\s*\n\s*\)*\(eval\|class_eval\|instance_eval\|module_eval\|exit\)\>"	transparent contains=NONE
+syn match rubyKeywordAsMethod "\.\@<!\.\(\s*\n\s*\)*\(extend\|fail\|fork\|include\|lambda\)\>"			transparent contains=NONE
+syn match rubyKeywordAsMethod "\.\@<!\.\(\s*\n\s*\)*\(load\|loop\|private\|proc\|protected\)\>"			transparent contains=NONE
+syn match rubyKeywordAsMethod "\.\@<!\.\(\s*\n\s*\)*\(public\|require\|raise\|throw\|trap\)\>"			transparent contains=NONE
 
 " __END__ Directive
 syn region rubyData matchgroup=rubyDataDirective start="^__END__$" matchgroup=NONE end="." skip="."
@@ -280,6 +289,8 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubyKeyword			Keyword
   HiLink rubyBeginEnd			Statement
   HiLink rubyAccess			Statement
+  HiLink rubyAttribute			Statement
+  HiLink rubyEval			Statement
 
   HiLink rubyString			String
   HiLink rubyStringDelimit		Delimiter
