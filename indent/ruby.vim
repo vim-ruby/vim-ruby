@@ -6,7 +6,6 @@
 " Changes: (since vim 6.1)
 "  - indentation after a line ending in comma, etc, (even in a comment) was
 "    broken, now fixed (2002/08/14)
-" TODO: need to indent one level on [
 
 " Only load this indent file when no other was loaded.
 if exists("b:did_indent")
@@ -15,23 +14,27 @@ endif
 let b:did_indent = 1
 
 setlocal indentexpr=GetRubyIndent()
-setlocal nolisp
-setlocal nosmartindent
-setlocal autoindent
-setlocal indentkeys+==end,=else,=elsif,=when,=ensure,=rescue,0),==begin,==end
+setlocal indentkeys=0{,0},!^F,o,O,e,=end,=elsif,=when,=ensure,=rescue
+setlocal indentkeys+=0),0],==begin,==end
 
 " Only define the function once.
 if exists("*GetRubyIndent")
   finish
 endif
 
-function s:IsInStringOrComment(line, col)
-  return synIDattr(synID(a:line, a:col, 0), 'name') =~? 'string\|comment'
+" Check if the character at lnum:col is inside a string or ocmment.
+function s:IsInStringOrComment(lnum, col)
+  return synIDattr(synID(a:lnum, a:col, 0), 'name') =~ 
+	\'\<ruby\%(String\|StringDelimit\|Number\|ExprSubst\|Comment\)\>'
 endfunction
 
-let g:ruby_indent_keywords = 'module,class,def,if,for,while,until,else,elsif,'.
-      \'case,when,unless,begin,ensure,rescue'
+" These comma-separated list of words at the beginning of a line add a level
+" of indent.
+let g:ruby_indent_keywords = 'module,class,def,if,for,while,until,else,' .
+      \'elsif,case,when,unless,begin,ensure,rescue'
 
+" Build a regular expression from the g:ruby_indent_keywords variable.
+" The result is stored in s:ruby_indent_keywords.
 function s:BuildIndentKeywords()
   let idx = stridx(g:ruby_indent_keywords, ',')
   while idx > -1
@@ -54,127 +57,272 @@ function s:BuildIndentKeywords()
 endfunction
 call s:BuildIndentKeywords()
 
-let s:continuation_regexp = '[*+/.-]\s*\(#.*\)\=$'
-let s:block_regexp = '\({\|\<do\>\)\s*\(|\(\h\w*\(,\s*\)\=\)\+|\s*\)\=\(#.*\)\=$'
-let s:skip_expr = 'synIDattr(synID(line("."), col("."), 0), "name") =~? "string\\|comment"'
+" Regular expression for continuations.
+" XXX: add ( to this list?
+let s:continuation_regexp = '[\*+/.,=(-]\s*\(#.*\)\=$'
 
+" Regular expression for blocks.  We can't check for {, it's done in another
+" place.
+let s:block_regexp = '\<do\>\s*\(|\(\h\w*\(,\s*\)\=\)\+|\s*\)\=\(#.*\)\=$'
 
-" FIXME: with a little reorginization (using returns instead of let ind =
-" ...), we could speed things up a bit
+" Expression used to check whether we should skip a match with searchpair().
+let s:skip_expr = 'synIDattr(synID(line("."), col("."), 0), "name") =~ "\\<ruby\\%(String\\|StringDelimit\\|Number\\|ExprSubst\\|Comment\\)\\>"'
+let s:end_skip_expr = s:skip_expr.' || (expand("<cword>") =~ "\\<if\\>\\|\\<unless\\>\\|\\<while\\>\\|\\<until\\>" && getline(".") !~ "^\\s*\\<".expand("<cword>")."\\>" && getline(".") !~ expand("<cword>")."\\>.*\\<end\\>")'
+
+" Find the previous non-blank line which isn't a comment-line or in a comment
+" block.
+function s:PrevNonBlank(lnum)
+  let in_block = 0
+  let lnum = prevnonblank(a:lnum)
+  while lnum > 0
+    let line = getline(lnum)
+    if line =~ '^=end$'
+      let in_block =1
+    elseif in_block && line =~ '^=begin$'
+      let in_block = 0
+    elseif !in_block
+      let line = substitute(line, '\s*#.*$', '', '')
+      if line !~ '^$'
+	break
+      endif
+    endif
+    let lnum = prevnonblank(lnum - 1)
+  endwhile
+  return lnum
+endfunction
+
 function GetRubyIndent()
+  " Part 1: Setup.
+  " ==============
+
   " Set up variables for restoring position in file.  Could use v:lnum here.
-  let clnum = line('.')
-  let ccol = col('.')
+  let vcol = col('.')
+
+  " Part 2: Work on the current line.
+  " =================================
+
+  " Get the current line.
+  let line = getline(v:lnum)
+  let ind = -1
+
+  " If we got a closing bracket on an empty line, deindent one level or match
+  " the column in case of a parentheses.
+  let col = match(line, '^\s*\zs[]})]') + 1
+  if col > 0 && !s:IsInStringOrComment(v:lnum, col)
+    execute 'normal! 0'.(col - 1).'l'
+    if line[col - 1] == ')' && searchpair('(', '', ')', 'bW', s:skip_expr) > 0
+      let ind = virtcol('.') - 1
+    elseif line[col - 1] == '}'
+	  \ && searchpair('{', '', '}', 'bW', s:skip_expr) > 0
+      let p_lnum = line('.')
+      let my_lnum = s:PrevNonBlank(p_lnum - 1)
+      while my_lnum > 0
+	let my_line = getline(my_lnum)
+	let col = match(my_line, s:continuation_regexp) + 1
+	" If the line was a continuation not in a string, and we are currently
+	" not in a multiline-string, get it's indent and continue to previous
+	" line.
+	if col > 0 && !s:IsInStringOrComment(my_lnum, col)
+	  let p_lnum = my_lnum
+	  let my_lnum = s:PrevNonBlank(my_lnum - 1)
+	" Else, if we are in a multi-line string, continue to previous line.
+	" TODO: are these offsets correct?
+	elseif s:IsInStringOrComment(my_lnum, 1)
+	  let my_lnum = s:PrevNonBlank(my_lnum - 1)
+	" Otherwise, exit the loop
+	else
+	  let my_lnum = -1
+	endif
+      endwhile
+      let ind = indent(p_lnum)
+    elseif && searchpair('\[', '', '\]', 'bW', s:skip_expr) > 0
+      let ind = indent('.')
+    end
+    execute 'normal! '.v:lnum.'G0'.(vcol - ).'l'
+  endif
+
+  " If we get a =begin, =end, or here-doc ender set deindent to first column.
+  " XXX: skip here-docs for the moment: \|EO[FSL]\|EOHELP
+  let col = match(line, '^\s*\zs\(=begin\|=end\)') + 1
+  if col > 0 && !s:IsInStringOrComment(v:lnum, col)
+    let ind = 0
+  endif
+
+  " If we got a deindenting line on an empty line, find match and indent to
+  " its level.
+  let col = match(line,
+	\'^\s*\zs\(ensure\>\|else\>\|rescue\>\|elsif\>\|when\>\|end\>\)') + 1
+  if col > 0 && !s:IsInStringOrComment(v:lnum, col)
+    normal 0
+    if searchpair('\<def\>\|\<do\>\|\<if\>\|\<unless\>\|\<case\>\|' . 
+	  \'\<begin\>\|\<until\>\|\<for\>\|\<while\>\|\<class\>\|\<module\>', 
+	  \'\<ensure\>\|\<else\>\|\<rescue\>\|\<elsif\>\|\<when\>', '\<end\>',
+	  \'bW', s:end_skip_expr) > 0
+      let ind = indent('.')
+    endif
+    execute 'normal! '.v:lnum.'G0'.(vcol - 1).'l'
+  endif
+
+  if ind != -1
+    return ind
+  elseif s:IsInStringOrComment(v:lnum, matchend(line, '^\s*') + 1)
+    return indent('.')
+  endif
+
+  " Part 3: Work on the previous line.
+  " ==================================
 
   " Find a non-blank line above the current line.
-  let lnum = prevnonblank(v:lnum - 1)
+  let lnum = s:PrevNonBlank(v:lnum - 1)
 
   " At the start of the file use zero indent.
   if lnum == 0
     return 0
   endif
 
+  " Set up variables for current line.
   let line = getline(lnum)
   let ind = indent(lnum)
-  let did_indent = 0
-  let did_end_indent = 0
+  let did_kw_indent = 0
+  let did_con_indent = 0
 
-  " If the previous line ended with [*+/.-], indent one extra level.
-  let col = match(line, s:continuation_regexp) + 1
-  if col > 0 && !s:IsInStringOrComment(lnum, col)
-    let ind + &sw
-    let did_indent = 1
-  endif
-
-  " If the previous line ended in a parentheses, get the indent of the line
-  " that opened it.
-  let col = matchend(line, '^\s*)') + 1
-  if !did_indent && col > 0
-    execute 'normal '.lnum.'G'.col.'|'
-    if searchpair('(', '', ')', 'bW', s:skip_expr) > 0
-      let ind = indent('.')
-      let did_indent = 1
-    endif
-    execute 'normal '.clnum.'G'.ccol.'|'
-  endif
-
-  " If the previous line ended with an indenting keyword, add one level.
-  let col = match(line,  '^\s*'.s:ruby_indent_keywords) + 1
-  if !did_indent && col > 0 || line =~ s:block_regexp
+  " If the previous line began with an indenting keyword, add one level.
+  let kcol = match(line, '^\s*'.s:ruby_indent_keywords) + 1
+  let bcol = match(line, s:block_regexp) + 1
+  if (kcol > 0 && !s:IsInStringOrComment(lnum, kcol))
+	\ || (bcol > 0 && !s:IsInStringOrComment(lnum, bcol))
     let ind = ind + &sw
-    let did_indent = 1
-    let did_end_indent = 1
+    let did_kw_indent = 1
   endif
 
-  " Otherwise, check if the previous line was a continuation line.
-  if !did_indent
-    let my_lnum = prevnonblank(lnum - 1)
-    if my_lnum > 0
-      let my_line = getline(my_lnum)
-      let my_ind = indent(my_lnum)
-
-      if my_line =~ s:continuation_regexp
-	let col = match(my_line, s:continuation_regexp) + 1
-	if col > 0 && !s:IsInStringOrComment(my_lnum, col)
-	  let ind = my_ind
-	  let did_indent = 1
+  " If the previous line ended in a brackets, get the indent of the line
+  " that opened it.
+  if !did_kw_indent
+    let bcol = match(line,
+	  \'[]})]\s*\(\(\<if\>\|\<unless\>\|\<until\>\|\<while\>\|#\).*\)\=$') + 1
+    if bcol > 0 && !s:IsInStringOrComment(lnum, bcol)
+      execute 'normal! '.lnum.'G0'.(bcol - 1).'l'
+      let open = '('
+      let close = ')'
+      if line[bcol - 1] == '}'
+	let open = '{'
+	let close = '}'
+      elseif line[bcol - 1] == ']'
+	let open = '\['
+	let close = '\]'
+      endif
+      if searchpair(open, '', close, 'bW', s:skip_expr) > 0
+	let kcol = match(getline('.'), '^\s*'.s:ruby_indent_keywords) + 1
+	if (kcol > 0 && !s:IsInStringOrComment(line('.'), kcol))
+	  let ind = indent('.') + &sw
+	  let did_kw_indent = 1
+	else
+	  let ind = indent('.')
+	  let did_con_indent = 1
 	endif
       endif
+      execute 'normal! '.v:lnum.'G0'.(vcol - 1).'l'
     endif
   endif
 
-  " If we indented and the line ended with an 'end', decrese indent.
-  " TODO: make this more intelligent (check with searchpair())
-  if did_indent && line =~ '\<end\>\s*\(#.*\)\=$'
-    let ind = ind - &sw
+  " If the previous line was a continuation line, indent to match its parent.
+  " TODO: this gets executed a bit too often perhaps (with the string
+  " checking)
+  let p_line = line
+  let p_lnum = lnum
+  if !did_kw_indent && !did_con_indent
+    let my_lnum = s:PrevNonBlank(lnum - 1)
+    while my_lnum > 0
+      let my_line = getline(my_lnum)
+      let col = match(my_line, s:continuation_regexp) + 1
+      " If the line was a continuation not in a string, and we are currently
+      " not in a multiline-string, get it's indent and continue to previous
+      " line.
+      if col > 0 && !s:IsInStringOrComment(my_lnum, col)
+" TODO:	    \ && !s:IsInStringOrComment(p_lnum, strlen(p_line))
+	let ind = indent(my_lnum)
+	let p_line = my_line
+	let p_lnum = my_lnum
+	let my_lnum = s:PrevNonBlank(my_lnum - 1)
+      " Else, if we are in a multi-line string, continue to previous line.
+      elseif s:IsInStringOrComment(my_lnum, 1)
+	let my_lnum = s:PrevNonBlank(my_lnum - 1)
+      " Otherwise, exit the loop
+      else
+	let my_lnum = -1
+      endif
+    endwhile
   endif
 
-  " Get the current line.
-  let line = getline(v:lnum)
-
-  " If we are inside a pair of braces, well at least after an opening one.
-  if 0 < searchpair('(', '', ')', 'bW', s:skip_expr)
-    let ind = virtcol('.')
-    execute 'normal '.clnum.'G'.ccol.'|'
-  endif
-
-  " Deindent on a closing ) on an empty line.
-  let col = matchend(line, '^\s*)') + 1
-  if col > 0
-    execute 'normal '.col.'|'
-    if searchpair('(', '', ')', 'bW', s:skip_expr) > 0
-      let ind = virtcol('.') - 1
+  " If the previous line ended with [*+/.-=], indent one extra level.
+  if !did_kw_indent && !did_con_indent
+    let ccol = match(line, s:continuation_regexp) + 1
+    if ccol > 0 && !s:IsInStringOrComment(lnum, ccol)
+      let ind = ind + &sw
     endif
-    execute 'normal '.ccol.'|'
   endif
 
-
-  " If we got a brace on an empty line, find match and indent to its level.
-  let col = matchend(line, '^\s*}') + 1
-  if col > 0
-    execute 'normal '.col.'|'
-    if searchpair('{', '', '}', 'bW', s:skip_expr) > 0
-      let ind = indent('.')
+  " If we indented and the line ended with an 'end', decrease indent.
+  if did_kw_indent
+    let col = match(line, '\<end\>\s*\(#.*\)\=$') + 1
+    if col > 0 && !s:IsInStringOrComment(lnum, col)
+      let ind = ind - &sw
     endif
-    execute 'normal '.ccol.'|'
   endif
 
-  " If we got an 'end' on an empty line, find match and indent to its level.
-  let col = matchend(line,
-	\'^\s*\(rescue\>\|else\>\|ensure\>\|end\>\|when\>\)') + 1
-  if col > 0
-    execute 'normal '.col.'|'
-    "\<ensure\>\|\<else\>\|\<rescue\>\|\<elsif\>\|\<when\>
-    if searchpair('\<def\>\|\<do\>\|\<if\>\|\<unless\>\|\<case\>\|\<begin\>\|\<until\>\|\<for\>\|\<while\>\|\<class\>\|\<module\>', 
-	  \'\<ensure\>\|\<else\>\|\<rescue\>\|\<elsif\>\|\<when\>', '\<end\>',
-	  \'bW', s:skip_expr) > 0
-      let ind = indent('.')
+  " TODO: look over merging the two below somehow (and see what's needed)
+
+  " If the previous line contained an opening bracket, and we are still in it,
+  " add one level of indent.
+  let did_virt_indent = 0
+  if line =~ '[[({]'
+    " TODO: hop somewhere?
+    let my_line = substitute(substitute(substitute(substitute(substitute(line, 
+	  \'\\"\|'."\\\\'", '', 'g'), '"[^"]*"', '', 'g'), "'[^']*'", '', 'g'),
+	  \'\W?\S', '', 'g'), '#.*', '', '')
+    " If we have an opening parentheses, indent to it.
+    if strlen(substitute(my_line, '[^(]', '', 'g'))
+	  \ > strlen(substitute(my_line, '[^)]', '', 'g'))
+	  \ && searchpair('(', '', ')', 'bW', s:skip_expr) > 0
+      let ind = virtcol('.')
+      let did_virt_indent = 1
+    " Or, if we are inside a pair of braces or brackets, add one level.
+    elseif strridx(substitute(my_line, '{[^}]*}', '', 'g'), '{') > -1
+	  \ && !s:IsInStringOrComment(lnum, 1)
+      let ind = ind + &sw
+      let did_virt_indent = 1
+    elseif strridx(substitute(my_line, '\[[^]]*\]', '', 'g'), '[') > -1
+	  \ && !s:IsInStringOrComment(lnum, 1)
+      let ind = ind + &sw
+      let did_virt_indent = 1
     endif
-    execute 'normal '.clnum.'G'.ccol.'|'
+    execute 'normal! '.v:lnum.'G0'.(vcol - 1).'l'
+  endif
+
+  " If the far previous line contained an opening bracket, and we are still in
+  " it, add one level of indent.
+  if !did_virt_indent && p_line =~ '[[({]'
+    execute 'normal! '.p_lnum.'G$'
+    let my_line = substitute(substitute(substitute(substitute(substitute(p_line, 
+	  \'\\"\|'."\\\\'", '', 'g'), '"[^"]*"', '', 'g'), "'[^']*'", '', 'g'),
+	  \'\W?\S', '', 'g'), '#.*', '', '')
+    " If we have an opening parentheses, indent to it.
+    if strlen(substitute(my_line, '[^(]', '', 'g'))
+	  \ > strlen(substitute(my_line, '[^)]', '', 'g'))
+	  \ && searchpair('(', '', ')', 'bW', s:skip_expr) > 0
+      let ind = virtcol('.')
+    " Or, if we are inside a pair of braces or brackets, add one level.
+    elseif strridx(substitute(my_line, '{[^}]*}', '', 'g'), '{') > -1
+	  \ && !s:IsInStringOrComment(lnum, 1)
+      let ind = ind + &sw
+    elseif strridx(substitute(my_line, '\[[^]]*\]', '', 'g'), '[') > -1
+	  \ && !s:IsInStringOrComment(lnum, 1)
+      let ind = ind + &sw
+    endif
+    execute 'normal! '.v:lnum.'G0'.(vcol - 1).'l'
   endif
 
   return ind
 endfunction
 
 " vim:sw=2
-
