@@ -18,18 +18,18 @@
 
 " Only do this when not done yet for this buffer
 if (exists("b:did_ftplugin"))
-    finish
+  finish
 endif
 let b:did_ftplugin = 1
 
 " Matchit support
-if exists("loaded_matchit")
-  if !exists("b:match_words")
-    let b:match_ignorecase = 0
-    let b:match_words =
-\ '\%(\%(\%(^\|[;=]\)\s*\)\@<=\%(class\|module\|while\|begin\|until\|for\|if\|unless\|def\|case\)\|\<do\)\>:' .
-\ '\<\%(else\|elsif\|ensure\|rescue\|when\)\>:\%(^\|[^.]\)\@<=\<end\>'
-  endif
+if exists("loaded_matchit") && !exists("b:match_words")
+  let b:match_ignorecase = 0
+  let b:match_words =
+	\ '\%(\%(\%(^\|[;=]\)\s*\)\@<=\%(class\|module\|while\|begin\|until' .
+	\ '\|for\|if\|unless\|def\|case\)\|\<do\)\>:' .
+	\ '\<\%(else\|elsif\|ensure\|rescue\|when\)\>:' .
+	\ '\%(^\|[^.]\)\@<=\<end\>'
 endif
 
-" vim: ff=unix
+" vim: sw=2 sts=2 ts=8 ff=unix:

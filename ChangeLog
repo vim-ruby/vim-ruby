@@ -2,6 +2,8 @@
 
 	* indent/ruby.vim: General cleanup, speedup, fixup.  Fixes bug #62.
 	Indentiation of tk.rb (5200+ lines) takes under 13 seconds now.
+	* ftplugin/ruby.vim: Cleanup.  Nested if's unnecessary.  Also modified
+	modeline.
 
 2003-10-12  Nikolai Weibull  <source@pcppopper.org>
 
