@@ -254,7 +254,7 @@ syn match rubyKeywordAsMethod "\.\@<!\.\(\s*\n\s*\)*\(load\|loop\|private\|proc\
 syn match rubyKeywordAsMethod "\.\@<!\.\(\s*\n\s*\)*\(public\|require\|raise\|throw\|trap\)\>"			transparent contains=NONE
 
 " __END__ Directive
-syn region rubyData matchgroup=rubyDataDirective start="^__END__$" matchgroup=NONE end="." skip="."
+syn region rubyData matchgroup=rubyDataDirective start="^__END__$" matchgroup=NONE end="." skip="." fold
 
 " Define the default highlighting.
 " For version 5.7 and earlier: only when not done already
