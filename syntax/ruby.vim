@@ -215,7 +215,7 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubyInteger			Number
   HiLink rubyASCIICode			rubyInteger
   HiLink rubyFloat			Float
-  HiLink rubyBoolean			Boolean
+  HiLink rubyBoolean			rubyPseudoVariable
   HiLink rubyException			Exception
   HiLink rubyClass			Type
   HiLink rubyModule			Type
@@ -235,6 +235,7 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubyAccess			Statement
   HiLink rubyAttribute			Statement
   HiLink rubyEval			Statement
+  HiLink rubyPseudoVariable		Constant
 
   HiLink rubyComment			Comment
   HiLink rubyData			Comment
