@@ -1,3 +1,8 @@
+2003-09-22  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
+	* syntax/ruby.vim: link the rubyOperator syntax group to the Operator
+	highlight group.
+
 2003-09-21  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
 	* syntax/ruby.vim: match regexp after split, scan, sub and gsub.

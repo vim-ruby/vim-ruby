@@ -234,6 +234,7 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubyPredefinedVariable		rubyPredefinedIdentifier
   HiLink rubySymbol			rubyIdentifier
   HiLink rubyKeyword			Keyword
+  HiLink rubyOperator			Operator
   HiLink rubyBeginEnd			Statement
   HiLink rubyAccess			Statement
   HiLink rubyAttribute			Statement
