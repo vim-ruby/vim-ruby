@@ -17,21 +17,25 @@ if exists("current_compiler")
 endif
 let current_compiler = "rubyunit"
 
+if exists(":CompilerSet") != 2		" older Vim always used :setlocal
+  command -nargs=* CompilerSet setlocal <args>
+endif
+
 let s:cpo_save = &cpo
 set cpo-=C
 
-setlocal makeprg=ruby
+CompilerSet makeprg=ruby
 
-setlocal errorformat=\%Etest%[%^\ ]%#(%[%^\ ]%#)\ [%f:%l]:,
-		     \%E\ %\\+%f:%l:in\ %.%#,
-		     \%Z%m%\\%.,
-		     \%C%m%\\%.,
-		     \%-GLoaded%.%#,
-		     \%-GStarted%.%#,
-		     \%-G%[EF%.]%.%#,
-		     \%-GFinished\ in%.%#,
-		     \%-G\ %\\+%\\d%\\+)\ Failure:,
-		     \%-G\ %\\+%\\d%\\+)\ Error:
+CompilerSet errorformat=\%Etest%[%^\ ]%#(%[%^\ ]%#)\ [%f:%l]:,
+			\%E\ %\\+%f:%l:in\ %.%#,
+			\%Z%m%\\%.,
+			\%C%m%\\%.,
+			\%-GLoaded%.%#,
+			\%-GStarted%.%#,
+			\%-G%[EF%.]%.%#,
+			\%-GFinished\ in%.%#,
+			\%-G\ %\\+%\\d%\\+)\ Failure:,
+			\%-G\ %\\+%\\d%\\+)\ Error:
 
 let &cpo = s:cpo_save
 unlet s:cpo_save
