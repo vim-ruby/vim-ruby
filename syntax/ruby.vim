@@ -35,13 +35,13 @@ syn match	rubyNoInterpolation	"\\#\%(\$\|@@\=\)\w\+"			contained display
 syn cluster rubyStringSpecial contains=rubyInterpolation,rubyNoInterpolation,rubyEscape
 
 " Numbers and ASCII Codes
-syn match rubyASCIICode   "\w\@<!\%(?\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\=\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)\)"
-syn match rubyHexadecimal "\<0x\x\+\%(_\x\+\)*\>"									display
-syn match rubyDecimal     "\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\>"								display
-syn match rubyOctal       "\<0\o\+\%(_\o\+\)*\>"									display
-syn match rubyBinary      "\<0b[01]\+\%(_[01]\+\)*\>"									display
-syn match rubyFloat       "\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\.\d\+\%(_\d\+\)*\>"						display
-syn match rubyFloat       "\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\%(\.\d\+\%(_\d\+\)*\)\=\%([eE][-+]\=\d\+\%(_\d\+\)*\)\>"	display
+syn match rubyASCIICode	"\w\@<!\%(?\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\=\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)\)"
+syn match rubyInteger	"\<0x\x\+\%(_\x\+\)*\>"									display
+syn match rubyInteger	"\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\>"								display
+syn match rubyInteger	"\<0\o\+\%(_\o\+\)*\>"									display
+syn match rubyInteger	"\<0b[01]\+\%(_[01]\+\)*\>"									display
+syn match rubyFloat	"\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\.\d\+\%(_\d\+\)*\>"						display
+syn match rubyFloat	"\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\%(\.\d\+\%(_\d\+\)*\)\=\%([eE][-+]\=\d\+\%(_\d\+\)*\)\>"	display
 
 " Identifiers
 syn match rubyLocalVariableOrMethod "[_[:lower:]][_[:alnum:]]*[?!=]\=" contains=NONE display transparent
@@ -214,10 +214,6 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubyInclude			Include
   HiLink rubyInteger			Number
   HiLink rubyASCIICode			rubyInteger
-  HiLink rubyBinary			rubyInteger
-  HiLink rubyOctal			rubyInteger
-  HiLink rubyHexadecimal		rubyInteger
-  HiLink rubyDecimal			rubyInteger
   HiLink rubyFloat			Float
   HiLink rubyBoolean			Boolean
   HiLink rubyException			Exception
@@ -246,6 +242,7 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubyDocumentation		Comment
   HiLink rubyEscape			Special
   HiLink rubyInterpolation		Special
+  HiLink rubyNoInterpolation		rubyString
   HiLink rubySharpBang			PreProc
   HiLink rubyStringDelimiter		Delimiter
   HiLink rubyString			String
