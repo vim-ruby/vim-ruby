@@ -1,3 +1,8 @@
+2004-05-11  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
+	* syntax/doc/ruby.txt: add documentation for the
+	ruby_no_special_methods and ruby_fold configuration variables
+
 2004-04-29  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
 	* filetype/filetype.vim: move matching of [Rr]akefile* to a separate

@@ -8,7 +8,7 @@ experience slow redrawing (or you are on a terminal with poor color support)
 you may want to turn it off by defining the "ruby_no_expensive" variable: >
         :let ruby_no_expensive = 1
 In this case the same color will be used for all control keywords.
-                        
+
 If you do want this feature enabled, but notice highlighting errors while
 scrolling backwards, which are fixed when redrawing with CTRL-L, try setting
 the "ruby_minlines" variable to a value larger than 50: >
@@ -16,9 +16,21 @@ the "ruby_minlines" variable to a value larger than 50: >
 Ideally, this value should be a number of lines large enough to embrace your
 largest class or module.
 
-Finally, if you do not like to see too many color items around, you can define
-"ruby_no_identifiers": >                                
+Highlighting of special identifiers can be disabled by defining
+"ruby_no_identifiers": >
         :let ruby_no_identifiers = 1
 This will prevent highlighting of special identifiers like "ConstantName",
 "$global_var", "@@class_var", "@instance_var", "| iterator |", and ":symbol".
 
+Significant methods of Class, Object, Module and Kernel are highlighted by
+default. This can be disabled by defining "ruby_no_special_methods": >
+        :let ruby_no_special_methods = 1
+This will prevent highlighting of special methods such as "require",
+"private", "raise" and "proc".
+
+Folding can be enabled by defining "ruby_fold": >
+        :let ruby_fold = 1
+This will set the 'foldmethod' option to "syntax" and allow folding of
+classes, modules, methods, code blocks, heredocs and comments.
+
+ vim: ts=8 tw=78
