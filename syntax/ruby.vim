@@ -44,14 +44,16 @@ syn match rubyInterpolation	"#{[^}]*}"				contained
 syn match rubyInterpolation	"#\%(\$\|@@\=\)\w\+"			contained display
 syn match rubyNoInterpolation	"\\#{[^}]*}"				contained
 syn match rubyNoInterpolation	"\\#\%(\$\|@@\=\)\w\+"			contained display
-syn match rubyDelimEscape	"\\[(<{\[]"	contained display
-syn region rubyNestedParens	start="("	end=")"		skip="\\\\\|\\)"	contained	contains=@rubyStringSpecial,rubyNestedParens,rubyDelimEscape
-syn region rubyNestedCurlies	start="{"	end="}"		skip="\\\\\|\\}"	contained	contains=@rubyStringSpecial,rubyNestedCurlies,rubyDelimEscape
-syn region rubyNestedAngles	start="<"	end=">"		skip="\\\\\|\\>"	contained	contains=@rubyStringSpecial,rubyNestedAngles,rubyDelimEscape
-syn region rubyNestedBrackets	start="\["	end="\]"	skip="\\\\\|\\\]"	contained	contains=@rubyStringSpecial,rubyNestedBrackets,rubyDelimEscape
+
+syn match rubyDelimEscape	"\\[(<{\[)>}\]]" transparent display contained contains=NONE
+
+syn region rubyNestedParentheses	start="("	end=")"		skip="\\\\\|\\)"	transparent contained contains=@rubyStringSpecial,rubyNestedParentheses,rubyDelimEscape
+syn region rubyNestedCurlyBraces	start="{"	end="}"		skip="\\\\\|\\}"	transparent contained contains=@rubyStringSpecial,rubyNestedCurlyBraces,rubyDelimEscape
+syn region rubyNestedAngleBrackets	start="<"	end=">"		skip="\\\\\|\\>"	transparent contained contains=@rubyStringSpecial,rubyNestedAngleBrackets,rubyDelimEscape
+syn region rubyNestedSquareBrackets	start="\["	end="\]"	skip="\\\\\|\\\]"	transparent contained contains=@rubyStringSpecial,rubyNestedSquareBrackets,rubyDelimEscape
 
 syn cluster rubyStringSpecial		contains=rubyInterpolation,rubyNoInterpolation,rubyEscape
-syn cluster rubyExtendedStringSpecial	contains=@rubyStringSpecial,rubyNestedParens,rubyNestedCurlies,rubyNestedAngles,rubyNestedBrackets
+syn cluster rubyExtendedStringSpecial	contains=@rubyStringSpecial,rubyNestedParentheses,rubyNestedCurlyBraces,rubyNestedAngleBrackets,rubyNestedSquareBrackets
 
 " Numbers and ASCII Codes
 syn match rubyASCIICode	"\w\@<!\%(?\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\=\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)\)"
@@ -102,26 +104,26 @@ syn region rubyString matchgroup=rubyStringDelimiter start="`"  end="`"  skip="\
 
 " Generalized Regular Expression
 syn region rubyString matchgroup=rubyStringDelimiter start="%r\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)"	end="\z1[iomx]*" skip="\\\\\|\\\z1" contains=@rubyStringSpecial fold
-syn region rubyString matchgroup=rubyStringDelimiter start="%r{"				end="}[iomx]*"	 skip="\\\\\|\\}"   contains=@rubyStringSpecial,rubyNestedCurlies,rubyDelimEscape fold
-syn region rubyString matchgroup=rubyStringDelimiter start="%r<"				end=">[iomx]*"	 skip="\\\\\|\\>"   contains=@rubyStringSpecial,rubyNestedAngles,rubyDelimEscape fold
-syn region rubyString matchgroup=rubyStringDelimiter start="%r\["				end="\][iomx]*"	 skip="\\\\\|\\\]"  contains=@rubyStringSpecial,rubyNestedBrackets,rubyDelimEscape fold
-syn region rubyString matchgroup=rubyStringDelimiter start="%r("				end=")[iomx]*"	 skip="\\\\\|\\)"   contains=@rubyStringSpecial,rubyNestedParens,rubyDelimEscape fold
+syn region rubyString matchgroup=rubyStringDelimiter start="%r{"				end="}[iomx]*"	 skip="\\\\\|\\}"   contains=@rubyStringSpecial,rubyNestedCurlyBraces,rubyDelimEscape fold
+syn region rubyString matchgroup=rubyStringDelimiter start="%r<"				end=">[iomx]*"	 skip="\\\\\|\\>"   contains=@rubyStringSpecial,rubyNestedAngleBrackets,rubyDelimEscape fold
+syn region rubyString matchgroup=rubyStringDelimiter start="%r\["				end="\][iomx]*"	 skip="\\\\\|\\\]"  contains=@rubyStringSpecial,rubyNestedSquareBrackets,rubyDelimEscape fold
+syn region rubyString matchgroup=rubyStringDelimiter start="%r("				end=")[iomx]*"	 skip="\\\\\|\\)"   contains=@rubyStringSpecial,rubyNestedParentheses,rubyDelimEscape fold
 
 " Generalized Single Quoted String, Symbol and Array of Strings
 syn region rubyString matchgroup=rubyStringDelimiter start="%[qsw]\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1" fold
-syn region rubyString matchgroup=rubyStringDelimiter start="%[qsw]{"				    end="}"   skip="\\\\\|\\}"	 fold	contains=rubyNestedCurlies,rubyDelimEscape
-syn region rubyString matchgroup=rubyStringDelimiter start="%[qsw]<"				    end=">"   skip="\\\\\|\\>"	 fold	contains=rubyNestedAngles,rubyDelimEscape
-syn region rubyString matchgroup=rubyStringDelimiter start="%[qsw]\["				    end="\]"  skip="\\\\\|\\\]"	 fold	contains=rubyNestedBrackets,rubyDelimEscape
-syn region rubyString matchgroup=rubyStringDelimiter start="%[qsw]("				    end=")"   skip="\\\\\|\\)"	 fold	contains=rubyNestedParens,rubyDelimEscape
+syn region rubyString matchgroup=rubyStringDelimiter start="%[qsw]{"				    end="}"   skip="\\\\\|\\}"	 fold	contains=rubyNestedCurlyBraces,rubyDelimEscape
+syn region rubyString matchgroup=rubyStringDelimiter start="%[qsw]<"				    end=">"   skip="\\\\\|\\>"	 fold	contains=rubyNestedAngleBrackets,rubyDelimEscape
+syn region rubyString matchgroup=rubyStringDelimiter start="%[qsw]\["				    end="\]"  skip="\\\\\|\\\]"	 fold	contains=rubyNestedSquareBrackets,rubyDelimEscape
+syn region rubyString matchgroup=rubyStringDelimiter start="%[qsw]("				    end=")"   skip="\\\\\|\\)"	 fold	contains=rubyNestedParentheses,rubyDelimEscape
 
 " Generalized Double Quoted String and Array of Strings and Shell Command Output
 " Note: %= is not matched here as the beginning of a double quoted string
 syn region rubyString matchgroup=rubyStringDelimiter start="%\z([~`!@#$%^&*_\-+|\:;"',.?/]\)"	    end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial fold
 syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial fold
-syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\={"				    end="}"   skip="\\\\\|\\}"	 contains=@rubyStringSpecial,rubyNestedCurlies,rubyDelimEscape fold
-syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\=<"				    end=">"   skip="\\\\\|\\>"	 contains=@rubyStringSpecial,rubyNestedAngles,rubyDelimEscape fold
-syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\=\["				    end="\]"  skip="\\\\\|\\\]"	 contains=@rubyStringSpecial,rubyNestedBrackets,rubyDelimEscape fold
-syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\=("				    end=")"   skip="\\\\\|\\)"	 contains=@rubyStringSpecial,rubyNestedParens,rubyDelimEscape fold
+syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\={"				    end="}"   skip="\\\\\|\\}"	 contains=@rubyStringSpecial,rubyNestedCurlyBraces,rubyDelimEscape fold
+syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\=<"				    end=">"   skip="\\\\\|\\>"	 contains=@rubyStringSpecial,rubyNestedAngleBrackets,rubyDelimEscape fold
+syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\=\["				    end="\]"  skip="\\\\\|\\\]"	 contains=@rubyStringSpecial,rubyNestedSquareBrackets,rubyDelimEscape fold
+syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\=("				    end=")"   skip="\\\\\|\\)"	 contains=@rubyStringSpecial,rubyNestedParentheses,rubyDelimEscape fold
 
 " Here Document
 syn region rubyString matchgroup=rubyStringDelimiter start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<\z(\h\w*\)\ze\s*$+hs=s+2 end=+^\z1$+ contains=@rubyStringSpecial fold
@@ -203,7 +205,7 @@ syn keyword rubyTodo          FIXME NOTE TODO XXX contained
 syn match   rubyComment       "#.*" contains=rubySharpBang,rubySpaceError,rubyTodo,@Spell
 syn region  rubyDocumentation start="^=begin" end="^=end.*$" contains=rubySpaceError,rubyTodo,@Spell fold
 
-" Note: this is a hack to prevent 'keywords' being highlighted as such when called as methods
+" Note: this is a hack to prevent 'keywords' being highlighted as such when called as methods with an explicit receiver
 syn match rubyKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(alias\|and\|begin\|break\|case\|class\|def\|defined\|do\|else\)\>"			transparent contains=NONE
 syn match rubyKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(elsif\|end\|ensure\|false\|for\|if\|in\|module\|next\|nil\)\>"			transparent contains=NONE
 syn match rubyKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(not\|or\|redo\|rescue\|retry\|return\|self\|super\|then\|true\)\>"			transparent contains=NONE
@@ -266,11 +268,6 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubyEscape			Special
   HiLink rubyInterpolation		Special
   HiLink rubyNoInterpolation		rubyString
-  HiLink rubyDelimEscape		rubyString
-  HiLink rubyNestedParens		rubyString
-  HiLink rubyNestedCurlies		rubyString
-  HiLink rubyNestedAngles		rubyString
-  HiLink rubyNestedBrackets		rubyString
   HiLink rubySharpBang			PreProc
   HiLink rubyStringDelimiter		Delimiter
   HiLink rubyString			String
