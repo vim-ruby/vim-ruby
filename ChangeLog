@@ -1,3 +1,8 @@
+2003-10-13  Nikolai Weibull  <source@pcppopper.org>
+
+	* indent/ruby.vim: General cleanup, speedup, fixup.  Fixes bug #62.
+	Indentiation of tk.rb (5200+ lines) takes under 13 seconds now.
+
 2003-10-12  Nikolai Weibull  <source@pcppopper.org>
 
 	* indent/ruby.vim: Fixed bugs #89 and #102.
