@@ -16,7 +16,7 @@
 #
 # ------------------------------------------------------------------------------
 #
-# Revision: $Id: install.rb,v 1.5 2004/08/27 07:49:06 gsinclair Exp $
+# Revision: $Id: install.rb,v 1.6 2004/09/08 14:21:21 gsinclair Exp $
 # Status: alpha
 #
 # This was contributed by Hugh Sasse and is *UNTESTED*.  Usual disclaimers apply.
@@ -79,6 +79,8 @@ PREFIXSTUB=[
 stub = PREFIXSTUB.detect { |x| File.exist?(x) and File.directory?(x) }
 
 prefix = Dir.glob("#{stub}/vim*").select { |x| x =~ /vim\d+/ }.sort[-1]
+
+puts "Determined Vim location: #{prefix}"
 
 f = "ruby.vim"
 
