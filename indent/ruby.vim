@@ -212,8 +212,11 @@ function GetRubyIndent()
   if col > 0 && !s:IsInStringOrComment(v:lnum, col)
     call s:GotoLineCol(v:lnum, 0)
     " Find the matching parent statement to it
+    " XXX: fixed the .class problem here, but I don't know if its the best way
+    " to do it
     if searchpair('\<def\>\|\<do\>\|\<if\>\|\<unless\>\|\<case\>\|' . 
-	  \'\<begin\>\|\<until\>\|\<for\>\|\<while\>\|\<class\>\|\<module\>', 
+	  \'\<begin\>\|\<until\>\|\<for\>\|\<while\>\|' .
+	  \'\<\.\@<!class\>\|\<\.\@<!module\>', 
 	  \'\<ensure\>\|\<else\>\|\<rescue\>\|\<elsif\>\|\<when\>', '\<end\>',
 	  \'bW', s:end_skip_expr) > 0
       let ind = indent('.')
