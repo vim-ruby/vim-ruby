@@ -2,7 +2,7 @@
 " Language:	Ruby
 " Maintainer:	Gavin Sinclair <gsinclair at soyabean.com.au>
 " Developer:	Nikolai Weibull <lone-star at home.se>
-" Info:		$Id: ruby.vim,v 1.13 2003/09/26 13:19:39 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.14 2003/10/09 23:00:27 pcp Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -28,20 +28,20 @@ if exists("*GetRubyIndent")
   finish
 endif
 
+let s:skip_regex = '\<ruby\%(String\|StringDelimiter\|ASCIICode'.
+      \'\|Interpolation\|NoInterpolation\|Escape\|Comment\|Documentation\)\>'
+let s:skip_regex2 = '\<ruby\%(String\|Interpolation\|NoInterpolation\|Escape'.
+      \'\|Comment\|Documentation\)\>'
 " Check if the character at lnum:col is inside a string or comment.
 function s:IsInStringOrComment(lnum, col)
-  return synIDattr(synID(a:lnum, a:col, 0), 'name') =~ 
-	\'\<ruby\%(String\|StringDelimiter\|ASCIICode\|Interpolation'.
-	\'\|NoInterpolation\|Escape\|Comment\|Documentation\)\>'
+  return synIDattr(synID(a:lnum, a:col, 0), 'name') =~ s:skip_regex
 endfunction
 
 " Check if the character at lnum:col is inside a string or comment.
 " Works like s:IsInStringOrComment(), with the difference that string-delimits
 " are not matched.
 function s:IsInStringOrComment2(lnum, col)
-  return synIDattr(synID(a:lnum, a:col, 0), 'name') =~ 
-	\'\<ruby\%(String\|Interpolation\|NoInterpolation\|Escape\|Comment'.
-	\'\|Documentation\)\>'
+  return synIDattr(synID(a:lnum, a:col, 0), 'name') =~ s:skip_regex2
 endfunction
 
 " These comma-separated list of words at the beginning of a line add a level
@@ -74,10 +74,6 @@ endfunction
 call s:BuildIndentKeywords()
 
 " Regular expression for continuations.
-" XXX: add ( to this list?
-" XXX: there's a problem with some things where we are indenting for brackets,
-" but also get for continuation (of ,). Two uncertain items are in this list,
-" [ and {
 let s:continuation_regexp = '[\\*+/.,=({[-]\s*\(#.*\)\=$'
 
 " Regular expression for blocks.  We can't check for {, it's done in another
@@ -87,7 +83,7 @@ let s:block_regexp = '\<do\>\s*\(|\([*@]\=\h\w*\(,\s*\)\=\)\+|\s*\)\=\(#.*\)\=$'
 " Expression used to check whether we should skip a match with searchpair().
 " XXX: this should be expanded some how with class and module to avoid
 " confusion with object.class.foo stuff.
-let s:skip_expr = 'synIDattr(synID(line("."), col("."), 0), "name") =~ "\\<ruby\\%(String\\|StringDelimiter\\|ASCIICode\\|Interpolation\\|NoInterpolation\\|Escape\\|Comment\\|Documentation\\)\\>"'
+let s:skip_expr = "synIDattr(synID(line('.'), col('.'), 0), 'name') =~ '".s:skip_regex."'"
 let s:end_skip_expr = s:skip_expr.' || (expand("<cword>") =~ "\\<if\\>\\|\\<unless\\>\\|\\<while\\>\\|\\<until\\>" && getline(".") !~ "^\\s*\\<".expand("<cword>")."\\>" && getline(".") !~ expand("<cword>")."\\>.*\\<end\\>")'
 
 " Find the previous non-blank line which isn't a comment-line or in a comment
@@ -121,6 +117,30 @@ function s:GotoLineCol(line, col)
   else
     execute 'normal! '.a:line.'G0'
   endif
+endfunction
+
+" Check if line has more opening parentheses than closing
+function s:LineHasOpeningParen(line, lnum)
+  let i = 0
+  let n = strlen(a:line)
+  let open_paren = 0
+  let open_brace = 0
+  let open_bracket = 0
+  while i < n
+    let c = a:line[i]
+    if c =~ '[](){}[]'
+	  \&& synIDattr(synID(a:lnum, i + 1, 0), 'name') !~ s:skip_regex
+      if c == '(' || c == ')'
+	let open_paren = open_paren + (c == '(' ? 1 : -1)
+      elseif c == '{' || c == '}'
+	let open_brace = open_brace + (c == '{' ? 1 : -1)
+      elseif c == '[' || c == '['
+	let open_bracket = open_bracket + (c == '[' ? 1 : -1)
+      endif
+    endif
+    let i = i + 1
+  endwhile
+  return "" . (open_paren ? 1 : 0).(open_brace ? 1 : 0).(open_bracket ? 1 : 0)
 endfunction
 
 function GetRubyIndent()
@@ -333,26 +353,15 @@ function GetRubyIndent()
   " add one level of indent.
   let did_virt_indent = 0
   if line =~ '[[({]'
-    " TODO: hop somewhere?
-    let my_line = substitute(substitute(substitute(substitute(substitute(line, 
-	  \'\\"\|'."\\\\'", '', 'g'), '"[^"]*"', '', 'g'), "'[^']*'", '', 'g'),
-	  \'\W?\S', '', 'g'), '#.*', '', '')
-    " If we have an opening parentheses, indent to it.
-    if strlen(substitute(my_line, '[^(]', '', 'g'))
-	  \ > strlen(substitute(my_line, '[^)]', '', 'g'))
-	  \ && searchpair('(', '', ')', 'bW', s:skip_expr) > 0
+    let counts = s:LineHasOpeningParen(line, lnum)
+    if counts[0] == '1'
+	  \&& searchpair('(', '', ')', 'bW', s:skip_expr) > 0
       let ind = virtcol('.')
       let did_virt_indent = 1
-    " Or, if we are inside a pair of braces or brackets, add one level.
-    elseif !did_con_indent && strridx(substitute(my_line, '{[^}]*}', '', 'g'), '{') > -1
-	  \ && !s:IsInStringOrComment(lnum, 1)
-       let ind = ind + &sw
-      let did_virt_indent = 1
-    elseif !did_con_endint && strridx(substitute(my_line, '\[[^]]*\]', '', 'g'), '[') > -1
-	  \ && !s:IsInStringOrComment(lnum, 1)
+    elseif !did_con_indent && (counts[1] == '1' || counts[2] == '1')
       let ind = ind + &sw
       let did_virt_indent = 1
-    endif
+    end
     call s:GotoLineCol(v:lnum, vcol - 1)
   endif
 
@@ -360,28 +369,17 @@ function GetRubyIndent()
   " it, add one level of indent.
   " TODO: do we really need to check for did_con_indent here?  don't think so
   if !did_virt_indent && p_line =~ '[[({]'
-    " TODO: use s:GotoLineCol()
-    execute 'normal! '.p_lnum.'G$'
-    let my_line = substitute(substitute(substitute(substitute(substitute(p_line, 
-	  \'\\"\|'."\\\\'", '', 'g'), '"[^"]*"', '', 'g'), "'[^']*'", '', 'g'),
-	  \'\W?\S', '', 'g'), '#.*', '', '')
-    " If we have an opening parentheses, indent to it.
-    if strlen(substitute(my_line, '[^(]', '', 'g'))
-	  \ > strlen(substitute(my_line, '[^)]', '', 'g'))
-	  \ && searchpair('(', '', ')', 'bW', s:skip_expr) > 0
+    let counts = s:LineHasOpeningParen(p_line, p_lnum)
+    if counts[0] == '1'
+	  \&& searchpair('(', '', ')', 'bW', s:skip_expr) > 0
       let ind = virtcol('.')
-    " Or, if we are inside a pair of braces or brackets, add one level.
-    elseif !did_con_indent && strridx(substitute(my_line, '{[^}]*}', '', 'g'), '{') > -1
-	  \ && !s:IsInStringOrComment(lnum, 1)
+    elseif !did_con_indent && (counts[1] == '1' || counts[2] == '1')
       let ind = ind + &sw
-    elseif !did_con_indent && strridx(substitute(my_line, '\[[^]]*\]', '', 'g'), '[') > -1
-	  \ && !s:IsInStringOrComment(lnum, 1)
-      let ind = ind + &sw
-    endif
+    end
     call s:GotoLineCol(v:lnum, vcol - 1)
   endif
 
   return ind
-endfunction   " GetRubyIndent()
+endfunction
 
-" vim:sw=2 ff=unix
+" vim: sw=2 sts=2 ts=8 ff=unix:
