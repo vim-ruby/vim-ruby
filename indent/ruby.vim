@@ -1,17 +1,17 @@
 " Vim indent file
 " Language:	Ruby
 " Maintainer:	Gavin Sinclair <gsinclair at soyabean.com.au>
-" Developer:    Nikolai Weibull <lone-star at home.se>
-" Info:         $Id$
-" URL:          http://vim-ruby.sourceforge.net
-" Anon CVS:     See above site 
-" Licence:      GPL (http://www.gnu.org)
-" Disclaimer: 
+" Developer:	Nikolai Weibull <lone-star at home.se>
+" Info:		$Id$
+" URL:		http://vim-ruby.sourceforge.net
+" Anon CVS:	See above site
+" Licence:	GPL (http://www.gnu.org)
+" Disclaimer:
 "    This program is distributed in the hope that it will be useful,
 "    but WITHOUT ANY WARRANTY; without even the implied warranty of
 "    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 "    GNU General Public License for more details.
-" ---------------------------------------------------------------------------- 
+" ----------------------------------------------------------------------------
 
 " Only load this indent file when no other was loaded.
 if exists("b:did_indent")

@@ -1,5 +1,11 @@
 2003-08-18  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
+	* compiler/ruby.vim, ftplugin/ruby.vim, indent/ruby.vim,
+	syntax/ruby.vim: retab the header section - Bram prefers as many TAB
+	characters as possible.
+
+2003-08-18  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
 	* syntax/ruby.vim: allow for, while and until loop bodies to contain
 	do...end and {...} blocks - rubyOptDoBlock should contain rubyDoBlock
 	and rubyCurlyBlock.
