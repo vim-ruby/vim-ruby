@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	Ruby
 " Maintainer:	Doug Kearns <djkea2 at mugca.its.monash.edu.au>
-" Info:		$Id: ruby.vim,v 1.29 2003/09/25 14:42:26 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.30 2003/09/30 13:09:50 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -25,22 +25,22 @@ elseif exists("b:current_syntax")
 endif
 
 " Expression Substitution and Backslash Notation
-syn match	rubyEscape		"\\\\\|\\[abefnrstv]\|\\\o\{1,3}\|\\x\x\{1,2}"								contained display
-syn match	rubyEscape		"\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)"	contained display
-syn match	rubyInterpolation	"#{[^}]*}"				contained
-syn match	rubyInterpolation	"#\%(\$\|@@\=\)\w\+"			contained display
-syn match	rubyNoInterpolation	"\\#{[^}]*}"				contained
-syn match	rubyNoInterpolation	"\\#\%(\$\|@@\=\)\w\+"			contained display
+syn match rubyEscape		"\\\\\|\\[abefnrstv]\|\\\o\{1,3}\|\\x\x\{1,2}"								contained display
+syn match rubyEscape		"\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)"	contained display
+syn match rubyInterpolation	"#{[^}]*}"				contained
+syn match rubyInterpolation	"#\%(\$\|@@\=\)\w\+"			contained display
+syn match rubyNoInterpolation	"\\#{[^}]*}"				contained
+syn match rubyNoInterpolation	"\\#\%(\$\|@@\=\)\w\+"			contained display
 
 syn cluster rubyStringSpecial contains=rubyInterpolation,rubyNoInterpolation,rubyEscape
 
 " Numbers and ASCII Codes
 syn match rubyASCIICode	"\w\@<!\%(?\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\=\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)\)"
 syn match rubyInteger	"\<0x\x\+\%(_\x\+\)*\>"									display
-syn match rubyInteger	"\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\>"								display
+syn match rubyInteger	"\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\>"							display
 syn match rubyInteger	"\<0\o\+\%(_\o\+\)*\>"									display
-syn match rubyInteger	"\<0b[01]\+\%(_[01]\+\)*\>"									display
-syn match rubyFloat	"\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\.\d\+\%(_\d\+\)*\>"						display
+syn match rubyInteger	"\<0b[01]\+\%(_[01]\+\)*\>"								display
+syn match rubyFloat	"\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\.\d\+\%(_\d\+\)*\>"					display
 syn match rubyFloat	"\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\%(\.\d\+\%(_\d\+\)*\)\=\%([eE][-+]\=\d\+\%(_\d\+\)*\)\>"	display
 
 " Identifiers
@@ -61,7 +61,6 @@ if !exists("ruby_no_identifiers")
   syn match rubyPredefinedVariable "$-[0FIKadilpvw]"									display
   syn match rubyPredefinedVariable "$\%(deferr\|defout\|stderr\|stdin\|stdout\)\>"					display
   syn match rubyPredefinedVariable "$\%(DEBUG\|FILENAME\|KCODE\|LOAD_PATH\|SAFE\|VERBOSE\)\>"				display
-  syn match rubyPredefinedConstant "__\%(FILE\|LINE\)__\>"								display
   syn match rubyPredefinedConstant "\<\%(::\)\=\zs\%(MatchingData\|ARGF\|ARGV\|ENV\)\>"					display
   syn match rubyPredefinedConstant "\<\%(::\)\=\zs\%(DATA\|FALSE\|NIL\|RUBY_PLATFORM\|RUBY_RELEASE_DATE\)\>"		display
   syn match rubyPredefinedConstant "\<\%(::\)\=\zs\%(RUBY_VERSION\|STDERR\|STDIN\|STDOUT\|TOPLEVEL_BINDING\|TRUE\)\>"	display
@@ -105,12 +104,12 @@ syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\=("				    en
 " Here Document
 syn region rubyString matchgroup=rubyStringDelimiter start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<\z(\h\w*\)\ze\s*$+hs=s+2 end=+^\z1$+ contains=@rubyStringSpecial fold
 syn region rubyString matchgroup=rubyStringDelimiter start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<"\z(.*\)"\ze\s*$+hs=s+2  end=+^\z1$+ contains=@rubyStringSpecial fold
-syn region rubyString matchgroup=rubyStringDelimiter start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<'\z(.*\)'\ze\s*$+hs=s+2  end=+^\z1$+			 fold
+syn region rubyString matchgroup=rubyStringDelimiter start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<'\z(.*\)'\ze\s*$+hs=s+2  end=+^\z1$+			      fold
 syn region rubyString matchgroup=rubyStringDelimiter start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<`\z(.*\)`\ze\s*$+hs=s+2  end=+^\z1$+ contains=@rubyStringSpecial fold
 
 syn region rubyString matchgroup=rubyStringDelimiter start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<-\z(\h\w*\)\ze\s*$+hs=s+3 end=+^\s*\zs\z1$+ contains=@rubyStringSpecial fold
 syn region rubyString matchgroup=rubyStringDelimiter start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<-"\z(.*\)"\ze\s*$+hs=s+3  end=+^\s*\zs\z1$+ contains=@rubyStringSpecial fold
-syn region rubyString matchgroup=rubyStringDelimiter start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<-'\z(.*\)'\ze\s*$+hs=s+3  end=+^\s*\zs\z1$+			fold
+syn region rubyString matchgroup=rubyStringDelimiter start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<-'\z(.*\)'\ze\s*$+hs=s+3  end=+^\s*\zs\z1$+			     fold
 syn region rubyString matchgroup=rubyStringDelimiter start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<-`\z(.*\)`\ze\s*$+hs=s+3  end=+^\s*\zs\z1$+ contains=@rubyStringSpecial fold
 
 " Expensive Mode - colorize *end* according to opening statement
@@ -158,11 +157,12 @@ endif
 " Keywords
 " Note: the following keywords have already been defined:
 " begin case class def do end for if module unless until while __FILE_ __LINE__
-syn keyword rubyControl  and break else elsif ensure in next not or redo rescue retry return then when
-syn match   rubyOperator "\<defined?" display
-syn keyword rubyKeyword  alias super undef yield
-syn keyword rubyBoolean  true false self nil
-syn keyword rubyBeginEnd BEGIN END
+syn keyword rubyControl		and break else elsif ensure in next not or redo rescue retry return then when
+syn match   rubyOperator	"\<defined?" display
+syn keyword rubyKeyword		alias super undef yield
+syn keyword rubyBoolean		true false
+syn keyword rubyPseudoVariable	nil self __FILE__ __LINE__
+syn keyword rubyBeginEnd	BEGIN END
 
 " Special Methods
 if !exists("ruby_no_special_methods")
