@@ -2,7 +2,7 @@
 " Language:	Ruby
 " Function:	Syntax check and/or error reporting
 " Maintainer:	Tim Hammerquist <timh at rubyforge.org>
-" Info:		$Id: ruby.vim,v 1.7 2004/09/04 10:30:13 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.8 2004/09/05 06:00:46 dkearns Exp $
 " URL:		http://vim-ruby.rubyforge.org
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -32,6 +32,7 @@
 "   This is my first experience with 'errorformat' and compiler plugins and
 "   I welcome any input from more experienced (or clearer-thinking)
 "   individuals.
+" ----------------------------------------------------------------------------
 
 if exists("current_compiler")
   finish
