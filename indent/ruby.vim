@@ -101,6 +101,15 @@ function s:PrevNonBlank(lnum)
   return lnum
 endfunction
 
+" Move the cursor to the given line:col.
+function s:GotoLineCol(line, col)
+  if a:col != 0
+    execute 'normal! '.a:line.'G0'.a:col.'l'
+  else
+    execute 'normal! '.a:line.'G0'
+  endif
+endfunction
+
 function GetRubyIndent()
   " Part 1: Setup.
   " ==============
@@ -119,7 +128,7 @@ function GetRubyIndent()
   " the column in case of a parentheses.
   let col = match(line, '^\s*\zs[]})]') + 1
   if col > 0 && !s:IsInStringOrComment(v:lnum, col)
-    execute 'normal! 0'.(col - 1).'l'
+    call s:GotoLineCol(v:lnum, col - 1)
     " If it was a parentheses, search for its match and indent to its level.
     if line[col - 1] == ')' && searchpair('(', '', ')', 'bW', s:skip_expr) > 0
       let ind = virtcol('.') - 1
@@ -153,7 +162,7 @@ function GetRubyIndent()
     elseif searchpair('\[', '', '\]', 'bW', s:skip_expr) > 0
       let ind = indent('.')
     end
-    execute 'normal! '.v:lnum.'G0'.(vcol - ).'l'
+    call s:GotoLineCol(v:lnum, vcol - 1)
   endif
 
   " If we get a =begin, =end, or here-doc ender set deindent to first column.
@@ -168,7 +177,7 @@ function GetRubyIndent()
   let col = match(line,
 	\'^\s*\zs\(ensure\>\|else\>\|rescue\>\|elsif\>\|when\>\|end\>\)') + 1
   if col > 0 && !s:IsInStringOrComment(v:lnum, col)
-    normal 0
+    call s:GotoLineCol(v:lnum, 0)
     " Find the matching parent statement to it
     if searchpair('\<def\>\|\<do\>\|\<if\>\|\<unless\>\|\<case\>\|' . 
 	  \'\<begin\>\|\<until\>\|\<for\>\|\<while\>\|\<class\>\|\<module\>', 
@@ -176,7 +185,7 @@ function GetRubyIndent()
 	  \'bW', s:end_skip_expr) > 0
       let ind = indent('.')
     endif
-    execute 'normal! '.v:lnum.'G0'.(vcol - 1).'l'
+    call s:GotoLineCol(v:lnum, vcol - 1)
   endif
 
   " If we got some indentation, use it
@@ -186,7 +195,6 @@ function GetRubyIndent()
   " so, skip it.
   " TODO: this needs more checking though
   elseif s:IsInStringOrComment2(v:lnum, matchend(line, '^\s*') + 1)
-	\ || s:IsInStringOrComment2(v:lnum - 1, strlen(getline(v:lnum - 1)))
     return indent('.')
   endif
 
@@ -195,6 +203,18 @@ function GetRubyIndent()
 
   " Find a non-blank line above the current line.
   let lnum = s:PrevNonBlank(v:lnum - 1)
+
+  " Ignore multi-line strings
+  " TODO: check this positioning
+  " TODO: is it necessary to check both ends?
+  while lnum > 0
+    if s:IsInStringOrComment(lnum, 1) &&
+	  \ s:IsInStringOrComment(lnum, strlen(getline(lnum)))
+      let lnum = s:PrevNonBlank(lnum - 1)
+    else
+      break
+    endif
+  endwhile
 
   " At the start of the file use zero indent.
   if lnum == 0
@@ -223,7 +243,7 @@ function GetRubyIndent()
     let bcol = match(line,
 	  \'[]})]\s*\(\(\<if\>\|\<unless\>\|\<until\>\|\<while\>\|#\).*\)\=$') + 1
     if bcol > 0 && !s:IsInStringOrComment(lnum, bcol)
-      execute 'normal! '.lnum.'G0'.(bcol - 1).'l'
+      call s:GotoLineCol(lnum, bcol - 1)
       let open = '('
       let close = ')'
       if line[bcol - 1] == '}'
@@ -243,7 +263,7 @@ function GetRubyIndent()
 	  let did_con_indent = 1
 	endif
       endif
-      execute 'normal! '.v:lnum.'G0'.(vcol - 1).'l'
+      call s:GotoLineCol(v:lnum, vcol - 1)
     endif
   endif
 
@@ -260,14 +280,14 @@ function GetRubyIndent()
       " If the line was a continuation not in a string, and we are currently
       " not in a multiline-string, get it's indent and continue to previous
       " line.
-      if col > 0 && !s:IsInStringOrComment(my_lnum, col)
-" TODO:	    \ && !s:IsInStringOrComment(p_lnum, strlen(p_line))
+      if (col > 0 && !s:IsInStringOrComment(my_lnum, col))
+"	    \ && !s:IsInStringOrComment(p_lnum, strlen(p_line))
 	let ind = indent(my_lnum)
 	let p_line = my_line
 	let p_lnum = my_lnum
 	let my_lnum = s:PrevNonBlank(my_lnum - 1)
       " Else, if we are in a multi-line string, continue to previous line.
-      elseif s:IsInStringOrComment(my_lnum, 1)
+      elseif s:IsInStringOrComment(my_lnum, strlen(my_line))
 	let my_lnum = s:PrevNonBlank(my_lnum - 1)
       " Otherwise, exit the loop
       else
@@ -318,12 +338,13 @@ function GetRubyIndent()
       let ind = ind + &sw
       let did_virt_indent = 1
     endif
-    execute 'normal! '.v:lnum.'G0'.(vcol - 1).'l'
+    call s:GotoLineCol(v:lnum, vcol - 1)
   endif
 
   " If the far previous line contained an opening bracket, and we are still in
   " it, add one level of indent.
   if !did_virt_indent && p_line =~ '[[({]'
+    " TODO: use s:GotoLineCol()
     execute 'normal! '.p_lnum.'G$'
     let my_line = substitute(substitute(substitute(substitute(substitute(p_line, 
 	  \'\\"\|'."\\\\'", '', 'g'), '"[^"]*"', '', 'g'), "'[^']*'", '', 'g'),
@@ -341,7 +362,7 @@ function GetRubyIndent()
 	  \ && !s:IsInStringOrComment(lnum, 1)
       let ind = ind + &sw
     endif
-    execute 'normal! '.v:lnum.'G0'.(vcol - 1).'l'
+    call s:GotoLineCol(v:lnum, vcol - 1)
   endif
 
   return ind
