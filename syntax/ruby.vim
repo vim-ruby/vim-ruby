@@ -158,22 +158,22 @@ syn region rubyString matchgroup=rubyStringDelimit start="^\s*/" start="\<and\s*
 
 " Here Document
 if version < 600
-  syn region rubyString matchgroup=rubyStringDelimit start=+<<-\(\u\{3,}\|'\u\{3,}'\|"\u\{3,}"\|`\u\{3,}`\)+hs=s+2 end=+^\s*\u\{3,}$+ fold
-  syn region rubyString matchgroup=rubyStringDelimit start=+<<-\(EOF\|'EOF'\|"EOF"\|`EOF`\)+hs=s+2		   end=+^\s*EOF$+     contains=rubyExprSubst fold
-  syn region rubyString matchgroup=rubyStringDelimit start=+<<-\(EOS\|'EOS'\|"EOS"\|`EOS`\)+hs=s+2		   end=+^\s*EOS$+     contains=rubyExprSubst fold
-  syn region rubyString matchgroup=rubyStringDelimit start=+<<\(\u\{3,}\|'\u\{3,}'\|"\u\{3,}"\|`\u\{3,}`\)+hs=s+2  end=+^\u\{3,}$+    fold
-  syn region rubyString matchgroup=rubyStringDelimit start=+<<\(EOF\|'EOF'\|"EOF"\|`EOF`\)+hs=s+2		   end=+^EOF$+	      contains=rubyExprSubst fold
-  syn region rubyString matchgroup=rubyStringDelimit start=+<<\(EOS\|'EOS'\|"EOS"\|`EOS`\)+hs=s+2		   end=+^EOS$+	      contains=rubyExprSubst fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+<<-\(\u\{3,}\|'\u\{3,}'\|"\u\{3,}"\|`\u\{3,}`\)+hs=s+2 end=+^\s*\u\{3,}$+			   fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+<<-\(EOF\|'EOF'\|"EOF"\|`EOF`\)+hs=s+2		   end=+^\s*EOF$+   contains=rubyExprSubst fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+<<-\(EOS\|'EOS'\|"EOS"\|`EOS`\)+hs=s+2		   end=+^\s*EOS$+   contains=rubyExprSubst fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+<<\(\u\{3,}\|'\u\{3,}'\|"\u\{3,}"\|`\u\{3,}`\)+hs=s+2  end=+^\u\{3,}$+			   fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+<<\(EOF\|'EOF'\|"EOF"\|`EOF`\)+hs=s+2		   end=+^EOF$+	    contains=rubyExprSubst fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+<<\(EOS\|'EOS'\|"EOS"\|`EOS`\)+hs=s+2		   end=+^EOS$+	    contains=rubyExprSubst fold
 else
-  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\)\@<!<<\z(\h\w*\)\s*$+hs=s+2  end=+^\z1$+    contains=rubyExprSubst fold
-  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\)\@<!<<"\z(.*\)"\s*$+hs=s+2   end=+^\z1$+    contains=rubyExprSubst fold
-  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\)\@<!<<'\z(.*\)'\s*$+hs=s+2   end=+^\z1$+    fold
-  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\)\@<!<<`\z(.*\)`\s*$+hs=s+2   end=+^\z1$+    contains=rubyExprSubst fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\|\(\.\|::\)\_s*\)\@<!<<\z(\h\w*\)\ze\s*$+hs=s+2 end=+^\z1$+ contains=rubyExprSubst fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\|\(\.\|::\)\_s*\)\@<!<<"\z(.*\)"\ze\s*$+hs=s+2  end=+^\z1$+ contains=rubyExprSubst fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\|\(\.\|::\)\_s*\)\@<!<<'\z(.*\)'\ze\s*$+hs=s+2  end=+^\z1$+			       fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\|\(\.\|::\)\_s*\)\@<!<<`\z(.*\)`\ze\s*$+hs=s+2  end=+^\z1$+ contains=rubyExprSubst fold
 
-  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\)\@<!<<-\z(\h\w*\)\s*$+hs=s+3 end=+^\s*\z1$+ contains=rubyExprSubst fold
-  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\)\@<!<<-"\z(.*\)"\s*$+hs=s+3  end=+^\s*\z1$+ contains=rubyExprSubst fold
-  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\)\@<!<<-'\z(.*\)'\s*$+hs=s+3  end=+^\s*\z1$+ fold
-  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\)\@<!<<-`\z(.*\)`\s*$+hs=s+3  end=+^\s*\z1$+ contains=rubyExprSubst fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\|\(\.\|::\)\_s*\)\@<!<<-\z(\h\w*\)\ze\s*$+hs=s+3 end=+^\s*\zs\z1$+ contains=rubyExprSubst fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\|\(\.\|::\)\_s*\)\@<!<<-"\z(.*\)"\ze\s*$+hs=s+3  end=+^\s*\zs\z1$+ contains=rubyExprSubst fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\|\(\.\|::\)\_s*\)\@<!<<-'\z(.*\)'\ze\s*$+hs=s+3  end=+^\s*\zs\z1$+			      fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\|\(\.\|::\)\_s*\)\@<!<<-`\z(.*\)`\ze\s*$+hs=s+3  end=+^\s*\zs\z1$+ contains=rubyExprSubst fold
 endif
 
 " Expensive Mode - colorize *end* according to opening statement

@@ -1,3 +1,8 @@
+2003-08-27  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
+	* syntax/ruby.vim: don't allow '<<' after '.' or '::' to match as the
+	beginning of a heredoc.
+
 2003-08-26  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
 	* syntax/ruby.vim: fix shebang highlighting which was being ignored
