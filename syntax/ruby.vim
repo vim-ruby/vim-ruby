@@ -24,11 +24,7 @@ elseif exists("b:current_syntax")
   finish
 endif
 
-if version < 600 && exists("ruby_fold")
-  unlet ruby_fold
-endif
-
-if exists("ruby_fold")
+if has("folding") && exists("ruby_fold")
   setlocal foldmethod=syntax
 endif
 
@@ -264,4 +260,4 @@ endif
 
 let b:current_syntax = "ruby"
 
-" vim: nowrap tabstop=8 ff=unix
+" vim: nowrap ts=8 ff=unix
