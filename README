@@ -64,8 +64,18 @@ CVS topics:
 Any questions or suggestions?
   - If there's something about the project or its concepts that you don't
     understand, send an email to the project maintainer, Gavin Sinclair
-    (gsinclair@soyabean.com.au).
+    (gsinclair at soyabean.com.au).
   - To ask about the contents of the configuration files, ask on the mailing
     list, as different people maintain the different files.  Gavin knows
     nothing about the syntax file, for instance.
 
+Project gossip:
+  - Two of the configuration file maintainers, Doug Kearns and Gavin Sinclair,
+    live in Australia (Melbourne and Sydney respectively).  Tim Hammerquist,
+    the last man standing, has a cpan.org email address.
+  - While the individual effort to maintain these files has a long history,
+    this actual project began in late July 2003.  Therefore, if you're reading
+    this soon thereafter and something doesn't make sense, now is the time to
+    let us know.
+
+                           --= End of Document =--
