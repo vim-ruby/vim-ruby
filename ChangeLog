@@ -1,5 +1,10 @@
 2003-09-09  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
+	* indent/ruby.vim, syntax/ruby.vim: rename the rubyStringDelimit
+	syntax group rubyStringDelimiter.
+
+2003-09-09  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
 	* syntax/ruby.vim: highlight one line module, class, and method
 	definitions, using the ';' terminator, correctly; split
 	rubyClassOrModule into two new syntax groups - rubyClass and

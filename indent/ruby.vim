@@ -2,7 +2,7 @@
 " Language:	Ruby
 " Maintainer:	Gavin Sinclair <gsinclair at soyabean.com.au>
 " Developer:	Nikolai Weibull <lone-star at home.se>
-" Info:		$Id: ruby.vim,v 1.10 2003/08/18 09:52:48 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.11 2003/09/09 05:37:42 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -31,7 +31,7 @@ endif
 " Check if the character at lnum:col is inside a string or comment.
 function s:IsInStringOrComment(lnum, col)
   return synIDattr(synID(a:lnum, a:col, 0), 'name') =~ 
-	\'\<ruby\%(String\|StringDelimit\|Number\|ExprSubst\|Comment'.
+	\'\<ruby\%(String\|StringDelimiter\|Number\|ExprSubst\|Comment'.
 	\'\|Documentation\)\>'
 endfunction
 
@@ -81,7 +81,7 @@ let s:continuation_regexp = '[\*+/.,=(-]\s*\(#.*\)\=$'
 let s:block_regexp = '\<do\>\s*\(|\(\*\=\h\w*\(,\s*\)\=\)\+|\s*\)\=\(#.*\)\=$'
 
 " Expression used to check whether we should skip a match with searchpair().
-let s:skip_expr = 'synIDattr(synID(line("."), col("."), 0), "name") =~ "\\<ruby\\%(String\\|StringDelimit\\|Number\\|ExprSubst\\|Comment\\|Documentation\\)\\>"'
+let s:skip_expr = 'synIDattr(synID(line("."), col("."), 0), "name") =~ "\\<ruby\\%(String\\|StringDelimiter\\|Number\\|ExprSubst\\|Comment\\|Documentation\\)\\>"'
 let s:end_skip_expr = s:skip_expr.' || (expand("<cword>") =~ "\\<if\\>\\|\\<unless\\>\\|\\<while\\>\\|\\<until\\>" && getline(".") !~ "^\\s*\\<".expand("<cword>")."\\>" && getline(".") !~ expand("<cword>")."\\>.*\\<end\\>")'
 
 " Find the previous non-blank line which isn't a comment-line or in a comment
