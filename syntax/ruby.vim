@@ -156,7 +156,7 @@ endif
 
 " Keywords
 " Note: the following keywords have already been defined:
-" begin case class def do end for if module unless until while __FILE_ __LINE__
+" begin case class def do end for if module unless until while
 syn keyword rubyControl		and break else elsif ensure in next not or redo rescue retry return then when
 syn match   rubyOperator	"\<defined?" display
 syn keyword rubyKeyword		alias super undef yield
@@ -195,7 +195,7 @@ syn match rubyKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(load\|loop\|private\
 syn match rubyKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(public\|require\|raise\|throw\|trap\)\>"			transparent contains=NONE
 
 " __END__ Directive
-syn region rubyData matchgroup=rubyDataDirective start="^__END__$" matchgroup=NONE end="." skip="." fold
+syn region rubyData matchgroup=rubyDataDirective start="^__END__$" end="\%$" fold
 
 " Define the default highlighting.
 " For version 5.7 and earlier: only when not done already
