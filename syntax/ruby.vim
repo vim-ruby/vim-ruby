@@ -33,7 +33,7 @@ syn match rubyExprSubst "#\(\$\|@@\=\)\w\+" contained
 syn match rubyNumber "\w\@<!\(?\(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\=\(\\\o\{3}\|\\x\x\{2}\|\\\=\S\)\)"
 syn match rubyNumber "\<\(0x\x\+\|0b[01]\+\|0\o\+\|0\.\d\+\|0\|[1-9][\.0-9_]*\)\>"
 
-" Identifiers - constant, class and instance, global, symbol, iterator, predefined
+" Identifiers
 syn match rubyLocalVariableOrMethod "[_[:lower:]][_[:alnum:]]*[?!=]\=" transparent contains=NONE
 
 if !exists("ruby_no_identifiers")
@@ -49,11 +49,12 @@ if !exists("ruby_no_identifiers")
   syn match rubyPredefinedVariable "$\(defout\|stderr\|stdin\|stdout\)\>"
   syn match rubyPredefinedVariable "$\(DEBUG\|FILENAME\|KCODE\|LOAD_PATH\|SAFE\|VERBOSE\)\>"
   syn match rubyPredefinedConstant "__\(FILE\|LINE\)__\>"
-  syn match rubyPredefinedConstant "\<\(::\)\=\zs\(MatchingData\|NotImplementError\|ARGF\|ARGV\|ENV\)\>"
+  syn match rubyPredefinedConstant "\<\(::\)\=\zs\(MatchingData\|ARGF\|ARGV\|ENV\)\>"
   syn match rubyPredefinedConstant "\<\(::\)\=\zs\(DATA\|FALSE\|NIL\|RUBY_PLATFORM\|RUBY_RELEASE_DATE\)\>"
   syn match rubyPredefinedConstant "\<\(::\)\=\zs\(RUBY_VERSION\|STDERR\|STDIN\|STDOUT\|TOPLEVEL_BINDING\|TRUE\)\>"
   "Obsolete Global Constants
-  "syn match rubyPredefinedConstant "\<\(::\)\=\zs\(PLATFORM\|RELEASE\|VERSION\)\>"
+  "syn match rubyPredefinedConstant "\<\(::\)\=\zs\(PLATFORM\|RELEASE_DATE\|VERSION\)\>"
+  "syn match rubyPredefinedConstant "\<\(::\)\=\zs\(NotImplementError\)\>"
 endif
 
 "
@@ -164,15 +165,15 @@ if version < 600
   syn region rubyString matchgroup=rubyStringDelimit start=+<<\(EOF\|'EOF'\|"EOF"\|`EOF`\)+hs=s+2		   end=+^EOF$+	      contains=rubyExprSubst fold
   syn region rubyString matchgroup=rubyStringDelimit start=+<<\(EOS\|'EOS'\|"EOS"\|`EOS`\)+hs=s+2		   end=+^EOS$+	      contains=rubyExprSubst fold
 else
- syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\)\@<!<<\z(\h\w*\)\s*$+hs=s+2  end=+^\z1$+    contains=rubyExprSubst fold
- syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\)\@<!<<"\z(.*\)"\s*$+hs=s+2   end=+^\z1$+    contains=rubyExprSubst fold
- syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\)\@<!<<'\z(.*\)'\s*$+hs=s+2   end=+^\z1$+    fold
- syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\)\@<!<<`\z(.*\)`\s*$+hs=s+2   end=+^\z1$+    contains=rubyExprSubst fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\)\@<!<<\z(\h\w*\)\s*$+hs=s+2  end=+^\z1$+    contains=rubyExprSubst fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\)\@<!<<"\z(.*\)"\s*$+hs=s+2   end=+^\z1$+    contains=rubyExprSubst fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\)\@<!<<'\z(.*\)'\s*$+hs=s+2   end=+^\z1$+    fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\)\@<!<<`\z(.*\)`\s*$+hs=s+2   end=+^\z1$+    contains=rubyExprSubst fold
 
- syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\)\@<!<<-\z(\h\w*\)\s*$+hs=s+3 end=+^\s*\z1$+ contains=rubyExprSubst fold
- syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\)\@<!<<-"\z(.*\)"\s*$+hs=s+3  end=+^\s*\z1$+ contains=rubyExprSubst fold
- syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\)\@<!<<-'\z(.*\)'\s*$+hs=s+3  end=+^\s*\z1$+ fold
- syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\)\@<!<<-`\z(.*\)`\s*$+hs=s+3  end=+^\s*\z1$+ contains=rubyExprSubst fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\)\@<!<<-\z(\h\w*\)\s*$+hs=s+3 end=+^\s*\z1$+ contains=rubyExprSubst fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\)\@<!<<-"\z(.*\)"\s*$+hs=s+3  end=+^\s*\z1$+ contains=rubyExprSubst fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\)\@<!<<-'\z(.*\)'\s*$+hs=s+3  end=+^\s*\z1$+ fold
+  syn region rubyString matchgroup=rubyStringDelimit start=+\(class\s*\)\@<!<<-`\z(.*\)`\s*$+hs=s+3  end=+^\s*\z1$+ contains=rubyExprSubst fold
 endif
 
 " Expensive Mode - colorize *end* according to opening statement
@@ -203,24 +204,27 @@ if !exists("ruby_no_expensive")
   endif
   exec "syn sync minlines=" . ruby_minlines
 
-else " not Expensive
+else
   syn region  rubyFunction      matchgroup=rubyControl start="^\s*def\s" matchgroup=NONE end="\ze\(\s\|(\|;\|$\)" skip="\.\|\(::\)" oneline fold
   syn region  rubyClassOrModule matchgroup=rubyControl start="^\s*\(class\|module\)\s"   end="<\|$\|;\|\>"he=e-1 oneline fold
   syn keyword rubyControl case begin do for if unless while until end
-endif " Expensive?
+endif
 
 " Keywords
-syn keyword rubyControl   then else elsif when ensure rescue
-syn keyword rubyControl   and or not in loop
-syn keyword rubyControl   break redo retry next return
-syn match   rubyKeyword   "\<defined?"
-syn keyword rubyKeyword   alias lambda proc super undef yield
-syn match   rubyInclude   "^\s*include\>"
-syn keyword rubyInclude   load require
-syn keyword rubyTodo      FIXME NOTE TODO XXX contained
-syn keyword rubyBoolean   true false self nil
-syn keyword rubyException raise fail catch throw
-syn keyword rubyBeginEnd  BEGIN END
+syn keyword rubyControl  and break else elsif ensure in next not or redo rescue retry return then when
+syn match   rubyKeyword  "\<defined?"
+syn keyword rubyKeyword  alias super undef yield
+syn keyword rubyBoolean  true false self nil
+syn keyword rubyBeginEnd BEGIN END
+
+" Special Methods
+if !exists("ruby_no_special_methods")
+  syn match   rubyInclude   "^\s*include\>"
+  syn keyword rubyInclude   load require
+  syn keyword rubyControl   loop
+  syn keyword rubyException raise fail catch throw
+  syn keyword rubyKeyword   lambda proc
+endif
 
 " Comments and Documentation
 if version < 600
@@ -228,8 +232,9 @@ if version < 600
 else
   syn match  rubySharpBang "\%^#!.*"
 endif
-syn match  rubyComment       "#.*" contains=rubyTodo
-syn region rubyDocumentation start="^=begin" end="^=end.*$" contains=rubyTodo fold
+syn keyword rubyTodo          FIXME NOTE TODO XXX contained
+syn match   rubyComment       "#.*" contains=rubyTodo
+syn region  rubyDocumentation start="^=begin" end="^=end.*$" contains=rubyTodo fold
 
 " Note: this is a hack to prevent 'keywords' being highlighted as such when used as method names
 syn match rubyKeywordAsMethod "\.\@<!\.\(\s*\n\s*\)*\(alias\|and\|begin\|break\|case\|catch\|class\|def\|do\|elsif\)\>"        transparent contains=NONE

@@ -1,3 +1,11 @@
+2003-08-21  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
+	* syntax/ruby.vim: no longer match NotImplementError as a predefined
+	global constant; move rubyTodo to the Comments and Documentation
+	section; create a Special Methods section and add the
+	ruby_no_special_methods variable to allow the highlighting of these
+	'special' methods to be disabled.
+
 2003-08-18  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
 	* compiler/ruby.vim, ftplugin/ruby.vim, indent/ruby.vim,
