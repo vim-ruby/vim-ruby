@@ -1,7 +1,9 @@
 2005-03-24  Gavin Sinclair <gsinclair@soyabean.com.au>
 
 	* syntax/ruby.vim: Improved hilighting of %{...} strings with
-	delimiters (Ken Miller).
+	nested brackets (Ken Miller).
+	* indent/ruby.vim: Improved indenting of %{...} strings with
+	nested brackets (Ken Miller).
 	* syntax/ruby.vim: Corrected hilighting of |(x,y)| iterator
 	parameters (Tilman Sauerbeck).
 

@@ -37,19 +37,19 @@ endif
 
 " Regex of synax group names that are or delimit string or are comments.
 let s:syng_strcom = '\<ruby\%(String\|StringDelimiter\|ASCIICode' .
-      \ '\|Interpolation\|NoInterpolation\|Escape\|Comment\|Documentation\)\>'
+      \ '\|Interpolation\|NoInterpolation\|NestedBrackets\|Escape\|Comment\|Documentation\)\>'
 
 " Regex of syntax group names that are strings or comments.
 let s:syng_strcom2 = '\<ruby\%(String' .
-      \ '\|Interpolation\|NoInterpolation\|Escape\|Comment\|Documentation\)\>'
+      \ '\|Interpolation\|NoInterpolation\|NestedBrackets\|Escape\|Comment\|Documentation\)\>'
 
 " Regex of syntax group names that are strings.
 let s:syng_string =
-      \ '\<ruby\%(String\|Interpolation\|NoInterpolation\|Escape\)\>'
+      \ '\<ruby\%(String\|Interpolation\|NoInterpolation\|NestedBrackets\|Escape\)\>'
 
 " Regex of syntax group names that are strings or documentation.
 let s:syng_stringdoc =
-  \'\<ruby\%(String\|Interpolation\|NoInterpolation\|Escape\|Documentation\)\>'
+  \'\<ruby\%(String\|Interpolation\|NoInterpolation\|NestedBrackets\|Escape\|Documentation\)\>'
 
 " Expression used to check whether we should skip a match with searchpair().
 let s:skip_expr =
