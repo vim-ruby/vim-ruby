@@ -1,5 +1,10 @@
 2003-10-03  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
+	* syntax/ruby.vim: simplify the rubyData pattern by using the new EOF
+	atom.
+
+2003-10-03  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+
 	* syntax/ruby.vim: link rubyBoolean to rubyPseudoVariable; link
 	rubyPseudoVariable to the Constant highlight group.
 
