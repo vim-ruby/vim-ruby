@@ -2,7 +2,7 @@
 " Language:	Ruby
 " Maintainer:	Gavin Sinclair <gsinclair at soyabean.com.au>
 " Developer:	Nikolai Weibull <lone-star at home.se>
-" Info:		$Id: ruby.vim,v 1.17 2003/10/13 01:31:10 pcp Exp $
+" Info:		$Id: ruby.vim,v 1.18 2003/10/14 23:31:36 pcp Exp $
 " URL:		http://vim-ruby.rubyforge.org/
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org/)
@@ -46,6 +46,10 @@ let s:syng_strcom2 = '\<ruby\%(String' .
 " Regex of syntax group names that are strings.
 let s:syng_string =
       \ '\<ruby\%(String\|Interpolation\|NoInterpolation\|Escape\)\>'
+
+" Regex of syntax group names that are strings or documentation.
+let s:syng_stringdoc =
+  \'\<ruby\%(String\|Interpolation\|NoInterpolation\|Escape\|Documentation\)\>'
 
 " Expression used to check whether we should skip a match with searchpair().
 let s:skip_expr =
@@ -114,6 +118,11 @@ function s:IsInString(lnum, col)
   return synIDattr(synID(a:lnum, a:col, 0), 'name') =~ s:syng_string
 endfunction
 
+" Check if the character at lnum:col is inside a string or documentation.
+function s:IsInStringOrDocumentation(lnum, col)
+  return synIDattr(synID(a:lnum, a:col, 0), 'name') =~ s:syng_stringdoc
+endfunction
+
 " Find line above 'lnum' that isn't empty, in a comment, or in a string.
 function s:PrevNonBlankNonString(lnum)
   let in_block = 0
@@ -122,17 +131,17 @@ function s:PrevNonBlankNonString(lnum)
     " Go in and out of blocks comments as necessary.
     " If the line isn't empty (with opt. comment) or in a string, end search.
     let line = getline(lnum)
-    if in_block
-      if line =~ '^=begin$'
+    if line =~ '^=begin$'
+      if in_block
 	let in_block = 0
-      endif
-    else
-      if line =~ '^=end$'
-	let in_block = 1
-      elseif line !~ '^\s*#.*$' && !(s:IsInStringOrComment(lnum, 1)
-	  \ && s:IsInStringOrComment(lnum, strlen(line)))
+      else
 	break
       endif
+    elseif !in_block && line =~ '^=end$'
+      let in_block = 1
+    elseif !in_block && line !~ '^\s*#.*$' && !(s:IsInStringOrComment(lnum, 1)
+	  \ && s:IsInStringOrComment(lnum, strlen(line)))
+      break
     endif
     let lnum = prevnonblank(lnum - 1)
   endwhile
@@ -232,7 +241,7 @@ function GetRubyIndent()
   endif
 
   " If we are in a multi-line string or line-comment, don't do anything to it.
-  if s:IsInStringOrComment2(v:lnum, matchend(line, '^\s*') + 1)
+  if s:IsInStringOrDocumentation(v:lnum, matchend(line, '^\s*') + 1)
     return indent('.')
   endif
 
