@@ -72,7 +72,8 @@ if !exists("ruby_no_identifiers")
   syn match  rubySymbol			":\@<!:\$\%(-.\|[`~<=>_,;:!?/.'"@$*\&+0]\)"
   syn match  rubySymbol			":\@<!:\%(\$\|@@\=\)\=\h\w*[?!=]\="
   syn region rubySymbol			start=":\@<!:\"" end="\"" skip="\\\\\|\\\""
-  syn match  rubyIterator		"|[ ,a-zA-Z0-9_*()]\+|" display
+  syn match  rubyIterator		"|[ ,a-zA-Z0-9_*]\+|"		display
+  syn match  rubyIterator		"|\s*([ ,a-zA-Z0-9_*]\+)\s*|"	display
 
   syn match rubyPredefinedVariable #$[!$&"'*+,./0:;<=>?@\_`~1-9]#
   syn match rubyPredefinedVariable "$-[0FIKadilpvw]"									display
