@@ -1,0 +1,167 @@
+#!/bin/sh
+
+#
+# Automates the process of tagging, exporting and packaging a release from CVS.
+# Steve Purcell <stephen_purcell at yahoo dot com>
+#
+
+AUTHOR='Steve Purcell <stephen_purcell at yahoo dot com>'
+VERSION=`echo '$Revision$'|cut -d' ' -f2`
+PROJECT='Visit http://cvsutils.sourceforge.net/ for updates and information'
+
+progname=`basename $0`
+
+function usage() {
+    cat <<EOF 1>&2
+Creates appropriately named .tar.gz and .zip files containing the files in
+the current \$CVSROOT for release 'release-tag' of the CVS module 'cvsmodule'.
+
+  usage: $progname [options] -t release-tag -r release-number cvsmodule 
+
+options:
+  -t            The CVS tag name
+  -r            The release number, e.g. 1.2
+  -b branch     Make the release in the branch with the given name (not
+                allowed unless -T is also set)
+  -z            Make a '.zip'. release file as well as the usual '.tar.gz' file
+  -T            Also create the CVS tag (use with caution)
+  -f flavour    Name the release files cvsmodule-flavour-releasenum.tar.gz etc.
+  -x script     Execute script inside exported module directory before
+                Packaging
+  -h            Show this help page
+  -V            Show version information
+
+The following example would create a CVS tag '0-3' for the module 'webunit',
+and package that module into both a 'tar.gz' archive and a 'zip' archive
+containing a top-level directory 'webunit-0.3'.
+
+  % $progname -Tz -t 0-3 -r 0.3 webunit
+
+If a script is specified using the '-x' option, it will be executed in the
+root directory of the exported module before the release file is created.
+This option can be used to remove unwanted portions of a release, or to
+pre-compile binaries for inclusion in the release file. The release tag and
+number are exported to the script as \$RELEASETAG and \$RELEASENUM
+respectively. Often that script will be used in conjunction with the '-f'
+option.
+EOF
+}
+
+function showversion() {
+    echo "$progname version $VERSION, by $AUTHOR"
+    echo "$PROJECT"
+}
+
+function message() {
+    echo "$progname$1" 1>&2
+}
+
+function error_exit() {
+    message "error: $1" 1>&2
+    tidyup
+    exit 1
+}
+
+function tidyup() {
+    if [ -n "$tempdir" -a -d "$tempdir" ]; then
+        rm -r $tempdir
+    fi
+}
+
+
+## Begin option parsing
+while getopts t:r:zThx:f:Vb: opt; do
+    case "$opt" in
+    t) releasetag="$OPTARG" ;;
+    r) releasenum="$OPTARG" ;;
+    b) frombranch="$OPTARG" ;;
+    z) makezip=1 ;;
+    T) maketag=1 ;;
+    f) flavour="$OPTARG" ;;
+    x) releasescript="$OPTARG" ;;
+    V) showversion; exit 0 ;;
+    h) usage; exit 0 ;;
+    *) usage; exit 2 ;;
+    esac
+done
+
+shift $(($OPTIND - 1))
+
+## Check values of options
+module=$1
+
+if [ -z "$module" -o -z "$releasetag" -o -z "$releasenum" ]; then
+    message "mandatory option(s) missing"
+    usage
+    exit 2
+fi
+if [ -n "$frombranch" -a -z "$maketag" ]; then
+    message "option -b cannot be used without -T"
+    usage
+    exit 2
+fi
+
+## Prepare a directory in which to work
+orig_dir=$PWD
+tempdir=/tmp/$progname.$$
+mkdir $tempdir || error_exit "couldn't create $tempdir"
+cd $tempdir
+
+message "CVS root is $CVSROOT"
+
+## Create the CVS tag if it was requested
+if [ "$maketag" ]; then
+    if [ -n "$frombranch" ]; then
+        branch=$frombranch
+    else
+        branch=HEAD
+    fi
+    cvs co -r $branch $module || \
+        error_exit "error checking out from CVS"
+    cvs tag $releasetag || \
+        error_exit "error setting tag '$releasetag'"
+    rm -rf $module
+fi
+
+## Choose a name for the top level directory
+releasedir=$module-$releasenum
+
+## Export the files to package
+message "exporting from CVS"
+cvs export -r$releasetag -d $releasedir $module || \
+    error_exit "error exporting code from CVS"
+
+## Choose a name for the generated archive files
+if [ -n "$flavour" ]; then
+    archive_base=$orig_dir/$module-$flavour-$releasenum
+else
+    archive_base=$orig_dir/$module-$releasenum
+fi
+
+if [ -n "$releasescript" ]; then
+    message "running release script '$releasescript' in $releasedir"
+    (cd $releasedir && \
+     RELEASETAG=$releasetag RELEASENUM=$releasenum $releasescript) || \
+        error_exit "error running release script; aborting."
+fi
+
+## Create a '.tar.gz'
+tarball=$archive_base.tar.gz
+message "creating release tarball: $tarball"
+tar cfz $tarball $module-$releasenum || \
+    error_exit "couldn't create $tarball"
+
+## And a '.zip' too if it was requested
+if [ "$makezip" ]; then
+    zipfile=$archive_base.zip
+    message "creating release zipfile: $zipfile"
+    zip -qr $zipfile $module-$releasenum || \
+        error_exit "couldn't create $zipfile"
+fi
+
+## finish up
+cd $orig_dir
+tidyup
+
+message "done"
+exit 0
