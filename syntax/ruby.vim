@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	Ruby
 " Maintainer:	Doug Kearns <djkea2 at mugca.its.monash.edu.au>
-" Info:		$Id: ruby.vim,v 1.21 2003/09/11 14:25:47 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.22 2003/09/18 00:27:15 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -26,7 +26,7 @@ endif
 
 " Expression Substitution and Backslash Notation
 syn match rubyExprSubst "\\\\\|\(\(\\M-\\C-\|\\c\|\\C-\|\\M-\)\w\)\|\(\\\o\{3}\|\\x\x\{2}\|\\[abefnrstv]\)" contained display
-syn match rubyExprSubst "#{[^}]*}"									    contained display
+syn match rubyExprSubst "#{[^}]*}"									    contained
 syn match rubyExprSubst "#\(\$\|@@\=\)\w\+"								    contained display
 
 " Numbers and ASCII Codes
@@ -63,7 +63,7 @@ if !exists("ruby_no_identifiers")
 endif
 
 " Normal Regular Expression
-syn region rubyString matchgroup=rubyStringDelimiter start="^\s*/" start="\<and\s*/"lc=3 start="\<or\s*/"lc=2 start="\<while\s*/"lc=5 start="\<until\s*/"lc=5 start="\<unless\s*/"lc=6 start="\<if\s*/"lc=2 start="\<elsif\s*/"lc=5 start="\<when\s*/"lc=4 start="[\~=!|&(,[]\s*/"lc=1 end="/[iomx]*" skip="\\\\\|\\/" contains=rubyExprSubst
+syn region rubyString matchgroup=rubyStringDelimiter start="^\s*/" start="\<and\s*/"lc=3 start="\<or\s*/"lc=2 start="\<while\s*/"lc=5 start="\<until\s*/"lc=5 start="\<unless\s*/"lc=6 start="\<if\s*/"lc=2 start="\<elsif\s*/"lc=5 start="\<when\s*/"lc=4 start="\<not\s*/"lc=3  start="\<then\s*/"lc=4 start="[\~=!|&(,[]\s*/"lc=1 end="/[iomx]*" skip="\\\\\|\\/" contains=rubyExprSubst
 
 " Normal String and Shell Command Output
 syn region rubyString matchgroup=rubyStringDelimiter start="\"" end="\"" skip="\\\\\|\\\"" contains=rubyExprSubst
@@ -124,7 +124,7 @@ if !exists("ruby_no_expensive")
   syn region rubyCurlyBlock start="{" end="}" contains=ALLBUT,rubyExprSubst,rubyTodo fold
 
   " statements without *do*
-  syn region rubyNoDoBlock matchgroup=rubyControl start="\<\(case\|begin\)\>" start="^\s*\(if\|unless\)\>" start=";\s*\(if\|unless\)\>"hs=s+1 end="\<end\>" contains=ALLBUT,rubyExprSubst,rubyTodo fold
+  syn region rubyNoDoBlock matchgroup=rubyControl start="\<\(case\|begin\)\>" start="^\s*\(if\|unless\)\>" start="[;=(]\s*\(if\|unless\)\>"hs=s+1 end="\<end\>" contains=ALLBUT,rubyExprSubst,rubyTodo fold
 
   " statement with optional *do*
   syn region rubyOptDoBlock matchgroup=rubyControl start="\<for\>" start="^\s*\(while\|until\)\>" start=";\s*\(while\|until\)\>"hs=s+1 end="\<end\>" contains=ALLBUT,rubyExprSubst,rubyTodo fold
