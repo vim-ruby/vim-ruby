@@ -31,7 +31,7 @@ endif
 " Check if the character at lnum:col is inside a string or comment.
 function s:IsInStringOrComment(lnum, col)
   return synIDattr(synID(a:lnum, a:col, 0), 'name') =~ 
-	\'\<ruby\%(String\|StringDelimit\|Number\|ExprSubst\|Comment'.
+	\'\<ruby\%(String\|StringDelimiter\|Number\|ExprSubst\|Comment'.
 	\'\|Documentation\)\>'
 endfunction
 
@@ -81,7 +81,7 @@ let s:continuation_regexp = '[\*+/.,=(-]\s*\(#.*\)\=$'
 let s:block_regexp = '\<do\>\s*\(|\(\*\=\h\w*\(,\s*\)\=\)\+|\s*\)\=\(#.*\)\=$'
 
 " Expression used to check whether we should skip a match with searchpair().
-let s:skip_expr = 'synIDattr(synID(line("."), col("."), 0), "name") =~ "\\<ruby\\%(String\\|StringDelimit\\|Number\\|ExprSubst\\|Comment\\|Documentation\\)\\>"'
+let s:skip_expr = 'synIDattr(synID(line("."), col("."), 0), "name") =~ "\\<ruby\\%(String\\|StringDelimiter\\|Number\\|ExprSubst\\|Comment\\|Documentation\\)\\>"'
 let s:end_skip_expr = s:skip_expr.' || (expand("<cword>") =~ "\\<if\\>\\|\\<unless\\>\\|\\<while\\>\\|\\<until\\>" && getline(".") !~ "^\\s*\\<".expand("<cword>")."\\>" && getline(".") !~ expand("<cword>")."\\>.*\\<end\\>")'
 
 " Find the previous non-blank line which isn't a comment-line or in a comment
