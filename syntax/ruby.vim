@@ -35,8 +35,12 @@ syn match rubyInterpolation	"#{[^}]*}"				contained
 syn match rubyInterpolation	"#\%(\$\|@@\=\)\w\+"			contained display
 syn match rubyNoInterpolation	"\\#{[^}]*}"				contained
 syn match rubyNoInterpolation	"\\#\%(\$\|@@\=\)\w\+"			contained display
+syn region rubyNestedBrackets	start="("	end=")"		skip="\\\\\|\\)"	contained	contains=@rubyStringSpecial
+syn region rubyNestedBrackets	start="{"	end="}"		skip="\\\\\|\\}"	contained	contains=@rubyStringSpecial
+syn region rubyNestedBrackets	start="<"	end=">"		skip="\\\\\|\\>"	contained	contains=@rubyStringSpecial
+syn region rubyNestedBrackets	start="\["	end="\]"	skip="\\\\\|\\\]"	contained	contains=@rubyStringSpecial
 
-syn cluster rubyStringSpecial contains=rubyInterpolation,rubyNoInterpolation,rubyEscape
+syn cluster rubyStringSpecial contains=rubyInterpolation,rubyNoInterpolation,rubyEscape,rubyNestedBrackets
 
 " Numbers and ASCII Codes
 syn match rubyASCIICode	"\w\@<!\%(?\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\=\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)\)"
@@ -250,6 +254,7 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubyEscape			Special
   HiLink rubyInterpolation		Special
   HiLink rubyNoInterpolation		rubyString
+  HiLink rubyNestedBrackets		rubyString
   HiLink rubySharpBang			PreProc
   HiLink rubyStringDelimiter		Delimiter
   HiLink rubyString			String
