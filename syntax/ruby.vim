@@ -57,7 +57,7 @@ if !exists("ruby_no_identifiers")
   syn region rubySymbol			start=":\@<!:\"" end="\"" skip="\\\\\|\\\""
   syn match  rubyIterator		"|[ ,a-zA-Z0-9_*]\+|"	display
 
-  syn match rubyPredefinedVariable "$[!$&*+,./0:;<=>?@\_`~1-9]"
+  syn match rubyPredefinedVariable #$[!$&"'*+,./0:;<=>?@\_`~1-9]#
   syn match rubyPredefinedVariable "$-[0FIKadilpvw]"									display
   syn match rubyPredefinedVariable "$\%(deferr\|defout\|stderr\|stdin\|stdout\)\>"					display
   syn match rubyPredefinedVariable "$\%(DEBUG\|FILENAME\|KCODE\|LOAD_PATH\|SAFE\|VERBOSE\)\>"				display
