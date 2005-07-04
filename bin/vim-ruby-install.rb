@@ -52,8 +52,11 @@ class Env
       # 1. Try the current directory.
     if SOURCE_FILES.all? { |path| FileTest.file?(path) }
       return '.'
+      # 2. Try the directory above this installation script.
+    elsif SOURCE_FILES.map { |f| File.join(File.dirname($0), '..', f) }.all? { |path| FileTest.file?(path) }
+      return File.join(File.dirname($0), '..')
     end
-      # 2. Try the gem 'vim-ruby'.
+      # 3. Try the gem 'vim-ruby'.
     begin
       require 'rubygems'
       raise "Need RubyGems 0.8+" if Gem::RubyGemsPackageVersion < '0.8'
@@ -231,6 +234,9 @@ class VimRubyInstaller
     # will be copied.  Both are strings.
   def initialize(source, target)
     @source_dir = source
+    unless FileTest.directory?(@source_dir)
+      raise "Automatically determined source directory ('#{@source_dir}') doesn't exist"
+    end
     unless FileTest.directory?(target)
       raise "Chosen target directory ('#{target}') doesn't exist"
     end
@@ -366,6 +372,7 @@ end
 op.parse!(ARGV)
 
 source_dir = Env.determine_source_directory
+if source_dir.nil? then raise "Can't find source directory"; end
 target_dir = $options[:target_dir] || TargetDirectory.finder.find_target_directory
 VimRubyInstaller.new(source_dir, target_dir).install
 
