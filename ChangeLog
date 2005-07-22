@@ -1,3 +1,7 @@
+2005-07-22  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* syntax/ruby.vim: allow strings inside interpolation regions
+
 2005-07-04  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* bin/vim-ruby-install.rb: improve source directory detection (Hugh
@@ -24,7 +28,7 @@
 	ruby_no_trail_space_error and ruby_no_tab_space_error configuration
 	variables
 
-2005-03-31  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+2005-03-30  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* syntax/ruby.vim: add configurable highlighting of trailing space and
 	'space before tab' errors (Tilman Sauerbeck)
@@ -38,12 +42,12 @@
 	* syntax/ruby.vim: Corrected hilighting of |(x,y)| iterator
 	parameters (Tilman Sauerbeck).
 
-2004-11-28  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+2004-11-27  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* compiler/ruby.vim, compiler/rubyunit.vim, syntax/ruby.vim: update
 	DJK's email address
 
-2004-10-01  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+2004-09-30  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
 	* syntax/ruby.vim: match regexp values in hash literals
 
@@ -93,7 +97,7 @@
 	* syntax/ruby.vim: add ruby_fold variable to control the setting of
 	the foldmethod option
 
-2004-04-07  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
+2004-04-06  Doug Kearns  <djkea2@mugca.its.monash.edu.au>
 
 	* filetype/filetype.vim: add RubyGems specification and installation
 	files and Rakefiles
