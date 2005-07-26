@@ -94,8 +94,8 @@ else
 endif
 
 " Normal Regular Expression
-syn region rubyString matchgroup=rubyStringDelimiter start="^\s*/" start="\<and\s*/"lc=3 start="\<or\s*/"lc=2 start="\<while\s*/"lc=5 start="\<until\s*/"lc=5 start="\<unless\s*/"lc=6 start="\<if\s*/"lc=2 start="\<elsif\s*/"lc=5 start="\<when\s*/"lc=4 start="\<not\s*/"lc=3  start="\<then\s*/"lc=4 start="[\~=!|&(,[]\s*/"lc=1 end="/[iomx]*" skip="\\\\\|\\/" contains=@rubyStringSpecial
-syn region rubyString matchgroup=rubyStringDelimiter start="=>\s*/"lc=2 start="\<split\s*/"lc=5 start="\<\%(scan\|gsub\)\s*/"lc=4 start="\<sub\s*/"lc=3 end="/[iomx]*" skip="\\\\\|\\/" contains=@rubyStringSpecial
+syn region rubyString matchgroup=rubyStringDelimiter start="\%(\%(^\|\<\%(and\|or\|while\|until\|unless\|if\|elsif\|when\|not\|then\)\|[\~=!|&(,[]\)\s*\)\@<=/" end="/[iomx]*" skip="\\\\\|\\/" contains=@rubyStringSpecial
+syn region rubyString matchgroup=rubyStringDelimiter start="\%(\<\%(split\|scan\|gsub\|sub\)\s*\)\@<=/" end="/[iomx]*" skip="\\\\\|\\/" contains=@rubyStringSpecial
 
 " Normal String and Shell Command Output
 syn region rubyString matchgroup=rubyStringDelimiter start="\"" end="\"" skip="\\\\\|\\\"" contains=@rubyStringSpecial
