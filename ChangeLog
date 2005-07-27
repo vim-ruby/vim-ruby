@@ -2,6 +2,7 @@
 
 	* syntax/ruby.vim: replace leading context 'lc' offsets with the
 	'\@<=' pattern construct when matching 'normal regular expressions'
+	(Aaron Son)
 
 2005-07-22  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
