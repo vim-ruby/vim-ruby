@@ -1,3 +1,7 @@
+2005-07-27  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* Rakefile: add 'package' as the default target
+
 2005-07-26  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* syntax/ruby.vim: replace leading context 'lc' offsets with the
