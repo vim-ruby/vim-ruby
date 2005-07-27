@@ -8,6 +8,10 @@ RELEASE_FILES = FileList[
 ]
 PACKAGE_VERSION = Time.now.strftime('%Y.%m.%d')
 
+desc "Build all the packages"
+task :default => :package
+
+
 def gemspec
   Gem::Specification.new do |s|
     s.name                  = PACKAGE_NAME
