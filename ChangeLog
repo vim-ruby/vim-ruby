@@ -1,3 +1,8 @@
+2005-07-30  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* syntax/ruby.vim: reorder identifier matching so that identifiers
+	'containing' predefined identifiers, such as $_, match properly
+
 2005-07-28  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* syntax/ruby.vim: improve matching of conditional expressions
