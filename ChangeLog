@@ -1,3 +1,9 @@
+2005-08-01  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* syntax/ruby.vim: undo reordering of identifier matching and make $_
+	a special case to prevent it matching against global variables with a
+	leading underscore
+
 2005-07-30  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* syntax/ruby.vim: reorder identifier matching so that identifiers

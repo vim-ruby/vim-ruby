@@ -68,17 +68,6 @@ syn match rubyFloat	"\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\%(\.\d\+\%(_\d\+\)*\)\=\%([eE
 syn match rubyLocalVariableOrMethod "[_[:lower:]][_[:alnum:]]*[?!=]\=" contains=NONE display transparent
 
 if !exists("ruby_no_identifiers")
-  syn match rubyPredefinedVariable #$[!$&"'*+,./0:;<=>?@\_`~1-9]#
-  syn match rubyPredefinedVariable "$-[0FIKadilpvw]"									display
-  syn match rubyPredefinedVariable "$\%(deferr\|defout\|stderr\|stdin\|stdout\)\>"					display
-  syn match rubyPredefinedVariable "$\%(DEBUG\|FILENAME\|KCODE\|LOAD_PATH\|SAFE\|VERBOSE\)\>"				display
-  syn match rubyPredefinedConstant "\<\%(::\)\=\zs\%(MatchingData\|ARGF\|ARGV\|ENV\)\>"					display
-  syn match rubyPredefinedConstant "\<\%(::\)\=\zs\%(DATA\|FALSE\|NIL\|RUBY_PLATFORM\|RUBY_RELEASE_DATE\)\>"		display
-  syn match rubyPredefinedConstant "\<\%(::\)\=\zs\%(RUBY_VERSION\|STDERR\|STDIN\|STDOUT\|TOPLEVEL_BINDING\|TRUE\)\>"	display
-  "Obsolete Global Constants
-  "syn match rubyPredefinedConstant "\<\%(::\)\=\zs\%(PLATFORM\|RELEASE_DATE\|VERSION\)\>"
-  "syn match rubyPredefinedConstant "\<\%(::\)\=\zs\%(NotImplementError\)\>"
-
   syn match  rubyConstant		"\%(::\)\=\zs\u\w*"	display
   syn match  rubyClassVariable		"@@\h\w*"		display
   syn match  rubyInstanceVariable	"@\h\w*"		display
@@ -89,6 +78,18 @@ if !exists("ruby_no_identifiers")
   syn region rubySymbol			start=":\@<!:\"" end="\"" skip="\\\\\|\\\""
   syn match  rubyIterator		"|[ ,a-zA-Z0-9_*]\+|"		display
   syn match  rubyIterator		"|\s*([ ,a-zA-Z0-9_*]\+)\s*|"	display
+
+  syn match rubyPredefinedVariable #$[!$&"'*+,./0:;<=>?@\`~1-9]#
+  syn match rubyPredefinedVariable "$_\>"										display
+  syn match rubyPredefinedVariable "$-[0FIKadilpvw]\>"									display
+  syn match rubyPredefinedVariable "$\%(deferr\|defout\|stderr\|stdin\|stdout\)\>"					display
+  syn match rubyPredefinedVariable "$\%(DEBUG\|FILENAME\|KCODE\|LOAD_PATH\|SAFE\|VERBOSE\)\>"				display
+  syn match rubyPredefinedConstant "\<\%(::\)\=\zs\%(MatchingData\|ARGF\|ARGV\|ENV\)\>"					display
+  syn match rubyPredefinedConstant "\<\%(::\)\=\zs\%(DATA\|FALSE\|NIL\|RUBY_PLATFORM\|RUBY_RELEASE_DATE\)\>"		display
+  syn match rubyPredefinedConstant "\<\%(::\)\=\zs\%(RUBY_VERSION\|STDERR\|STDIN\|STDOUT\|TOPLEVEL_BINDING\|TRUE\)\>"	display
+  "Obsolete Global Constants
+  "syn match rubyPredefinedConstant "\<\%(::\)\=\zs\%(PLATFORM\|RELEASE_DATE\|VERSION\)\>"
+  "syn match rubyPredefinedConstant "\<\%(::\)\=\zs\%(NotImplementError\)\>"
 else
   syn match NONE +$['"]+
 endif
