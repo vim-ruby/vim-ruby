@@ -68,7 +68,7 @@ syn match rubyFloat	"\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\%(\.\d\+\%(_\d\+\)*\)\=\%([eE
 syn match rubyLocalVariableOrMethod "[_[:lower:]][_[:alnum:]]*[?!=]\=" contains=NONE display transparent
 
 if !exists("ruby_no_identifiers")
-  syn match  rubyConstant		"\%(::\)\=\zs\u\w*"	display
+  syn match  rubyConstant               "\%(\%(\.\@<!\.\)\@<!\|::\)\_s*\zs\u\w*\>\%(\s*(\)\@!" display
   syn match  rubyClassVariable		"@@\h\w*"		display
   syn match  rubyInstanceVariable	"@\h\w*"		display
   syn match  rubyGlobalVariable		"$\%(\h\w*\|-.\)"
@@ -84,12 +84,12 @@ if !exists("ruby_no_identifiers")
   syn match rubyPredefinedVariable "$-[0FIKadilpvw]\>"									display
   syn match rubyPredefinedVariable "$\%(deferr\|defout\|stderr\|stdin\|stdout\)\>"					display
   syn match rubyPredefinedVariable "$\%(DEBUG\|FILENAME\|KCODE\|LOAD_PATH\|SAFE\|VERBOSE\)\>"				display
-  syn match rubyPredefinedConstant "\<\%(::\)\=\zs\%(MatchingData\|ARGF\|ARGV\|ENV\)\>"					display
-  syn match rubyPredefinedConstant "\<\%(::\)\=\zs\%(DATA\|FALSE\|NIL\|RUBY_PLATFORM\|RUBY_RELEASE_DATE\)\>"		display
-  syn match rubyPredefinedConstant "\<\%(::\)\=\zs\%(RUBY_VERSION\|STDERR\|STDIN\|STDOUT\|TOPLEVEL_BINDING\|TRUE\)\>"	display
+  syn match rubyPredefinedConstant "\%(\%(\.\@<!\.\)\@<!\|::\)\_s*\zs\%(MatchingData\|ARGF\|ARGV\|ENV\)\>\%(\s*(\)\@!"
+  syn match rubyPredefinedConstant "\%(\%(\.\@<!\.\)\@<!\|::\)\_s*\zs\%(DATA\|FALSE\|NIL\|RUBY_PLATFORM\|RUBY_RELEASE_DATE\)\>\%(\s*(\)\@!"
+  syn match rubyPredefinedConstant "\%(\%(\.\@<!\.\)\@<!\|::\)\_s*\zs\%(RUBY_VERSION\|STDERR\|STDIN\|STDOUT\|TOPLEVEL_BINDING\|TRUE\)\>\%(\s*(\)\@!"
   "Obsolete Global Constants
-  "syn match rubyPredefinedConstant "\<\%(::\)\=\zs\%(PLATFORM\|RELEASE_DATE\|VERSION\)\>"
-  "syn match rubyPredefinedConstant "\<\%(::\)\=\zs\%(NotImplementError\)\>"
+  "syn match rubyPredefinedConstant "\%(::\)\=\zs\%(PLATFORM\|RELEASE_DATE\|VERSION\)\>"
+  "syn match rubyPredefinedConstant "\%(::\)\=\zs\%(NotImplementError\)\>"
 else
   syn match NONE +$['"]+
 endif
