@@ -65,9 +65,9 @@ syn match rubyFloat	"\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\.\d\+\%(_\d\+\)*\>"					displ
 syn match rubyFloat	"\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\%(\.\d\+\%(_\d\+\)*\)\=\%([eE][-+]\=\d\+\%(_\d\+\)*\)\>"	display
 
 " Identifiers
-syn match rubyLocalVariableOrMethod "[_[:lower:]][_[:alnum:]]*[?!=]\=" contains=NONE display transparent
+syn match rubyLocalVariableOrMethod "\<[_[:lower:]][_[:alnum:]]*[?!=]\=" contains=NONE display transparent
 
-syn match  rubyConstant               "\%(\%(\.\@<!\.\)\@<!\|::\)\_s*\zs\u\w*\>\%(\s*(\)\@!"
+syn match  rubyConstant               "\%(\%(\.\@<!\.\)\@<!\<\|::\)\_s*\zs\u\w*\>\%(\s*(\)\@!"
 syn match  rubyClassVariable		"@@\h\w*"		display
 syn match  rubyInstanceVariable	"@\h\w*"		display
 syn match  rubyGlobalVariable		"$\%(\h\w*\|-.\)"
@@ -282,4 +282,4 @@ endif
 
 let b:current_syntax = "ruby"
 
-" vim: nowrap ts=8 ff=unix
+" vim: sw=2 sts=2 ts=8 ff=unix nowrap:
