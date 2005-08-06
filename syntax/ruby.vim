@@ -67,32 +67,28 @@ syn match rubyFloat	"\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\%(\.\d\+\%(_\d\+\)*\)\=\%([eE
 " Identifiers
 syn match rubyLocalVariableOrMethod "[_[:lower:]][_[:alnum:]]*[?!=]\=" contains=NONE display transparent
 
-if !exists("ruby_no_identifiers")
-  syn match  rubyConstant               "\%(\%(\.\@<!\.\)\@<!\|::\)\_s*\zs\u\w*\>\%(\s*(\)\@!"
-  syn match  rubyClassVariable		"@@\h\w*"		display
-  syn match  rubyInstanceVariable	"@\h\w*"		display
-  syn match  rubyGlobalVariable		"$\%(\h\w*\|-.\)"
-  syn match  rubySymbol			":\@<!:\%(\^\|\~\|<<\|<=>\|<=\|<\|===\|==\|=\~\|>>\|>=\|>\||\|-@\|-\|/\|\[]=\|\[]\|\*\*\|\*\|&\|%\|+@\|+\|`\)"
-  syn match  rubySymbol			":\@<!:\$\%(-.\|[`~<=>_,;:!?/.'"@$*\&+0]\)"
-  syn match  rubySymbol			":\@<!:\%(\$\|@@\=\)\=\h\w*[?!=]\="
-  syn region rubySymbol			start=":\@<!:\"" end="\"" skip="\\\\\|\\\""
-  syn match  rubyIterator		"|[ ,a-zA-Z0-9_*]\+|"		display
-  syn match  rubyIterator		"|\s*([ ,a-zA-Z0-9_*]\+)\s*|"	display
+syn match  rubyConstant               "\%(\%(\.\@<!\.\)\@<!\|::\)\_s*\zs\u\w*\>\%(\s*(\)\@!"
+syn match  rubyClassVariable		"@@\h\w*"		display
+syn match  rubyInstanceVariable	"@\h\w*"		display
+syn match  rubyGlobalVariable		"$\%(\h\w*\|-.\)"
+syn match  rubySymbol			":\@<!:\%(\^\|\~\|<<\|<=>\|<=\|<\|===\|==\|=\~\|>>\|>=\|>\||\|-@\|-\|/\|\[]=\|\[]\|\*\*\|\*\|&\|%\|+@\|+\|`\)"
+syn match  rubySymbol			":\@<!:\$\%(-.\|[`~<=>_,;:!?/.'"@$*\&+0]\)"
+syn match  rubySymbol			":\@<!:\%(\$\|@@\=\)\=\h\w*[?!=]\="
+syn region rubySymbol			start=":\@<!:\"" end="\"" skip="\\\\\|\\\""
+syn match  rubyIterator		"|[ ,a-zA-Z0-9_*]\+|"		display
+syn match  rubyIterator		"|\s*([ ,a-zA-Z0-9_*]\+)\s*|"	display
 
-  syn match rubyPredefinedVariable #$[!$&"'*+,./0:;<=>?@\`~1-9]#
-  syn match rubyPredefinedVariable "$_\>"										display
-  syn match rubyPredefinedVariable "$-[0FIKadilpvw]\>"									display
-  syn match rubyPredefinedVariable "$\%(deferr\|defout\|stderr\|stdin\|stdout\)\>"					display
-  syn match rubyPredefinedVariable "$\%(DEBUG\|FILENAME\|KCODE\|LOAD_PATH\|SAFE\|VERBOSE\)\>"				display
-  syn match rubyPredefinedConstant "\%(\%(\.\@<!\.\)\@<!\|::\)\_s*\zs\%(MatchingData\|ARGF\|ARGV\|ENV\)\>\%(\s*(\)\@!"
-  syn match rubyPredefinedConstant "\%(\%(\.\@<!\.\)\@<!\|::\)\_s*\zs\%(DATA\|FALSE\|NIL\|RUBY_PLATFORM\|RUBY_RELEASE_DATE\)\>\%(\s*(\)\@!"
-  syn match rubyPredefinedConstant "\%(\%(\.\@<!\.\)\@<!\|::\)\_s*\zs\%(RUBY_VERSION\|STDERR\|STDIN\|STDOUT\|TOPLEVEL_BINDING\|TRUE\)\>\%(\s*(\)\@!"
-  "Obsolete Global Constants
-  "syn match rubyPredefinedConstant "\%(::\)\=\zs\%(PLATFORM\|RELEASE_DATE\|VERSION\)\>"
-  "syn match rubyPredefinedConstant "\%(::\)\=\zs\%(NotImplementError\)\>"
-else
-  syn match NONE +$['"]+
-endif
+syn match rubyPredefinedVariable #$[!$&"'*+,./0:;<=>?@\`~1-9]#
+syn match rubyPredefinedVariable "$_\>"										display
+syn match rubyPredefinedVariable "$-[0FIKadilpvw]\>"									display
+syn match rubyPredefinedVariable "$\%(deferr\|defout\|stderr\|stdin\|stdout\)\>"					display
+syn match rubyPredefinedVariable "$\%(DEBUG\|FILENAME\|KCODE\|LOAD_PATH\|SAFE\|VERBOSE\)\>"				display
+syn match rubyPredefinedConstant "\%(\%(\.\@<!\.\)\@<!\|::\)\_s*\zs\%(MatchingData\|ARGF\|ARGV\|ENV\)\>\%(\s*(\)\@!"
+syn match rubyPredefinedConstant "\%(\%(\.\@<!\.\)\@<!\|::\)\_s*\zs\%(DATA\|FALSE\|NIL\|RUBY_PLATFORM\|RUBY_RELEASE_DATE\)\>\%(\s*(\)\@!"
+syn match rubyPredefinedConstant "\%(\%(\.\@<!\.\)\@<!\|::\)\_s*\zs\%(RUBY_VERSION\|STDERR\|STDIN\|STDOUT\|TOPLEVEL_BINDING\|TRUE\)\>\%(\s*(\)\@!"
+"Obsolete Global Constants
+"syn match rubyPredefinedConstant "\%(::\)\=\zs\%(PLATFORM\|RELEASE_DATE\|VERSION\)\>"
+"syn match rubyPredefinedConstant "\%(::\)\=\zs\%(NotImplementError\)\>"
 
 " Normal Regular Expression
 syn region rubyString matchgroup=rubyStringDelimiter start="\%(\%(^\|\<\%(and\|or\|while\|until\|unless\|if\|elsif\|when\|not\|then\)\|[\~=!|&(,[]\)\s*\)\@<=/" end="/[iomx]*" skip="\\\\\|\\/" contains=@rubyStringSpecial
@@ -244,7 +240,11 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubyException			Exception
   HiLink rubyClass			Type
   HiLink rubyModule			Type
-  HiLink rubyIdentifier			Identifier
+  if !exists("ruby_no_identifiers")
+    HiLink rubyIdentifier		Identifier
+  else
+    HiLink rubyIdentifier		NONE
+  endif
   HiLink rubyClassVariable		rubyIdentifier
   HiLink rubyConstant			rubyIdentifier
   HiLink rubyGlobalVariable		rubyIdentifier
