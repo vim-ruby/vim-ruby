@@ -1,3 +1,8 @@
+2005-08-07  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* filetype/filetype.vim, filetype/ruby.vim: move filetype.vim to
+	ruby.vim
+
 2005-08-06  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* syntax/ruby.vim: match rubyConstant and rubyLocalVariableOrMethod
