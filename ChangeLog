@@ -1,5 +1,8 @@
 2005-08-07  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
+	* filetype/ruby.vim, ftdetect/ruby.vim: move ruby.vim from filetype/
+	to ftdetect/
+
 	* filetype/filetype.vim, filetype/ruby.vim: move filetype.vim to
 	ruby.vim
 
