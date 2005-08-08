@@ -20,6 +20,7 @@ require 'pathname'
 SOURCE_FILES = %w{
   compiler/ruby.vim
   compiler/rubyunit.vim
+  ftdetect/ruby.vim
   ftplugin/ruby.vim
   indent/ruby.vim
   syntax/ruby.vim
