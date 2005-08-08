@@ -1,3 +1,8 @@
+2005-08-08  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* bin/vim-ruby-install.rb: add ftdetect/ruby.vim to list of source
+	files
+
 2005-08-07  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* filetype/ruby.vim, ftdetect/ruby.vim: move ruby.vim from filetype/
