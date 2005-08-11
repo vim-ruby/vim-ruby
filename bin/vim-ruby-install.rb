@@ -23,6 +23,7 @@ SOURCE_FILES = %w{
   ftdetect/ruby.vim
   ftplugin/ruby.vim
   indent/ruby.vim
+  syntax/eruby.vim
   syntax/ruby.vim
 }
 # XXX: what do we do with 'filetype/filetype.vim' ???

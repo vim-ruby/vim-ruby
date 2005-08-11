@@ -1,5 +1,8 @@
 2005-08-11  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
+	* CONTRIBUTORS, bin/vim-ruby-install.rb, syntax/eruby.vim: add syntax
+	highlighting for eRuby files
+
 	* ftdetect/ruby.vim: reorder autocommands for eRuby setf line
 
 2005-08-08  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
@@ -13,7 +16,7 @@
 	to ftdetect/
 
 	* filetype/filetype.vim, filetype/ruby.vim: move filetype.vim to
-	ruby.vim
+	ruby.vim; add eRuby filetype detection
 
 2005-08-06  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
