@@ -1,8 +1,8 @@
 " Ruby
 au BufNewFile,BufRead *.rb,*.rbw,*.gem,*.gemspec	setf ruby
 
-" Ruby Makefile
+" Rakefile
 au BufNewFile,BufRead [rR]akefile*			setf ruby
 
 " eRuby
-au BufRead,BufNewFile *.rhtml				setf eruby
+au BufNewFile,BufRead *.rhtml				setf eruby
