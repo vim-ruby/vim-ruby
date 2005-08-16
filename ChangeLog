@@ -1,5 +1,7 @@
 2005-08-16  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
+	* bin/vim-ruby-install.rb: add FIXME comment (Hugh Sasse)
+
 	* README, bin/vim-ruby-install.rb, etc/website/index.html: offer
 	$VIM/vimfiles and $HOME/{.vim,vimfiles} rather than $VIMRUNTIME as the
 	two default installation directories

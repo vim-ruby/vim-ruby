@@ -143,6 +143,8 @@ class FileWriter
   def _ensure_directory_exists(path)
     dir = path.dirname
     unless dir.directory?
+      # <XXX> FileUtils.mkdir_p already checks if it exists and is a
+      # directory.  What if it exists as a file? (HGS)</XXX>
       mkpath(dir)
     end
   end
