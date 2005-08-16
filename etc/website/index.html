@@ -69,10 +69,10 @@ For would-be contributors:
   - Thank you very much for taking an interest.
 
 Contents of the project:
-  - The compiler, ftplugin, indent and syntax directories contain the ruby.vim
-    files that are to be copied somewhere Vim can see them.
-  - install.rb performs this copying.
-  - build.rb creates a tarball for easy distribution.
+  - The compiler, ftdetect, ftplugin, indent and syntax directories contain
+    the ruby.vim files that are to be copied to a location somewhere in the Vim
+    'runtimepath'.
+  - vim-ruby-install.rb performs this copying.
 
 How you get these files into Vim:
   - By downloading the project via a snapshot or anonymous CVS, you can keep
@@ -80,8 +80,9 @@ How you get these files into Vim:
     directory.
   - By downloading one of the tarballs, you can easily install the latest
     stable or development version wherever you like on your machine.  No
-    README, no install.rb, just Vim files.  You would typically install these
-    wherever Vim is installed, in the (for example) "vim62" directory.
+    README, no vim-ruby-install.rb, just Vim files.  You would typically
+    install these into either $VIM/vimfiles, for system-wide use, or $HOME/.vim
+    ($HOME/vimfiles on Windows) for personal use.
   - Remember that when you install Vim in the first place, all of these files
     are present.  The purpose of downloading and installing them from
     RubyForge is to get the latest version of them.
@@ -90,6 +91,7 @@ Understanding the configuration files:
   - See www.rubygarden.org/ruby?VimRubySupport
   - Email any one of us or ruby-talk if you want more information added to
     this page.
+
 
 CVS topics:
   - Files are tagged according to which version of Vim they are released in.
@@ -112,7 +114,8 @@ Any questions or suggestions?
     (gsinclair at soyabean.com.au).
   - To ask about the contents of the configuration files, ask on the mailing
     list, as different people maintain the different files.  Gavin knows
-    nothing about the syntax file, for instance.
+    nothing about the syntax file, for instance. (Come to think of it, nor does
+    Doug - djk)
 
 Project gossip:
   - Two of the configuration file maintainers, Doug Kearns and Gavin Sinclair,
@@ -125,7 +128,6 @@ Project gossip:
     let us know.
 
                            --= End of Document =--
-        
-</pre>
+    </pre>
   </body>
 </html>
