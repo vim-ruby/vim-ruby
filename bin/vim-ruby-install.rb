@@ -335,81 +335,93 @@ class VimRubyInstaller
 
 end  # class VimRubyInstaller
 
-#
-#  * * *  M A I N  * * *
-#
+    #
+    #  * * *  M A I N  * * *
+    #
 
-$options = {
-  :windows    => false,
-  :target_dir => nil
-}
-
-op = OptionParser.new do |p|
-  p.banner = %{
-     vim-ruby-install.rb: Install the vim-ruby configuration files
-
-      About:
-        * Detects the Vim user and system-wide preferences directories
-          * User to confirm before proceeding
-          * User may specify other directory
-        * Takes config files from current directory or from vim-ruby gem
-        * Writes files with correct permissions and line endings
-
-      Usage:
-        direct:   ruby bin/vim-ruby-install.rb [options]
-        gem:      vim-ruby-install.rb [options]
-
-      Options:
-  }.gsub(/^    /, '')
-  p.on('--windows', 'Install into Windows directories') do
-    $options[:windows] = true
-  end
-  p.on('-d DIR', '--directory', 'Install into given directory') do |dir|
-    $options[:target_dir] = dir
-  end
-  p.on('-h', '--help', 'Show this message') do
-    puts p
-    exit
-  end
-  p.on_tail %{
-      Notes:
-
-        * "Direct" usage means unpacking a vim-ruby tarball and running this
-          program from the vim-ruby directory.
-
-        * The convenient alternative is to use RubyGems:
-            gem install vim-ruby
-            vim-ruby-install.rb
-
-        * The --windows option is designed for forcing an install into the
-          Windows (gvim) configuration directory; useful when running from
-          Cygwin or MinGW.
+if $0 == __FILE__
+  begin
     
-        * This installer is quite new (2004-09-20).  Please report bugs to
-          gsinclair@soyabean.com.au.
-  }.gsub(/^    /, '')
-end
-op.parse!(ARGV)
+    $options = {
+      :windows    => false,
+      :target_dir => nil
+    }
+    
+    op = OptionParser.new do |p|
+      p.banner = %{
+         vim-ruby-install.rb: Install the vim-ruby configuration files
+    
+          About:
+            * Detects the Vim user and system-wide preferences directories
+              * User to confirm before proceeding
+              * User may specify other directory
+            * Takes config files from current directory or from vim-ruby gem
+            * Writes files with correct permissions and line endings
+    
+          Usage:
+            direct:   ruby bin/vim-ruby-install.rb [options]
+            gem:      vim-ruby-install.rb [options]
+    
+          Options:
+      }.gsub(/^    /, '')
+      p.on('--windows', 'Install into Windows directories') do
+        $options[:windows] = true
+      end
+      p.on('-d DIR', '--directory', 'Install into given directory') do |dir|
+        $options[:target_dir] = dir
+      end
+      p.on('-h', '--help', 'Show this message') do
+        puts p
+        exit
+      end
+      p.on_tail %{
+          Notes:
+    
+            * "Direct" usage means unpacking a vim-ruby tarball and running this
+              program from the vim-ruby directory.
+    
+            * The convenient alternative is to use RubyGems:
+                gem install vim-ruby
+                vim-ruby-install.rb
+    
+            * The --windows option is designed for forcing an install into the
+              Windows (gvim) configuration directory; useful when running from
+              Cygwin or MinGW.
+        
+            * This installer is quite new (2004-09-20).  Please report bugs to
+              gsinclair@soyabean.com.au.
+      }.gsub(/^    /, '')
+    end
+    op.parse!(ARGV)
+    
+    source_dir = Env.determine_source_directory
+    if source_dir.nil?   
+      raise "Can't find source directory"
+    end
+    
+    target_dir = TargetDirectory.finder.find_target_directory
+    if not File.directory?(target_dir)
+      puts
+      puts "Target directory '#{target_dir}' does not exist."
+      response = Env.ask_user "Do you want to create it? [Yn] "
+      if response.strip =~ /^y(es)?$/i
+        FileUtils.mkdir_p(target_dir, :verbose => true)
+      else
+        puts
+        puts "Installation aborted."
+        exit
+      end
+    end
+    
+    VimRubyInstaller.new(source_dir, target_dir).install
 
-source_dir = Env.determine_source_directory
-if source_dir.nil?   
-  raise "Can't find source directory"
-end
-
-target_dir = TargetDirectory.finder.find_target_directory
-if not File.directory?(target_dir)
-  puts
-  puts "Target directory '#{target_dir}' does not exist."
-  response = Env.ask_user "Do you want to create it? [Yn] "
-  if response.strip =~ /^y(es)?$/i
-    FileUtils.mkdir_p(target_dir, :verbose => true)
-  else
-    puts
-    puts "Installation aborted."
-    exit
+  rescue
+    raise if $DEBUG
+    $stderr.puts
+    $stderr.puts $!.message
+    $stderr.puts "Try 'ruby #{$0} --help' for detailed usage."
+    exit 1
   end
 end
-
-VimRubyInstaller.new(source_dir, target_dir).install
 
 # vim: ft=ruby sw=2 sts=2 ts=8:
