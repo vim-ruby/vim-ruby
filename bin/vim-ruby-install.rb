@@ -2,10 +2,10 @@
 
 # vim-ruby-install: install the Vim config files for Ruby editing
 #
-#  * scope out the target directry and get user to confirm
+#  * scope out the target directory and get user to confirm
 #    * if no directory found, ask user
 #    * allow user to force a search for a Windows gvim installation
-#  * find source files from gem or from current directory
+#  * find source files from gem or from top level directory
 #  * copy to target directory, taking account of
 #    * line endings (NL for Unix-ish; CRLF for Windows)
 #    * permissions (755 for directories; 644 for files)
@@ -26,11 +26,11 @@ SOURCE_FILES = %w{
   syntax/eruby.vim
   syntax/ruby.vim
 }
-# XXX: what do we do with 'filetype/filetype.vim' ???
-                  
+#FIXME: ftdetect/ruby.vim - vim 6.3+ only? This won't cause problems for
+#       earlier versions; it just won't work!
 
   #
-  # Miscelleneous functions in the user's environment.
+  # Miscellaneous functions in the user's environment.
   #
 class Env
     #
@@ -47,18 +47,14 @@ class Env
 
     #
     # Returns the path to the directory where the vim configuration files will be copied from.
-    # The first preference is the current directory.  If that fails, we look for the RubyGems
-    # package 'vim-ruby'.  Failing that, we return +nil+.
+    # The first preference is the directory above this script.  If that fails, we look for the
+    # RubyGems package 'vim-ruby'.  Failing that, we return +nil+.
     #
   def Env.determine_source_directory
-      # 1. Try the current directory.
-    if SOURCE_FILES.all? { |path| FileTest.file?(path) }
-      return '.'
-      # 2. Try the directory above this installation script.
-    elsif SOURCE_FILES.map { |f| File.join(File.dirname($0), '..', f) }.all? { |path| FileTest.file?(path) }
-      return File.join(File.dirname($0), '..')
-    end
-      # 3. Try the gem 'vim-ruby'.
+      # 1. Try the directory above this installation script.
+    vim_ruby_source_dir = File.expand_path(File.join(File.dirname($0), '..'))
+    return vim_ruby_source_dir if _valid_vim_ruby_dir(vim_ruby_source_dir)
+      # 2. Try the gem 'vim-ruby'.
     begin
       require 'rubygems'
       raise "Need RubyGems 0.8+" if Gem::RubyGemsPackageVersion < '0.8'
@@ -67,20 +63,48 @@ class Env
     end
     #vim_ruby_gem_dir = Gem.latest_load_paths.grep(%r{gems/vim-ruby}).last
     vim_ruby_gem_dir = Gem.all_load_paths.grep(%r{gems/vim-ruby}).sort.last
-    if vim_ruby_gem_dir
-      Dir.chdir(vim_ruby_gem_dir) do
-        if SOURCE_FILES.all? { |path| FileTest.file?(path) }
-          return vim_ruby_gem_dir
-        end
-      end
+    if vim_ruby_gem_dir and _valid_vim_ruby_dir(vim_ruby_gem_dir)
+      return vim_ruby_gem_dir 
     end
     return nil
+  end
+
+    # Returns the Vim installation directory ($VIM).
+    # FIXME: print warning if vim command not in PATH or appropriate key not in registry?
+  def Env.determine_vim_dir
+    installation_dir = ENV['VIM'] ||
+    case Env.determine_target_os
+    when :UNIX
+      IO.popen('vim --version 2>/dev/null') do |version|
+	dir = version.read[/fall-back for \$VIM: "(.*)"/, 1]
+      end
+    when :WINDOWS
+      require 'win32/registry'
+      path = ''
+      Win32::Registry::HKEY_LOCAL_MACHINE.open('SOFTWARE\Vim\Gvim') do |reg|
+	path = reg['path', Win32::Registry::REG_SZ]
+      end
+      # FIXME: Does Registry#[] ever return nil? Exceptions?
+      unless path.empty? or path.nil?
+	dir = path.sub(/\\vim\d\d\\gvim.exe/i, '')
+      end
+    end
+    return installation_dir
   end
 
   def Env.ask_user(message)
     print message
     gets.strip
   end
+
+  private_class_method
+
+  def Env._valid_vim_ruby_dir(dir)
+    Dir.chdir(dir) do
+      return SOURCE_FILES.all? { |path| FileTest.file?(path) }
+    end
+  end
+ 
 end  # class Env
 
 
@@ -158,21 +182,14 @@ end  # class TargetDirectory
   # user options; but is ultimately created with one in mind.
   #
 class TargetDirectory::Finder
-  POTENTIAL_DIRECTORIES = {
-    :UNIX => [
-      "/usr/local/share/vim",
-      "/usr/local/vim",
-      "/usr/share/vim",
-      "/usr/vim",
-      "/opt/share/vim",
-      "/opt/vim"
-    ],
-    :WINDOWS => [ File.join(ENV['PROGRAMFILES'], 'vim') ]
-  }
 
     # Guides the user through a selection process, ending in a chosen directory. 
   def find_target_directory
-      # 1. Try the potentials (if there are any).
+      # 1. Was a directory specified using the --directory option?
+    if option_dir = $options[:target_dir]
+      return option_dir
+    end
+      # 2. Try the potentials (if there are any).
     if dirs = _potential_directories and not dirs.empty?
       puts
       puts "Possible Vim installation directories:"
@@ -186,41 +203,40 @@ class TargetDirectory::Finder
         return chosen_directory
       end
     end 
-      # 2. We didn't find any, or the user wants to enter another.
+      # 3. We didn't find any, or the user wants to enter another.
     if dirs.empty?
       puts
       puts "Couldn't find any Vim installation directories."
     end
-    loop do
-      dir = Env.ask_user "Please enter the full path to your Vim installation directory: "
-      dir = File.expand_path(dir)
-      if FileTest.directory?(dir)
-        entered_directory = dir
-        puts
-        return entered_directory
-      else
-        puts " *** That directory doesn't exist!"
-      end
-    end
-      # 3. We don't get here; every path contains a return statement.
+    entered_directory = Env.ask_user "Please enter the full path to your Vim installation directory: "
+    entered_directory = File.expand_path(entered_directory)
+    return entered_directory
   end
   
- private 
+  private 
 
     # Return an array of _potential_ directories (i.e. they exist).  Take the options into
     # account.
   def _potential_directories
-    dirs = POTENTIAL_DIRECTORIES[Env.determine_target_os].select { |d| FileTest.directory?(d) }
-    dirs.map { |d| _vim_runtime_directory(d) }
+    dirs = []
+    dirs << _vim_user_dir
+    dirs << _vim_system_dir
+    return dirs.compact.map { |dir| File.expand_path(dir) }
   end
 
-    # Given a directory like '/usr/share/vim', returns a directory like '/usr/share/vim/vim63'.
-  def _vim_runtime_directory(dir)
-    if File.basename(dir) =~ /vim\d+/
-      dir
-    else
-      Dir.glob("#{dir}/vim*").select { |d| d =~ /vim\d+/ }.sort.last
-    end
+    # Return the Vim system preferences directory
+  def _vim_system_dir
+    vim_dir = ENV['VIM'] || Env.determine_vim_dir
+    system_dir = vim_dir + "/vimfiles" if vim_dir
+    return system_dir
+  end
+
+    # Return the Vim user preferences directory
+  def _vim_user_dir
+    platform_dir = { :UNIX => "/.vim", :WINDOWS => "/vimfiles" }
+    home_dir = ENV['HOME']
+    user_dir = home_dir + platform_dir[Env.determine_target_os] if home_dir
+    return user_dir
   end
 
 end  # class TargetDirectory::Finder
@@ -331,7 +347,7 @@ op = OptionParser.new do |p|
      vim-ruby-install.rb: Install the vim-ruby configuration files
 
       About:
-        * Detects the Vim runtime directory
+        * Detects the Vim user and system-wide preferences directories
           * User to confirm before proceeding
           * User may specify other directory
         * Takes config files from current directory or from vim-ruby gem
@@ -368,15 +384,30 @@ op = OptionParser.new do |p|
           Cygwin or MinGW.
     
         * This installer is quite new (2004-09-20).  Please report bugs to
-          gsinclair@soyabea.com.au.
+          gsinclair@soyabean.com.au.
   }.gsub(/^    /, '')
 end
 op.parse!(ARGV)
 
 source_dir = Env.determine_source_directory
-if source_dir.nil? then raise "Can't find source directory"; end
-target_dir = $options[:target_dir] || TargetDirectory.finder.find_target_directory
+if source_dir.nil?   
+  raise "Can't find source directory"
+end
+
+target_dir = TargetDirectory.finder.find_target_directory
+if not File.directory?(target_dir)
+  puts
+  puts "Target directory '#{target_dir}' does not exist."
+  response = Env.ask_user "Do you want to create it? [Yn] "
+  if response.strip =~ /^y(es)?$/i
+    FileUtils.mkdir_p(target_dir, :verbose => true)
+  else
+    puts
+    puts "Installation aborted."
+    exit
+  end
+end
+
 VimRubyInstaller.new(source_dir, target_dir).install
 
-# vim: ft=ruby
-
+# vim: ft=ruby sw=2 sts=2 ts=8:
