@@ -1,3 +1,8 @@
+2005-08-17  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* syntax/ruby.vim: merge 'while|until' start patterns of
+	rubyOptDoBlock syntax group
+
 2005-08-16  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* bin/vim-ruby-install.rb: wrap 'main' in a begin/end block
