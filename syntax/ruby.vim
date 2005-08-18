@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	Ruby
 " Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
-" Info:		$Id: ruby.vim,v 1.60 2005/08/18 09:46:16 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.61 2005/08/18 13:48:07 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -66,6 +66,7 @@ syn match rubyFloat	"\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\%(\.\d\+\%(_\d\+\)*\)\=\%([eE
 
 " Identifiers
 syn match rubyLocalVariableOrMethod "\<[_[:lower:]][_[:alnum:]]*[?!=]\=" contains=NONE display transparent
+syn match rubyBlockArgument         "&[_[:lower:]][_[:alnum:]]"          contains=NONE display transparent
 
 syn match  rubyConstant               "\%(\%(\.\@<!\.\)\@<!\<\|::\)\_s*\zs\u\w*\>\%(\s*(\)\@!"
 syn match  rubyClassVariable		"@@\h\w*"		display
