@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	Ruby
 " Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
-" Info:		$Id: ruby.vim,v 1.59 2005/08/17 14:26:09 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.60 2005/08/18 09:46:16 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -123,15 +123,21 @@ syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\=\["				    e
 syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\=("				    end=")"   skip="\\\\\|\\)"	 contains=@rubyStringSpecial,rubyNestedParentheses,rubyDelimEscape fold
 
 " Here Document
-syn region rubyString matchgroup=rubyStringDelimiter start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<\z(\h\w*\)\ze\s*$+hs=s+2 end=+^\z1$+ contains=@rubyStringSpecial fold
-syn region rubyString matchgroup=rubyStringDelimiter start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<"\z(.*\)"\ze\s*$+hs=s+2  end=+^\z1$+ contains=@rubyStringSpecial fold
-syn region rubyString matchgroup=rubyStringDelimiter start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<'\z(.*\)'\ze\s*$+hs=s+2  end=+^\z1$+			      fold
-syn region rubyString matchgroup=rubyStringDelimiter start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<`\z(.*\)`\ze\s*$+hs=s+2  end=+^\z1$+ contains=@rubyStringSpecial fold
+syn region rubyHeredocStart matchgroup=rubyStringDelimiter start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<-\=\zs\%(\h\w*\)+   end=+$+ oneline contains=TOP
+syn region rubyHeredocStart matchgroup=rubyStringDelimiter start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<-\=\zs"\%([^"]*\)"+ end=+$+ oneline contains=TOP
+syn region rubyHeredocStart matchgroup=rubyStringDelimiter start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<-\=\zs'\%([^']*\)'+ end=+$+ oneline contains=TOP
+syn region rubyHeredocStart matchgroup=rubyStringDelimiter start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<-\=\zs`\%([^`]*\)`+ end=+$+ oneline contains=TOP
 
-syn region rubyString matchgroup=rubyStringDelimiter start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<-\z(\h\w*\)\ze\s*$+hs=s+3 end=+^\s*\zs\z1$+ contains=@rubyStringSpecial fold
-syn region rubyString matchgroup=rubyStringDelimiter start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<-"\z(.*\)"\ze\s*$+hs=s+3  end=+^\s*\zs\z1$+ contains=@rubyStringSpecial fold
-syn region rubyString matchgroup=rubyStringDelimiter start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<-'\z(.*\)'\ze\s*$+hs=s+3  end=+^\s*\zs\z1$+			     fold
-syn region rubyString matchgroup=rubyStringDelimiter start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<-`\z(.*\)`\ze\s*$+hs=s+3  end=+^\s*\zs\z1$+ contains=@rubyStringSpecial fold
+syn region rubyString start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<\z(\h\w*\)\ze+hs=s+2    matchgroup=rubyStringDelimiter end=+^\z1$+ contains=rubyHeredocStart,@rubyStringSpecial nextgroup=rubyFunction fold keepend
+syn region rubyString start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<"\z([^"]*\)"\ze+hs=s+2  matchgroup=rubyStringDelimiter end=+^\z1$+ contains=rubyHeredocStart,@rubyStringSpecial nextgroup=rubyFunction fold keepend
+syn region rubyString start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<'\z([^']*\)'\ze+hs=s+2  matchgroup=rubyStringDelimiter end=+^\z1$+ contains=rubyHeredocStart		      nextgroup=rubyFunction fold keepend
+syn region rubyString start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<`\z([^`]*\)`\ze+hs=s+2  matchgroup=rubyStringDelimiter end=+^\z1$+ contains=rubyHeredocStart,@rubyStringSpecial nextgroup=rubyFunction fold keepend
+
+syn region rubyString start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<-\z(\h\w*\)\ze+hs=s+3    matchgroup=rubyStringDelimiter end=+^\s*\zs\z1$+ contains=rubyHeredocStart,@rubyStringSpecial nextgroup=rubyFunction fold keepend
+syn region rubyString start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<-"\z([^"]*\)"\ze+hs=s+3  matchgroup=rubyStringDelimiter end=+^\s*\zs\z1$+ contains=rubyHeredocStart,@rubyStringSpecial nextgroup=rubyFunction fold keepend
+syn region rubyString start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<-'\z([^']*\)'\ze+hs=s+3  matchgroup=rubyStringDelimiter end=+^\s*\zs\z1$+ contains=rubyHeredocStart		     nextgroup=rubyFunction fold keepend
+syn region rubyString start=+\%(\%(class\s*\|\%(\.\|::\)\)\_s*\)\@<!<<-`\z([^`]*\)`\ze+hs=s+3  matchgroup=rubyStringDelimiter end=+^\s*\zs\z1$+ contains=rubyHeredocStart,@rubyStringSpecial nextgroup=rubyFunction fold keepend
+
 
 " Expensive Mode - colorize *end* according to opening statement
 if !exists("ruby_no_expensive")
