@@ -1,3 +1,8 @@
+2005-08-24  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* syntax/ruby.vim: remove 'contains=rubyString' from the
+	rubyInterpolation group until that is more comprehensively improved
+
 2005-08-18  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* syntax/ruby.vim: explicitly match block arguments so that &keyword
