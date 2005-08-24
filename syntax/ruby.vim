@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	Ruby
 " Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
-" Info:		$Id: ruby.vim,v 1.61 2005/08/18 13:48:07 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.62 2005/08/24 13:18:58 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -40,7 +40,7 @@ endif
 " Expression Substitution and Backslash Notation
 syn match rubyEscape		"\\\\\|\\[abefnrstv]\|\\\o\{1,3}\|\\x\x\{1,2}"								contained display
 syn match rubyEscape		"\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)"	contained display
-syn match rubyInterpolation	"#{[^}]*}"				contained contains=rubyString
+syn match rubyInterpolation	"#{[^}]*}"				contained
 syn match rubyInterpolation	"#\%(\$\|@@\=\)\w\+"			contained display
 syn match rubyNoInterpolation	"\\#{[^}]*}"				contained
 syn match rubyNoInterpolation	"\\#\%(\$\|@@\=\)\w\+"			contained display
