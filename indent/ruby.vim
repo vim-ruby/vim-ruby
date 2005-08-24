@@ -1,17 +1,10 @@
 " Vim indent file
-" Language:	Ruby
-" Maintainer:	Gavin Sinclair <gsinclair at soyabean.com.au>
-" Developer:	Nikolai Weibull <lone-star at home.se>
-" Info:		$Id: ruby.vim,v 1.22 2005/03/23 23:35:31 gsinclair Exp $
-" URL:		http://vim-ruby.rubyforge.org/
-" Anon CVS:	See above site
-" Licence:	GPL (http://www.gnu.org/)
-" Disclaimer:
-"    This program is distributed in the hope that it will be useful,
-"    but WITHOUT ANY WARRANTY; without even the implied warranty of
-"    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-"    GNU General Public License for more details.
-" ----------------------------------------------------------------------------
+" Language:     Ruby
+" Maintainer:   Gavin Sinclair <gsinclair at soyabean.com.au>
+" Developer:    Nikolai Weibull <source at pcppopper.org>
+" Info:         $Id: ruby.vim,v 1.23 2005/08/24 23:51:54 pcp Exp $
+" URL:          http://vim-ruby.rubyforge.org/
+" Anon CVS:     See above site
 
 " 0. Initialization {{{1
 " =================
@@ -32,24 +25,27 @@ if exists("*GetRubyIndent")
   finish
 endif
 
+let s:cpo_save = &cpo
+set cpo&vim
+
 " 1. Variables {{{1
 " ============
 
 " Regex of synax group names that are or delimit string or are comments.
 let s:syng_strcom = '\<ruby\%(String\|StringDelimiter\|ASCIICode' .
-      \ '\|Interpolation\|NoInterpolation\|NestedBrackets\|Escape\|Comment\|Documentation\)\>'
+      \ '\|Interpolation\|NoInterpolation\|Escape\|Comment\|Documentation\)\>'
 
 " Regex of syntax group names that are strings or comments.
 let s:syng_strcom2 = '\<ruby\%(String' .
-      \ '\|Interpolation\|NoInterpolation\|NestedBrackets\|Escape\|Comment\|Documentation\)\>'
+      \ '\|Interpolation\|NoInterpolation\|Escape\|Comment\|Documentation\)\>'
 
 " Regex of syntax group names that are strings.
 let s:syng_string =
-      \ '\<ruby\%(String\|Interpolation\|NoInterpolation\|NestedBrackets\|Escape\)\>'
+      \ '\<ruby\%(String\|Interpolation\|NoInterpolation\|Escape\)\>'
 
 " Regex of syntax group names that are strings or documentation.
 let s:syng_stringdoc =
-  \'\<ruby\%(String\|Interpolation\|NoInterpolation\|NestedBrackets\|Escape\|Documentation\)\>'
+  \'\<ruby\%(String\|Interpolation\|NoInterpolation\|Escape\|Documentation\)\>'
 
 " Expression used to check whether we should skip a match with searchpair().
 let s:skip_expr =
@@ -65,16 +61,13 @@ let s:ruby_deindent_keywords =
       \ '^\s*\zs\<\%(ensure\|else\|rescue\|elsif\|when\|end\)\>'
 
 " Regex that defines the start-match for the 'end' keyword.
-let s:end_start_regex = '\%(^\s*\%(\zs\<\%(module\|class\|def\|if\|for' .
-      \ '\|while\|until\|case\|unless\|begin\)\>' .
-      \ '\|\h\w*\s*=\s*\zs\<\%(if\|unless\)\>\)' .
-      \ '\|\<do\>\)'
+let s:end_start_regex = '\<\%(module\|class\|def\|if\|for\|while\|until\|case\|unless\|begin\|do\)\>'
 
 " Regex that defines the middle-match for the 'end' keyword.
 let s:end_middle_regex = '\<\%(ensure\|else\|rescue\|when\|elsif\)\>'
 
 " Regex that defines the end-match for the 'end' keyword.
-let s:end_end_regex = '\<end\>\s*\%(#.*\)\=$'
+let s:end_end_regex = '\%(^\|[^.]\)\<end\>'
 
 " Expression used for searchpair() call for finding match for 'end' keyword.
 let s:end_skip_expr = s:skip_expr .
@@ -85,24 +78,16 @@ let s:end_skip_expr = s:skip_expr .
 let s:continuation_regex = '\%([\\*+/.,=:-]\|\W[|&?]\|||\|&&\)\s*\%(#.*\)\=$'
 
 " Regex that defines continuation lines.
+" TODO: this needs to deal with if ...: and so on
 let s:continuation_regex2 =
       \ '\%([\\*+/.,=:({[-]\|\W[|&?]\|||\|&&\)\s*\%(#.*\)\=$'
 
 " Regex that defines blocks.
 let s:block_regex =
-      \ '\%(\<do\>\|{\)\s*\%(|\%([*@]\=\h\w*,\=\s*\)\+|\)\=\s*\%(#.*\)\=$'
+      \ '\%(\<do\>\|{\)\s*\%(|\%([*@]\=\h\w*,\=\s*\)\%(,\s*[*@]\=\h\w*\)*|\)\=\s*\%(#.*\)\=$'
 
 " 2. Auxiliary Functions {{{1
 " ======================
-
-" Move the cursor to the given line:col.
-function s:GotoLineCol(line, col)
-  if a:col != 0
-    execute 'normal! '.a:line.'G0'.a:col.'l'
-  else
-    execute 'normal! '.a:line.'G0'
-  endif
-endfunction
 
 " Check if the character at lnum:col is inside a string, comment, or is ascii.
 function s:IsInStringOrComment(lnum, col)
@@ -134,14 +119,14 @@ function s:PrevNonBlankNonString(lnum)
     let line = getline(lnum)
     if line =~ '^=begin$'
       if in_block
-	let in_block = 0
+        let in_block = 0
       else
-	break
+        break
       endif
     elseif !in_block && line =~ '^=end$'
       let in_block = 1
     elseif !in_block && line !~ '^\s*#.*$' && !(s:IsInStringOrComment(lnum, 1)
-	  \ && s:IsInStringOrComment(lnum, strlen(line)))
+          \ && s:IsInStringOrComment(lnum, strlen(line)))
       break
     endif
     let lnum = prevnonblank(lnum - 1)
@@ -160,7 +145,7 @@ function s:GetMSL(lnum)
     let line = getline(lnum)
     let col = match(line, s:continuation_regex2) + 1
     if (col > 0 && !s:IsInStringOrComment(lnum, col))
-	  \ || s:IsInString(lnum, strlen(line))
+          \ || s:IsInString(lnum, strlen(line))
       let msl = lnum
     else
       break
@@ -181,9 +166,9 @@ function s:LineHasOpeningBrackets(lnum)
     if !s:IsInStringOrComment(a:lnum, pos + 1)
       let idx = stridx('(){}[]', line[pos])
       if idx % 2 == 0
-	let open_{idx} = open_{idx} + 1
+        let open_{idx} = open_{idx} + 1
       else
-	let open_{idx - 1} = open_{idx - 1} - 1
+        let open_{idx - 1} = open_{idx - 1} - 1
       endif
     endif
     let pos = match(line, '[][(){}]', pos + 1)
@@ -194,6 +179,16 @@ endfunction
 function s:Match(lnum, regex)
   let col = match(getline(a:lnum), a:regex) + 1
   return col > 0 && !s:IsInStringOrComment(a:lnum, col) ? col : 0
+endfunction
+
+function s:MatchLast(lnum, regex)
+  let line = getline(a:lnum)
+  let col = match(line, '.*\zs' . a:regex)
+  while col != -1 && s:IsInStringOrComment(a:lnum, col)
+    let line = strpart(line, 0, col)
+    let col = match(line, '.*' . a:regex)
+  endwhile
+  return col + 1
 endfunction
 
 " 3. GetRubyIndent Function {{{1
@@ -218,7 +213,7 @@ function GetRubyIndent()
   " others we indent to the containing line's MSL's level.  Return -1 if fail.
   let col = matchend(line, '^\s*[]})]')
   if col > 0 && !s:IsInStringOrComment(v:lnum, col)
-    call s:GotoLineCol(v:lnum, col - 1)
+    call cursor(v:lnum, col)
     let bs = strpart('(){}[]', stridx(')}]', line[col - 1]) * 2, 2)
     if searchpair(escape(bs[0], '\['), '', bs[1], 'bW', s:skip_expr) > 0
       let ind = line[col-1]==')' ? virtcol('.')-1 : indent(s:GetMSL(line('.')))
@@ -232,13 +227,21 @@ function GetRubyIndent()
   endif
 
   " If we have a deindenting keyword, find its match and indent to its level.
+  " TODO: this is messy
   if s:Match(v:lnum, s:ruby_deindent_keywords)
-    call s:GotoLineCol(v:lnum, 0)
-    if searchpair(s:end_start_regex, s:end_middle_regex, s:end_end_regex, 'bW',
-	    \ s:end_skip_expr) > 0
-      let ind = indent('.')
+    let lnum = s:PrevNonBlankNonString(v:lnum - 1)
+
+    if lnum == 0
+      return 0
     endif
-    return ind
+
+    return indent(lnum) - &sw
+"    call cursor(v:lnum, 1)
+"    if searchpair(s:end_start_regex, s:end_middle_regex, s:end_end_regex, 'bW',
+"            \ s:end_skip_expr) > 0
+"      let ind = indent('.')
+"    endif
+"    return ind
   endif
 
   " If we are in a multi-line string or line-comment, don't do anything to it.
@@ -275,8 +278,39 @@ function GetRubyIndent()
     elseif counts[1] == '1' || counts[2] == '1'
       return ind + &sw
     else
-      call s:GotoLineCol(v:lnum, vcol - 1)
+      call cursor(v:lnum, vcol)
     end
+  endif
+
+  " If the previous line ended with an "end", match that "end"s beginning's
+  " indent.
+  let col = s:Match(lnum, '\%(^\|[^.]\)\<end\>\s*\%(#.*\)\=$')
+  if col > 0
+    call cursor(lnum, col)
+    if searchpair(s:end_start_regex, '', s:end_end_regex, 'bW',
+                \ s:end_skip_expr) > 0
+      let n = line('.')
+      let ind = indent('.')
+      let msl = s:GetMSL(n)
+      if msl != n
+        let ind = indent(msl)
+      end
+      return ind
+    endif
+  end
+
+  let col = s:Match(lnum, s:ruby_indent_keywords)
+  if col > 0
+    call cursor(lnum, col)
+    let ind = virtcol('.') - 1 + &sw
+"    let ind = indent(lnum) + &sw
+    " TODO: make this better (we need to count them) (or, if a searchpair
+    " fails, we know that something is lacking an end and thus we indent a
+    " level
+    if s:Match(lnum, s:end_end_regex)
+      let ind = indent('.')
+    endif
+    return ind
   endif
 
   " 3.4. Work on the MSL line. {{{2
@@ -325,4 +359,5 @@ endfunction
 
 " }}}1
 
-" vim: sw=2 sts=2 ts=8 ff=unix:
+let &cpo = s:cpo_save
+unlet s:cpo_save
