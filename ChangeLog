@@ -1,3 +1,11 @@
+2005-08-25  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* bin/vim-ruby-install.rb: don't use $0 == __FILE__ idiom to start
+	installer file as this will fail when running as a gem as
+	vim-ruby-install.rb is loaded by the gem driver; make _same_contents
+	a private method; fix a bug in BackupDir.backup where it was writing
+	the backup to an incorrect location
+
 2005-08-24  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* syntax/ruby.vim: remove 'contains=rubyString' from the
