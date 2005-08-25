@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	Ruby
 " Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
-" Info:		$Id: ruby.vim,v 1.62 2005/08/24 13:18:58 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.63 2005/08/25 15:18:52 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -76,8 +76,7 @@ syn match  rubySymbol			":\@<!:\%(\^\|\~\|<<\|<=>\|<=\|<\|===\|==\|=\~\|>>\|>=\|
 syn match  rubySymbol			":\@<!:\$\%(-.\|[`~<=>_,;:!?/.'"@$*\&+0]\)"
 syn match  rubySymbol			":\@<!:\%(\$\|@@\=\)\=\h\w*[?!=]\="
 syn region rubySymbol			start=":\@<!:\"" end="\"" skip="\\\\\|\\\""
-syn match  rubyIterator		"|[ ,a-zA-Z0-9_*]\+|"		display
-syn match  rubyIterator		"|\s*([ ,a-zA-Z0-9_*]\+)\s*|"	display
+syn match  rubyBlockParameter		"\%(\%(do\|{\)\s*\)\@<=|\s*\zs[( ,a-zA-Z0-9_*)]\+\ze\s*|" display
 
 syn match rubyPredefinedVariable #$[!$&"'*+,./0:;<=>?@\`~1-9]#
 syn match rubyPredefinedVariable "$_\>"										display
@@ -253,7 +252,8 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubyClassVariable		rubyIdentifier
   HiLink rubyConstant			rubyIdentifier
   HiLink rubyGlobalVariable		rubyIdentifier
-  HiLink rubyIterator			rubyIdentifier
+  HiLink rubyBlockParameter		rubyIdentifier
+  HiLink rubyIterator			rubyBlockParameter " NOTE: deprecated
   HiLink rubyInstanceVariable		rubyIdentifier
   HiLink rubyPredefinedIdentifier	rubyIdentifier
   HiLink rubyPredefinedConstant		rubyPredefinedIdentifier
