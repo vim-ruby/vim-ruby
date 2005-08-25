@@ -76,8 +76,7 @@ syn match  rubySymbol			":\@<!:\%(\^\|\~\|<<\|<=>\|<=\|<\|===\|==\|=\~\|>>\|>=\|
 syn match  rubySymbol			":\@<!:\$\%(-.\|[`~<=>_,;:!?/.'"@$*\&+0]\)"
 syn match  rubySymbol			":\@<!:\%(\$\|@@\=\)\=\h\w*[?!=]\="
 syn region rubySymbol			start=":\@<!:\"" end="\"" skip="\\\\\|\\\""
-syn match  rubyIterator		"|[ ,a-zA-Z0-9_*]\+|"		display
-syn match  rubyIterator		"|\s*([ ,a-zA-Z0-9_*]\+)\s*|"	display
+syn match  rubyBlockParameter		"\%(\%(do\|{\)\s*\)\@<=|\s*\zs[( ,a-zA-Z0-9_*)]\+\ze\s*|" display
 
 syn match rubyPredefinedVariable #$[!$&"'*+,./0:;<=>?@\`~1-9]#
 syn match rubyPredefinedVariable "$_\>"										display
@@ -253,7 +252,8 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubyClassVariable		rubyIdentifier
   HiLink rubyConstant			rubyIdentifier
   HiLink rubyGlobalVariable		rubyIdentifier
-  HiLink rubyIterator			rubyIdentifier
+  HiLink rubyBlockParameter		rubyIdentifier
+  HiLink rubyIterator			rubyBlockParameter " NOTE: deprecated
   HiLink rubyInstanceVariable		rubyIdentifier
   HiLink rubyPredefinedIdentifier	rubyIdentifier
   HiLink rubyPredefinedConstant		rubyPredefinedIdentifier
