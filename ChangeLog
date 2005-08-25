@@ -1,5 +1,7 @@
 2005-08-25  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
+	* syntax/doc/ruby.txt: minor reorganisation of options
+
 	* bin/vim-ruby-install.rb: don't use $0 == __FILE__ idiom to start
 	installer file as this will fail when running as a gem as
 	vim-ruby-install.rb is loaded by the gem driver; make _same_contents
