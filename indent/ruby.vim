@@ -61,7 +61,13 @@ let s:ruby_deindent_keywords =
       \ '^\s*\zs\<\%(ensure\|else\|rescue\|elsif\|when\|end\)\>'
 
 " Regex that defines the start-match for the 'end' keyword.
-let s:end_start_regex = '\<\%(module\|class\|def\|if\|for\|while\|until\|case\|unless\|begin\|do\)\>'
+"let s:end_start_regex = '\%(^\|[^.]\)\<\%(module\|class\|def\|if\|for\|while\|until\|case\|unless\|begin\|do\)\>'
+" TODO: the do here should be restricted somewhat (only at end of line)?
+" TODO: how about stuff like ...; if ... (perhasp too retarded to deal with?)
+let s:end_start_regex = '\%(^\s*\%(\zs\<\%(module\|class\|def\|if\|for' .
+      \ '\|while\|until\|case\|unless\|begin\)\>' .
+      \ '\|\h\w*\s*=\s*\zs\<\%(if\|for\|while\|until\|case\|unless\|begin\)\>\)' .
+      \ '\|\<do\>\)'
 
 " Regex that defines the middle-match for the 'end' keyword.
 let s:end_middle_regex = '\<\%(ensure\|else\|rescue\|when\|elsif\)\>'
@@ -229,19 +235,23 @@ function GetRubyIndent()
   " If we have a deindenting keyword, find its match and indent to its level.
   " TODO: this is messy
   if s:Match(v:lnum, s:ruby_deindent_keywords)
-    let lnum = s:PrevNonBlankNonString(v:lnum - 1)
-
-    if lnum == 0
-      return 0
-    endif
-
-    return indent(lnum) - &sw
-"    call cursor(v:lnum, 1)
-"    if searchpair(s:end_start_regex, s:end_middle_regex, s:end_end_regex, 'bW',
-"            \ s:end_skip_expr) > 0
-"      let ind = indent('.')
+"    let lnum = s:PrevNonBlankNonString(v:lnum - 1)
+"
+"    if lnum == 0
+"      return 0
 "    endif
-"    return ind
+"
+"    return indent(v:lnum) - &sw
+    call cursor(v:lnum, 1)
+    if searchpair(s:end_start_regex, s:end_middle_regex, s:end_end_regex, 'bW',
+            \ s:end_skip_expr) > 0
+      if strpart(getline('.'), 0, col('.') - 1) =~ '=\s*'
+        let ind = virtcol('.') - 1
+      else
+        let ind = indent('.')
+      endif
+    endif
+    return ind
   endif
 
   " If we are in a multi-line string or line-comment, don't do anything to it.
