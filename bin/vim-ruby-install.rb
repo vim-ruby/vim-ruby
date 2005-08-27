@@ -75,23 +75,29 @@ class Env
     # TODO: print warning if vim command not in PATH or appropriate key not in registry?
   def Env.determine_vim_dir
     installation_dir = ENV['VIM'] ||
-    case Env.determine_target_os
-    when :UNIX
-      IO.popen('vim --version 2>/dev/null') do |version|
-	dir = version.read[/fall-back for \$VIM: "(.*)"/, 1]
+      case Env.determine_target_os
+      when :UNIX
+	IO.popen('vim --version 2>/dev/null') do |version|
+	  dir = version.read[/fall-back for \$VIM: "(.*)"/, 1]
+	end
+      when :WINDOWS
+	require 'win32/registry'
+	path = ''
+	Win32::Registry::HKEY_LOCAL_MACHINE.open('SOFTWARE\Vim\Gvim') do |reg|
+	  path = reg['path', Win32::Registry::REG_SZ]
+	end
+	dir = path.sub(/\\vim\d\d\\gvim.exe/i, '') unless path.empty? or path.nil?
       end
-    when :WINDOWS
-      require 'win32/registry'
-      path = ''
-      Win32::Registry::HKEY_LOCAL_MACHINE.open('SOFTWARE\Vim\Gvim') do |reg|
-	path = reg['path', Win32::Registry::REG_SZ]
-      end
-      # TODO: Does Registry#[] ever return nil? Exceptions?
-      unless path.empty? or path.nil?
-	dir = path.sub(/\\vim\d\d\\gvim.exe/i, '')
-      end
-    end
     return installation_dir
+  end
+
+  def Env.determine_home_dir
+    home_dir = ENV['HOME'] ||
+      case Env.determine_target_os
+      when :WINDOWS
+	ENV['HOMEDRIVE'] + ENV['HOMEPATH'] if ENV['HOMEDRIVE'] and ENV['HOMEPATH'] 
+      end
+    return home_dir
   end
 
   def Env.ask_user(message)
@@ -229,7 +235,7 @@ class TargetDirectory::Finder
 
     # Return the Vim system preferences directory
   def _vim_system_dir
-    vim_dir = ENV['VIM'] || Env.determine_vim_dir
+    vim_dir = Env.determine_vim_dir
     system_dir = vim_dir + "/vimfiles" if vim_dir
     return system_dir
   end
@@ -237,7 +243,7 @@ class TargetDirectory::Finder
     # Return the Vim user preferences directory
   def _vim_user_dir
     platform_dir = { :UNIX => "/.vim", :WINDOWS => "/vimfiles" }
-    home_dir = ENV['HOME']
+    home_dir = Env.determine_home_dir
     user_dir = home_dir + platform_dir[Env.determine_target_os] if home_dir
     return user_dir
   end
