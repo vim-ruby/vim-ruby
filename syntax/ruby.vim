@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	Ruby
 " Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
-" Info:		$Id: ruby.vim,v 1.66 2005/08/27 12:41:50 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.67 2005/08/27 12:51:16 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -162,8 +162,8 @@ if !exists("ruby_no_expensive")
   syn region rubyNoDoBlock matchgroup=rubyControl start="\<\%(case\|begin\)\>" start="\%(^\|\.\.\.\=\|[;=([<>~+-\*/]\)\s*\zs\%(if\|unless\)\>" end="\<end\>" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo fold
 
   " statement with optional *do*
-  syn region rubyOptDoLine matchgroup=rubyControl start="\<\%(for\|until\|while\)\>" end="\%(\<do\>\|:\)" end="\ze\%(;\|$\)" oneline contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo
-  syn region rubyOptDoBlock start="\<\%(for\|until\|while\)\>" matchgroup=rubyControl end="\<end\>" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo nextgroup=rubyOptDoLine fold
+  syn region rubyOptDoLine matchgroup=rubyControl2 start="\<for\>" start="\%(\%(^\|;\)\s*\)\@<=\<\%(until\|while\)\>" end="\%(\<do\>\|:\)" end="\ze\%(;\|$\)" oneline contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo
+  syn region rubyOptDoBlock start="\<for\>" start="\%(\%(^\|;\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyControl2 end="\<end\>" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo nextgroup=rubyOptDoLine fold
 
   if !exists("ruby_minlines")
     let ruby_minlines = 50

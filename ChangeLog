@@ -1,5 +1,7 @@
 2005-08-27  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
+	* syntax/ruby.vim: fix regression in rubyOptDoBlock
+
 	* syntax/ruby.vim: fix typo in rubyBlockParameter pattern
 
 2005-08-26  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
