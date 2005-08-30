@@ -1,3 +1,7 @@
+2005-08-30  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* syntax/ruby.vim: remove rubyIterator HiLink command line
+
 2005-08-27  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* bin/vim-ruby-install.rb: add Env.determine_home_dir using
