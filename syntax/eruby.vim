@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	eRuby
 " Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
-" Info:		$Id: eruby.vim,v 1.1 2005/08/11 13:51:28 dkearns Exp $
+" Info:		$Id: eruby.vim,v 1.2 2005/09/01 08:11:54 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -33,7 +33,7 @@ else
   syn include @rubyTop syntax/ruby.vim
 endif
 
-syn region erubyOneLiner matchgroup=erubyDelimiter start="^\s*\zs%" end="$"  contains=@rubyTop,erubyDelimiter keepend
+syn region erubyOneLiner matchgroup=erubyDelimiter start="^\s*\zs%" end="$"  contains=@rubyTop,erubyDelimiter keepend oneline
 syn region erubyBlock    matchgroup=erubyDelimiter start="<%=\="    end="%>" contains=@rubyTop containedin=ALLBUT,erubyComment keepend 
 syn region erubyComment  matchgroup=erubyDelimiter start="<%#"      end="%>" keepend
 

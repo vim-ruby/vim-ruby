@@ -1,3 +1,8 @@
+2005-09-01  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* syntax/eruby.vim: make sure that eRubyOneLiner cannot be extended
+	over multiple lines
+
 2005-08-30  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* syntax/ruby.vim: remove rubyIterator HiLink command line
