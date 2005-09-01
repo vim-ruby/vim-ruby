@@ -1,5 +1,10 @@
 2005-09-01  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
+	* syntax/eruby.vim, syntax/ruby.vim: split erubyBlock into erubyBlock
+	and erubyExpression; allow expressions inside blocks; set
+	ruby_no_expensive if highlighting eRuby; add spell checking and
+	rubyTodo to erubyComment
+
 	* syntax/eruby.vim: make sure that eRubyOneLiner starts at the
 	very beginning of a line
 
