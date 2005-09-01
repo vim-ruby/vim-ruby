@@ -1,5 +1,8 @@
 2005-09-01  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
+	* bin/vim-ruby-install.rb, compiler/eruby.vim: add new eruby compiler
+	plugin
+
 	* syntax/eruby.vim, syntax/ruby.vim: split erubyBlock into erubyBlock
 	and erubyExpression; allow expressions inside blocks; set
 	ruby_no_expensive if highlighting eRuby; add spell checking and
