@@ -33,7 +33,7 @@ else
   syn include @rubyTop syntax/ruby.vim
 endif
 
-syn region erubyOneLiner matchgroup=erubyDelimiter start="^\s*\zs%" end="$"  contains=@rubyTop,erubyDelimiter keepend
+syn region erubyOneLiner matchgroup=erubyDelimiter start="^\s*\zs%" end="$"  contains=@rubyTop,erubyDelimiter keepend oneline
 syn region erubyBlock    matchgroup=erubyDelimiter start="<%=\="    end="%>" contains=@rubyTop containedin=ALLBUT,erubyComment keepend 
 syn region erubyComment  matchgroup=erubyDelimiter start="<%#"      end="%>" keepend
 
