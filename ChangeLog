@@ -1,3 +1,8 @@
+2005-09-02  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* compiler/eruby.vim: match eruby specific error messages and parse
+	the error's column number when provided
+
 2005-09-01  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* bin/vim-ruby-install.rb, compiler/eruby.vim: add new eruby compiler
