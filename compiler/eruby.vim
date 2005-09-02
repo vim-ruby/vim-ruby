@@ -15,7 +15,7 @@
 if exists("current_compiler")
   finish
 endif
-let current_compiler = "rubyunit"
+let current_compiler = "eruby"
 
 if exists(":CompilerSet") != 2		" older Vim always used :setlocal
   command -nargs=* CompilerSet setlocal <args>
@@ -26,7 +26,10 @@ set cpo-=C
 
 CompilerSet makeprg=eruby
 
-CompilerSet errorformat=%E%f:%l:%m,
+CompilerSet errorformat=eruby:\ %f:%l:%m,
+		       \%E%f:%l:\ %m,
+		       \%-Z%p^,
+		       \%C%m,
 		       \%-G%.%#
 
 let &cpo = s:cpo_save
