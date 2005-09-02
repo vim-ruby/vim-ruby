@@ -1,5 +1,7 @@
 2005-09-02  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 	
+	* ftplugin/eruby.vim: add new eRuby ftplugin
+
 	* ftplugin/ruby.vim: merge most features from Ned Konz's ftplugin
 
 	* compiler/eruby.vim: match eruby specific error messages and parse
