@@ -3,9 +3,9 @@
 " Maintainer:	Gavin Sinclair <gsinclair at soyabean.com.au>
 " Info:         $Id$
 " URL:          http://vim-ruby.sourceforge.net
-" Anon CVS:     See above site 
+" Anon CVS:     See above site
 " Licence:      GPL (http://www.gnu.org)
-" Disclaimer: 
+" Disclaimer:
 "    This program is distributed in the hope that it will be useful,
 "    but WITHOUT ANY WARRANTY; without even the implied warranty of
 "    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -22,6 +22,9 @@ if (exists("b:did_ftplugin"))
 endif
 let b:did_ftplugin = 1
 
+let s:cpo_save = &cpo
+set cpo&vim
+
 " Matchit support
 if exists("loaded_matchit") && !exists("b:match_words")
   let b:match_ignorecase = 0
@@ -30,7 +33,52 @@ if exists("loaded_matchit") && !exists("b:match_words")
      \ '\|for\|if\|unless\|def\|case\)\|\<do\)\>:' .
      \ '\<\%(else\|elsif\|ensure\|rescue\|when\)\>:' .
      \ '\%(^\|[^.]\)\@<=\<end\>'
+  let b:match_skip =
+     \ "synIDattr(synID(line('.'),col('.'),0),'name') =~ '" .
+     \ "\<ruby\%(String\|StringDelimiter\|ASCIICode\|Interpolation\|" .
+     \ "NoInterpolation\|Escape\|Comment\|Documentation\)\>'"
+
 endif
+
+setlocal formatoptions-=t formatoptions+=croql
+
+setlocal include=^\\s*\\<\\(load\\\|\w*require\\)\\>
+setlocal includeexpr=substitute(substitute(v:fname,'::','/','g'),'$','.rb','')
+setlocal suffixesadd=.rb
+
+" TODO:
+"setlocal define=^\\s*def
+
+setlocal comments=:#
+setlocal commentstring=#\ %s
+
+if !exists("s:rubypath")
+  if executable("ruby")
+    if &shellxquote == "'"
+      let s:rubypath = system('ruby -e "print $:.join(%q{,})"' )
+    else
+      let s:rubypath = system("ruby -e 'print $:.join(%q{,})'" )
+    endif
+    let s:rubypath = substitute(s:rubypath,',.$',',,','')
+  else
+    " If we can't call ruby to get its path, just default to using the
+    " current directory and the directory of the current file.
+    let s:rubypath = ".,,"
+  endif
+endif
+
+let &l:path = s:rubypath
+
+if has("gui_win32") && !exists("b:browsefilter")
+  let b:browsefilter = "Ruby Source Files (*.rb)\t*.rb\n" .
+                     \ "All Files (*.*)\t*.*\n"
+endif
+
+let b:undo_ftplugin = "setl fo< inc< inex< sua< def< com< cms< path< "
+      \ "| unlet! b:browsefilter b:match_ignorecase b:match_words b:match_skip"
+
+let &cpo = s:cpo_save
+unlet s:cpo_save
 
 "
 " Instructions for enabling "matchit" support:
