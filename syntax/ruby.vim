@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	Ruby
 " Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
-" Info:		$Id: ruby.vim,v 1.69 2005/09/01 15:57:11 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.70 2005/09/03 14:49:11 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -163,7 +163,7 @@ if !exists("ruby_no_expensive")
   syn region rubyCurlyBlock start="{" end="}" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo fold
 
   " statements without *do*
-  syn region rubyNoDoBlock matchgroup=rubyControl start="\<\%(case\|begin\)\>" start="\%(^\|\.\.\.\=\|[;=([<>~+-\*/]\)\s*\zs\%(if\|unless\)\>" end="\<end\>" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo fold
+  syn region rubyNoDoBlock matchgroup=rubyControl start="\<\%(case\|begin\)\>" start="\%(^\|\.\.\.\=\|[;=([<>~+-\*/%!&^|]\)\s*\zs\%(if\|unless\)\>" end="\<end\>" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo fold
 
   " statement with optional *do*
   syn region rubyOptDoLine matchgroup=rubyControl2 start="\<for\>" start="\%(\%(^\|;\)\s*\)\@<=\<\%(until\|while\)\>" end="\%(\<do\>\|:\)" end="\ze\%(;\|$\)" oneline contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo
