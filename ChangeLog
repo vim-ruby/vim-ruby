@@ -1,3 +1,8 @@
+2005-09-06  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* syntax/ruby.vim: move hyphen to end of collection in rubyNoDoBlock
+	pattern
+
 2005-09-03  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* syntax/ruby.vim: allow if/unless expressions after the %, ^, | and &
