@@ -15,5 +15,5 @@ release_tag=$1
 release_number=$2
 
 export CVSROOT=`cat CVS/Root`
-cvsrelease -t $release_tag -r $release_number vim-ruby
+cvsrelease -z -t $release_tag -r $release_number vim-ruby
 

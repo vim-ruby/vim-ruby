@@ -1,5 +1,8 @@
 2005-09-08  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
+	* etc/release/release.sh: add -z to cvsrelease call to create a zip
+	release file as well as a tar.gz 
+
 	* Rakefile: add CONTRIBUTORS file to FileList
 
 	* ftplugin/ruby.vim: escape \'s in b:match_skip pattern
