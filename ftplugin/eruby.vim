@@ -76,4 +76,4 @@ let b:undo_ftplugin = "setl cms< "
 
 let &cpo = s:save_cpo
 
-" vim: sw=2 sts=2 ts=8 ff=unix:
+" vim: nowrap sw=2 sts=2 ts=8 ff=unix:

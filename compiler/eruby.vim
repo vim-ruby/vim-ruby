@@ -35,4 +35,4 @@ CompilerSet errorformat=eruby:\ %f:%l:%m,
 let &cpo = s:cpo_save
 unlet s:cpo_save
 
-" vim: nowrap ts=8 ff=unix
+" vim: nowrap sw=2 sts=2 ts=8 ff=unix:

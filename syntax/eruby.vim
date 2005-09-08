@@ -59,4 +59,4 @@ if main_syntax == 'eruby'
   unlet main_syntax
 endif
 
-" vim: sw=2 sts=2 ts=8 ff=unix nowrap:
+" vim: nowrap sw=2 sts=2 ts=8 ff=unix:

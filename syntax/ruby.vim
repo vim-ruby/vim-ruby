@@ -289,4 +289,4 @@ endif
 
 let b:current_syntax = "ruby"
 
-" vim: sw=2 sts=2 ts=8 ff=unix nowrap:
+" vim: nowrap sw=2 sts=2 ts=8 ff=unix:
