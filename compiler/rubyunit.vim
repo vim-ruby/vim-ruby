@@ -1,7 +1,7 @@
 " Vim compiler file
 " Language:	Test::Unit - Ruby Unit Testing Framework
 " Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
-" Info:		$Id: rubyunit.vim,v 1.5 2004/11/27 14:44:37 dkearns Exp $
+" Info:		$Id: rubyunit.vim,v 1.6 2005/09/08 14:07:37 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -40,4 +40,4 @@ CompilerSet errorformat=\%Etest%[%^\ ]%#(%[%^\ ]%#)\ [%f:%l]:,
 let &cpo = s:cpo_save
 unlet s:cpo_save
 
-" vim: nowrap ts=8 ff=unix
+" vim: nowrap sw=2 sts=2 ts=8 ff=unix:

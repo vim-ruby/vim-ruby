@@ -1,7 +1,7 @@
 " Vim compiler file
 " Language:	eRuby
 " Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
-" Info:		$Id: eruby.vim,v 1.2 2005/09/02 06:14:03 dkearns Exp $
+" Info:		$Id: eruby.vim,v 1.3 2005/09/08 14:07:37 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -35,4 +35,4 @@ CompilerSet errorformat=eruby:\ %f:%l:%m,
 let &cpo = s:cpo_save
 unlet s:cpo_save
 
-" vim: nowrap ts=8 ff=unix
+" vim: nowrap sw=2 sts=2 ts=8 ff=unix:

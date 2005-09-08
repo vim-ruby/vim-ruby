@@ -2,7 +2,7 @@
 " Language:     Ruby
 " Maintainer:   Gavin Sinclair <gsinclair at soyabean.com.au>
 " Developer:    Nikolai Weibull <source at pcppopper.org>
-" Info:         $Id: ruby.vim,v 1.24 2005/08/26 19:48:41 pcp Exp $
+" Info:         $Id: ruby.vim,v 1.25 2005/09/08 14:07:37 dkearns Exp $
 " URL:          http://vim-ruby.rubyforge.org/
 " Anon CVS:     See above site
 
@@ -371,3 +371,5 @@ endfunction
 
 let &cpo = s:cpo_save
 unlet s:cpo_save
+
+" vim: nowrap sw=2 sts=2 ts=8 ff=unix:

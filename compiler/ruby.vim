@@ -2,7 +2,7 @@
 " Language:	Ruby
 " Function:	Syntax check and/or error reporting
 " Maintainer:	Tim Hammerquist <timh at rubyforge.org>
-" Info:		$Id: ruby.vim,v 1.9 2004/11/27 14:44:37 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.10 2005/09/08 14:07:37 dkearns Exp $
 " URL:		http://vim-ruby.rubyforge.org
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -70,4 +70,4 @@ CompilerSet errorformat=
 let &cpo = s:cpo_save
 unlet s:cpo_save
 
-" vim: ft=vim ff=unix
+" vim: nowrap sw=2 sts=2 ts=8 ff=unix:

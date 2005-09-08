@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	Ruby
 " Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
-" Info:		$Id: ruby.vim,v 1.71 2005/09/06 15:16:52 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.72 2005/09/08 14:07:37 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -289,4 +289,4 @@ endif
 
 let b:current_syntax = "ruby"
 
-" vim: sw=2 sts=2 ts=8 ff=unix nowrap:
+" vim: nowrap sw=2 sts=2 ts=8 ff=unix:

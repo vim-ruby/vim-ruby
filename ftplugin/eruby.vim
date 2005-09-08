@@ -1,7 +1,7 @@
 " Vim filetype plugin
 " Language:	eRuby
 " Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
-" Info:         $Id: eruby.vim,v 1.1 2005/09/02 14:51:55 dkearns Exp $
+" Info:         $Id: eruby.vim,v 1.2 2005/09/08 14:07:37 dkearns Exp $
 " URL:          http://vim-ruby.sourceforge.net
 " Anon CVS:     See above site
 " Licence:      GPL (http://www.gnu.org)
@@ -76,4 +76,4 @@ let b:undo_ftplugin = "setl cms< "
 
 let &cpo = s:save_cpo
 
-" vim: sw=2 sts=2 ts=8 ff=unix:
+" vim: nowrap sw=2 sts=2 ts=8 ff=unix:
