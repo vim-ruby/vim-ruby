@@ -1,5 +1,8 @@
 2005-09-08  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
+	* bin/vim-ruby-install.rb: rescue Win32::Registry::Error when
+	accessing the Windows registry 
+
 	* ChangeLog, Rakefile, compiler/eruby.vim, compiler/rubyunit.vim,
 	compiler/ruby.vim, ftplugin/eruby.vim, indent/ruby.vim,
 	syntax/eruby.vim, syntax/ruby.vim: normalise vim modelines
