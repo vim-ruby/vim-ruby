@@ -4,7 +4,7 @@ require 'rake/gempackagetask'
 PACKAGE_NAME = 'vim-ruby'
 RELEASE_FILES = FileList[
   'README', 'ChangeLog', 'bin/*.rb',
-  '{compiler,filetype,ftplugin,indent,syntax}/*.vim'
+  '{compiler,ftdetect,ftplugin,indent,syntax}/*.vim'
 ]
 PACKAGE_VERSION = Time.now.strftime('%Y.%m.%d')
 
