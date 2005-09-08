@@ -1,3 +1,11 @@
+2005-09-08  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* Rakefile: update filetype/ to ftdetect/ in FileList
+
+2005-09-07  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* ftplugin/ruby.vim: improve b:match_words pattern
+
 2005-09-06  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* syntax/ruby.vim: move hyphen to end of collection in rubyNoDoBlock
