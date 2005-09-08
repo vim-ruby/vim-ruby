@@ -1,5 +1,7 @@
 2005-09-08  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
+	* syntax/ruby.vim: allow while/until expressions to be highlighted
+
 	* bin/vim-ruby-install.rb: rescue Win32::Registry::Error when
 	accessing the Windows registry 
 
