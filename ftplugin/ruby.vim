@@ -1,7 +1,7 @@
 " Vim filetype plugin
 " Language:	Ruby
 " Maintainer:	Gavin Sinclair <gsinclair at soyabean.com.au>
-" Info:         $Id: ruby.vim,v 1.8 2005/09/02 14:45:32 dkearns Exp $
+" Info:         $Id: ruby.vim,v 1.9 2005/09/08 08:22:40 dkearns Exp $
 " URL:          http://vim-ruby.sourceforge.net
 " Anon CVS:     See above site
 " Licence:      GPL (http://www.gnu.org)
@@ -12,7 +12,7 @@
 "    GNU General Public License for more details.
 " ----------------------------------------------------------------------------
 "
-" Matchit support thanks to Ned Konz.  See his ftplugin/ruby.vim at
+" Original matchit support thanks to Ned Konz.  See his ftplugin/ruby.vim at
 "   http://bike-nomad.com/vim/ruby.vim.
 " ----------------------------------------------------------------------------
 
@@ -35,8 +35,8 @@ if exists("loaded_matchit") && !exists("b:match_words")
      \ '\%(^\|[^.]\)\@<=\<end\>'
   let b:match_skip =
      \ "synIDattr(synID(line('.'),col('.'),0),'name') =~ '" .
-     \ "\<ruby\%(String\|StringDelimiter\|ASCIICode\|Interpolation\|" .
-     \ "NoInterpolation\|Escape\|Comment\|Documentation\)\>'"
+     \ "\\<ruby\\%(String\\|StringDelimiter\\|ASCIICode\\|Interpolation\\|" .
+     \ "NoInterpolation\\|Escape\\|Comment\\|Documentation\\)\\>'"
 
 endif
 
@@ -110,4 +110,4 @@ unlet s:cpo_save
 " differs on Windows.  Email gsinclair@soyabean.com.au if you need help.
 "
 
-" vim: sw=2 sts=2 ts=8 ff=unix:
+" vim: nowrap sw=2 sts=2 ts=8 ff=unix:
