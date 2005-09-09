@@ -1,3 +1,8 @@
+2005-09-09  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* syntax/ruby: allow if/unless/while/until expressions to be
+	highlighted when used as method args following a ','
+
 2005-09-08  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* syntax/ruby.vim: allow while/until expressions to be highlighted
