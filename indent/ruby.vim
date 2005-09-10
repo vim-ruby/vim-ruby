@@ -2,7 +2,7 @@
 " Language:     Ruby
 " Maintainer:   Gavin Sinclair <gsinclair at soyabean.com.au>
 " Developer:    Nikolai Weibull <source at pcppopper.org>
-" Info:         $Id: ruby.vim,v 1.25 2005/09/08 14:07:37 dkearns Exp $
+" Info:         $Id: ruby.vim,v 1.26 2005/09/10 19:29:59 pcp Exp $
 " URL:          http://vim-ruby.rubyforge.org/
 " Anon CVS:     See above site
 
@@ -52,9 +52,11 @@ let s:skip_expr =
       \ "synIDattr(synID(line('.'),col('.'),0),'name') =~ '".s:syng_strcom."'"
 
 " Regex used for words that, at the start of a line, add a level of indent.
-let s:ruby_indent_keywords = '^\s*\%(\zs\<\%(module\|class\|def\|if\|for' .
+let s:ruby_indent_keywords = '^\s*\zs\<\%(module\|class\|def\|if\|for' .
       \ '\|while\|until\|else\|elsif\|case\|when\|unless\|begin\|ensure' .
-      \ '\|rescue\)\>\|\h\w*\s*=\s*\zs\<\%(if\|unless\)\>\)'
+      \ '\|rescue\)\>' .
+      \ '\|\%([*+/,=:-]\|<<\|>>\)\s*\zs' .
+      \    '\<\%(if\|for\|while\|until\|case\|unless\|begin\)\>'
 
 " Regex used for words that, at the start of a line, remove a level of indent.
 let s:ruby_deindent_keywords =
@@ -63,17 +65,17 @@ let s:ruby_deindent_keywords =
 " Regex that defines the start-match for the 'end' keyword.
 "let s:end_start_regex = '\%(^\|[^.]\)\<\%(module\|class\|def\|if\|for\|while\|until\|case\|unless\|begin\|do\)\>'
 " TODO: the do here should be restricted somewhat (only at end of line)?
-" TODO: how about stuff like ...; if ... (perhasp too retarded to deal with?)
-let s:end_start_regex = '\%(^\s*\%(\zs\<\%(module\|class\|def\|if\|for' .
+let s:end_start_regex = '^\s*\zs\<\%(module\|class\|def\|if\|for' .
       \ '\|while\|until\|case\|unless\|begin\)\>' .
-      \ '\|\h\w*\s*=\s*\zs\<\%(if\|for\|while\|until\|case\|unless\|begin\)\>\)' .
-      \ '\|\<do\>\)'
+      \ '\|\%([*+/,=:-]\|<<\|>>\)\s*\zs' .
+      \    '\<\%(if\|for\|while\|until\|case\|unless\|begin\)\>' .
+      \ '\|\<do\>'
 
 " Regex that defines the middle-match for the 'end' keyword.
 let s:end_middle_regex = '\<\%(ensure\|else\|rescue\|when\|elsif\)\>'
 
 " Regex that defines the end-match for the 'end' keyword.
-let s:end_end_regex = '\%(^\|[^.]\)\<end\>'
+let s:end_end_regex = '\%(^\|[^.]\)\@<=\<end\>'
 
 " Expression used for searchpair() call for finding match for 'end' keyword.
 let s:end_skip_expr = s:skip_expr .
