@@ -27,7 +27,7 @@ set cpo-=C
 CompilerSet makeprg=ruby
 
 CompilerSet errorformat=\%Etest%[%^\ ]%#(%[%^\ ]%#)\ [%f:%l]:,
-			\%E\ %\\+%f:%l:in\ %.%#,
+			\%E\ %\\+%f:%l:%m,
 			\%Z%m%\\%.,
 			\%C%m%\\%.,
 			\%-GLoaded%.%#,
