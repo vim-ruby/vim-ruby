@@ -35,6 +35,7 @@ end
 Rake::GemPackageTask.new(gemspec) do |t|
   t.package_dir = 'etc/package'
   t.need_tar = true
+  t.need_zip = true
 end
 
 # Supporting methods
