@@ -12,8 +12,9 @@ Web links:
 
 For regular users:
   - The project page should have two tarballs for download:
-     - vim-ruby-stable.tar.gz (the files ready for the next Vim release)
-     - vim-ruby-devel.tar.gz  (cutting-edge features we'd like you to test)
+     - vim-ruby-YYYY.MM.DD.tar.gz  (the current stable release)
+     - vim-ruby-devel-YYYY.MM.DD.tar.gz  (cutting-edge features we'd like you
+       to test)
   - Please give feedback through the bug tracking and feature request features
     of RubyForge.
   - Feel free to join discussions on the vim-ruby-devel mailing list.
@@ -49,7 +50,6 @@ Understanding the configuration files:
   - Email any one of us or ruby-talk if you want more information added to
     this page.
 
-
 CVS topics:
   - Files are tagged according to which version of Vim they are released in.
   - The project was initiated in July 2003, when the current version of Vim
@@ -58,7 +58,7 @@ CVS topics:
     be tested by interested users.  They therefore (probably) don't have a
     tag, and are available via "cvs update -A", or a development snapshot.
   - When a modification is considered stable, it is tagged "stable".
-    Everything that is stable gets released in vim-ruby-stable.tar.gz files.
+    Everything that is stable gets released in vim-ruby-YYY.MM.DD.tar.gz files.
   - When a new version of Vim is about to be released, the stable tarball is
     contributed to it.  After it has been released, the files are tagged
     accordingly.
