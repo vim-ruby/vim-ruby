@@ -6,7 +6,7 @@ RELEASE_FILES = FileList[
   'README', 'ChangeLog', 'CONTRIBUTORS', 'bin/*.rb',
   '{compiler,ftdetect,ftplugin,indent,syntax}/*.vim'
 ]
-PACKAGE_VERSION = Time.now.strftime('%Y.%m.%d')
+PACKAGE_VERSION = Time.now.gmtime.strftime('%Y.%m.%d')
 
 desc "Build all the packages"
 task :default => :package
