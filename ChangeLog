@@ -1,5 +1,9 @@
+2005-09-11  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* indent/ruby.vim: fix comment typo
+
 2005-09-10  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
-	
+
 	* Rakefile: use GMT time in the version string
 
 	* compiler/rubyunit.vim: save each message from error backtraces
@@ -22,14 +26,14 @@
 	* syntax/ruby.vim: allow while/until expressions to be highlighted
 
 	* bin/vim-ruby-install.rb: rescue Win32::Registry::Error when
-	accessing the Windows registry 
+	accessing the Windows registry
 
 	* ChangeLog, Rakefile, compiler/eruby.vim, compiler/rubyunit.vim,
 	compiler/ruby.vim, ftplugin/eruby.vim, indent/ruby.vim,
 	syntax/eruby.vim, syntax/ruby.vim: normalise vim modelines
 
 	* etc/release/release.sh: add -z to cvsrelease call to create a zip
-	release file as well as a tar.gz 
+	release file as well as a tar.gz
 
 	* Rakefile: add CONTRIBUTORS file to FileList
 
@@ -52,7 +56,7 @@
 	operators
 
 2005-09-02  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
-	
+
 	* bin/vim-ruby-install.rb: add ftplugin/eruby.vim to list of source
 	files
 
@@ -226,7 +230,7 @@
 2005-07-04  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* bin/vim-ruby-install.rb: improve source directory detection (Hugh
-	Sasse) 
+	Sasse)
 
 2005-04-05  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
@@ -313,7 +317,7 @@
 
 	* filetype/filetype.vim: match 'rakefile' as a Rakefile
 
-2004-04-23  Ward Wouts  <ward@wizeazz.nl> 
+2004-04-23  Ward Wouts  <ward@wizeazz.nl>
 
 	* syntax/ruby.vim: add ruby_fold variable to control the setting of
 	the foldmethod option

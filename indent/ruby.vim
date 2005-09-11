@@ -2,7 +2,7 @@
 " Language:     Ruby
 " Maintainer:   Gavin Sinclair <gsinclair at soyabean.com.au>
 " Developer:    Nikolai Weibull <source at pcppopper.org>
-" Info:         $Id: ruby.vim,v 1.26 2005/09/10 19:29:59 pcp Exp $
+" Info:         $Id: ruby.vim,v 1.27 2005/09/11 06:55:38 dkearns Exp $
 " URL:          http://vim-ruby.rubyforge.org/
 " Anon CVS:     See above site
 
@@ -31,7 +31,7 @@ set cpo&vim
 " 1. Variables {{{1
 " ============
 
-" Regex of synax group names that are or delimit string or are comments.
+" Regex of syntax group names that are or delimit string or are comments.
 let s:syng_strcom = '\<ruby\%(String\|StringDelimiter\|ASCIICode' .
       \ '\|Interpolation\|NoInterpolation\|Escape\|Comment\|Documentation\)\>'
 
