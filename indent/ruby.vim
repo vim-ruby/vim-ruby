@@ -72,7 +72,7 @@ let s:end_start_regex = '^\s*\zs\<\%(module\|class\|def\|if\|for' .
       \ '\|\<do\>'
 
 " Regex that defines the middle-match for the 'end' keyword.
-let s:end_middle_regex = '\<\%(ensure\|else\|rescue\|when\|elsif\)\>'
+let s:end_middle_regex = '\<\%(ensure\|else\|\%(\%(^\|;\)\s*\)\@<=\<rescue\>\|when\|elsif\)\>'
 
 " Regex that defines the end-match for the 'end' keyword.
 let s:end_end_regex = '\%(^\|[^.]\)\@<=\<end\>'

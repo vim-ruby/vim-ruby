@@ -1,5 +1,7 @@
 2005-09-11  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
+	* indent/ruby.vim: ignore the rescue 'modifier' when indenting (#2296)
+
 	* indent/ruby.vim: fix comment typo
 
 2005-09-10  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
