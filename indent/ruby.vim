@@ -2,7 +2,7 @@
 " Language:     Ruby
 " Maintainer:   Gavin Sinclair <gsinclair at soyabean.com.au>
 " Developer:    Nikolai Weibull <source at pcppopper.org>
-" Info:         $Id: ruby.vim,v 1.27 2005/09/11 06:55:38 dkearns Exp $
+" Info:         $Id: ruby.vim,v 1.28 2005/09/11 11:52:59 dkearns Exp $
 " URL:          http://vim-ruby.rubyforge.org/
 " Anon CVS:     See above site
 
@@ -72,7 +72,7 @@ let s:end_start_regex = '^\s*\zs\<\%(module\|class\|def\|if\|for' .
       \ '\|\<do\>'
 
 " Regex that defines the middle-match for the 'end' keyword.
-let s:end_middle_regex = '\<\%(ensure\|else\|rescue\|when\|elsif\)\>'
+let s:end_middle_regex = '\<\%(ensure\|else\|\%(\%(^\|;\)\s*\)\@<=\<rescue\>\|when\|elsif\)\>'
 
 " Regex that defines the end-match for the 'end' keyword.
 let s:end_end_regex = '\%(^\|[^.]\)\@<=\<end\>'
