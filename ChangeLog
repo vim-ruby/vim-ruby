@@ -6,6 +6,12 @@
 
 	* indent/ruby.vim: fix comment typo
 
+2005-09-10  Nikolai Weibull  <source@pcppopper.org>
+
+	* indent/ruby.vim: Fixes bugs introduced in earlier commits.  Been
+	running without fault for two-three weeks now.  It's about as good as
+	it gets without a major reworking.  Enjoy!
+
 2005-09-10  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* Rakefile: use GMT time in the version string
@@ -100,6 +106,12 @@
 
 	* syntax/ruby.vim: fix typo in rubyBlockParameter pattern
 
+2005-08-26  Nikolai Weibull  <source@pcppopper.org>
+
+	* indent/ruby.vim: Updated to indent correctly.  There's more to be
+	done, as a statement may be contained in other stuff than a '... = ',
+	so that '=' should be [=+-...].  Soon to be fixed.
+
 2005-08-26  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* syntax/ruby.vim: only match rubyBlockParameter after 'do' that is a
@@ -118,6 +130,20 @@
 	vim-ruby-install.rb is loaded by the gem driver; make _same_contents
 	a private method; fix a bug in BackupDir.backup where it was writing
 	the backup to an incorrect location
+
+2005-08-24  Nikolai Weibull  <source@pcppopper.org>
+
+	* indent/ruby.vim:
+	1.  resetting of cpoptions (wouldn't always be done, depending on if
+	GetRubyIndent was defined.
+
+	2.  Bugs #166, #1914, #2296 should be fixed
+
+	3.  Somewhat simpler processing of the contents of the file.
+
+	Most of the work was removing complexity that was trying to be clever
+	about understanding the syntax/semantics of the file, while actually
+	making things slow and actually not matching correctly.
 
 2005-08-24  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
