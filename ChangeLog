@@ -1,5 +1,7 @@
 2005-09-11  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
+	* ftplugin/ruby.vim: include gems load path in 'path' option
+
 	* indent/ruby.vim: ignore the rescue 'modifier' when indenting (#2296)
 
 	* indent/ruby.vim: fix comment typo
