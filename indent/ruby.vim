@@ -2,9 +2,16 @@
 " Language:     Ruby
 " Maintainer:   Gavin Sinclair <gsinclair at soyabean.com.au>
 " Developer:    Nikolai Weibull <source at pcppopper.org>
-" Info:         $Id: ruby.vim,v 1.28 2005/09/11 11:52:59 dkearns Exp $
+" Info:         $Id: ruby.vim,v 1.29 2005/09/11 14:54:58 dkearns Exp $
 " URL:          http://vim-ruby.rubyforge.org/
 " Anon CVS:     See above site
+" Licence:      GPL (http://www.gnu.org)
+" Disclaimer:
+"    This program is distributed in the hope that it will be useful,
+"    but WITHOUT ANY WARRANTY; without even the implied warranty of
+"    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+"    GNU General Public License for more details.
+" ----------------------------------------------------------------------------
 
 " 0. Initialization {{{1
 " =================
