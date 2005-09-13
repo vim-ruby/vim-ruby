@@ -32,10 +32,12 @@ else
   syn include @rubyTop syntax/ruby.vim
 endif
 
-syn region  erubyOneLiner   matchgroup=erubyDelimiter start="^%"  end="$"  contains=@rubyTop		containedin=ALLBUT,erubyBlock,erubyComment,erubyExpression keepend oneline
-syn region  erubyBlock      matchgroup=erubyDelimiter start="<%"  end="%>" contains=@rubyTop		containedin=ALLBUT,erubyBlock,erubyComment,erubyExpression
-syn region  erubyExpression matchgroup=erubyDelimiter start="<%=" end="%>" contains=@rubyTop		containedin=ALLBUT,erubyComment,erubyExpression
-syn region  erubyComment    matchgroup=erubyDelimiter start="<%#" end="%>" contains=rubyTodo,@Spell	containedin=ALLBUT,erubyBlock,erubyComment,erubyExpression keepend
+syn cluster erubyRegions contains=erubyOneLiner,erubyBlock,erubyExpression,erubyComment
+
+syn region  erubyOneLiner   matchgroup=erubyDelimiter start="^%%\@!" end="$"  contains=@rubyTop	       containedin=ALLBUT,@erubyRegions keepend oneline
+syn region  erubyBlock	    matchgroup=erubyDelimiter start="<%%\@!" end="%>" contains=@rubyTop	       containedin=ALLBUT,@erubyRegions
+syn region  erubyExpression matchgroup=erubyDelimiter start="<%="    end="%>" contains=@rubyTop	       containedin=ALLBUT,@erubyRegions
+syn region  erubyComment    matchgroup=erubyDelimiter start="<%#"    end="%>" contains=rubyTodo,@Spell containedin=ALLBUT,@erubyRegions keepend
 
 " Define the default highlighting.
 " For version 5.7 and earlier: only when not done already
