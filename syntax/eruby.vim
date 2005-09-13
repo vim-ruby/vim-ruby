@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	eRuby
 " Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
-" Info:		$Id: eruby.vim,v 1.5 2005/09/08 14:07:37 dkearns Exp $
+" Info:		$Id: eruby.vim,v 1.6 2005/09/13 04:26:56 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -32,10 +32,12 @@ else
   syn include @rubyTop syntax/ruby.vim
 endif
 
-syn region  erubyOneLiner   matchgroup=erubyDelimiter start="^%"  end="$"  contains=@rubyTop		containedin=ALLBUT,erubyBlock,erubyComment,erubyExpression keepend oneline
-syn region  erubyBlock      matchgroup=erubyDelimiter start="<%"  end="%>" contains=@rubyTop		containedin=ALLBUT,erubyBlock,erubyComment,erubyExpression
-syn region  erubyExpression matchgroup=erubyDelimiter start="<%=" end="%>" contains=@rubyTop		containedin=ALLBUT,erubyComment,erubyExpression
-syn region  erubyComment    matchgroup=erubyDelimiter start="<%#" end="%>" contains=rubyTodo,@Spell	containedin=ALLBUT,erubyBlock,erubyComment,erubyExpression keepend
+syn cluster erubyRegions contains=erubyOneLiner,erubyBlock,erubyExpression,erubyComment
+
+syn region  erubyOneLiner   matchgroup=erubyDelimiter start="^%%\@!" end="$"  contains=@rubyTop	       containedin=ALLBUT,@erubyRegions keepend oneline
+syn region  erubyBlock	    matchgroup=erubyDelimiter start="<%%\@!" end="%>" contains=@rubyTop	       containedin=ALLBUT,@erubyRegions
+syn region  erubyExpression matchgroup=erubyDelimiter start="<%="    end="%>" contains=@rubyTop	       containedin=ALLBUT,@erubyRegions
+syn region  erubyComment    matchgroup=erubyDelimiter start="<%#"    end="%>" contains=rubyTodo,@Spell containedin=ALLBUT,@erubyRegions keepend
 
 " Define the default highlighting.
 " For version 5.7 and earlier: only when not done already
