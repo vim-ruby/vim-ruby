@@ -1,3 +1,7 @@
+2005-09-14  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* INSTALL, NEWS, Rakefile: add INSTALL and NEWS files
+
 2005-09-13  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* syntax/eruby.vim: make sure escaped eRuby tags aren't highlighted as
