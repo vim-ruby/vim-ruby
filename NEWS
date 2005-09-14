@@ -1,0 +1,30 @@
+= 2005.09.14
+
+== eRuby Support
+
+There are new syntax, compiler, and ftplugin files for eRuby.  This support is
+incomplete and we're keen to hear of any problems or suggestions you may have
+to improve it.
+
+== Ruby Filetype Support
+
+The Ruby filetype plugin has been improved to include as many useful settings
+as possible without intruding too much on an individual user's preferences.
+Matchit support has been improved, and the following options are now set to
+appropriate values: comments, commentstring, formatoptions, include,
+includeexpr, path, and suffixesadd
+
+== Filetype Detection
+
+The new ftdetect mechanism of Vim 6.3 is being utilized to enable filetype
+detection of eRuby files until this is officially added to the next release of
+Vim.
+
+== Installation Directories
+
+The installer script now, where possible, automatically determines both the
+user and system-wide preferences directory.
+
+== Bug Fixes
+
+A large number of bugs have been fixed in the Ruby syntax and indent files.

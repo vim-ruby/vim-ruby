@@ -1,0 +1,64 @@
+= Installing Vim-Ruby
+
+The Vim-Ruby runtime files may be installed via the vim-ruby gem or by
+downloading an archive file from http://rubyforge.org/frs/?group_id=16
+
+NOTE: the installer vim-ruby-install.rb currently only supports Unix and
+Windows systems.  Other platforms may require a manual install.
+
+== Prerequisites
+
+1. Vim 6.x (6.3 recommended)
+   http://www.vim.org/
+
+2. Ruby 1.8.x
+   http://www.ruby-lang.org/
+
+== Gem Installation
+
+Install the gem and run the installer which will automatically determine the
+two recommended installation locations and prompt you to select one, or allow
+you to specify a directory of your own choosing.
+
+$ gem install vim-ruby --remote
+$ vim-ruby-install.rb
+
+== Archive File Installation
+
+Unpack the archive file and run the installer which will automatically
+determine the two recommended installation locations or allow you to specify
+one.
+
+Unix
+
+$ tar -xzf vim-ruby.YYYY.MM.DD.tgz
+$ ./vim-ruby.YYY.MM.DD/bin/vim-ruby-install.rb
+
+Windows
+
+C:\tmp> [unzip] vim-ruby.YYYY.MM.DD.tgz
+C:\tmp> ruby vim-ruby.YYY.MM.DD\bin\vim-ruby-install.rb
+
+=== Manual Installation
+
+Alternatively, you can simply copy the desired files to an appropriate
+directory in your runtime path.  For single user use this would typically be
+$HOME/.vim on Unix systems and $HOME/vimfiles on Windows and for system-wide
+use these would be installed in $VIM/vimfiles.
+
+== Vim versions < 6.3
+
+For versions of Vim less than 6.3 the supplied ftdetect/ruby.vim file, used for
+filetype detection, will be ignored.  In order for the filetype detection to
+operate correctly the autocommands specified in ftdetect/ruby.vim need to be
+executed.  See :help new-filetype, in Vim, for a mechanism to achieve this
+which is appropriate for your version of Vim.
+
+Again, we recommend you use the latest version of Vim at all times, where
+possible.
+
+= Problems
+
+If you have any problems installing the Vim-Ruby configuration files please
+send a message to the mailing list (http://rubyforge.org/mail/?group_id=16) or
+post an item to the tracker (http://rubyforge.org/tracker/?group_id=16).
