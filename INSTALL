@@ -59,7 +59,7 @@ which is appropriate for your version of Vim.
 Again, we recommend you use the latest version of Vim at all times, where
 possible.
 
-= Problems
+== Problems
 
 If you have any problems installing the Vim-Ruby configuration files please
 send a message to the mailing list (http://rubyforge.org/mail/?group_id=16) or
