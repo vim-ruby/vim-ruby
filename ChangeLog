@@ -1,5 +1,7 @@
 2005-09-15  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
+	* NEWS: correct release number
+
 	* INSTALL: add a precautionary note about backing up files prior to
 	using the installer
 
