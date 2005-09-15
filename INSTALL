@@ -4,7 +4,9 @@ The Vim-Ruby runtime files may be installed via the vim-ruby gem or by
 downloading an archive file from http://rubyforge.org/frs/?group_id=16
 
 NOTE: the installer vim-ruby-install.rb currently only supports Unix and
-Windows systems.  Other platforms may require a manual install.
+Windows systems; other platforms may require a manual install.  This installer
+is new and users with significant local modifications to their vim-ruby files
+are encouraged to make a manual backup of each prior to installation.
 
 == Prerequisites
 
