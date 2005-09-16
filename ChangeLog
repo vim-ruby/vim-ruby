@@ -1,3 +1,8 @@
+2005-09-16  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* ftdetect/ruby.vim: use 'set filetype' rather than 'setfiletype' to
+	override any previously set filetype
+
 2005-09-15  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* syntax/ruby.vim: add $LOADED_FEATURES and $PROGRAM_NAME to
