@@ -65,8 +65,8 @@ class Env
     rescue LoadError
       return nil
     end
-    #vim_ruby_gem_dir = Gem.latest_load_paths.grep(%r{gems/vim-ruby}).last
-    vim_ruby_gem_dir = Gem.all_load_paths.grep(%r{gems/vim-ruby}).sort.last
+    #vim_ruby_gem_dir = Gem.latest_load_paths.grep(%r{gems/vim-ruby-\d{4}\.\d{2}\.\d{2}}).last
+    vim_ruby_gem_dir = Gem.all_load_paths.grep(%r{gems/vim-ruby-\d{4}\.\d{2}\.\d{2}}).sort.last
     if vim_ruby_gem_dir and _valid_vim_ruby_dir(vim_ruby_gem_dir)
       return vim_ruby_gem_dir
     end
