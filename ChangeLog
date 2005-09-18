@@ -1,3 +1,8 @@
+2005-09-18  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* bin/vim-ruby-install.rb: make sure that the latest vim-ruby, rather
+	than vim-ruby-devel, gem is being used
+
 2005-09-16  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* ftdetect/ruby.vim: use 'set filetype' rather than 'setfiletype' to
