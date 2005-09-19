@@ -2,7 +2,7 @@
 " Language:     Ruby
 " Maintainer:   Gavin Sinclair <gsinclair at soyabean.com.au>
 " Developer:    Nikolai Weibull <source at pcppopper.org>
-" Info:         $Id: ruby.vim,v 1.30 2005/09/18 13:13:22 pcp Exp $
+" Info:         $Id: ruby.vim,v 1.31 2005/09/19 09:09:04 pcp Exp $
 " URL:          http://vim-ruby.rubyforge.org/
 " Anon CVS:     See above site
 " Licence:      GPL (http://www.gnu.org)
@@ -82,7 +82,7 @@ let s:end_start_regex = '^\s*\zs\<\%(module\|class\|def\|if\|for' .
 let s:end_middle_regex = '\<\%(ensure\|else\|\%(\%(^\|;\)\s*\)\@<=\<rescue\>\|when\|elsif\)\>'
 
 " Regex that defines the end-match for the 'end' keyword.
-let s:end_end_regex = '\%(^\|[^.]\)\@<=\<end\>'
+let s:end_end_regex = '\%(^\|[^.:]\)\@<=\<end\>'
 
 " Expression used for searchpair() call for finding match for 'end' keyword.
 let s:end_skip_expr = s:skip_expr .
