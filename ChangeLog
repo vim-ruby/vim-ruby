@@ -1,5 +1,9 @@
 2005-09-18  Nikolai Weibull  <source@pcppopper.org>
 
+	* indent/ruby.vim: Fix bug #2481
+
+2005-09-18  Nikolai Weibull  <source@pcppopper.org>
+
 	* indent/ruby.vim: Fix for #2473
 
 2005-09-18  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
