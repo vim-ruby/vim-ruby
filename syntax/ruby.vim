@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	Ruby
 " Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
-" Info:		$Id: ruby.vim,v 1.75 2005/09/15 15:06:54 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.76 2005/09/20 06:03:54 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -196,7 +196,7 @@ syn keyword rubyBeginEnd	BEGIN END
 if !exists("ruby_no_special_methods")
   syn keyword rubyAccess    public protected private
   syn keyword rubyAttribute attr attr_accessor attr_reader attr_writer
-  syn keyword rubyControl   abort at_exit exit fork loop trap
+  syn match   rubyControl   "\<\%(exit!\|\%(abort\|at_exit\|exit\|fork\|loop\|trap\)\>\)"
   syn keyword rubyEval      eval class_eval instance_eval module_eval
   syn keyword rubyException raise fail catch throw
   syn keyword rubyInclude   autoload extend include load require
