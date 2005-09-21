@@ -24,6 +24,7 @@ SOURCE_FILES = %w{
   ftdetect/ruby.vim
   ftplugin/eruby.vim
   ftplugin/ruby.vim
+  indent/eruby.vim
   indent/ruby.vim
   syntax/eruby.vim
   syntax/ruby.vim

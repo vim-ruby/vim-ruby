@@ -1,5 +1,8 @@
 2005-09-21  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
+	* bin/vim-ruby-install.rb, indent/eruby.vim: add a new indent file for
+	eRuby; just use the html indent file for now
+
 	* compiler/eruby.vim: use the ruby compiler plugin 'efm' and add a
 	ruby_compiler config variable to allow for using eruby as the
 	'makeprg' rather than the default erb
