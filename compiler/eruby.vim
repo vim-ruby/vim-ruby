@@ -1,7 +1,7 @@
 " Vim compiler file
 " Language:	eRuby
 " Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
-" Info:		$Id: eruby.vim,v 1.3 2005/09/08 14:07:37 dkearns Exp $
+" Info:		$Id: eruby.vim,v 1.4 2005/09/21 13:43:54 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -24,13 +24,22 @@ endif
 let s:cpo_save = &cpo
 set cpo-=C
 
-CompilerSet makeprg=eruby
+if exists("eruby_compiler") && eruby_compiler == "eruby"
+  CompilerSet makeprg=eruby
+else
+  CompilerSet makeprg=erb
+endif
 
-CompilerSet errorformat=eruby:\ %f:%l:%m,
-		       \%E%f:%l:\ %m,
-		       \%-Z%p^,
-		       \%C%m,
-		       \%-G%.%#
+CompilerSet errorformat=
+    \eruby:\ %f:%l:%m,
+    \%+E%f:%l:\ parse\ error,
+    \%W%f:%l:\ warning:\ %m,
+    \%E%f:%l:in\ %*[^:]:\ %m,
+    \%E%f:%l:\ %m,
+    \%-C%\tfrom\ %f:%l:in\ %.%#,
+    \%-Z%\tfrom\ %f:%l,
+    \%-Z%p^,
+    \%-G%.%#
 
 let &cpo = s:cpo_save
 unlet s:cpo_save
