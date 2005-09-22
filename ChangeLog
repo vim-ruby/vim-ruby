@@ -1,3 +1,9 @@
+2005-09-22  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* syntax/ruby: allow while/until modifiers after methods with names
+	ending in [!=?]; assume (for now) that while/until expressions used as
+	args will be specified with parentheses
+
 2005-09-21  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* bin/vim-ruby-install.rb, indent/eruby.vim: add a new indent file for
