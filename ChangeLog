@@ -1,5 +1,8 @@
 2005-09-22  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
+	* compiler/rubyunit.vim: improve compiler message output and behaviour
+	to match that of the GUI test runners
+
 	* syntax/ruby: allow while/until modifiers after methods with names
 	ending in [!=?]; assume (for now) that while/until expressions used as
 	args will be specified with parentheses

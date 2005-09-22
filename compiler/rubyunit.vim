@@ -24,18 +24,16 @@ endif
 let s:cpo_save = &cpo
 set cpo-=C
 
-CompilerSet makeprg=ruby
+CompilerSet makeprg=testrb
 
-CompilerSet errorformat=\%Etest%[%^\ ]%#(%[%^\ ]%#)\ [%f:%l]:,
-			\%E\ %\\+%f:%l:%m,
-			\%Z%m%\\%.,
-			\%C%m%\\%.,
-			\%-GLoaded%.%#,
-			\%-GStarted%.%#,
-			\%-G%[EF%.]%.%#,
-			\%-GFinished\ in%.%#,
-			\%-G\ %\\+%\\d%\\+)\ Failure:,
-			\%-G\ %\\+%\\d%\\+)\ Error:
+CompilerSet errorformat=\%W\ %\\+%\\d%\\+)\ Failure:,
+			\%C%m\ [%f:%l]:,
+		        \%E\ %\\+%\\d%\\+)\ Error:,
+			\%C%m:,
+			\%C\ \ \ \ %f:%l:%.%#,
+			\%C%m,
+			\%Z\ %#,
+			\%-G%.%#
 
 let &cpo = s:cpo_save
 unlet s:cpo_save
