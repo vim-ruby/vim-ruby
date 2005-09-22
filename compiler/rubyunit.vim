@@ -1,7 +1,7 @@
 " Vim compiler file
 " Language:	Test::Unit - Ruby Unit Testing Framework
 " Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
-" Info:		$Id: rubyunit.vim,v 1.7 2005/09/10 14:51:02 dkearns Exp $
+" Info:		$Id: rubyunit.vim,v 1.8 2005/09/22 15:51:48 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -24,18 +24,16 @@ endif
 let s:cpo_save = &cpo
 set cpo-=C
 
-CompilerSet makeprg=ruby
+CompilerSet makeprg=testrb
 
-CompilerSet errorformat=\%Etest%[%^\ ]%#(%[%^\ ]%#)\ [%f:%l]:,
-			\%E\ %\\+%f:%l:%m,
-			\%Z%m%\\%.,
-			\%C%m%\\%.,
-			\%-GLoaded%.%#,
-			\%-GStarted%.%#,
-			\%-G%[EF%.]%.%#,
-			\%-GFinished\ in%.%#,
-			\%-G\ %\\+%\\d%\\+)\ Failure:,
-			\%-G\ %\\+%\\d%\\+)\ Error:
+CompilerSet errorformat=\%W\ %\\+%\\d%\\+)\ Failure:,
+			\%C%m\ [%f:%l]:,
+		        \%E\ %\\+%\\d%\\+)\ Error:,
+			\%C%m:,
+			\%C\ \ \ \ %f:%l:%.%#,
+			\%C%m,
+			\%Z\ %#,
+			\%-G%.%#
 
 let &cpo = s:cpo_save
 unlet s:cpo_save
