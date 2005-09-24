@@ -1,3 +1,34 @@
+= 2005.09.24
+
+== Filetype detection
+
+The eruby filetype is now detected solely based on the file's extension. This
+was being overridden by the scripts.vim detection script.
+
+Note: Only files ending in *.rhtml are detected as filetype eruby since these
+are currently assumed to be Ruby embedded in (X)HTML only. Other filetypes
+could be supported if requested.
+
+== eRuby indent file
+
+There is a new eRuby indent file which simply sources the HTML indent file for
+now.
+
+== eRuby compiler plugin 
+
+This now supports erb as the default 'makeprg'. To use eruby set the
+eruby_compiler variable to "eruby" in your .vimrc
+
+== Test::Unit compiler plugin
+
+This has been improved and should now display messages similar to, though more
+detailed than, the GUI test runners.
+
+== Bug Fixes
+
+A few minor bugs have been fixed in the Ruby syntax and indent files.
+
+
 = 2005.09.15
 
 == eRuby Support
