@@ -1,5 +1,7 @@
 2005-09-24  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
+	* syntax/ruby.vim: fix typo in rubyControl highlight group name
+
 	* bin/vim-ruby-install.rb: add --backup option and include short
 	options for it and --windows; make sure the backup directory is
 	written to CWD
@@ -19,7 +21,7 @@
 	eRuby; just use the html indent file for now
 
 	* compiler/eruby.vim: use the ruby compiler plugin 'efm' and add a
-	ruby_compiler config variable to allow for using eruby as the
+	eruby_compiler config variable to allow for using eruby as the
 	'makeprg' rather than the default erb
 
 2005-09-20  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
