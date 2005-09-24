@@ -1,3 +1,9 @@
+2005-09-24  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* bin/vim-ruby-install.rb: add --backup option and include short
+	options for it and --windows; make sure the backup directory is
+	written to CWD
+
 2005-09-22  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* compiler/rubyunit.vim: improve compiler message output and behaviour

@@ -278,15 +278,19 @@ class VimRubyInstaller
   end
 
     # Since we know the source and target directories, all we have to do is copy the files
-    # across.  If the target file is _newer_ than the source file, we make a backup of it and
-    # report that to the user.
+    # across.  If the --backup option was specified or the target file is
+    # _newer_ than the source file, we make a backup of it and report that to
+    # the user.
   def install
     backupdir = BackupDir.new("./vim-ruby-backup.#{Process.pid}")
     Dir.chdir(@source_dir) do
       SOURCE_FILES.each do |path|
 	source_path = Pathname.new(path)
 	target_path = @target_dir[path]
-	if target_path.file? and target_path.mtime > source_path.mtime
+	# FIXME: Backup everything for now
+	if $options[:backup] and target_path.file?
+	    backupdir.backup(@target_dir, path)
+	elsif target_path.file? and target_path.mtime > source_path.mtime
 	    # We're going to overwrite a newer file; back it up, unless they're the same.
 	  unless _same_contents?(target_path, source_path)
 	    backupdir.backup(@target_dir, path)
@@ -298,8 +302,7 @@ class VimRubyInstaller
     backups = backupdir.contents
     unless backups.empty?
       puts
-      puts "The following backups were made as the files were newer than the ones"
-      puts "you were installing:"
+      puts "The following backups were made:"
       backups.each do |path|
 	puts " * #{path}"
       end
@@ -320,7 +323,7 @@ class VimRubyInstaller
     # A directory for holding backups of configuration files.
   class BackupDir
     def initialize(path)
-      @base = Pathname.new(path)
+      @base = Pathname.new(path).expand_path
     end
       # Copy basedir/path to @path/path.
     def backup(basedir, path)
@@ -357,8 +360,9 @@ end  # class VimRubyInstaller
 begin
 
   $options = {
-    :windows	=> false,
-    :target_dir => nil
+    :backup     => false,
+    :target_dir => nil,
+    :windows	=> false
   }
 
   op = OptionParser.new do |p|
@@ -378,11 +382,14 @@ begin
 
 	Options:
     }.gsub(/^	 /, '')
-    p.on('--windows', 'Install into Windows directories') do
-      $options[:windows] = true
+    p.on('-b', '--backup', 'Backup existing runtime files') do |value|
+      $options[:backup] = value
     end
     p.on('-d DIR', '--directory', 'Install into given directory') do |dir|
       $options[:target_dir] = dir
+    end
+    p.on('-w', '--windows', 'Install into Windows directories') do |value|
+      $options[:windows] = value
     end
     p.on('-h', '--help', 'Show this message') do
       puts p
