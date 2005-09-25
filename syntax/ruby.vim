@@ -144,10 +144,10 @@ end
 
 " Expensive Mode - colorize *end* according to opening statement
 if !exists("ruby_no_expensive")
-  syn region rubyFunction matchgroup=rubyDefine start="\<def\s\+"    end="\ze\%(\s\|(\|;\|$\)" oneline
-  syn region rubyClass    matchgroup=rubyDefine start="\<class\s\+"  end="\ze\%(\s\|<\|;\|$\)" oneline
+  syn region rubyFunction matchgroup=rubyDefine start="\<def\s\+"    end="\%(\s*\%(\s\|(\|;\|$\|#\)\)\@=" oneline
+  syn region rubyClass    matchgroup=rubyDefine start="\<class\s\+"  end="\%(\s*\%(\s\|<\|;\|$\|#\)\)\@=" oneline
   syn match  rubyDefine   "\<class\ze<<"
-  syn region rubyModule   matchgroup=rubyDefine start="\<module\s\+" end="\ze\%(\s\|;\|$\)"    oneline
+  syn region rubyModule   matchgroup=rubyDefine start="\<module\s\+" end="\%(\s*\%(\s\|;\|$\|#\)\)\@="    oneline
 
   syn region rubyBlock start="\<def\>"    matchgroup=rubyDefine end="\<end\>" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo nextgroup=rubyFunction fold
   syn region rubyBlock start="\<class\>"  matchgroup=rubyDefine end="\<end\>" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo nextgroup=rubyClass    fold

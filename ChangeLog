@@ -1,3 +1,8 @@
+2005-09-25  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* syntax/ruby.vim: allow comments to be highlighted directly after
+	module/class/method definitions without intervening whitespace
+
 2005-09-24  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* syntax/ruby.vim: allow regexp's as hash values and after a ';'
