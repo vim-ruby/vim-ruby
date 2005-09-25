@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:	Ruby
 " Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
-" Info:		$Id: ruby.vim,v 1.79 2005/09/24 16:39:19 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.80 2005/09/25 10:59:54 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -144,10 +144,10 @@ end
 
 " Expensive Mode - colorize *end* according to opening statement
 if !exists("ruby_no_expensive")
-  syn region rubyFunction matchgroup=rubyDefine start="\<def\s\+"    end="\ze\%(\s\|(\|;\|$\)" oneline
-  syn region rubyClass    matchgroup=rubyDefine start="\<class\s\+"  end="\ze\%(\s\|<\|;\|$\)" oneline
+  syn region rubyFunction matchgroup=rubyDefine start="\<def\s\+"    end="\%(\s*\%(\s\|(\|;\|$\|#\)\)\@=" oneline
+  syn region rubyClass    matchgroup=rubyDefine start="\<class\s\+"  end="\%(\s*\%(\s\|<\|;\|$\|#\)\)\@=" oneline
   syn match  rubyDefine   "\<class\ze<<"
-  syn region rubyModule   matchgroup=rubyDefine start="\<module\s\+" end="\ze\%(\s\|;\|$\)"    oneline
+  syn region rubyModule   matchgroup=rubyDefine start="\<module\s\+" end="\%(\s*\%(\s\|;\|$\|#\)\)\@="    oneline
 
   syn region rubyBlock start="\<def\>"    matchgroup=rubyDefine end="\<end\>" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo nextgroup=rubyFunction fold
   syn region rubyBlock start="\<class\>"  matchgroup=rubyDefine end="\<end\>" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo nextgroup=rubyClass    fold
