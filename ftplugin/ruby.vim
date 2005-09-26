@@ -1,7 +1,7 @@
 " Vim filetype plugin
 " Language:	Ruby
 " Maintainer:	Gavin Sinclair <gsinclair at soyabean.com.au>
-" Info:         $Id: ruby.vim,v 1.11 2005/09/11 12:02:53 dkearns Exp $
+" Info:         $Id: ruby.vim,v 1.12 2005/09/26 14:59:06 dkearns Exp $
 " URL:          http://vim-ruby.sourceforge.net
 " Anon CVS:     See above site
 " Licence:      GPL (http://www.gnu.org)
@@ -67,9 +67,9 @@ setlocal commentstring=#\ %s
 if !exists("s:rubypath")
   if executable("ruby")
     if &shellxquote == "'"
-      let s:rubypath = system('ruby -e "puts (begin; require %q{rubygems}; Gem.all_load_paths; rescue LoadError; []; end + $:).join(%q{,})"')
+      let s:rubypath = system('ruby -e "print (begin; require %q{rubygems}; Gem.all_load_paths; rescue LoadError; []; end + $:).join(%q{,})"')
     else
-      let s:rubypath = system("ruby -e 'puts (begin; require %q{rubygems}; Gem.all_load_paths; rescue LoadError; []; end + $:).join(%q{,})'")
+      let s:rubypath = system("ruby -e 'print (begin; require %q{rubygems}; Gem.all_load_paths; rescue LoadError; []; end + $:).join(%q{,})'")
     endif
     let s:rubypath = substitute(s:rubypath,',.$',',,','')
   else
