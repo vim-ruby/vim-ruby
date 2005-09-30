@@ -1,3 +1,8 @@
+2005-09-30  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* ftplugin/ruby.vim: place Gems after the standard $LOAD_PATH in
+	'path'
+
 2005-09-27  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* ftplugin/ruby.vim: replace a single '.' with ',,' in all locations
