@@ -66,10 +66,11 @@ setlocal commentstring=#\ %s
 
 if !exists("s:rubypath")
   if executable("ruby")
+    let s:code = "print ($: + begin; require %q{rubygems}; Gem.all_load_paths.sort.uniq; rescue LoadError; []; end).join(%q{,})"
     if &shellxquote == "'"
-      let s:rubypath = system('ruby -e "print (begin; require %q{rubygems}; Gem.all_load_paths; rescue LoadError; []; end + $:).join(%q{,})"')
+      let s:rubypath = system('ruby -e "' . s:code . '"')
     else
-      let s:rubypath = system("ruby -e 'print (begin; require %q{rubygems}; Gem.all_load_paths; rescue LoadError; []; end + $:).join(%q{,})'")
+      let s:rubypath = system("ruby -e '" . s:code . "'")
     endif
     let s:rubypath = substitute(s:rubypath, '\%(^\|,\)\.\%(,\|$\)', ',,', '')
   else
