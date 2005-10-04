@@ -1,10 +1,10 @@
 " Vim filetype plugin
 " Language:	eRuby
 " Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
-" Info:         $Id: eruby.vim,v 1.2 2005/09/08 14:07:37 dkearns Exp $
-" URL:          http://vim-ruby.sourceforge.net
-" Anon CVS:     See above site
-" Licence:      GPL (http://www.gnu.org)
+" Info:		$Id: eruby.vim,v 1.3 2005/10/04 11:11:34 dkearns Exp $
+" URL:		http://vim-ruby.sourceforge.net
+" Anon CVS:	See above site
+" Licence:	GPL (http://www.gnu.org)
 " Disclaimer:
 "    This program is distributed in the hope that it will be useful,
 "    but WITHOUT ANY WARRANTY; without even the implied warranty of

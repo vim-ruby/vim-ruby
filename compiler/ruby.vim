@@ -2,7 +2,7 @@
 " Language:	Ruby
 " Function:	Syntax check and/or error reporting
 " Maintainer:	Tim Hammerquist <timh at rubyforge.org>
-" Info:		$Id: ruby.vim,v 1.10 2005/09/08 14:07:37 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.11 2005/10/04 11:11:34 dkearns Exp $
 " URL:		http://vim-ruby.rubyforge.org
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -14,9 +14,9 @@
 " ----------------------------------------------------------------------------
 "
 " Changelog:
-" 0.2:  script saves and restores 'cpoptions' value to prevent problems with
-"       line continuations
-" 0.1:  initial release
+" 0.2:	script saves and restores 'cpoptions' value to prevent problems with
+"	line continuations
+" 0.1:	initial release
 "
 " Contributors:
 "   Hugh Sasse <hgs@dmu.ac.uk>

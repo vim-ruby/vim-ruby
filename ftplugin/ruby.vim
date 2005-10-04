@@ -1,10 +1,10 @@
 " Vim filetype plugin
 " Language:	Ruby
 " Maintainer:	Gavin Sinclair <gsinclair at soyabean.com.au>
-" Info:         $Id: ruby.vim,v 1.14 2005/09/30 10:56:19 dkearns Exp $
-" URL:          http://vim-ruby.sourceforge.net
-" Anon CVS:     See above site
-" Licence:      GPL (http://www.gnu.org)
+" Info:		$Id: ruby.vim,v 1.15 2005/10/04 11:11:34 dkearns Exp $
+" URL:		http://vim-ruby.sourceforge.net
+" Anon CVS:	See above site
+" Licence:	GPL (http://www.gnu.org)
 " Disclaimer:
 "    This program is distributed in the hope that it will be useful,
 "    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -12,7 +12,7 @@
 "    GNU General Public License for more details.
 " ----------------------------------------------------------------------------
 "
-" Original matchit support thanks to Ned Konz.  See his ftplugin/ruby.vim at
+" Original matchit support thanks to Ned Konz.	See his ftplugin/ruby.vim at
 "   http://bike-nomad.com/vim/ruby.vim.
 " ----------------------------------------------------------------------------
 
@@ -32,15 +32,15 @@ if exists("loaded_matchit") && !exists("b:match_words")
  " TODO: improve optional do loops
  let b:match_words =
     \ '\%(' .
-    \     '\%(\%(\.\|\:\:\)\s*\)\@<!\<\%(class\|module\|begin\|def\|case\|for\|do\)\>' .
-    \   '\|' .
-    \     '\%(\%(^\|\.\.\.\=\|[\,;=([<>~\*/%!&^|+-]\)\s*\)\@<=\%(if\|unless\|until\|while\)\>' .
+    \	  '\%(\%(\.\|\:\:\)\s*\)\@<!\<\%(class\|module\|begin\|def\|case\|for\|do\)\>' .
+    \	'\|' .
+    \	  '\%(\%(^\|\.\.\.\=\|[\,;=([<>~\*/%!&^|+-]\)\s*\)\@<=\%(if\|unless\|until\|while\)\>' .
     \ '\)' .
     \ ':' .
     \ '\%(' .
-    \     '\%(\%(\.\|\:\:\)\s*\)\@<!\<\%(else\|elsif\|ensure\|when\)\>' .
-    \   '\|' .
-    \     '\%(\%(^\|;\)\s*\)\@<=\<rescue\>' .
+    \	  '\%(\%(\.\|\:\:\)\s*\)\@<!\<\%(else\|elsif\|ensure\|when\)\>' .
+    \	'\|' .
+    \	  '\%(\%(^\|;\)\s*\)\@<=\<rescue\>' .
     \ '\)' .
     \ ':' .
     \ '\%(\%(\.\|\:\:\)\s*\)\@<!\<end\>'
@@ -84,7 +84,7 @@ let &l:path = s:rubypath
 
 if has("gui_win32") && !exists("b:browsefilter")
   let b:browsefilter = "Ruby Source Files (*.rb)\t*.rb\n" .
-                     \ "All Files (*.*)\t*.*\n"
+		     \ "All Files (*.*)\t*.*\n"
 endif
 
 let b:undo_ftplugin = "setl fo< inc< inex< sua< def< com< cms< path< "
@@ -98,7 +98,7 @@ unlet s:cpo_save
 "
 " 1. Look for the latest "matchit" plugin at
 "
-"         http://www.vim.org/scripts/script.php?script_id=39
+"	  http://www.vim.org/scripts/script.php?script_id=39
 "
 "    It is also packaged with Vim, in the $VIMRUNTIME/macros directory.
 "
@@ -109,16 +109,16 @@ unlet s:cpo_save
 " 4. Ensure this file (ftplugin/ruby.vim) is installed.
 "
 " 5. Ensure you have this line in your $HOME/.vimrc:
-"         filetype plugin on
+"	  filetype plugin on
 "
 " 6. Restart Vim and create the matchit documentation:
 "
-"         :helptags ~/.vim/doc
+"	  :helptags ~/.vim/doc
 "
 "    Now you can do ":help matchit", and you should be able to use "%" on Ruby
-"    keywords.  Try ":echo b:match_words" to be sure.
+"    keywords.	Try ":echo b:match_words" to be sure.
 "
-" Thanks to Mark J. Reed for the instructions.  See ":help vimrc" for the
+" Thanks to Mark J. Reed for the instructions.	See ":help vimrc" for the
 " locations of plugin directories, etc., as there are several options, and it
 " differs on Windows.  Email gsinclair@soyabean.com.au if you need help.
 "
