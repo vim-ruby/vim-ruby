@@ -1,3 +1,11 @@
+2005-10-04  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* compiler/eruby.vim, compiler/rubyunit.vim, compiler/ruby.vim,
+	ftdetect/ruby.vim, ftplugin/eruby.vim, ftplugin/ruby.vim,
+	indent/eruby.vim, indent/ruby.vim, syntax/eruby.vim, syntax/ruby.vim:
+	replace spaces with tabs, where possible, to reduce file sizes as
+	requested by BM
+
 2005-09-30  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* ftplugin/ruby.vim: place Gems after the standard $LOAD_PATH in
