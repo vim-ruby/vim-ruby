@@ -1,5 +1,8 @@
 2005-10-04  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
+	* syntax/ruby.vim: make the use of 'ruby_no_expensive' local to the
+	buffer for eruby files
+
 	* compiler/eruby.vim, compiler/rubyunit.vim, compiler/ruby.vim,
 	ftdetect/ruby.vim, ftplugin/eruby.vim, ftplugin/ruby.vim,
 	indent/eruby.vim, indent/ruby.vim, syntax/eruby.vim, syntax/ruby.vim:
