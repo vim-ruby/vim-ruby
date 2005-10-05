@@ -1,3 +1,8 @@
+2005-10-05  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* ftplugin/ruby.vim: add '.' to the head of 'path' so that files
+	relative to the directory of the current file are found first
+
 2005-10-04  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* syntax/ruby.vim: make the use of 'ruby_no_expensive' local to the

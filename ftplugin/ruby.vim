@@ -1,7 +1,7 @@
 " Vim filetype plugin
 " Language:	Ruby
 " Maintainer:	Gavin Sinclair <gsinclair at soyabean.com.au>
-" Info:		$Id: ruby.vim,v 1.15 2005/10/04 11:11:34 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.16 2005/10/05 05:31:29 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -72,7 +72,7 @@ if !exists("s:rubypath")
     else
       let s:rubypath = system("ruby -e '" . s:code . "'")
     endif
-    let s:rubypath = substitute(s:rubypath, '\%(^\|,\)\.\%(,\|$\)', ',,', '')
+    let s:rubypath = '.,' . substitute(s:rubypath, '\%(^\|,\)\.\%(,\|$\)', ',,', '')
   else
     " If we can't call ruby to get its path, just default to using the
     " current directory and the directory of the current file.
