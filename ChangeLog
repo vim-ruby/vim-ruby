@@ -1,5 +1,7 @@
 2005-10-05  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
+	* NEWS: updated for new release
+
 	* bin/vim-ruby-install.rb: raise an exception if there are unknown
 	args passed to the script
 
