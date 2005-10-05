@@ -1,5 +1,8 @@
 2005-10-05  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
+	* bin/vim-ruby-install.rb: raise an exception if there are unknown
+	args passed to the script
+
 	* ftplugin/ruby.vim: add '.' to the head of 'path' so that files
 	relative to the directory of the current file are found first
 
