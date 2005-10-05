@@ -72,7 +72,7 @@ if !exists("s:rubypath")
     else
       let s:rubypath = system("ruby -e '" . s:code . "'")
     endif
-    let s:rubypath = substitute(s:rubypath, '\%(^\|,\)\.\%(,\|$\)', ',,', '')
+    let s:rubypath = '.,' . substitute(s:rubypath, '\%(^\|,\)\.\%(,\|$\)', ',,', '')
   else
     " If we can't call ruby to get its path, just default to using the
     " current directory and the directory of the current file.
