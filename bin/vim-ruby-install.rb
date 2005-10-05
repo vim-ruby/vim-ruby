@@ -152,7 +152,7 @@ class FileWriter
   end
     # Create the given directory with the correct directory permissions.
   def mkpath(directory)
-    FileUtils.mkdir_p directory.to_s, :mode => @permissions[:dir], :verbose => true
+    FileUtils.mkdir_p(directory.to_s, :mode => @permissions[:dir], :verbose => true)
   end
   def _ensure_directory_exists(path)
     dir = path.dirname
@@ -414,6 +414,10 @@ begin
     }.gsub(/^	 /, '')
   end
   op.parse!(ARGV)
+
+  if not ARGV.empty?
+    raise "invalid argument: #{ARGV[0]}"
+  end
 
   source_dir = Env.determine_source_directory
   if source_dir.nil?
