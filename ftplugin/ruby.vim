@@ -1,7 +1,7 @@
 " Vim filetype plugin
 " Language:	Ruby
 " Maintainer:	Gavin Sinclair <gsinclair at soyabean.com.au>
-" Info:		$Id: ruby.vim,v 1.16 2005/10/05 05:31:29 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.17 2005/10/06 07:13:52 dkearns Exp $
 " URL:		http://vim-ruby.sourceforge.net
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -32,18 +32,18 @@ if exists("loaded_matchit") && !exists("b:match_words")
  " TODO: improve optional do loops
  let b:match_words =
     \ '\%(' .
-    \	  '\%(\%(\.\|\:\:\)\s*\)\@<!\<\%(class\|module\|begin\|def\|case\|for\|do\)\>' .
+    \	  '\%(\%(\.\|\:\:\)\s*\|\:\)\@<!\<\%(class\|module\|begin\|def\|case\|for\|do\)\>' .
     \	'\|' .
     \	  '\%(\%(^\|\.\.\.\=\|[\,;=([<>~\*/%!&^|+-]\)\s*\)\@<=\%(if\|unless\|until\|while\)\>' .
     \ '\)' .
     \ ':' .
     \ '\%(' .
-    \	  '\%(\%(\.\|\:\:\)\s*\)\@<!\<\%(else\|elsif\|ensure\|when\)\>' .
+    \	  '\%(\%(\.\|\:\:\)\s*\|\:\)\@<!\<\%(else\|elsif\|ensure\|when\)\>' .
     \	'\|' .
     \	  '\%(\%(^\|;\)\s*\)\@<=\<rescue\>' .
     \ '\)' .
     \ ':' .
-    \ '\%(\%(\.\|\:\:\)\s*\)\@<!\<end\>'
+    \ '\%(\%(\.\|\:\:\)\s*\|\:\)\@<!\<end\>'
 
   let b:match_skip =
      \ "synIDattr(synID(line('.'),col('.'),0),'name') =~ '" .
