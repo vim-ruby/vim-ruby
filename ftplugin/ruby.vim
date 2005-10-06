@@ -32,18 +32,18 @@ if exists("loaded_matchit") && !exists("b:match_words")
  " TODO: improve optional do loops
  let b:match_words =
     \ '\%(' .
-    \	  '\%(\%(\.\|\:\:\)\s*\)\@<!\<\%(class\|module\|begin\|def\|case\|for\|do\)\>' .
+    \	  '\%(\%(\.\|\:\:\)\s*\|\:\)\@<!\<\%(class\|module\|begin\|def\|case\|for\|do\)\>' .
     \	'\|' .
     \	  '\%(\%(^\|\.\.\.\=\|[\,;=([<>~\*/%!&^|+-]\)\s*\)\@<=\%(if\|unless\|until\|while\)\>' .
     \ '\)' .
     \ ':' .
     \ '\%(' .
-    \	  '\%(\%(\.\|\:\:\)\s*\)\@<!\<\%(else\|elsif\|ensure\|when\)\>' .
+    \	  '\%(\%(\.\|\:\:\)\s*\|\:\)\@<!\<\%(else\|elsif\|ensure\|when\)\>' .
     \	'\|' .
     \	  '\%(\%(^\|;\)\s*\)\@<=\<rescue\>' .
     \ '\)' .
     \ ':' .
-    \ '\%(\%(\.\|\:\:\)\s*\)\@<!\<end\>'
+    \ '\%(\%(\.\|\:\:\)\s*\|\:\)\@<!\<end\>'
 
   let b:match_skip =
      \ "synIDattr(synID(line('.'),col('.'),0),'name') =~ '" .
