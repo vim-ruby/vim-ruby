@@ -1,5 +1,7 @@
 2005-10-07  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
+	* NEWS: updated for new release
+
 	* syntax/doc/ruby.txt: update formatting for Vim 6.4 release
 
 2005-10-06  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
