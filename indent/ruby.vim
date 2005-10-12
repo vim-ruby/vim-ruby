@@ -2,7 +2,7 @@
 " Language:	Ruby
 " Maintainer:	Gavin Sinclair <gsinclair at soyabean.com.au>
 " Developer:	Nikolai Weibull <source at pcppopper.org>
-" Info:		$Id: ruby.vim,v 1.32 2005/10/04 11:11:34 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.33 2005/10/12 11:47:48 pcp Exp $
 " URL:		http://vim-ruby.rubyforge.org/
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -42,17 +42,13 @@ set cpo&vim
 let s:syng_strcom = '\<ruby\%(String\|StringDelimiter\|ASCIICode' .
       \ '\|Interpolation\|NoInterpolation\|Escape\|Comment\|Documentation\)\>'
 
-" Regex of syntax group names that are strings or comments.
-let s:syng_strcom2 = '\<ruby\%(String' .
-      \ '\|Interpolation\|NoInterpolation\|Escape\|Comment\|Documentation\)\>'
-
 " Regex of syntax group names that are strings.
 let s:syng_string =
-      \ '\<ruby\%(String\|Interpolation\|NoInterpolation\|Escape\)\>'
+      \ '\<ruby\%(String\|StringDelimiter\|Interpolation\|NoInterpolation\|Escape\)\>'
 
 " Regex of syntax group names that are strings or documentation.
 let s:syng_stringdoc =
-  \'\<ruby\%(String\|Interpolation\|NoInterpolation\|Escape\|Documentation\)\>'
+  \'\<ruby\%(String\|StringDelimiter\|Interpolation\|NoInterpolation\|Escape\|Documentation\)\>'
 
 " Expression used to check whether we should skip a match with searchpair().
 let s:skip_expr =
@@ -107,11 +103,6 @@ let s:block_regex =
 " Check if the character at lnum:col is inside a string, comment, or is ascii.
 function s:IsInStringOrComment(lnum, col)
   return synIDattr(synID(a:lnum, a:col, 0), 'name') =~ s:syng_strcom
-endfunction
-
-" Check if the character at lnum:col is inside a string or comment.
-function s:IsInStringOrComment2(lnum, col)
-  return synIDattr(synID(a:lnum, a:col, 0), 'name') =~ s:syng_strcom2
 endfunction
 
 " Check if the character at lnum:col is inside a string.
