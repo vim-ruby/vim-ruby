@@ -1,8 +1,8 @@
 " Vim syntax file
 " Language:	eRuby
 " Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
-" Info:		$Id: eruby.vim,v 1.6 2005/09/13 04:26:56 dkearns Exp $
-" URL:		http://vim-ruby.sourceforge.net
+" Info:		$Id: eruby.vim,v 1.7 2005/10/13 16:41:44 dkearns Exp $
+" URL:		http://vim-ruby.rubyforge.org
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
 " Disclaimer:

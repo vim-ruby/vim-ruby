@@ -2,8 +2,8 @@
 " Language:	Ruby
 " Maintainer:	Gavin Sinclair <gsinclair at soyabean.com.au>
 " Developer:	Nikolai Weibull <source at pcppopper.org>
-" Info:		$Id: ruby.vim,v 1.33 2005/10/12 11:47:48 pcp Exp $
-" URL:		http://vim-ruby.rubyforge.org/
+" Info:		$Id: ruby.vim,v 1.34 2005/10/13 16:41:44 dkearns Exp $
+" URL:		http://vim-ruby.rubyforge.org
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
 " Disclaimer:
