@@ -1,5 +1,9 @@
 2005-10-13  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
+	* compiler/eruby.vim, compiler/rubyunit.vim, ftplugin/eruby.vim,
+	ftplugin/ruby.vim, indent/eruby.vim, indent/ruby.vim,
+	syntax/eruby.vim, syntax/ruby.vim: fix typo in URL header
+
 	* ftdetect/ruby.vim: add filetype detection for Rantfiles
 
 2005-10-07  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>

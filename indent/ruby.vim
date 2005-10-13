@@ -3,7 +3,7 @@
 " Maintainer:	Gavin Sinclair <gsinclair at soyabean.com.au>
 " Developer:	Nikolai Weibull <source at pcppopper.org>
 " Info:		$Id$
-" URL:		http://vim-ruby.rubyforge.org/
+" URL:		http://vim-ruby.rubyforge.org
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
 " Disclaimer:

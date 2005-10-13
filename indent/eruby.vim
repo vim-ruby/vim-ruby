@@ -2,7 +2,7 @@
 " Language:	Ruby
 " Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
 " Info:		$Id$
-" URL:		http://vim-ruby.rubyforge.org/
+" URL:		http://vim-ruby.rubyforge.org
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
 " Disclaimer:
