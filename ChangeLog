@@ -1,3 +1,7 @@
+2005-10-14  Gavin Sinclair <gsinclair@soyabean.com.au>
+
+	* indent/ruby.vim: Changed maintainer to Nikolai.
+
 2005-10-13  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* compiler/eruby.vim, compiler/rubyunit.vim, ftplugin/eruby.vim,
