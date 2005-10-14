@@ -1,0 +1,244 @@
+*vim-ruby.txt* *vim-ruby* *vim-ruby-faq*
+
+			  VIM/RUBY CONFIGURATION FILES
+
+			    The vim-ruby Project FAQ
+
+			 http://vim-ruby.rubyforge.org
+
+The vim-ruby project maintains Ruby-related configuration files for Vim.  This
+FAQ contains all you need to know about it.
+
+*** TOC ***
+
+==============================================================================
+
+*vim-ruby-faq-X* What is the vim-ruby project?
+
+It maintains all the configuration files that help Vim edit Ruby code.  By
+installing these files, Vim will properly highlight and indent Ruby files, and
+will be able to run them and go directly to the location of any errors.
+Rakefiles, ERB files, and unit tests are also identified and supported.
+
+If you make use of this project, make sure you read the installation and
+configuration instructions in this FAQ.
+
+
+*vim-ruby-faq-X* Doesn't Vim include these files?
+
+Yes it does.  You should only want to download and install this project if it
+has changed since you last installed your version of Vim.  Read the "News"
+section of the homepage to see when the most recent release was made.
+
+
+*vim-ruby-faq-X* How do you get it?
+
+The easiest way is to run: >
+
+	gem install vim-ruby
+
+(This really only downloads it.  See installation instructions below.)
+
+If you don't have RubyGems, download a tarball from: >
+
+	http://rubyforge.org/projects/vim-ruby/
+
+Again, see installation instructions below.
+
+
+*vim-ruby-faq-X* How do you install it?
+
+If you obtained the vim-ruby files via RubyGems, run: >
+
+  	vim-ruby-install.rb
+	
+If you downloaded a tarball, unpack it, change to the created directory, and
+run: >
+
+	ruby bin/vim-ruby-install.rb
+
+Whichever way you run it, the effect is the same.  The installer will:
+ - Search for a Vim config directory to put its files and ask you to confirm.
+ - Copy the configuration files to the appropriate places underneath the
+   directory you selected.
+
+Here is an example installation transcript:
+
+	Possible Vim installation directories: ~
+		1) D:/Gavin/vimfiles ~
+		2) E:/Vim/vimfiles ~
+ ~
+	Please select one (or anything else to specify another directory): 2 ~
+	compiler/eruby.vim        -> E:/Vim/vimfiles/compiler/eruby.vim ~
+	compiler/ruby.vim         -> E:/Vim/vimfiles/compiler/ruby.vim ~
+	compiler/rubyunit.vim     -> E:/Vim/vimfiles/compiler/rubyunit.vim ~
+	ftdetect/ruby.vim         -> E:/Vim/vimfiles/ftdetect/ruby.vim ~
+	ftplugin/eruby.vim        -> E:/Vim/vimfiles/ftplugin/eruby.vim ~
+	ftplugin/ruby.vim         -> E:/Vim/vimfiles/ftplugin/ruby.vim ~
+	indent/eruby.vim          -> E:/Vim/vimfiles/indent/eruby.vim ~
+	indent/ruby.vim           -> E:/Vim/vimfiles/indent/ruby.vim ~
+	syntax/eruby.vim          -> E:/Vim/vimfiles/syntax/eruby.vim ~
+	syntax/ruby.vim           -> E:/Vim/vimfiles/syntax/ruby.vim ~
+
+Existing files are overwritten.  This is safe, because it's a slow-maturing
+project, so new files are better than old ones.  However, if you had edited the
+files, you will have lost your changes.  Better make your changes in, for
+instance:
+
+	~/.vim/after/ftplugin/ruby.vim ~
+
+This file will be loaded _after_ the regular config files are loaded, so your
+customisations will definitely take effect.
+
+
+*vim-ruby-faq-X* What Vim config do I need?
+
+Without the following lines in your .vimrc, _vimrc, or other startup file, the
+files in the vim-ruby project will be largely useless. >
+
+	set nocompatible      " We're running Vim, not Vi!
+	syntax on             " Enable syntax highlighting
+	filetype on           " Enable filetype detection
+	filetype indent on    " Enable filetype-specific indenting
+	filetype plugin on    " Enable filetype-specific plugins
+
+	TODO: matchit support 
+	TODO: anything needed for compiler support?
+
+See |.vimrc| for more information about this important Vim configuration file.
+
+
+*vim-ruby-faq-X* How do I know that everything's working?
+
+If you've run the installer and added the configuration above, everything should
+be fine when you restart Vim.  To test this:
+ - Edit a Ruby file with Vim (make sure it has a .rb extension).
+ - The code should be syntax highlighted.
+ - Type in some code.  When you start a new line, it should be automatically
+   indented to the correct spot.
+ - Add or remove some space from the beginning of a line of code and hit ==.
+   That line should be reindented.
+ - Put the cursor on a "class" or "def" keyword and hit %.  The cursor should
+   now be on the matching "end" keyword.
+ - TODO: what else?
+
+
+*vim-ruby-faq-X* How do I use it?
+
+TODO: write.
+
+
+*vim-ruby-faq-X* How do I customise it?
+
+The most important customisation for editing Ruby code is the amount of space to
+indent.  The following is a typical setup.  Look up the various options to read
+about them. >
+
+	set expandtab
+	set tabstop=2 shiftwidth=2 softtabstop=2
+	set autoindent
+
+TODO: is autoindent necessary?  What other options should go here?  What about
+Ruby comments?
+
+
+*vim-ruby-faq-X* I want feature X.  Will you include it?
+
+The idea of the vim-ruby project is to maintain configuration files that are
+actually distributed with Vim.  Therefore all functionality should be helpful to
+all Vim/Ruby users.  So the project does not deal with people's individual
+tastes.
+
+That said, we are considering creating a separate configuration file for less
+universal features, whose features users can pick and choose.  So don't hesitate
+to send us your suggestions.
+
+
+*vim-ruby-faq-X* What are some other cool Ruby-related Vim tricks I can use?
+
+An example is the following (put it in ~/.vimrc/ftplugin/ruby_extra.vim or
+similar): >
+
+	if !exists( "*EndToken" )
+	  function EndToken()
+	    let current_line = getline( '.' )
+	    let braces_at_end = '{\s*\(|\(,\|\s\|\w\)*|\s*\)\?$'
+	    if match( current_line, braces_at_end ) >= 0
+	      return '}'
+	    else
+	      return 'end'
+	    endif
+	  endfunction
+	endif
+
+	imap <S-CR> <ESC>:execute 'normal o' . EndToken()<CR>O
+
+This will help you create ruby blocks of code, by inserting "}" or "end" as
+appropriate.  Try creating these lines of code and hitting SHIFT-ENTER:
+
+	array.map { |elem| ~
+
+	def fibonacci(n) ~
+
+For other suggestions, search the web or look at: >
+
+	http://rubygarden.org/ruby?VimRubySupport
+
+
+*vim-ruby-faq-X* How can I report a bug?
+
+Bug reports are most welcome.  In order or preference:
+ - submit a bug at http://rubyforge.org/tracker/?group_id=16
+ - send an email to the mailing list (see below)
+ - email the maintainer (email address appears in each configuration file)
+
+
+*vim-ruby-faq-X* Does the project have a mailing list?
+
+Yes: vim-ruby-devel@rubyforge.org.  Only subscribers can post.  To join, visit:
+>
+	http://rubyforge.org/mailman/listinfo/vim-ruby-devel
+
+The list is mirrored at: >
+	
+	http://news.gmane.org/gmane.comp.editors.vim.vim%2druby.devel
+
+
+*vim-ruby-faq-X* Why is this project separate from Vim?
+
+We can't use Vim's CVS to keep track of these files, so we organise it ourselves
+and give Bram the latest files in time for each release of Vim.  By keeping the
+Ruby stuff together, we can release it all at once and people can update it
+independently of Vim.
+
+
+*vim-ruby-faq-X* I have another question...
+
+The mailing list or the file maintainer is a good place to ask.  Or perhaps
+comp.lang.ruby, but please make sure you've read the FAQ thoroughly before
+asking there.
+
+
+*vim-ruby-faq-X* Can you repeat all the web pages listed in this FAQ?
+
+Homepage: >
+	http://vim-ruby.rubyforge.org
+
+Project page: >
+	http://rubyforge.org/projects/vim-ruby/
+
+Bug tracker: >
+	http://rubyforge.org/tracker/?group_id=16
+
+Relevant Wiki page: >
+	http://rubygarden.org/ruby?VimRubySupport
+
+Mailing list archives: >
+	http://news.gmane.org/gmane.comp.editors.vim.vim%2druby.devel
+	http://rubyforge.org/pipermail/vim-ruby-devel/
+
+Mailing list join: >
+	http://rubyforge.org/mailman/listinfo/vim-ruby-devel
+
+
+vim: ft=help
