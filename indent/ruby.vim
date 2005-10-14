@@ -1,6 +1,5 @@
 " Vim indent file
 " Language:	Ruby
-" Maintainer:	Gavin Sinclair <gsinclair at soyabean.com.au>
 " Developer:	Nikolai Weibull <source at pcppopper.org>
 " Info:		$Id$
 " URL:		http://vim-ruby.rubyforge.org
