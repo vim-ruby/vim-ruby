@@ -28,7 +28,8 @@ configuration instructions in this FAQ.
 
 Yes it does.  You should only want to download and install this project if it
 has changed since you last installed your version of Vim.  Read the "News"
-section of the homepage to see when the most recent release was made.
+section of the |vim-ruby-homepage| to see when the most recent release was
+made.
 
 
 *vim-ruby-faq-X* How do you get it?
@@ -37,7 +38,8 @@ The easiest way is to run: >
 
 	gem install vim-ruby
 
-(This really only downloads it.  See installation instructions below.)
+(This really only downloads it.  See installation instructions
+|vim-ruby-install| below.)
 
 If you don't have RubyGems, download a tarball from: >
 
@@ -46,7 +48,7 @@ If you don't have RubyGems, download a tarball from: >
 Again, see installation instructions below.
 
 
-*vim-ruby-faq-X* How do you install it?
+*vim-ruby-faq-X* How do you install it? *vim-ruby-install*
 
 If you obtained the vim-ruby files via RubyGems, run: >
 
@@ -91,7 +93,7 @@ This file will be loaded _after_ the regular config files are loaded, so your
 customisations will definitely take effect.
 
 
-*vim-ruby-faq-X* What Vim config do I need?
+*vim-ruby-faq-X* What Vim config do I need? *vim-ruby-config*
 
 Without the following lines in your .vimrc, _vimrc, or other startup file, the
 files in the vim-ruby project will be largely useless. >
@@ -101,17 +103,19 @@ files in the vim-ruby project will be largely useless. >
 	filetype on           " Enable filetype detection
 	filetype indent on    " Enable filetype-specific indenting
 	filetype plugin on    " Enable filetype-specific plugins
-
-	TODO: matchit support 
-	TODO: anything needed for compiler support?
+	compiler ruby         " Enable compiler support for ruby
 
 See |.vimrc| for more information about this important Vim configuration file.
+
+See |matchit-install| for instructions on installing "matchit", which will
+allow you to use |%| to bounce between Ruby keywords (class, def, while, ...)
+and their respective "end" keywords.
 
 
 *vim-ruby-faq-X* How do I know that everything's working?
 
-If you've run the installer and added the configuration above, everything should
-be fine when you restart Vim.  To test this:
+If you've run the installer and added the configuration |vim-ruby-config|
+above, everything should be fine when you restart Vim.  To test this:
  - Edit a Ruby file with Vim (make sure it has a .rb extension).
  - The code should be syntax highlighted.
  - Type in some code.  When you start a new line, it should be automatically
@@ -128,7 +132,7 @@ be fine when you restart Vim.  To test this:
 TODO: write.
 
 
-*vim-ruby-faq-X* How do I customise it?
+*vim-ruby-faq-X* How do I customise it? *vim-ruby-customize*
 
 The most important customisation for editing Ruby code is the amount of space to
 indent.  The following is a typical setup.  Look up the various options to read
@@ -140,6 +144,10 @@ about them. >
 
 TODO: is autoindent necessary?  What other options should go here?  What about
 Ruby comments?
+FIXME: Autoindent is good.  maybe mention |i_CTRL_D| and |i_CTRL_T| for
+moving lines about in this context?
+COMMENT: I never use ^D and ^T in insert mode, though I always knew what they
+do.  Might try them!
 
 
 *vim-ruby-faq-X* I want feature X.  Will you include it?
@@ -157,7 +165,7 @@ to send us your suggestions.
 *vim-ruby-faq-X* What are some other cool Ruby-related Vim tricks I can use?
 
 An example is the following (put it in ~/.vimrc/ftplugin/ruby_extra.vim or
-similar): >
+similar): [similar? |$VIMRUNTIME| or what?] >
 
 	if !exists( "*EndToken" )
 	  function EndToken()
@@ -185,14 +193,15 @@ For other suggestions, search the web or look at: >
 	http://rubygarden.org/ruby?VimRubySupport
 
 
-*vim-ruby-faq-X* How can I report a bug?
+*vim-ruby-faq-X* How can I report a bug? *vim-ruby-bug-reporting*
 
-Bug reports are most welcome.  In order or preference:
+Bug reports are most welcome.  In order of preference:
  - submit a bug at http://rubyforge.org/tracker/?group_id=16
  - send an email to the mailing list (see below)
  - email the maintainer (email address appears in each configuration file)
 
 
+                                         *vim-ruby-list*
 *vim-ruby-faq-X* Does the project have a mailing list?
 
 Yes: vim-ruby-devel@rubyforge.org.  Only subscribers can post.  To join, visit:
@@ -221,7 +230,7 @@ asking there.
 
 *vim-ruby-faq-X* Can you repeat all the web pages listed in this FAQ?
 
-Homepage: >
+Homepage *vim-ruby-homepage* : >
 	http://vim-ruby.rubyforge.org
 
 Project page: >
@@ -241,4 +250,4 @@ Mailing list join: >
 	http://rubyforge.org/mailman/listinfo/vim-ruby-devel
 
 
-vim: ft=help
+vim: ft=help tw=78 noet :
