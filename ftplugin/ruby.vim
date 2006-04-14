@@ -58,6 +58,10 @@ setlocal include=^\\s*\\<\\(load\\\|\w*require\\)\\>
 setlocal includeexpr=substitute(substitute(v:fname,'::','/','g'),'$','.rb','')
 setlocal suffixesadd=.rb
 
+if version >= 700
+  setlocal omnifunc=rubycomplete#Complete
+endif
+
 " TODO:
 "setlocal define=^\\s*def
 
