@@ -1,7 +1,7 @@
 " Vim filetype plugin
 " Language:	Ruby
 " Maintainer:	Gavin Sinclair <gsinclair at soyabean.com.au>
-" Info:		$Id: ruby.vim,v 1.18 2005/10/13 16:41:44 dkearns Exp $
+" Info:		$Id: ruby.vim,v 1.19 2006/04/14 16:44:32 segy Exp $
 " URL:		http://vim-ruby.rubyforge.org
 " Anon CVS:	See above site
 " Licence:	GPL (http://www.gnu.org)
@@ -57,6 +57,10 @@ setlocal formatoptions-=t formatoptions+=croql
 setlocal include=^\\s*\\<\\(load\\\|\w*require\\)\\>
 setlocal includeexpr=substitute(substitute(v:fname,'::','/','g'),'$','.rb','')
 setlocal suffixesadd=.rb
+
+if version >= 700
+  setlocal omnifunc=rubycomplete#Complete
+endif
 
 " TODO:
 "setlocal define=^\\s*def
