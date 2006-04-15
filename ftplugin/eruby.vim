@@ -1,16 +1,10 @@
 " Vim filetype plugin
-" Language:	eRuby
-" Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
-" Info:		$Id$
-" URL:		http://vim-ruby.rubyforge.org
-" Anon CVS:	See above site
-" Licence:	GPL (http://www.gnu.org)
-" Disclaimer:
-"    This program is distributed in the hope that it will be useful,
-"    but WITHOUT ANY WARRANTY; without even the implied warranty of
-"    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-"    GNU General Public License for more details.
-" ----------------------------------------------------------------------------
+" Language:		eRuby
+" Maintainer:		Doug Kearns <dougkearns@gmail.com>
+" Info:			$Id$
+" URL:			http://vim-ruby.rubyforge.org
+" Anon CVS:		See above site
+" Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
 
 " Only do this when not done yet for this buffer
 if (exists("b:did_ftplugin"))

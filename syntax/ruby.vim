@@ -1,15 +1,10 @@
 " Vim syntax file
-" Language:	Ruby
-" Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
-" Info:		$Id$
-" URL:		http://vim-ruby.rubyforge.org
-" Anon CVS:	See above site
-" Licence:	GPL (http://www.gnu.org)
-" Disclaimer:
-"    This program is distributed in the hope that it will be useful,
-"    but WITHOUT ANY WARRANTY; without even the implied warranty of
-"    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-"    GNU General Public License for more details.
+" Language:		Ruby
+" Maintainer:		Doug Kearns <dougkearns@gmail.com>
+" Info:			$Id$
+" URL:			http://vim-ruby.rubyforge.org
+" Anon CVS:		See above site
+" Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
 " ----------------------------------------------------------------------------
 "
 " Previous Maintainer:	Mirko Nasato

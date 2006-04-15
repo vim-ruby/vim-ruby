@@ -1,5 +1,11 @@
 2006-04-15  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
+	* autoload/rubycomplete.vim, compiler/rubyunit.vim, ftdetect/ruby.vim,
+	ftplugin/ruby.vim, indent/ruby.vim, syntax/ruby.vim,
+	compiler/eruby.vim, compiler/ruby.vim, ftplugin/eruby.vim,
+	indent/eruby.vim, syntax/eruby.vim: add Release-Coordinator header
+	line and remove GPL license
+
 	* CONTRIBUTORS, bin/vim-ruby-install.rb: add Mark to the list of
 	maintainers; add rubycomplete.vim to the installer script's list of
 	files

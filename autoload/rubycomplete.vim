@@ -1,12 +1,15 @@
 " Vim completion script
-" Language:	    Ruby
-" Maintainer:	Mark Guzman ( segfault AT hasno DOT info )
-" Info:         $Id$
-" URL:          http://vim-ruby.rubyforge.org
-" Anon CVS:     See above site
-" Ruby IRB/Complete author: Keiju ISHITSUKA(keiju@ishitsuka.com)
-" Last Change:	2006 Apr 14
+" Language:				Ruby
+" Maintainer:			Mark Guzman ( segfault AT hasno DOT info )
+" Info:					$Id$
+" URL:					http://vim-ruby.rubyforge.org
+" Anon CVS:				See above site
+" Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
+" ----------------------------------------------------------------------------
 "
+" Ruby IRB/Complete author: Keiju ISHITSUKA(keiju@ishitsuka.com)
+" ----------------------------------------------------------------------------
+
 if !has('ruby')
     echo "Error: Required vim compiled with +ruby"
     finish
@@ -16,7 +19,7 @@ if version < 700
     echo "Error: Required vim >= 7.0"
     finish
 endif
- 
+
 func! GetRubyVarType(v)
 	let stopline = 1
 	let vtp = ''
@@ -73,7 +76,7 @@ function! rbcomplete#Complete(findstart, base)
     else
         execute "ruby get_completions('" . a:base . "')"
         return g:rbcomplete_completions
-    endif 
+    endif
 endfunction
 
 
@@ -81,16 +84,16 @@ function! s:DefRuby()
 ruby << RUBYEOF
 ReservedWords = [
       "BEGIN", "END",
-      "alias", "and", 
-      "begin", "break", 
+      "alias", "and",
+      "begin", "break",
       "case", "class",
       "def", "defined", "do",
       "else", "elsif", "end", "ensure",
-      "false", "for", 
-      "if", "in", 
-      "module", 
+      "false", "for",
+      "if", "in",
+      "module",
       "next", "nil", "not",
-      "or", 
+      "or",
       "redo", "rescue", "retry", "return",
       "self", "super",
       "then", "true",
@@ -98,7 +101,7 @@ ReservedWords = [
       "when", "while",
       "yield",
     ]
-      
+
 Operators = [ "%", "&", "*", "**", "+",  "-",  "/",
       "<", "<<", "<=", "<=>", "==", "===", "=~", ">", ">=", ">>",
       "[]", "[]=", "^", ]
@@ -107,7 +110,7 @@ def identify_type(var)
     @buf = VIM::Buffer.current
     enum = @buf.line_number
     snum = (enum-10).abs
-    nums = Range.new( snum, enum ) 
+    nums = Range.new( snum, enum )
     regxs = '/.*(%s)\s*=(.*)/' % var
     regx = Regexp.new( regxs )
     nums.each do |x|
@@ -119,7 +122,7 @@ end
 def load_requires
     @buf = VIM::Buffer.current
     enum = @buf.line_number
-    nums = Range.new( 1, enum ) 
+    nums = Range.new( 1, enum )
     nums.each do |x|
         ln = @buf[x]
         begin
@@ -130,7 +133,7 @@ def load_requires
     end
 end
 
-def get_completions(base)     
+def get_completions(base)
     load_requires
     input = VIM::evaluate('expand("<cWORD>")')
     input += base
@@ -161,7 +164,7 @@ def get_completions(base)
 
         candidates = Proc.instance_methods(true) | Hash.instance_methods(true)
         select_message(receiver, message, candidates)
-        
+
       when /^(:[^:.]*)$/
         # Symbol
         if Symbol.respond_to?(:all_symbols)
@@ -219,7 +222,7 @@ def get_completions(base)
         message = Regexp.quote($3)
 
         cv = eval("self.class.constants")
-        
+
         vartype = VIM::evaluate("GetRubyVarType('%s')" % receiver)
         if vartype != ''
           candidates = eval("#{vartype}.instance_methods")
@@ -237,7 +240,7 @@ def get_completions(base)
           # func1.func2
           candidates = []
           ObjectSpace.each_object(Module){|m|
-            next if m.name != "IRB::Context" and 
+            next if m.name != "IRB::Context" and
               /^(IRB|SLex|RubyLex|RubyToken)/ =~ m.name
             candidates.concat m.instance_methods(false)
           }
@@ -251,7 +254,7 @@ def get_completions(base)
         #function call
         #obj = $1
         #func = $3
-      
+
       when /^\.([^.]*)$/
 	# unknown(maybe String)
 
@@ -263,21 +266,21 @@ def get_completions(base)
 
     else
       candidates = eval("self.class.constants")
-			  
+
       (candidates|ReservedWords).grep(/^#{Regexp.quote(input)}/)
     end
 
     #print candidates
     if message != nil && message.length > 0
         rexp = '^%s' % message.downcase
-        candidates.delete_if do |c| 
+        candidates.delete_if do |c|
             c.downcase.match( rexp )
-            $~ == nil            
+            $~ == nil
         end
     end
 
     outp = ""
-    #    tags = VIM::evaluate("taglist('^%s$')" % 
+    #    tags = VIM::evaluate("taglist('^%s$')" %
     (candidates-Object.instance_methods).each { |c| outp += "{'word':'%s','item':'%s'}," % [ c, c ] }
     outp.sub!(/,$/, '')
     VIM::command("let g:rbcomplete_completions = [%s]" % outp)
@@ -297,7 +300,7 @@ def select_message(receiver, message, candidates)
   candidates.delete_if { |x| x == nil }
   candidates.uniq!
   candidates.sort!
-end      
+end
 RUBYEOF
 endfunction
 

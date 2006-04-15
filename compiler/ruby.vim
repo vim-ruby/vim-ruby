@@ -1,16 +1,11 @@
 " Vim compiler file
-" Language:	Ruby
-" Function:	Syntax check and/or error reporting
-" Maintainer:	Tim Hammerquist <timh at rubyforge.org>
-" Info:		$Id$
-" URL:		http://vim-ruby.rubyforge.org
-" Anon CVS:	See above site
-" Licence:	GPL (http://www.gnu.org)
-" Disclaimer:
-"    This program is distributed in the hope that it will be useful,
-"    but WITHOUT ANY WARRANTY; without even the implied warranty of
-"    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-"    GNU General Public License for more details.
+" Language:		Ruby
+" Function:		Syntax check and/or error reporting
+" Maintainer:		Tim Hammerquist <timh at rubyforge.org>
+" Info:			$Id$
+" URL:			http://vim-ruby.rubyforge.org
+" Anon CVS:		See above site
+" Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
 " ----------------------------------------------------------------------------
 "
 " Changelog:
