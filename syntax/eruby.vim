@@ -1,15 +1,10 @@
 " Vim syntax file
-" Language:	eRuby
-" Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
-" Info:		$Id: eruby.vim,v 1.7 2005/10/13 16:41:44 dkearns Exp $
-" URL:		http://vim-ruby.rubyforge.org
-" Anon CVS:	See above site
-" Licence:	GPL (http://www.gnu.org)
-" Disclaimer:
-"    This program is distributed in the hope that it will be useful,
-"    but WITHOUT ANY WARRANTY; without even the implied warranty of
-"    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-"    GNU General Public License for more details.
+" Language:		eRuby
+" Maintainer:		Doug Kearns <dougkearns@gmail.com>
+" Info:			$Id: eruby.vim,v 1.8 2006/04/15 12:01:18 dkearns Exp $
+" URL:			http://vim-ruby.rubyforge.org
+" Anon CVS:		See above site
+" Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
 
 " For version 5.x: Clear all syntax items
 " For version 6.x: Quit when a syntax file was already loaded

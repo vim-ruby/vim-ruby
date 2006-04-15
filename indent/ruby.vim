@@ -1,16 +1,10 @@
 " Vim indent file
-" Language:	Ruby
-" Developer:	Nikolai Weibull <source at pcppopper.org>
-" Info:		$Id: ruby.vim,v 1.35 2005/10/14 13:11:04 gsinclair Exp $
-" URL:		http://vim-ruby.rubyforge.org
-" Anon CVS:	See above site
-" Licence:	GPL (http://www.gnu.org)
-" Disclaimer:
-"    This program is distributed in the hope that it will be useful,
-"    but WITHOUT ANY WARRANTY; without even the implied warranty of
-"    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-"    GNU General Public License for more details.
-" ----------------------------------------------------------------------------
+" Language:		Ruby
+" Maintainer:		Nikolai Weibull <source at pcppopper.org>
+" Info:			$Id: ruby.vim,v 1.36 2006/04/15 12:01:18 dkearns Exp $
+" URL:			http://vim-ruby.rubyforge.org
+" Anon CVS:		See above site
+" Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
 
 " 0. Initialization {{{1
 " =================

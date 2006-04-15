@@ -1,16 +1,10 @@
 " Vim compiler file
-" Language:	eRuby
-" Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
-" Info:		$Id: eruby.vim,v 1.5 2005/10/13 16:41:44 dkearns Exp $
-" URL:		http://vim-ruby.rubyforge.org
-" Anon CVS:	See above site
-" Licence:	GPL (http://www.gnu.org)
-" Disclaimer:
-"    This program is distributed in the hope that it will be useful,
-"    but WITHOUT ANY WARRANTY; without even the implied warranty of
-"    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-"    GNU General Public License for more details.
-" ----------------------------------------------------------------------------
+" Language:		eRuby
+" Maintainer:		Doug Kearns <dougkearns@gmail.com>
+" Info:			$Id: eruby.vim,v 1.6 2006/04/15 12:01:18 dkearns Exp $
+" URL:			http://vim-ruby.rubyforge.org
+" Anon CVS:		See above site
+" Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
 
 if exists("current_compiler")
   finish

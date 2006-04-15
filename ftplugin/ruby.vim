@@ -1,15 +1,10 @@
 " Vim filetype plugin
-" Language:	Ruby
-" Maintainer:	Gavin Sinclair <gsinclair at soyabean.com.au>
-" Info:		$Id: ruby.vim,v 1.19 2006/04/14 16:44:32 segy Exp $
-" URL:		http://vim-ruby.rubyforge.org
-" Anon CVS:	See above site
-" Licence:	GPL (http://www.gnu.org)
-" Disclaimer:
-"    This program is distributed in the hope that it will be useful,
-"    but WITHOUT ANY WARRANTY; without even the implied warranty of
-"    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-"    GNU General Public License for more details.
+" Language:		Ruby
+" Maintainer:		Gavin Sinclair <gsinclair at soyabean.com.au>
+" Info:			$Id: ruby.vim,v 1.20 2006/04/15 12:01:18 dkearns Exp $
+" URL:			http://vim-ruby.rubyforge.org
+" Anon CVS:		See above site
+" Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
 " ----------------------------------------------------------------------------
 "
 " Original matchit support thanks to Ned Konz.	See his ftplugin/ruby.vim at
