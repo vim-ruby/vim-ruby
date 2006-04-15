@@ -1,5 +1,8 @@
 2006-04-15  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
+	* autoload/rubycomplete.vim: rename rbcomplete#Complete to match
+	script file name
+
 	* autoload/rubycomplete.vim, compiler/rubyunit.vim, ftdetect/ruby.vim,
 	ftplugin/ruby.vim, indent/ruby.vim, syntax/ruby.vim,
 	compiler/eruby.vim, compiler/ruby.vim, ftplugin/eruby.vim,

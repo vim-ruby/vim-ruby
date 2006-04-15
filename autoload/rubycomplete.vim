@@ -53,7 +53,7 @@ func! GetRubyVarType(v)
     return ''
 endf
 
-function! rbcomplete#Complete(findstart, base)
+function! rubycomplete#Complete(findstart, base)
      "findstart = 1 when we need to get the text length
     if a:findstart
         let line = getline('.')
