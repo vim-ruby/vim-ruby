@@ -1,7 +1,7 @@
 " Vim completion script
 " Language:				Ruby
 " Maintainer:			Mark Guzman ( segfault AT hasno DOT info )
-" Info:					$Id: rubycomplete.vim,v 1.2 2006/04/15 12:01:18 dkearns Exp $
+" Info:					$Id: rubycomplete.vim,v 1.3 2006/04/15 12:28:26 dkearns Exp $
 " URL:					http://vim-ruby.rubyforge.org
 " Anon CVS:				See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -53,7 +53,7 @@ func! GetRubyVarType(v)
     return ''
 endf
 
-function! rbcomplete#Complete(findstart, base)
+function! rubycomplete#Complete(findstart, base)
      "findstart = 1 when we need to get the text length
     if a:findstart
         let line = getline('.')
