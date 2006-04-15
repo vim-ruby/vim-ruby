@@ -18,6 +18,7 @@ require 'optparse'
 require 'pathname'
 
 SOURCE_FILES = %w{
+  autoload/rubycomplete.vim
   compiler/eruby.vim
   compiler/ruby.vim
   compiler/rubyunit.vim
