@@ -1,6 +1,6 @@
 " Vim indent file
 " Language:		Ruby
-" Maintainer:		Nikolai Weibull <source at pcppopper.org>
+" Maintainer:		Nikolai Weibull <now at bitwi.se>
 " Info:			$Id$
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
