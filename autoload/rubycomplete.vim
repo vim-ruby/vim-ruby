@@ -1,7 +1,7 @@
 " Vim completion script
 " Language:				Ruby
 " Maintainer:			Mark Guzman <segfault@hasno.info>
-" Info:					$Id: rubycomplete.vim,v 1.4 2006/04/16 21:35:43 segy Exp $
+" Info:					$Id: rubycomplete.vim,v 1.5 2006/04/18 21:19:59 segy Exp $
 " URL:					http://vim-ruby.rubyforge.org
 " Anon CVS:				See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -20,13 +20,27 @@ if version < 700
     finish
 endif
 
+
+function! GetBufferRubyModule(name)
+    return GetBufferRubyEntity(a:name, "module")
+endfunction
+
 function! GetBufferRubyClass(name)
+    return GetBufferRubyEntity(a:name, "class")
+endfunction
+
+function! GetBufferRubySingletonMethods(name)
+endfunction
+
+function! GetBufferRubyEntity( name, type )
     let stopline = 1
-    let [lnum,lcol] = searchpos('^\s*class\s*' . a:name . '\s*\n*\(\s*def\s*.*\n.*\s*\n\s*end\s*\n*\)*\n*\s*end\s*\n*$', 'nb', stopline)
+    "let crex = '^\s*' . a:type . '\s*' . a:name . '\s*\(<\s*.*\)\?\n*\(\(\s*.*\s*\n*\)*\|\(\s*def\s*.*\n.*\s*\n\s*end\s*\n*\)*\)*\n*\s*end\s*\n*$' 
+    let crex = '^\s*' . a:type . '\s*' . a:name . '\s*\(<\s*.*\s*\)\?\n*\(\(\s\|#\).*\n*\)*\n*\s*end\s*\n*$'
+    let [lnum,lcol] = searchpos( crex, 'nbw')
     if lnum == 0 && lcol == 0
         return '0..0'
     endif
-    let [enum,ecol] = searchpos('^\s*class\s*' . a:name . '\s*\n*\(\s*def\s*.*\n.*\s*\n\s*end\s*\n*\)*\n*\s*end\s*\n*$', 'neb', lnum)
+    let [enum,ecol] = searchpos( crex, 'nebw')
     " we found a the class def
     return lnum . '..' . enum
 endfunction
@@ -145,18 +159,43 @@ def load_requires
 end
 
 def load_buffer_class(name)
+  #print "got: %s" % name
+  classdef = get_buffer_entity(name, 'GetBufferRubyClass("%s")')
+  return if classdef == nil
+
+  pare = /^\s*class\s*(.*)\s*<\s*(.*)\s*\n/.match( classdef )
+  #print "class: %s" % $2 if pare != nil
+  load_buffer_class( $2 ) if pare != nil
+  mixre = /.*\n\s*include\s*(.*)\s*\n/.match( classdef )
+  #print "module: %s" % $2 if mixre != nil
+  load_buffer_module( $2 ) if mixre != nil
+
+  #print classdef
+  eval classdef 
+end
+
+def load_buffer_module(name)
+  classdef = get_buffer_entity(name, 'GetBufferRubyModule("%s")')
+  return if classdef == nil
+
+  #print classdef
+  eval classdef 
+end
+
+def get_buffer_entity(name, vimfun)
   @buf = VIM::Buffer.current
-  nums = eval( VIM::evaluate( 'GetBufferRubyClass("%s")' % name ) )
+  nums = eval( VIM::evaluate( vimfun % name ) )
   #print "%s %s" % [ nums, nums.class ]
-  return if nums == nil 
-  return if nums.min == nums.max && nums.min == 0
+  return nil if nums == nil 
+  return nil if nums.min == nums.max && nums.min == 0
+  
   classdef = ""
   nums.each do |x|
     ln = @buf[x]
     classdef += "%s\n" % ln
   end
-  #print classdef
-  eval classdef
+ 
+  return classdef
 end
 
 def get_completions(base)
