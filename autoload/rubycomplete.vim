@@ -1,7 +1,7 @@
 " Vim completion script
 " Language:				Ruby
 " Maintainer:			Mark Guzman <segfault@hasno.info>
-" Info:					$Id: rubycomplete.vim,v 1.5 2006/04/18 21:19:59 segy Exp $
+" Info:					$Id: rubycomplete.vim,v 1.6 2006/04/19 18:31:34 segy Exp $
 " URL:					http://vim-ruby.rubyforge.org
 " Anon CVS:				See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -11,22 +11,28 @@
 " ----------------------------------------------------------------------------
 
 if !has('ruby')
+    echohl ErrorMsg
     echo "Error: Required vim compiled with +ruby"
+    echohl None
     finish
 endif
 
 if version < 700
+    echohl ErrorMsg
     echo "Error: Required vim >= 7.0"
+    echohl None
     finish
 endif
 
 
 function! GetBufferRubyModule(name)
-    return GetBufferRubyEntity(a:name, "module")
+    let [snum,enum] = GetBufferRubyEntity(a:name, "module")
+    return snum . '..' . enum
 endfunction
 
 function! GetBufferRubyClass(name)
-    return GetBufferRubyEntity(a:name, "class")
+    let [snum,enum] = GetBufferRubyEntity(a:name, "class")
+    return snum . '..' . enum
 endfunction
 
 function! GetBufferRubySingletonMethods(name)
@@ -35,14 +41,39 @@ endfunction
 function! GetBufferRubyEntity( name, type )
     let stopline = 1
     "let crex = '^\s*' . a:type . '\s*' . a:name . '\s*\(<\s*.*\)\?\n*\(\(\s*.*\s*\n*\)*\|\(\s*def\s*.*\n.*\s*\n\s*end\s*\n*\)*\)*\n*\s*end\s*\n*$' 
-    let crex = '^\s*' . a:type . '\s*' . a:name . '\s*\(<\s*.*\s*\)\?\n*\(\(\s\|#\).*\n*\)*\n*\s*end\s*\n*$'
+    let crex = '^\s*' . a:type . '\s*' . a:name . '\s*\(<\s*.*\s*\)\?\n*\(\(\s\|#\).*\n*\)*\n*\s*end$'
     let [lnum,lcol] = searchpos( crex, 'nbw')
     if lnum == 0 && lcol == 0
-        return '0..0'
+        return [0,0]
     endif
     let [enum,ecol] = searchpos( crex, 'nebw')
+    if lnum > enum
+        echo "HERE UGH: " . lnum
+        let realdef = getline( lnum )
+        echo "PAST GETLINE"
+        let crexb = '^' . realdef . '\n*\(\(\s\|#\).*\n*\)*\n*\s*end$'
+        echo "RE: " . crexb
+        let [enum,ecol] = searchpos( crexb, 'necw' )
+        echo "enumb: " . enum
+    endif
     " we found a the class def
-    return lnum . '..' . enum
+    return [lnum,enum]
+endfunction
+
+function! IsInClassDef()
+    let [snum,enum] = GetBufferRubyEntity( '.*', "class" )
+    let ret = 'nil'
+    let pos = line('.')
+
+    echo "pos: " . pos
+    echo "snum: " . snum
+    echo "enum: " . enum
+    if snum < pos && pos < enum 
+        print "LIVE"
+        let ret = snum . '..' . enum
+    endif
+
+    return ret
 endfunction
 
 function! GetRubyVarType(v)
@@ -57,9 +88,9 @@ function! GetRubyVarType(v)
 		return vtp
 	endif
 	call setpos('.',pos)
-	let [lnum,lcol] = searchpos(''.a:v.'\>\s*[+\-*/]*=\s*\([^ \t]\+.\(now\|new\|open\|get_instance\)\>\|[\[{"'']\)','nb',stopline)
+    let [lnum,lcol] = searchpos(''.a:v.'\>\s*[+\-*/]*=\s*\([^ \t]\+.\(now\|new\|open\|get_instance\)\>\|[\[{"''/]\|%r{\)','nb',stopline)
 	if lnum != 0 && lcol != 0
-		let str = matchstr(getline(lnum),'=\s*\([^ \t]\+.\(now\|new\|open\|get_instance\)\>\|[\[{"'']\)',lcol)
+        let str = matchstr(getline(lnum),'=\s*\([^ \t]\+.\(now\|new\|open\|get_instance\)\>\|[\[{"''/]\|%r{\)',lcol)
 		let str = substitute(str,'^=\s*','','')
 		call setpos('.',pos)
 		if str == '"' || str == ''''
@@ -68,6 +99,8 @@ function! GetRubyVarType(v)
 			return 'Array'
 		elseif str == '{'
 			return 'Hash'
+        elseif str == '/' || str == '%r{'
+            return 'Regexp'
 		elseif strlen(str) > 4
             let l = stridx(str,'.')
 			return str[0:l-1]
@@ -100,7 +133,7 @@ function! rubycomplete#Complete(findstart, base)
     "findstart = 0 when we need to return the list of completions
     else
         execute "ruby get_completions('" . a:base . "')"
-        return g:rbcomplete_completions
+        return g:rubycomplete_completions
     endif
 endfunction
 
@@ -204,9 +237,9 @@ def get_completions(base)
   input += base
   input.lstrip!
   if input.length == 0
-    input = VIM::Buffer.current.line.lstrip!
+    input = VIM::Buffer.current.line
+    input.strip!
   end
-  #print "have: %s" % input
   message = nil
 
 
@@ -342,9 +375,29 @@ def get_completions(base)
       select_message(receiver, message, candidates)
 
   else
-    candidates = eval("self.class.constants")
+    print "HERE"
+    inclass = eval( VIM::evaluate("IsInClassDef()") )
+    print "inclass %s" % inclass
 
-    (candidates|ReservedWords).grep(/^#{Regexp.quote(input)}/)
+    if inclass != nil
+      classdef = "%s\n" % VIM::Buffer.current[ inclass.min ] 
+      print "line: %s" % classdef
+      found = /^\s*class\s*([A-Za-z0-9]*)(\s*<\s*([A-Za-z0-9]*))?\s*\n$/.match( classdef )
+      print "restat: %s" % found.class
+      if found != nil
+        print "rematch: %s" % $1
+        receiver = $1
+        message = input
+        load_buffer_class( receiver )
+        candidates = eval( "#{receiver}.instance_methods" )
+        select_message(receiver, message, candidates)
+      end
+    end
+    
+    if inclass == nil || found == nil
+      candidates = eval("self.class.constants")
+      (candidates|ReservedWords).grep(/^#{Regexp.quote(input)}/)
+    end
   end
 
     #print candidates
@@ -360,7 +413,7 @@ def get_completions(base)
   #    tags = VIM::evaluate("taglist('^%s$')" %
   (candidates-Object.instance_methods).each { |c| outp += "{'word':'%s','item':'%s'}," % [ c, c ] }
   outp.sub!(/,$/, '')
-  VIM::command("let g:rbcomplete_completions = [%s]" % outp)
+  VIM::command("let g:rubycomplete_completions = [%s]" % outp)
 end
 
 
