@@ -1,7 +1,7 @@
 " Vim filetype plugin
 " Language:		Ruby
-" Maintainer:		Gavin Sinclair <gsinclair at soyabean.com.au>
-" Info:			$Id: ruby.vim,v 1.20 2006/04/15 12:01:18 dkearns Exp $
+" Maintainer:		Gavin Sinclair <gsinclair at gmail.com>
+" Info:			$Id: ruby.vim,v 1.21 2006/04/19 05:50:12 gsinclair Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
