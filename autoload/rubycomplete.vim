@@ -288,6 +288,11 @@ def get_completions(base)
         sym = $1
         candidates = Symbol.all_symbols.collect{|s| ":" + s.id2name}
         candidates.grep(/^#{sym}/)
+        candidates.delete_if do |c|
+            c.match( /'/ )
+        end
+        candidates.uniq!
+        candidates.sort!
       else
         []
       end
@@ -421,10 +426,20 @@ def get_completions(base)
   end
 
   outp = ""
+
   #    tags = VIM::evaluate("taglist('^%s$')" %
-  (candidates-Object.instance_methods).each { |c| outp += "{'word':'%s','item':'%s'}," % [ c, c ] }
-  outp.sub!(/,$/, '')
-  VIM::command("let g:rubycomplete_completions = [%s]" % outp)
+  valid = (candidates-Object.instance_methods)
+  
+  rg = 0..valid.length
+  rg.step(150) do |x|
+    stpos = 0+x
+    enpos = 150+x
+    valid[stpos..enpos].each { |c| outp += "{'word':'%s','item':'%s'}," % [ c, c ] }
+    outp.sub!(/,$/, '')
+
+    VIM::command("call extend(g:rubycomplete_completions, [%s])" % outp)
+    outp = ""
+  end
 end
 
 
