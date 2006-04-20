@@ -48,13 +48,9 @@ function! GetBufferRubyEntity( name, type )
     endif
     let [enum,ecol] = searchpos( crex, 'nebw')
     if lnum > enum
-        echo "HERE UGH: " . lnum
         let realdef = getline( lnum )
-        echo "PAST GETLINE"
         let crexb = '^' . realdef . '\n*\(\(\s\|#\).*\n*\)*\n*\s*end$'
-        echo "RE: " . crexb
         let [enum,ecol] = searchpos( crexb, 'necw' )
-        echo "enumb: " . enum
     endif
     " we found a the class def
     return [lnum,enum]
@@ -65,11 +61,7 @@ function! IsInClassDef()
     let ret = 'nil'
     let pos = line('.')
 
-    echo "pos: " . pos
-    echo "snum: " . snum
-    echo "enum: " . enum
     if snum < pos && pos < enum 
-        print "LIVE"
         let ret = snum . '..' . enum
     endif
 
@@ -375,17 +367,12 @@ def get_completions(base)
       select_message(receiver, message, candidates)
 
   else
-    print "HERE"
     inclass = eval( VIM::evaluate("IsInClassDef()") )
-    print "inclass %s" % inclass
 
     if inclass != nil
       classdef = "%s\n" % VIM::Buffer.current[ inclass.min ] 
-      print "line: %s" % classdef
       found = /^\s*class\s*([A-Za-z0-9]*)(\s*<\s*([A-Za-z0-9]*))?\s*\n$/.match( classdef )
-      print "restat: %s" % found.class
       if found != nil
-        print "rematch: %s" % $1
         receiver = $1
         message = input
         load_buffer_class( receiver )
