@@ -5,6 +5,21 @@
 	* doc/ft-ruby-syntax.txt, syntax/doc/ruby.txt: move syntax
 	documentation to ft-ruby-syntax.txt
 
+2006-04-20  Mark Guzman  <segfault@hasno.info>
+
+	* autoload/rubycomplete.vim: fixed a completion hang/crash when
+	completing symbols globally switched to smaller chunks being added to
+	the dictionary
+
+	* autoload/rubycomplete.vim: it will now complete rails classes
+
+	* autoload/rubycomplete.vim: removed left over debug prints
+
+2006-04-19  Mark Guzman  <segfault@hasno.info>
+
+	* autoload/rubycomplete.vim: in-buffer class completion seems to work
+	properly in my test cases added range variable detection - contributed
+
 2006-04-19  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* ftdetect/ruby.vim: add RJS and RXML template file detection
@@ -13,9 +28,20 @@
 
 	* CONTRIBUTORS, ftplugin/ruby.vim: update Gavin's email address
 
+2006-04-18  Mark Guzman  <segfault@hasno.info>
+
+	* autoload/rubycomplete.vim: revised the in-buffer class loading,
+	needs a little more work but its testable
+
 2006-04-17  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* CONTRIBUTORS, indent/ruby.vim: update Nikolai's email address
+
+2006-04-16  Mark Guzman  <segfault@hasno.info>
+
+	* autoload/rubycomplete.vim: added a work-around for the cWORD bug
+	found by dkearns; added support for completion of in-buffer classes;
+	switched return-type over to a dictionary
 
 2006-04-15  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
@@ -31,6 +57,11 @@
 	* CONTRIBUTORS, bin/vim-ruby-install.rb: add Mark to the list of
 	maintainers; add rubycomplete.vim to the installer script's list of
 	files
+
+2006-04-14  Mark Guzman  <segfault@hasno.info>
+
+	* autoload/rubycomplete.vim, ftplugin/ruby.vim: added ruby
+	omni-completion files; modified the ftplugin to set the omnifunc
 
 2005-10-14  Gavin Sinclair <gsinclair@soyabean.com.au>
 
