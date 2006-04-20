@@ -40,12 +40,12 @@ endfunction
 
 function! GetBufferRubyEntity( name, type )
     let stopline = 1
-    "let crex = '^\s*' . a:type . '\s*' . a:name . '\s*\(<\s*.*\)\?\n*\(\(\s*.*\s*\n*\)*\|\(\s*def\s*.*\n.*\s*\n\s*end\s*\n*\)*\)*\n*\s*end\s*\n*$' 
     let crex = '^\s*' . a:type . '\s*' . a:name . '\s*\(<\s*.*\s*\)\?\n*\(\(\s\|#\).*\n*\)*\n*\s*end$'
     let [lnum,lcol] = searchpos( crex, 'nbw')
     if lnum == 0 && lcol == 0
         return [0,0]
     endif
+
     let [enum,ecol] = searchpos( crex, 'nebw')
     if lnum > enum
         let realdef = getline( lnum )
@@ -124,6 +124,7 @@ function! rubycomplete#Complete(findstart, base)
         return idx
     "findstart = 0 when we need to return the list of completions
     else
+        let g:rubycomplete_completions = [] 
         execute "ruby get_completions('" . a:base . "')"
         return g:rubycomplete_completions
     endif
@@ -132,6 +133,11 @@ endfunction
 
 function! s:DefRuby()
 ruby << RUBYEOF
+RailsWords = [
+      "has_many", "has_one",
+      "belongs_to",
+    ]
+
 ReservedWords = [
       "BEGIN", "END",
       "alias", "and",
@@ -156,18 +162,6 @@ Operators = [ "%", "&", "*", "**", "+",  "-",  "/",
       "<", "<<", "<=", "<=>", "==", "===", "=~", ">", ">=", ">>",
       "[]", "[]=", "^", ]
 
-def identify_type(var)
-  @buf = VIM::Buffer.current
-  enum = @buf.line_number
-  snum = (enum-10).abs
-  nums = Range.new( snum, enum )
-  regxs = '/.*(%s)\s*=(.*)/' % var
-  regx = Regexp.new( regxs )
-  nums.each do |x|
-    ln = @buf[x]
-    #print $~ if regx.match( ln )
-  end
-end
 
 def load_requires
   @buf = VIM::Buffer.current
@@ -184,18 +178,15 @@ def load_requires
 end
 
 def load_buffer_class(name)
-  #print "got: %s" % name
   classdef = get_buffer_entity(name, 'GetBufferRubyClass("%s")')
   return if classdef == nil
 
   pare = /^\s*class\s*(.*)\s*<\s*(.*)\s*\n/.match( classdef )
-  #print "class: %s" % $2 if pare != nil
   load_buffer_class( $2 ) if pare != nil
+
   mixre = /.*\n\s*include\s*(.*)\s*\n/.match( classdef )
-  #print "module: %s" % $2 if mixre != nil
   load_buffer_module( $2 ) if mixre != nil
 
-  #print classdef
   eval classdef 
 end
 
@@ -203,28 +194,59 @@ def load_buffer_module(name)
   classdef = get_buffer_entity(name, 'GetBufferRubyModule("%s")')
   return if classdef == nil
 
-  #print classdef
   eval classdef 
 end
 
 def get_buffer_entity(name, vimfun)
   @buf = VIM::Buffer.current
   nums = eval( VIM::evaluate( vimfun % name ) )
-  #print "%s %s" % [ nums, nums.class ]
   return nil if nums == nil 
   return nil if nums.min == nums.max && nums.min == 0
   
+  cur_line = VIM::Buffer.current.line_number
   classdef = ""
   nums.each do |x|
-    ln = @buf[x]
-    classdef += "%s\n" % ln
+    if x != cur_line
+      ln = @buf[x] 
+      classdef += "%s\n" % ln
+    end
   end
  
   return classdef
 end
 
+def load_rails()
+  allow_rails = VIM::evaluate('g:rubycomplete_rails')
+  return if allow_rails != '1'
+  
+  buf_path = VIM::evaluate('expand("%:p")')
+  file_name = VIM::evaluate('expand("%:t")')
+  path = buf_path.gsub( file_name, '' ) 
+  path.gsub!( /\\/, "/" )
+  pup = [ "../", "../../", "../../../", "../../../../" ]
+  pok = nil
+
+  pup.each do |sup|
+    tpok = "%s%sconfig" % [ path, sup ]
+    if File.exists?( tpok )
+        pok = tpok
+        break
+    end
+  end
+  bootfile = pok + "/boot.rb"
+  require bootfile if pok != nil && File.exists?( bootfile )
+end
+
+def get_rails_helpers
+  allow_rails = VIM::evaluate('g:rubycomplete_rails')
+  return [] if allow_rails != '1'
+  return RailsWords 
+end
+
 def get_completions(base)
   load_requires
+  load_rails
+
   input = VIM::evaluate('expand("<cWORD>")')
   input += base
   input.lstrip!
@@ -371,12 +393,14 @@ def get_completions(base)
 
     if inclass != nil
       classdef = "%s\n" % VIM::Buffer.current[ inclass.min ] 
-      found = /^\s*class\s*([A-Za-z0-9]*)(\s*<\s*([A-Za-z0-9]*))?\s*\n$/.match( classdef )
+      found = /^\s*class\s*([A-Za-z0-9_-]*)(\s*<\s*([A-Za-z0-9_:-]*))?\s*\n$/.match( classdef )
+
       if found != nil
         receiver = $1
         message = input
         load_buffer_class( receiver )
         candidates = eval( "#{receiver}.instance_methods" )
+        candidates += get_rails_helpers
         select_message(receiver, message, candidates)
       end
     end
@@ -423,5 +447,7 @@ end
 RUBYEOF
 endfunction
 
+
+let g:rubycomplete_rails = 0
 call s:DefRuby()
 " vim: set et ts=4:
