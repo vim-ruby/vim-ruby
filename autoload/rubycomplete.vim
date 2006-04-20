@@ -1,7 +1,7 @@
 " Vim completion script
 " Language:				Ruby
 " Maintainer:			Mark Guzman <segfault@hasno.info>
-" Info:					$Id: rubycomplete.vim,v 1.8 2006/04/20 05:24:27 segy Exp $
+" Info:					$Id: rubycomplete.vim,v 1.9 2006/04/20 06:06:55 segy Exp $
 " URL:					http://vim-ruby.rubyforge.org
 " Anon CVS:				See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -288,6 +288,11 @@ def get_completions(base)
         sym = $1
         candidates = Symbol.all_symbols.collect{|s| ":" + s.id2name}
         candidates.grep(/^#{sym}/)
+        candidates.delete_if do |c|
+            c.match( /'/ )
+        end
+        candidates.uniq!
+        candidates.sort!
       else
         []
       end
@@ -421,10 +426,20 @@ def get_completions(base)
   end
 
   outp = ""
+
   #    tags = VIM::evaluate("taglist('^%s$')" %
-  (candidates-Object.instance_methods).each { |c| outp += "{'word':'%s','item':'%s'}," % [ c, c ] }
-  outp.sub!(/,$/, '')
-  VIM::command("let g:rubycomplete_completions = [%s]" % outp)
+  valid = (candidates-Object.instance_methods)
+  
+  rg = 0..valid.length
+  rg.step(150) do |x|
+    stpos = 0+x
+    enpos = 150+x
+    valid[stpos..enpos].each { |c| outp += "{'word':'%s','item':'%s'}," % [ c, c ] }
+    outp.sub!(/,$/, '')
+
+    VIM::command("call extend(g:rubycomplete_completions, [%s])" % outp)
+    outp = ""
+  end
 end
 
 
