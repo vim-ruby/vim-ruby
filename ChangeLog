@@ -1,3 +1,11 @@
+2006-04-21  Mark Guzman <segfault@hasno.info>
+	* autoload/rubycomplete.vim: renamed the vim global variable
+	controlling the addition of classes defined in the current buffer to
+	the global completion list
+
+	* doc/ft-ruby-omni.txt: added information about the classes in global
+	completion option
+
 2006-04-21  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* doc/ft-ruby-omni.txt: add highlighting to example setting of
