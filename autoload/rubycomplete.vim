@@ -1,7 +1,7 @@
 " Vim completion script
 " Language:				Ruby
 " Maintainer:			Mark Guzman <segfault@hasno.info>
-" Info:					$Id: rubycomplete.vim,v 1.10 2006/04/21 04:30:18 segy Exp $
+" Info:					$Id: rubycomplete.vim,v 1.11 2006/04/21 13:39:58 segy Exp $
 " URL:					http://vim-ruby.rubyforge.org
 " Anon CVS:				See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -30,8 +30,8 @@ if !exists("g:rubycomplete_rails")
     let g:rubycomplete_rails = 0
 endif
 
-if !exists("g:rubycomplete_load_on_global")
-    let g:rubycomplete_load_on_global = 0
+if !exists("g:rubycomplete_classes_in_global")
+    let g:rubycomplete_classes_in_global = 0
 endif
 
 " {{{ vim-side support functions
@@ -230,8 +230,8 @@ end
 
 def get_buffer_classes()
   # this will be a little expensive.
-  allow_aggressive_load = VIM::evaluate('g:rubycomplete_load_on_global')
-  return if allow_aggressive_load != '1'
+  allow_aggressive_load = VIM::evaluate('g:rubycomplete_classes_in_global')
+  return [] if allow_aggressive_load != '1'
 
   buf = VIM::Buffer.current
   eob = buf.length
