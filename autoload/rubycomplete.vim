@@ -1,7 +1,7 @@
 " Vim completion script
 " Language:				Ruby
 " Maintainer:			Mark Guzman <segfault@hasno.info>
-" Info:					$Id: rubycomplete.vim,v 1.12 2006/04/21 13:47:59 segy Exp $
+" Info:					$Id: rubycomplete.vim,v 1.13 2006/04/21 21:21:19 segy Exp $
 " URL:					http://vim-ruby.rubyforge.org
 " Anon CVS:				See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -451,6 +451,8 @@ def get_completions(base)
     if inclass == nil || found == nil
       candidates = eval("self.class.constants")
       candidates += get_buffer_classes
+      candidates.uniq!
+      candidates.sort!
       (candidates|ReservedWords).grep(/^#{Regexp.quote(input)}/)
     end
   end
