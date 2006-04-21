@@ -1,7 +1,7 @@
 " Vim completion script
 " Language:				Ruby
 " Maintainer:			Mark Guzman <segfault@hasno.info>
-" Info:					$Id: rubycomplete.vim,v 1.11 2006/04/21 13:39:58 segy Exp $
+" Info:					$Id: rubycomplete.vim,v 1.12 2006/04/21 13:47:59 segy Exp $
 " URL:					http://vim-ruby.rubyforge.org
 " Anon CVS:				See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -505,4 +505,4 @@ endfunction
 
 
 call s:DefRuby()
-" vim: set et ts=4:
+" vim:tw=78:sw=4:ts=8:ft=vim:norl:
