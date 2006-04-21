@@ -505,4 +505,4 @@ endfunction
 
 
 call s:DefRuby()
-" vim: set et ts=4:
+" vim:tw=78:sw=4:ts=8:ft=vim:norl:
