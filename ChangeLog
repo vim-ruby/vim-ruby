@@ -3,6 +3,9 @@
 	controlling the addition of classes defined in the current buffer to
 	the global completion list
 
+	* autoload/rubycomplete.vim: the global variable list is now sorted 
+	and dups are removed
+
 	* doc/ft-ruby-omni.txt: added information about the classes in global
 	completion option
 
