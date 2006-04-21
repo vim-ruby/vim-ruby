@@ -268,12 +268,16 @@ def load_rails()
   
   return if pok == nil
   bootfile = pok + "/boot.rb"
-  require bootfile if File.exists?( bootfile )
+  if File.exists?( bootfile )
+    require bootfile 
+    VIM::evaluate('let g:rubycomplete_rails_loaded = 1') 
+  end
 end
 
 def get_rails_helpers
   allow_rails = VIM::evaluate('g:rubycomplete_rails')
-  return [] if allow_rails != '1'
+  rails_loaded = VIM::evaluate('g:rubycomplete_rails_loaded')
+  return [] if allow_rails != '1' || rails_loaded != '1'
   return RailsWords 
 end
 
@@ -505,6 +509,7 @@ end
 RUBYEOF
 endfunction
 
+let g:rubycomplete_rails_loaded = 0
 
 call s:DefRuby()
 " vim:tw=78:sw=4:ts=8:ft=vim:norl:
