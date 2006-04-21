@@ -451,6 +451,8 @@ def get_completions(base)
     if inclass == nil || found == nil
       candidates = eval("self.class.constants")
       candidates += get_buffer_classes
+      candidates.uniq!
+      candidates.sort!
       (candidates|ReservedWords).grep(/^#{Regexp.quote(input)}/)
     end
   end
