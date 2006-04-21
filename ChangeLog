@@ -6,6 +6,10 @@
 	* autoload/rubycomplete.vim: the global variable list is now sorted 
 	and dups are removed
 
+	* autoload/rubycomplete.vim: fixed a bug with rails support, where
+	rails standard methods would be added to a completion list when not
+	in a rails project
+
 	* doc/ft-ruby-omni.txt: added information about the classes in global
 	completion option
 
