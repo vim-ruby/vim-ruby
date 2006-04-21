@@ -26,8 +26,8 @@ Notes:
  - In context 3 above, Vim will attempt to determine the methods supported by
    the object.
  - Vim can detect and load the Rails environment for files within a rails
-   project. The feature is disabled by default, to enable it add
+   project. The feature is disabled by default, to enable it add >
    let g:rubycomplete_rails = 1
-   to your vimrc
+<  to your vimrc
 
  vim:tw=78:sw=4:ts=8:ft=help:norl:
