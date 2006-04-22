@@ -1,4 +1,9 @@
-2006-04-21  Mark Guzman <segfault@hasno.info>
+2006-04-22  Mark Guzman  <segfault@hasno.info>
+	* autoload/rubycomplete.vim: changed the rails load code to match the
+	console load, we're now pulling everything in. completion of class
+	members from within the class definition now works properly.
+
+2006-04-21  Mark Guzman  <segfault@hasno.info>
 	* autoload/rubycomplete.vim: renamed the vim global variable
 	controlling the addition of classes defined in the current buffer to
 	the global completion list
