@@ -25,14 +25,14 @@ Notes:
  - In context 1 above, Vim can parse the entire buffer to add a list of
    classes to the completion results. This feature is turned off by default,
    to enable it add >
-   let g:rubycomplete_classes_in_global = 1
+     let g:rubycomplete_classes_in_global = 1
 <  to your vimrc
  - In context 2 above, anonymous classes are not supported.
  - In context 3 above, Vim will attempt to determine the methods supported by
    the object.
  - Vim can detect and load the Rails environment for files within a rails
    project. The feature is disabled by default, to enable it add >
-   let g:rubycomplete_rails = 1
+     let g:rubycomplete_rails = 1
 <  to your vimrc
 
  vim:tw=78:sw=4:ts=8:ft=help:norl:
