@@ -3,8 +3,8 @@ require 'rake/gempackagetask'
 
 PACKAGE_NAME = 'vim-ruby'
 RELEASE_FILES = FileList[
-  'ChangeLog', 'CONTRIBUTORS', 'INSTALL', 'NEWS', 'README', 'bin/*.rb',
-  '{compiler,ftdetect,ftplugin,indent,syntax}/*.vim'
+  'ChangeLog', 'CONTRIBUTORS', 'FAQ', 'INSTALL', 'NEWS', 'README', 'bin/*.rb',
+  'doc/*.txt','{autoload,compiler,ftdetect,ftplugin,indent,syntax}/*.vim'
 ]
 PACKAGE_VERSION = Time.now.gmtime.strftime('%Y.%m.%d')
 
