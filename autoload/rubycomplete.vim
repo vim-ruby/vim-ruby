@@ -1,7 +1,7 @@
 " Vim completion script
 " Language:				Ruby
 " Maintainer:			Mark Guzman <segfault@hasno.info>
-" Info:					$Id: rubycomplete.vim,v 1.15 2006/04/22 05:49:11 segy Exp $
+" Info:					$Id: rubycomplete.vim,v 1.16 2006/04/24 17:50:42 segy Exp $
 " URL:					http://vim-ruby.rubyforge.org
 " Anon CVS:				See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -303,8 +303,9 @@ def get_completions(base)
   input = VIM::evaluate('expand("<cWORD>")')
   input += base
   input.lstrip!
-  if input.length == 0
+  if (input.length == 0) || (input == base)
     input = VIM::Buffer.current.line
+    input += base
     input.strip!
   end
   message = nil
@@ -472,7 +473,7 @@ def get_completions(base)
       candidates += get_buffer_classes
       candidates.uniq!
       candidates.sort!
-      (candidates|ReservedWords).grep(/^#{Regexp.quote(input)}/)
+      candidates = candidates.grep(/^#{Regexp.quote(input)}/)
     end
   end
 
