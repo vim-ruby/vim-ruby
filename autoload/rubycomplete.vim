@@ -303,8 +303,9 @@ def get_completions(base)
   input = VIM::evaluate('expand("<cWORD>")')
   input += base
   input.lstrip!
-  if input.length == 0
+  if (input.length == 0) || (input == base)
     input = VIM::Buffer.current.line
+    input += base
     input.strip!
   end
   message = nil
@@ -472,7 +473,7 @@ def get_completions(base)
       candidates += get_buffer_classes
       candidates.uniq!
       candidates.sort!
-      (candidates|ReservedWords).grep(/^#{Regexp.quote(input)}/)
+      candidates = candidates.grep(/^#{Regexp.quote(input)}/)
     end
   end
 
