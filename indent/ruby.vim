@@ -1,7 +1,7 @@
 " Vim indent file
 " Language:		Ruby
 " Maintainer:		Nikolai Weibull <now at bitwi.se>
-" Info:			$Id: ruby.vim,v 1.37 2006/04/17 14:11:52 dkearns Exp $
+" Info:			$Id: ruby.vim,v 1.38 2006/04/25 07:05:42 dkearns Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -14,6 +14,8 @@ if exists("b:did_indent")
   finish
 endif
 let b:did_indent = 1
+
+setlocal nosmartindent
 
 " Now, set up our indentation expression and keys that trigger it.
 setlocal indentexpr=GetRubyIndent()

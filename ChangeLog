@@ -1,4 +1,9 @@
+2006-04-25  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* indent/ruby.vim: make sure 'smartindent' is disabled
+
 2006-04-24  Mark Guzman  <segfault@hasno.info>
+
 	* autoload/rubycomplete.vim: fixed a completion bug where the entered
 	text was not taken to account. it will now be used to limit the entries
 	returned
