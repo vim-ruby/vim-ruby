@@ -1,10 +1,10 @@
 " Vim completion script
-" Language:		Ruby
-" Maintainer:		Mark Guzman <segfault@hasno.info>
-" Info:			$Id$
-" URL:			http://vim-ruby.rubyforge.org
-" Anon CVS:		See above site
-" Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
+" Language:             Ruby
+" Maintainer:           Mark Guzman <segfault@hasno.info>
+" Info:                 $Id$
+" URL:                  http://vim-ruby.rubyforge.org
+" Anon CVS:             See above site
+" Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
 " ----------------------------------------------------------------------------
 "
 " Ruby IRB/Complete author: Keiju ISHITSUKA(keiju@ishitsuka.com)
@@ -53,14 +53,14 @@ function! GetBufferRubyEntity( name, type )
     let crex = '^\s*' . a:type . '\s*' . a:name . '\s*\(<\s*.*\s*\)\?\n*\(\(\s\|#\).*\n*\)*\n*\s*end$'
     let [lnum,lcol] = searchpos( crex, 'nbw')
     if lnum == 0 && lcol == 0
-	return [0,0]
+        return [0,0]
     endif
 
     let [enum,ecol] = searchpos( crex, 'nebw')
     if lnum > enum
-	let realdef = getline( lnum )
-	let crexb = '^' . realdef . '\n*\(\(\s\|#\).*\n*\)*\n*\s*end$'
-	let [enum,ecol] = searchpos( crexb, 'necw' )
+        let realdef = getline( lnum )
+        let crexb = '^' . realdef . '\n*\(\(\s\|#\).*\n*\)*\n*\s*end$'
+        let [enum,ecol] = searchpos( crexb, 'necw' )
     endif
     " we found a the class def
     return [lnum,enum]
@@ -72,50 +72,50 @@ function! IsInClassDef()
     let pos = line('.')
 
     if snum < pos && pos < enum
-	let ret = snum . '..' . enum
+        let ret = snum . '..' . enum
     endif
 
     return ret
 endfunction
 
 function! GetRubyVarType(v)
-	let stopline = 1
-	let vtp = ''
-	let pos = getpos('.')
-	let [lnum,lcol] = searchpos('^\s*#\s*@var\s*'.a:v.'\>\s\+[^ \t]\+\s*$','nb',stopline)
-	if lnum != 0 && lcol != 0
-		call setpos('.',pos)
-		let str = getline(lnum)
-		let vtp = substitute(str,'^\s*#\s*@var\s*'.a:v.'\>\s\+\([^ \t]\+\)\s*$','\1','')
-		return vtp
-	endif
-	call setpos('.',pos)
+    let stopline = 1
+    let vtp = ''
+    let pos = getpos('.')
+    let [lnum,lcol] = searchpos('^\s*#\s*@var\s*'.a:v.'\>\s\+[^ \t]\+\s*$','nb',stopline)
+    if lnum != 0 && lcol != 0
+        call setpos('.',pos)
+        let str = getline(lnum)
+        let vtp = substitute(str,'^\s*#\s*@var\s*'.a:v.'\>\s\+\([^ \t]\+\)\s*$','\1','')
+        return vtp
+    endif
+    call setpos('.',pos)
     if g:rubycomplete_rails == 1 && g:rubycomplete_rails_loaded == 1
-	let ctors = '\(now\|new\|open\|get_instance\|find\|create\)'
+        let ctors = '\(now\|new\|open\|get_instance\|find\|create\)'
     else
-	let ctors = '\(now\|new\|open\|get_instance\)'
+        let ctors = '\(now\|new\|open\|get_instance\)'
     endif
 
     let [lnum,lcol] = searchpos(''.a:v.'\>\s*[+\-*/]*=\s*\([^ \t]\+.' . ctors .'\>\|[\[{"''/]\|%r{\)','nb',stopline)
-	if lnum != 0 && lcol != 0
-	let str = matchstr(getline(lnum),'=\s*\([^ \t]\+.' . ctors . '\>\|[\[{"''/]\|%r{\)',lcol)
-		let str = substitute(str,'^=\s*','','')
-		call setpos('.',pos)
-		if str == '"' || str == ''''
-			return 'String'
-		elseif str == '['
-			return 'Array'
-		elseif str == '{'
-			return 'Hash'
-	elseif str == '/' || str == '%r{'
-	    return 'Regexp'
-		elseif strlen(str) > 4
-	    let l = stridx(str,'.')
-			return str[0:l-1]
-		end
-		return ''
-	endif
-	call setpos('.',pos)
+    if lnum != 0 && lcol != 0
+        let str = matchstr(getline(lnum),'=\s*\([^ \t]\+.' . ctors . '\>\|[\[{"''/]\|%r{\)',lcol)
+        let str = substitute(str,'^=\s*','','')
+        call setpos('.',pos)
+        if str == '"' || str == ''''
+            return 'String'
+        elseif str == '['
+            return 'Array'
+        elseif str == '{'
+            return 'Hash'
+        elseif str == '/' || str == '%r{'
+            return 'Regexp'
+        elseif strlen(str) > 4
+            let l = stridx(str,'.')
+            return str[0:l-1]
+        end
+        return ''
+    endif
+    call setpos('.',pos)
     return ''
 endfunction
 
@@ -124,27 +124,27 @@ endfunction
 function! rubycomplete#Complete(findstart, base)
      "findstart = 1 when we need to get the text length
     if a:findstart
-	let line = getline('.')
-	let idx = col('.')
-	while idx > 0
-	    let idx -= 1
-	    let c = line[idx-1]
-	    if c =~ '\w'
-		continue
-	    elseif ! c =~ '\.'
-		idx = -1
-		break
-	    else
-		break
-	    endif
-	endwhile
+        let line = getline('.')
+        let idx = col('.')
+        while idx > 0
+            let idx -= 1
+            let c = line[idx-1]
+            if c =~ '\w'
+                continue
+            elseif ! c =~ '\.'
+                idx = -1
+                break
+            else
+                break
+            endif
+        endwhile
 
-	return idx
+        return idx
     "findstart = 0 when we need to return the list of completions
     else
-	let g:rubycomplete_completions = []
-	execute "ruby get_completions('" . a:base . "')"
-	return g:rubycomplete_completions
+        let g:rubycomplete_completions = []
+        execute "ruby get_completions('" . a:base . "')"
+        return g:rubycomplete_completions
     endif
 endfunction
 
@@ -217,6 +217,7 @@ def load_buffer_module(name)
 end
 
 def get_buffer_entity(name, vimfun)
+  return nil if name == '""'
   buf = VIM::Buffer.current
   nums = eval( VIM::evaluate( vimfun % name ) )
   return nil if nums == nil
@@ -306,6 +307,9 @@ def get_completions(base)
   if (input.length == 0) || (input == base)
     input = VIM::Buffer.current.line
     input += base
+    if /^.*=\s*(.*)/.match(input) != nil
+        input = $1
+    end
     input.strip!
   end
   message = nil
@@ -339,16 +343,16 @@ def get_completions(base)
     when /^(:[^:.]*)$/
       # Symbol
       if Symbol.respond_to?(:all_symbols)
-	sym = $1
-	candidates = Symbol.all_symbols.collect{|s| ":" + s.id2name}
-	candidates.grep(/^#{sym}/)
-	candidates.delete_if do |c|
-	  c.match( /'/ )
-	end
-	candidates.uniq!
-	candidates.sort!
+        sym = $1
+        candidates = Symbol.all_symbols.collect{|s| ":" + s.id2name}
+        candidates.grep(/^#{sym}/)
+        candidates.delete_if do |c|
+            c.match( /'/ )
+        end
+        candidates.uniq!
+        candidates.sort!
       else
-	[]
+        []
       end
 
     when /^::([A-Z][^:\.\(]*)$/
@@ -362,9 +366,9 @@ def get_completions(base)
       receiver = $1
       message = Regexp.quote($4)
       begin
-	candidates = eval("#{receiver}.constants | #{receiver}.methods")
+        candidates = eval("#{receiver}.constants | #{receiver}.methods")
       rescue Exception
-	candidates = []
+        candidates = []
       end
       candidates.grep(/^#{message}/).collect{|e| receiver + "::" + e}
 
@@ -382,14 +386,14 @@ def get_completions(base)
       message = Regexp.quote($4)
 
       begin
-	candidates = eval(receiver).methods
+        candidates = eval(receiver).methods
       rescue Exception
-	candidates
+        candidates
       end
       select_message(receiver, message, candidates)
 
     when /^(\$[^.]*)$/
-	  candidates = global_variables.grep(Regexp.new(Regexp.quote($1)))
+      candidates = global_variables.grep(Regexp.new(Regexp.quote($1)))
 
 #   when /^(\$?(\.?[^.]+)+)\.([^.]*)$/
     when /^((\.?[^.]+)+)\.([^.]*)$/
@@ -402,44 +406,38 @@ def get_completions(base)
 
       vartype = VIM::evaluate("GetRubyVarType('%s')" % receiver)
       if vartype != ''
-	load_buffer_class( vartype )
+        load_buffer_class( vartype )
 
-	begin
-	  candidates = eval("#{vartype}.instance_methods")
-	rescue Exception
-	  candidates = []
-	end
+        begin
+          candidates = eval("#{vartype}.instance_methods")
+        rescue Exception
+          candidates = []
+        end
       elsif (cv).include?(receiver)
-	# foo.func and foo is local var.
-	candidates = eval("#{receiver}.methods")
+        # foo.func and foo is local var.
+        candidates = eval("#{receiver}.methods")
       elsif /^[A-Z]/ =~ receiver and /\./ !~ receiver
-	# Foo::Bar.func
-	begin
-	  candidates = eval("#{receiver}.methods")
-	rescue Exception
-	  candidates = []
-	end
+        # Foo::Bar.func
+        begin
+          candidates = eval("#{receiver}.methods")
+        rescue Exception
+          candidates = []
+        end
       else
-	# func1.func2
-	candidates = []
-	ObjectSpace.each_object(Module){|m|
-	  next if m.name != "IRB::Context" and
-	    /^(IRB|SLex|RubyLex|RubyToken)/ =~ m.name
-	  candidates.concat m.instance_methods(false)
-	}
-	candidates.sort!
-	candidates.uniq!
+        # func1.func2
+        candidates = []
+        ObjectSpace.each_object(Module){|m|
+          next if m.name != "IRB::Context" and
+            /^(IRB|SLex|RubyLex|RubyToken)/ =~ m.name
+          candidates.concat m.instance_methods(false)
+        }
+        candidates.sort!
+        candidates.uniq!
       end
-      #identify_type( receiver )
       select_message(receiver, message, candidates)
 
-    #when /^((\.?[^.]+)+)\.([^.]*)\(\s*\)*$/
-	#function call
-	#obj = $1
-	#func = $3
-
     when /^\.([^.]*)$/
-	# unknown(maybe String)
+    # unknown(maybe String)
 
       receiver = ""
       message = Regexp.quote($1)
@@ -455,16 +453,16 @@ def get_completions(base)
       found = /^\s*class\s*([A-Za-z0-9_-]*)(\s*<\s*([A-Za-z0-9_:-]*))?\s*\n$/.match( classdef )
 
       if found != nil
-	receiver = $1
-	message = input
-	load_buffer_class( receiver )
-	begin
-	  candidates = eval( "#{receiver}.instance_methods" )
-	  candidates += get_rails_helpers
-	  select_message(receiver, message, candidates)
-	rescue Exception
-	  found = nil
-	end
+        receiver = $1
+        message = input
+        load_buffer_class( receiver )
+        begin
+          candidates = eval( "#{receiver}.instance_methods" )
+          candidates += get_rails_helpers
+          select_message(receiver, message, candidates)
+        rescue Exception
+          found = nil
+        end
       end
     end
 
@@ -481,8 +479,8 @@ def get_completions(base)
   if message != nil && message.length > 0
     rexp = '^%s' % message.downcase
     candidates.delete_if do |c|
-      c.downcase.match( rexp )
-      $~ == nil
+        c.downcase.match( rexp )
+        $~ == nil
     end
   end
 
@@ -510,10 +508,10 @@ def select_message(receiver, message, candidates)
   candidates.grep(/^#{message}/).collect do |e|
     case e
       when /^[a-zA-Z_]/
-	receiver + "." + e
+        receiver + "." + e
       when /^[0-9]/
       when *Operators
-	#receiver + " " + e
+        #receiver + " " + e
     end
   end
   candidates.delete_if { |x| x == nil }
@@ -528,5 +526,4 @@ endfunction
 let g:rubycomplete_rails_loaded = 0
 
 call s:DefRuby()
-
-" vim:tw=78:sw=4:ts=8:ft=vim:norl:
+" vim:tw=78:sw=4:ts=8:et=1:ft=vim:norl:
