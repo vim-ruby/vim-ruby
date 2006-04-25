@@ -15,6 +15,8 @@ if exists("b:did_indent")
 endif
 let b:did_indent = 1
 
+setlocal nosmartindent
+
 " Now, set up our indentation expression and keys that trigger it.
 setlocal indentexpr=GetRubyIndent()
 setlocal indentkeys=0{,0},0),0],!^F,o,O,e
