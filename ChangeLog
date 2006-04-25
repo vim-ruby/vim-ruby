@@ -1,3 +1,9 @@
+2006-04-25  Mark Guzman  <segfault@hasno.info>
+	* autoload/rubycomplete.vim: started stripping out preceding 
+	assigment operation stuff. "x = A", would attempt to complete 
+	A using the global list. I've started removing old/commented 
+	code in an effort to slim down the file.
+
 2006-04-25  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* autoload/rubycomplete.vim: remove excess whitespace 
