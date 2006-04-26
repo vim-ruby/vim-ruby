@@ -1,7 +1,7 @@
 " Vim completion script
 " Language:             Ruby
 " Maintainer:           Mark Guzman <segfault@hasno.info>
-" Info:                 $Id: rubycomplete.vim,v 1.19 2006/04/26 07:22:56 dkearns Exp $
+" Info:                 $Id: rubycomplete.vim,v 1.20 2006/04/26 14:37:11 segy Exp $
 " URL:                  http://vim-ruby.rubyforge.org
 " Anon CVS:             See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
@@ -301,68 +301,55 @@ def get_completions(base)
   load_requires
   load_rails
 
-  input = VIM::evaluate('expand("<cWORD>")')
+  input = VIM::Buffer.current.line
+  cpos = VIM::Window.current.cursor[1] - 1
+  input = input[0..cpos] if cpos != 0
   input += base
-  input.lstrip!
-  if (input.length == 0) || (input == base)
-    input = VIM::Buffer.current.line
-    input += base
-    if /^.*=\s*(.*)/.match(input) != nil
-        input = $1
-    end
-    input.strip!
+
+  rip = input.rindex(/\s*/)
+  if rip && rip != input.length
+    input = input[rip..input.length]
   end
+
+  if /^.*(\+|\-|\*|=|\(|\[)=?(\s*[A-Za-z0-9_:@.-]*)(\s*(\{|\+|\-|\*|\%|\/)?\s*).*/.match(input)
+    input = $2
+  end
+
+  input.strip!
   message = nil
+  receiver = nil
+  candidates = []
 
 
   case input
-    when /^(\/[^\/]*\/)\.([^.]*)$/
-      # Regexp
+    when /^(\/[^\/]*\/)\.([^.]*)$/ # Regexp
       receiver = $1
       message = Regexp.quote($2)
-
       candidates = Regexp.instance_methods(true)
-      select_message(receiver, message, candidates)
 
-    when /^([^\]]*\])\.([^.]*)$/
-      # Array
+    when /^([^\]]*\])\.([^.]*)$/ # Array
       receiver = $1
       message = Regexp.quote($2)
-
       candidates = Array.instance_methods(true)
-      select_message(receiver, message, candidates)
 
-    when /^([^\}]*\})\.([^.]*)$/
-      # Proc or Hash
+    when /^([^\}]*\})\.([^.]*)$/ # Proc or Hash
       receiver = $1
       message = Regexp.quote($2)
-
       candidates = Proc.instance_methods(true) | Hash.instance_methods(true)
-      select_message(receiver, message, candidates)
 
-    when /^(:[^:.]*)$/
-      # Symbol
+    when /^(:[^:.]*)$/ # Symbol
       if Symbol.respond_to?(:all_symbols)
-        sym = $1
+        receiver = $1
         candidates = Symbol.all_symbols.collect{|s| ":" + s.id2name}
-        candidates.grep(/^#{sym}/)
-        candidates.delete_if do |c|
-            c.match( /'/ )
-        end
-        candidates.uniq!
-        candidates.sort!
-      else
-        []
+        candidates.delete_if { |c| c.match( /'/ ) }
       end
 
-    when /^::([A-Z][^:\.\(]*)$/
-      # Absolute Constant or class methods
+    when /^::([A-Z][^:\.\(]*)$/ # Absolute Constant or class methods
       receiver = $1
       candidates = Object.constants
       candidates.grep(/^#{receiver}/).collect{|e| "::" + e}
 
-    when /^(((::)?[A-Z][^:.\(]*)+)::?([^:.]*)$/
-      # Constant or class methods
+    when /^(((::)?[A-Z][^:.\(]*)+)::?([^:.]*)$/ # Constant or class methods
       receiver = $1
       message = Regexp.quote($4)
       begin
@@ -372,16 +359,12 @@ def get_completions(base)
       end
       candidates.grep(/^#{message}/).collect{|e| receiver + "::" + e}
 
-    when /^(:[^:.]+)\.([^.]*)$/
-      # Symbol
+    when /^(:[^:.]+)\.([^.]*)$/ # Symbol
       receiver = $1
       message = Regexp.quote($2)
-
       candidates = Symbol.instance_methods(true)
-      select_message(receiver, message, candidates)
 
-    when /^([0-9_]+(\.[0-9_]+)?(e[0-9]+)?)\.([^.]*)$/
-      # Numeric
+    when /^([0-9_]+(\.[0-9_]+)?(e[0-9]+)?)\.([^.]*)$/ # Numeric
       receiver = $1
       message = Regexp.quote($4)
 
@@ -390,14 +373,11 @@ def get_completions(base)
       rescue Exception
         candidates
       end
-      select_message(receiver, message, candidates)
 
-    when /^(\$[^.]*)$/
+    when /^(\$[^.]*)$/ #global
       candidates = global_variables.grep(Regexp.new(Regexp.quote($1)))
 
-#   when /^(\$?(\.?[^.]+)+)\.([^.]*)$/
-    when /^((\.?[^.]+)+)\.([^.]*)$/
-      # variable
+    when /^((\.?[^.]+)+)\.([^.]*)$/ # variable
       receiver = $1
       message = Regexp.quote($3)
       load_buffer_class( receiver )
@@ -431,19 +411,12 @@ def get_completions(base)
             /^(IRB|SLex|RubyLex|RubyToken)/ =~ m.name
           candidates.concat m.instance_methods(false)
         }
-        candidates.sort!
-        candidates.uniq!
       end
-      select_message(receiver, message, candidates)
 
-    when /^\.([^.]*)$/
-    # unknown(maybe String)
-
+    when /^\.([^.]*)$/ # unknown(maybe String)
       receiver = ""
       message = Regexp.quote($1)
-
       candidates = String.instance_methods(true)
-      select_message(receiver, message, candidates)
 
   else
     inclass = eval( VIM::evaluate("IsInClassDef()") )
@@ -459,7 +432,6 @@ def get_completions(base)
         begin
           candidates = eval( "#{receiver}.instance_methods" )
           candidates += get_rails_helpers
-          select_message(receiver, message, candidates)
         rescue Exception
           found = nil
         end
@@ -469,24 +441,16 @@ def get_completions(base)
     if inclass == nil || found == nil
       candidates = eval("self.class.constants")
       candidates += get_buffer_classes
-      candidates.uniq!
-      candidates.sort!
-      candidates = candidates.grep(/^#{Regexp.quote(input)}/)
+      message = receiver = input
     end
   end
 
-    #print candidates
-  if message != nil && message.length > 0
-    rexp = '^%s' % message.downcase
-    candidates.delete_if do |c|
-        c.downcase.match( rexp )
-        $~ == nil
-    end
-  end
+  candidates.delete_if { |x| x == nil }
+  candidates.uniq!
+  candidates.sort!
+  candidates = candidates.grep(/^#{Regexp.quote(message)}/) if message != nil
 
   outp = ""
-
-  #    tags = VIM::evaluate("taglist('^%s$')" %
   valid = (candidates-Object.instance_methods)
 
   rg = 0..valid.length
@@ -499,24 +463,6 @@ def get_completions(base)
     VIM::command("call extend(g:rubycomplete_completions, [%s])" % outp)
     outp = ""
   end
-end
-
-
-def select_message(receiver, message, candidates)
-  #tags = VIM::evaluate("taglist('%s')" % receiver)
-  #print tags
-  candidates.grep(/^#{message}/).collect do |e|
-    case e
-      when /^[a-zA-Z_]/
-        receiver + "." + e
-      when /^[0-9]/
-      when *Operators
-        #receiver + " " + e
-    end
-  end
-  candidates.delete_if { |x| x == nil }
-  candidates.uniq!
-  candidates.sort!
 end
 
 # }}} ruby completion

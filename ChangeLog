@@ -1,3 +1,9 @@
+2006-04-26  Mark Guzman  <segfault@hasno.info>
+	* autoload/rubycomplete.vim: removed cWORD expansion in favor of 
+	grabbing the whole line. added support for completing variables 
+	inside operations and parameter lists. removed excess cruft code.
+	removed commented code.
+	
 2006-04-26  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* autoload/rubycomplete.vim: set 'expandtab' properly
