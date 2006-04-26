@@ -1,7 +1,7 @@
 " Vim completion script
 " Language:             Ruby
 " Maintainer:           Mark Guzman <segfault@hasno.info>
-" Info:                 $Id: rubycomplete.vim,v 1.20 2006/04/26 14:37:11 segy Exp $
+" Info:                 $Id: rubycomplete.vim,v 1.21 2006/04/26 15:54:27 segy Exp $
 " URL:                  http://vim-ruby.rubyforge.org
 " Anon CVS:             See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
@@ -306,8 +306,8 @@ def get_completions(base)
   input = input[0..cpos] if cpos != 0
   input += base
 
-  rip = input.rindex(/\s*/)
-  if rip && rip != input.length
+  rip = input.rindex(/\s/,cpos)
+  if rip
     input = input[rip..input.length]
   end
 
