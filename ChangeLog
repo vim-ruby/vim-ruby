@@ -2,7 +2,12 @@
 	* autoload/rubycomplete.vim: removed cWORD expansion in favor of 
 	grabbing the whole line. added support for completing variables 
 	inside operations and parameter lists. removed excess cruft code.
-	removed commented code.
+	removed commented code.   
+
+	* autoload/rubycomplete.vim: fixed the truncation code. this fixes 
+	f.chomp! <C-x><C-o> returning chomp! again, where it should provide 
+	the global list. It also fixes f.foo( a.B, b.<C-x><C-o> returning a's
+	list when it should return b's.
 	
 2006-04-26  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 

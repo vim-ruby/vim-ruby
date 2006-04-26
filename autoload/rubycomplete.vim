@@ -306,8 +306,8 @@ def get_completions(base)
   input = input[0..cpos] if cpos != 0
   input += base
 
-  rip = input.rindex(/\s*/)
-  if rip && rip != input.length
+  rip = input.rindex(/\s/,cpos)
+  if rip
     input = input[rip..input.length]
   end
 
