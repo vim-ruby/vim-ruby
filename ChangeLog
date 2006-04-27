@@ -1,3 +1,7 @@
+2006-04-27  Mark Guzman  <segfault@hasno.info>
+	* autoload/rubycomplete.vim: added variable type detection for 
+	Ranges. added handlers for string completion: "test".<C-x><C-o>
+
 2006-04-26  Mark Guzman  <segfault@hasno.info>
 	* autoload/rubycomplete.vim: removed cWORD expansion in favor of 
 	grabbing the whole line. added support for completing variables 
