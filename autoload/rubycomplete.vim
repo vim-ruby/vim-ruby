@@ -1,7 +1,7 @@
 " Vim completion script
 " Language:             Ruby
 " Maintainer:           Mark Guzman <segfault@hasno.info>
-" Info:                 $Id: rubycomplete.vim,v 1.21 2006/04/26 15:54:27 segy Exp $
+" Info:                 $Id: rubycomplete.vim,v 1.22 2006/04/27 16:23:40 segy Exp $
 " URL:                  http://vim-ruby.rubyforge.org
 " Anon CVS:             See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
@@ -96,9 +96,9 @@ function! GetRubyVarType(v)
         let ctors = '\(now\|new\|open\|get_instance\)'
     endif
 
-    let [lnum,lcol] = searchpos(''.a:v.'\>\s*[+\-*/]*=\s*\([^ \t]\+.' . ctors .'\>\|[\[{"''/]\|%r{\)','nb',stopline)
+    let [lnum,lcol] = searchpos(''.a:v.'\>\s*[+\-*/]*=\s*\([^ \t]\+.' . ctors .'\>\|[\[{"''/]\|%r{\|[A-Za-z0-9@:\-()]\+...\?\)','nb',stopline)
     if lnum != 0 && lcol != 0
-        let str = matchstr(getline(lnum),'=\s*\([^ \t]\+.' . ctors . '\>\|[\[{"''/]\|%r{\)',lcol)
+        let str = matchstr(getline(lnum),'=\s*\([^ \t]\+.' . ctors . '\>\|[\[{"''/]\|%r{\|[A-Za-z0-9@:\-()]\+...\?\)',lcol)
         let str = substitute(str,'^=\s*','','')
         call setpos('.',pos)
         if str == '"' || str == ''''
@@ -109,6 +109,8 @@ function! GetRubyVarType(v)
             return 'Hash'
         elseif str == '/' || str == '%r{'
             return 'Regexp'
+        elseif strlen(str) >= 4 && stridx(str,'..') != -1
+            return 'Range'
         elseif strlen(str) > 4
             let l = stridx(str,'.')
             return str[0:l-1]
@@ -217,7 +219,7 @@ def load_buffer_module(name)
 end
 
 def get_buffer_entity(name, vimfun)
-  return nil if name == '""'
+  return nil if /(\"|\')+/.match( name )
   buf = VIM::Buffer.current
   nums = eval( VIM::evaluate( vimfun % name ) )
   return nil if nums == nil
@@ -233,6 +235,14 @@ def get_buffer_entity(name, vimfun)
   end
 
   return classdef
+end
+
+def get_var_type( receiver )
+  if /(\"|\')+/.match( receiver )
+    "String"
+  else
+    VIM::evaluate("GetRubyVarType('%s')" % receiver)
+  end
 end
 
 def get_buffer_classes()
@@ -383,8 +393,8 @@ def get_completions(base)
       load_buffer_class( receiver )
 
       cv = eval("self.class.constants")
-
-      vartype = VIM::evaluate("GetRubyVarType('%s')" % receiver)
+      vartype = get_var_type( receiver )
+      print "vartype: %s receiver: %s" % [ vartype, receiver ]
       if vartype != ''
         load_buffer_class( vartype )
 
