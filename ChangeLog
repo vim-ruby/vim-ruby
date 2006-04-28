@@ -1,3 +1,8 @@
+2006-04-28  Mark Guzman  <segfault@hasno.info>
+	* autoload/rubycomplete.vim: started adding raw range support
+	1..2.<C-x><C-o>. fixed the symbol completion bug, where you 
+	would end up with a double colon.
+
 2006-04-27  Mark Guzman  <segfault@hasno.info>
 	* autoload/rubycomplete.vim: added variable type detection for 
 	Ranges. added handlers for string completion: "test".<C-x><C-o>
