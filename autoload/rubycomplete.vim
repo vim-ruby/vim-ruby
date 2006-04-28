@@ -321,7 +321,8 @@ def get_completions(base)
     input = input[rip..input.length]
   end
 
-  if /^.*(\+|\-|\*|=|\(|\[)=?(\s*[A-Za-z0-9_:@.-]*)(\s*(\{|\+|\-|\*|\%|\/)?\s*).*/.match(input)
+  asn = /^.*(\+|\-|\*|=|\(|\[)=?(\s*[A-Za-z0-9_:@.-]*)(\s*(\{|\+|\-|\*|\%|\/)?\s*).*/
+  if asn.match(input)
     input = $2
   end
 
@@ -329,7 +330,6 @@ def get_completions(base)
   message = nil
   receiver = nil
   candidates = []
-
 
   case input
     when /^(\/[^\/]*\/)\.([^.]*)$/ # Regexp
@@ -350,7 +350,7 @@ def get_completions(base)
     when /^(:[^:.]*)$/ # Symbol
       if Symbol.respond_to?(:all_symbols)
         receiver = $1
-        candidates = Symbol.all_symbols.collect{|s| ":" + s.id2name}
+        candidates = Symbol.all_symbols.collect{|s| s.id2name}
         candidates.delete_if { |c| c.match( /'/ ) }
       end
 
@@ -377,7 +377,6 @@ def get_completions(base)
     when /^([0-9_]+(\.[0-9_]+)?(e[0-9]+)?)\.([^.]*)$/ # Numeric
       receiver = $1
       message = Regexp.quote($4)
-
       begin
         candidates = eval(receiver).methods
       rescue Exception
@@ -394,7 +393,6 @@ def get_completions(base)
 
       cv = eval("self.class.constants")
       vartype = get_var_type( receiver )
-      print "vartype: %s receiver: %s" % [ vartype, receiver ]
       if vartype != ''
         load_buffer_class( vartype )
 
@@ -423,8 +421,15 @@ def get_completions(base)
         }
       end
 
+    when /^\(?\s*[A-Za-z0-9:^@.%\/+*\(\)]+\.\.\.?[A-Za-z0-9:^@.%\/+*\(\)]+\s*\)?\.([^.]*)/
+      message = $1
+      candidates = Range.instance_methods(true)
+
+    when /^\[(\s*[A-Za-z0-9:^@.%\/+*\(\)\[\]\{\}.\'\"],?)*\].([^.]*)/
+      message = $2
+      candidates = Array.instance_methods(true)
+
     when /^\.([^.]*)$/ # unknown(maybe String)
-      receiver = ""
       message = Regexp.quote($1)
       candidates = String.instance_methods(true)
 
