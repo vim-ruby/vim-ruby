@@ -1,7 +1,7 @@
 " Vim completion script
 " Language:             Ruby
 " Maintainer:           Mark Guzman <segfault@hasno.info>
-" Info:                 $Id: rubycomplete.vim,v 1.23 2006/04/28 16:57:48 segy Exp $
+" Info:                 $Id: rubycomplete.vim,v 1.24 2006/05/02 03:32:11 segy Exp $
 " URL:                  http://vim-ruby.rubyforge.org
 " Anon CVS:             See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
@@ -208,14 +208,22 @@ def load_buffer_class(name)
   mixre = /.*\n\s*include\s*(.*)\s*\n/.match( classdef )
   load_buffer_module( $2 ) if mixre != nil
 
-  eval classdef
+  begin
+    eval classdef
+  rescue
+    print "Problem loading class '%s', was it already completed?" % name
+  end
 end
 
 def load_buffer_module(name)
   classdef = get_buffer_entity(name, 'GetBufferRubyModule("%s")')
   return if classdef == nil
 
-  eval classdef
+  begin
+    eval classdef
+  rescue
+    print "Problem loading module '%s', was it already completed?" % name
+  end
 end
 
 def get_buffer_entity(name, vimfun)
