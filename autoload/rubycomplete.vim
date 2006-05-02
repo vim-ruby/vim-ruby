@@ -208,14 +208,22 @@ def load_buffer_class(name)
   mixre = /.*\n\s*include\s*(.*)\s*\n/.match( classdef )
   load_buffer_module( $2 ) if mixre != nil
 
-  eval classdef
+  begin
+    eval classdef
+  rescue
+    print "Problem loading class '%s', was it already completed?" % name
+  end
 end
 
 def load_buffer_module(name)
   classdef = get_buffer_entity(name, 'GetBufferRubyModule("%s")')
   return if classdef == nil
 
-  eval classdef
+  begin
+    eval classdef
+  rescue
+    print "Problem loading module '%s', was it already completed?" % name
+  end
 end
 
 def get_buffer_entity(name, vimfun)

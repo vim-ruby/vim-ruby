@@ -1,3 +1,7 @@
+2006-05-01  Mark Guzman  <segfault@hasno.info>
+	* autoload/rubycomplete.vim: Added error trapping and messages
+	for class import errors
+
 2006-04-28  Mark Guzman  <segfault@hasno.info>
 	* autoload/rubycomplete.vim: started adding raw range support
 	1..2.<C-x><C-o>. fixed the symbol completion bug, where you 
