@@ -38,7 +38,8 @@ if exists("loaded_matchit") && !exists("b:match_words")
     \	  '\%(\%(^\|;\)\s*\)\@<=\<rescue\>' .
     \ '\)' .
     \ ':' .
-    \ '\%(\%(\.\|\:\:\)\s*\|\:\)\@<!\<end\>'
+    \ '\%(\%(\.\|\:\:\)\s*\|\:\)\@<!\<end\>' .
+    \ ',{:},\[:\],(:)'
 
   let b:match_skip =
      \ "synIDattr(synID(line('.'),col('.'),0),'name') =~ '" .
