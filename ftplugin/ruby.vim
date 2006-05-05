@@ -1,7 +1,7 @@
 " Vim filetype plugin
 " Language:		Ruby
 " Maintainer:		Gavin Sinclair <gsinclair at gmail.com>
-" Info:			$Id: ruby.vim,v 1.21 2006/04/19 05:50:12 gsinclair Exp $
+" Info:			$Id: ruby.vim,v 1.22 2006/05/05 07:14:42 dkearns Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -38,7 +38,8 @@ if exists("loaded_matchit") && !exists("b:match_words")
     \	  '\%(\%(^\|;\)\s*\)\@<=\<rescue\>' .
     \ '\)' .
     \ ':' .
-    \ '\%(\%(\.\|\:\:\)\s*\|\:\)\@<!\<end\>'
+    \ '\%(\%(\.\|\:\:\)\s*\|\:\)\@<!\<end\>' .
+    \ ',{:},\[:\],(:)'
 
   let b:match_skip =
      \ "synIDattr(synID(line('.'),col('.'),0),'name') =~ '" .
