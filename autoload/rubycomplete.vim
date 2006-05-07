@@ -35,20 +35,20 @@ if !exists("g:rubycomplete_classes_in_global")
 endif
 
 " {{{ vim-side support functions
-function! GetBufferRubyModule(name)
-    let [snum,enum] = GetBufferRubyEntity(a:name, "module")
+function! s:GetBufferRubyModule(name)
+    let [snum,enum] = s:GetBufferRubyEntity(a:name, "module")
     return snum . '..' . enum
 endfunction
 
-function! GetBufferRubyClass(name)
-    let [snum,enum] = GetBufferRubyEntity(a:name, "class")
+function! s:GetBufferRubyClass(name)
+    let [snum,enum] = s:GetBufferRubyEntity(a:name, "class")
     return snum . '..' . enum
 endfunction
 
-function! GetBufferRubySingletonMethods(name)
+function! s:GetBufferRubySingletonMethods(name)
 endfunction
 
-function! GetBufferRubyEntity( name, type )
+function! s:GetBufferRubyEntity( name, type )
     let stopline = 1
     let crex = '^\s*' . a:type . '\s*' . a:name . '\s*\(<\s*.*\s*\)\?\n*\(\(\s\|#\).*\n*\)*\n*\s*end$'
     let [lnum,lcol] = searchpos( crex, 'nbw')
@@ -66,8 +66,8 @@ function! GetBufferRubyEntity( name, type )
     return [lnum,enum]
 endfunction
 
-function! IsInClassDef()
-    let [snum,enum] = GetBufferRubyEntity( '.*', "class" )
+function! s:IsInClassDef()
+    let [snum,enum] = s:GetBufferRubyEntity( '.*', "class" )
     let ret = 'nil'
     let pos = line('.')
 
@@ -78,7 +78,7 @@ function! IsInClassDef()
     return ret
 endfunction
 
-function! GetRubyVarType(v)
+function! s:GetRubyVarType(v)
     let stopline = 1
     let vtp = ''
     let pos = getpos('.')
@@ -90,7 +90,7 @@ function! GetRubyVarType(v)
         return vtp
     endif
     call setpos('.',pos)
-    if g:rubycomplete_rails == 1 && g:rubycomplete_rails_loaded == 1
+    if g:rubycomplete_rails == 1 && s:rubycomplete_rails_loaded == 1
         let ctors = '\(now\|new\|open\|get_instance\|find\|create\)'
     else
         let ctors = '\(now\|new\|open\|get_instance\)'
@@ -199,7 +199,7 @@ def load_requires
 end
 
 def load_buffer_class(name)
-  classdef = get_buffer_entity(name, 'GetBufferRubyClass("%s")')
+  classdef = get_buffer_entity(name, 's:GetBufferRubyClass("%s")')
   return if classdef == nil
 
   pare = /^\s*class\s*(.*)\s*<\s*(.*)\s*\n/.match( classdef )
@@ -216,7 +216,7 @@ def load_buffer_class(name)
 end
 
 def load_buffer_module(name)
-  classdef = get_buffer_entity(name, 'GetBufferRubyModule("%s")')
+  classdef = get_buffer_entity(name, 's:GetBufferRubyModule("%s")')
   return if classdef == nil
 
   begin
@@ -249,7 +249,7 @@ def get_var_type( receiver )
   if /(\"|\')+/.match( receiver )
     "String"
   else
-    VIM::evaluate("GetRubyVarType('%s')" % receiver)
+    VIM::evaluate("s:GetRubyVarType('%s')" % receiver)
   end
 end
 
@@ -301,7 +301,7 @@ def load_rails()
       require envfile
       require 'console_app'
       require 'console_with_helpers'
-      VIM::command('let g:rubycomplete_rails_loaded = 1')
+      VIM::command('let s:rubycomplete_rails_loaded = 1')
     rescue
       print "Error loading rails environment"
     end
@@ -310,7 +310,7 @@ end
 
 def get_rails_helpers
   allow_rails = VIM::evaluate('g:rubycomplete_rails')
-  rails_loaded = VIM::evaluate('g:rubycomplete_rails_loaded')
+  rails_loaded = VIM::evaluate('s:rubycomplete_rails_loaded')
   return [] if allow_rails != '1' || rails_loaded != '1'
   return RailsWords
 end
@@ -442,7 +442,7 @@ def get_completions(base)
       candidates = String.instance_methods(true)
 
   else
-    inclass = eval( VIM::evaluate("IsInClassDef()") )
+    inclass = eval( VIM::evaluate("s:IsInClassDef()") )
 
     if inclass != nil
       classdef = "%s\n" % VIM::Buffer.current[ inclass.min ]
@@ -492,7 +492,7 @@ end
 RUBYEOF
 endfunction
 
-let g:rubycomplete_rails_loaded = 0
+let s:rubycomplete_rails_loaded = 0
 
 call s:DefRuby()
 " vim:tw=78:sw=4:ts=8:et:fdm=marker:ft=vim:norl:
