@@ -1,7 +1,7 @@
 " Vim completion script
 " Language:             Ruby
 " Maintainer:           Mark Guzman <segfault@hasno.info>
-" Info:                 $Id: rubycomplete.vim,v 1.24 2006/05/02 03:32:11 segy Exp $
+" Info:                 $Id: rubycomplete.vim,v 1.25 2006/05/07 07:48:11 dkearns Exp $
 " URL:                  http://vim-ruby.rubyforge.org
 " Anon CVS:             See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
@@ -495,4 +495,4 @@ endfunction
 let g:rubycomplete_rails_loaded = 0
 
 call s:DefRuby()
-" vim:tw=78:sw=4:ts=8:et:ft=vim:norl:
+" vim:tw=78:sw=4:ts=8:et:fdm=marker:ft=vim:norl:
