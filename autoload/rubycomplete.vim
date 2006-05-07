@@ -1,7 +1,7 @@
 " Vim completion script
 " Language:             Ruby
 " Maintainer:           Mark Guzman <segfault@hasno.info>
-" Info:                 $Id: rubycomplete.vim,v 1.27 2006/05/07 20:58:32 segy Exp $
+" Info:                 $Id: rubycomplete.vim,v 1.28 2006/05/07 21:04:09 segy Exp $
 " URL:                  http://vim-ruby.rubyforge.org
 " Anon CVS:             See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
@@ -321,20 +321,10 @@ def get_completions(base)
 
   input = VIM::Buffer.current.line
   cpos = VIM::Window.current.cursor[1] - 1
-  input = input[0..cpos] if cpos != 0
+  input = input[0..cpos] 
   input += base
+  input = input.sub(/.*[ \t\n\"\\'`><=;|&{(]/, '') # Readline.basic_word_break_characters
 
-  rip = input.rindex(/\s/,cpos)
-  if rip
-    input = input[rip..input.length]
-  end
-
-  asn = /^.*(\+|\-|\*|=|\(|\[)=?(\s*[A-Za-z0-9_:@.-]*)(\s*(\{|\+|\-|\*|\%|\/)?\s*).*/
-  if asn.match(input)
-    input = $2
-  end
-
-  input.strip!
   message = nil
   receiver = nil
   candidates = []
