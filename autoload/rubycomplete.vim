@@ -495,4 +495,4 @@ endfunction
 let g:rubycomplete_rails_loaded = 0
 
 call s:DefRuby()
-" vim:tw=78:sw=4:ts=8:et:ft=vim:norl:
+" vim:tw=78:sw=4:ts=8:et:fdm=marker:ft=vim:norl:
