@@ -1,7 +1,7 @@
 " Vim completion script
 " Language:             Ruby
 " Maintainer:           Mark Guzman <segfault@hasno.info>
-" Info:                 $Id: rubycomplete.vim,v 1.26 2006/05/07 20:30:02 segy Exp $
+" Info:                 $Id: rubycomplete.vim,v 1.27 2006/05/07 20:58:32 segy Exp $
 " URL:                  http://vim-ruby.rubyforge.org
 " Anon CVS:             See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
@@ -432,10 +432,6 @@ def get_completions(base)
     when /^\(?\s*[A-Za-z0-9:^@.%\/+*\(\)]+\.\.\.?[A-Za-z0-9:^@.%\/+*\(\)]+\s*\)?\.([^.]*)/
       message = $1
       candidates = Range.instance_methods(true)
-
-    when /^\[(\s*[A-Za-z0-9:^@.%\/+*\(\)\[\]\{\}.\'\"],?)*\].([^.]*)/
-      message = $2
-      candidates = Array.instance_methods(true)
 
     when /^\.([^.]*)$/ # unknown(maybe String)
       message = Regexp.quote($1)
