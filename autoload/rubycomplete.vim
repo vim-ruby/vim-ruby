@@ -321,20 +321,10 @@ def get_completions(base)
 
   input = VIM::Buffer.current.line
   cpos = VIM::Window.current.cursor[1] - 1
-  input = input[0..cpos] if cpos != 0
+  input = input[0..cpos] 
   input += base
+  input = input.sub(/.*[ \t\n\"\\'`><=;|&{(]/, '') # Readline.basic_word_break_characters
 
-  rip = input.rindex(/\s/,cpos)
-  if rip
-    input = input[rip..input.length]
-  end
-
-  asn = /^.*(\+|\-|\*|=|\(|\[)=?(\s*[A-Za-z0-9_:@.-]*)(\s*(\{|\+|\-|\*|\%|\/)?\s*).*/
-  if asn.match(input)
-    input = $2
-  end
-
-  input.strip!
   message = nil
   receiver = nil
   candidates = []
