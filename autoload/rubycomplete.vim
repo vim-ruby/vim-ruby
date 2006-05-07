@@ -433,10 +433,6 @@ def get_completions(base)
       message = $1
       candidates = Range.instance_methods(true)
 
-    when /^\[(\s*[A-Za-z0-9:^@.%\/+*\(\)\[\]\{\}.\'\"],?)*\].([^.]*)/
-      message = $2
-      candidates = Array.instance_methods(true)
-
     when /^\.([^.]*)$/ # unknown(maybe String)
       message = Regexp.quote($1)
       candidates = String.instance_methods(true)
