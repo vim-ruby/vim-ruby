@@ -1,5 +1,9 @@
 2006-05-08  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
+	* syntax/ruby.vim: add initial support for highlighting 'operators'.
+	This is off by default and enabled by defining the ruby_operators
+	variable
+
 	* syntax/ruby.vim: if/unless immediately following a method name
 	should always be highlighted as modifiers and not the beginning of an
 	expression

@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		Ruby
 " Maintainer:		Doug Kearns <dougkearns@gmail.com>
-" Info:			$Id: ruby.vim,v 1.85 2006/05/08 06:53:23 dkearns Exp $
+" Info:			$Id: ruby.vim,v 1.86 2006/05/08 11:07:59 dkearns Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -30,6 +30,11 @@ if exists("ruby_space_errors")
   if !exists("ruby_no_tab_space_error")
     syn match rubySpaceError display " \+\t"me=e-1
   endif
+endif
+
+if exists("ruby_operators")
+  syn match  rubyOperator        "\%(\^\|\~\|\%(class\s*\)\@<!<<\|<=>\|<=\|\%(<\|\<class\s\+\u\w*\s*\)\@<!<[^<]\@=\|===\|==\|=\~\|!\~\|>>\|>=\|>\||\|-\|/\|\*\*\|\*\|&\|%\|+\)"
+  syn region rubyBracketOperator matchgroup=rubyOperator start="\%([_[:lower:]]\w*[?!=]\=\|}\)\@<=\[\s*" end="\s*]"
 endif
 
 " Expression Substitution and Backslash Notation
@@ -71,7 +76,11 @@ syn match  rubySymbol			":\@<!:\%(\^\|\~\|<<\|<=>\|<=\|<\|===\|==\|=\~\|>>\|>=\|
 syn match  rubySymbol			":\@<!:\$\%(-.\|[`~<=>_,;:!?/.'"@$*\&+0]\)"
 syn match  rubySymbol			":\@<!:\%(\$\|@@\=\)\=\h\w*[?!=]\="
 syn region rubySymbol			start=":\@<!:\"" end="\"" skip="\\\\\|\\\""
-syn match  rubyBlockParameter		"\%(\%(\<do\>\|{\)\s*\)\@<=|\s*\zs[( ,a-zA-Z0-9_*)]\+\ze\s*|" display
+if exists("ruby_operators")
+  syn match  rubyBlockParameter		"\%(\%(\%(\<do\>\|{\)\s*\)|\s*\)\@<=[( ,a-zA-Z0-9_*)]\+\%(\s*|\)\@=" display
+else
+  syn match  rubyBlockParameter		"\%(\%(\<do\>\|{\)\s*\)\@<=|\s*\zs[( ,a-zA-Z0-9_*)]\+\ze\s*|" display
+endif
 
 syn match rubyPredefinedVariable #$[!$&"'*+,./0:;<=>?@\`~1-9]#
 syn match rubyPredefinedVariable "$_\>"											   display
