@@ -1,4 +1,11 @@
+2006-05-08  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* syntax/ruby.vim: if/unless immediately following a method name
+	should always be highlighted as modifiers and not the beginning of an
+	expression
+
 2006-05-07  Mark Guzman  <segfault@hasno.info>
+
 	* autoload/rubycomplete.vim: Switched to script local vars, 
 	per patch from dkearns. removed secondary array clause. applied 
 	patch provided by dkearns, fixes input handling.
