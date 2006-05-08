@@ -1,5 +1,8 @@
 2006-05-08  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
+	* syntax/ruby.vim: simplify rubyNoDoBlock, rubyOptDoLine match
+	patterns
+
 	* syntax/ruby.vim: add initial support for highlighting 'operators'.
 	This is off by default and enabled by defining the ruby_operators
 	variable

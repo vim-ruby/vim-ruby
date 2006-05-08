@@ -167,10 +167,10 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   syn region rubyCurlyBlock start="{" end="}" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo fold
 
   " statements without *do*
-  syn region rubyNoDoBlock matchgroup=rubyControl start="\<\%(case\|begin\)\>" start="\%(^\|\.\.\.\=\|[,;=([<>~\*/%!&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\zs\%(if\|unless\)\>" end="\<end\>" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo fold
+  syn region rubyNoDoBlock matchgroup=rubyControl start="\<\%(case\|begin\)\>" start="\%(^\|\.\.\.\=\|[,;=([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\zs\%(if\|unless\)\>" end="\<end\>" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo fold
 
   " statement with optional *do*
-  syn region rubyOptDoLine matchgroup=rubyControl start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[?:,;=([<>~\*/%!&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" end="\%(\<do\>\|:\)" end="\ze\%(;\|$\)" oneline contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo
+  syn region rubyOptDoLine matchgroup=rubyControl start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[?:,;=([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" end="\%(\<do\>\|:\)" end="\ze\%(;\|$\)" oneline contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo
   syn region rubyOptDoBlock start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyControl end="\<end\>" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo nextgroup=rubyOptDoLine fold
 
   if !exists("ruby_minlines")
