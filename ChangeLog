@@ -1,5 +1,8 @@
 2006-05-09  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
+	* syntax/ruby.vim: make folding of comments configurable via the
+	ruby_no_comment_fold variable
+
 	* syntax/ruby.vim: add rubyMultiLineComment syntax group to allow
 	folding of comment blocks
 
