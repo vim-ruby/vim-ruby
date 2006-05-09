@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		Ruby
 " Maintainer:		Doug Kearns <dougkearns@gmail.com>
-" Info:			$Id: ruby.vim,v 1.87 2006/05/08 15:25:57 dkearns Exp $
+" Info:			$Id: ruby.vim,v 1.88 2006/05/09 11:12:02 dkearns Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -211,6 +211,7 @@ endif
 syn match   rubySharpBang     "\%^#!.*" display
 syn keyword rubyTodo	      FIXME NOTE TODO XXX contained
 syn match   rubyComment       "#.*" contains=rubySharpBang,rubySpaceError,rubyTodo,@Spell
+syn match   rubyMultiLineComment "\(^\s*#.*\n\)\{2,}" contains=rubyComment transparent fold
 syn region  rubyDocumentation start="^=begin" end="^=end.*$" contains=rubySpaceError,rubyTodo,@Spell fold
 
 " Note: this is a hack to prevent 'keywords' being highlighted as such when called as methods with an explicit receiver
