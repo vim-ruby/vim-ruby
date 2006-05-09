@@ -211,6 +211,7 @@ endif
 syn match   rubySharpBang     "\%^#!.*" display
 syn keyword rubyTodo	      FIXME NOTE TODO XXX contained
 syn match   rubyComment       "#.*" contains=rubySharpBang,rubySpaceError,rubyTodo,@Spell
+syn match   rubyMultiLineComment "\(^\s*#.*\n\)\{2,}" contains=rubyComment transparent fold
 syn region  rubyDocumentation start="^=begin" end="^=end.*$" contains=rubySpaceError,rubyTodo,@Spell fold
 
 " Note: this is a hack to prevent 'keywords' being highlighted as such when called as methods with an explicit receiver
