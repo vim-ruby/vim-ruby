@@ -1,7 +1,7 @@
 " Vim completion script
 " Language:             Ruby
 " Maintainer:           Mark Guzman <segfault@hasno.info>
-" Info:                 $Id: rubycomplete.vim,v 1.29 2006/05/11 16:28:37 segy Exp $
+" Info:                 $Id: rubycomplete.vim,v 1.30 2006/05/11 16:29:23 segy Exp $
 " URL:                  http://vim-ruby.rubyforge.org
 " Anon CVS:             See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
@@ -12,16 +12,12 @@
 
 " {{{ requirement checks
 if !has('ruby')
-    echohl ErrorMsg
-    echo "Error: Required vim compiled with +ruby"
-    echohl None
+    s:ErrMsg( "Error: Required vim compiled with +ruby" )
     finish
 endif
 
 if version < 700
-    echohl ErrorMsg
-    echo "Error: Required vim >= 7.0"
-    echohl None
+    s:ErrMsg( "Error: Required vim >= 7.0" )
     finish
 endif
 " }}} requirement checks
@@ -35,6 +31,12 @@ if !exists("g:rubycomplete_classes_in_global")
 endif
 
 " {{{ vim-side support functions
+function! s:ErrMsg(msg)
+    echohl ErrorMsg
+    echo a:msg
+    echohl None 
+endfunction
+
 function! s:GetBufferRubyModule(name)
     let [snum,enum] = s:GetBufferRubyEntity(a:name, "module")
     return snum . '..' . enum
@@ -211,7 +213,7 @@ def load_buffer_class(name)
   begin
     eval classdef
   rescue
-    print "Problem loading class '%s', was it already completed?" % name
+    VIM::evaluate( "s:ErrMsg( 'Problem loading class \"%s\", was it already completed?' )" % name )
   end
 end
 
@@ -222,7 +224,7 @@ def load_buffer_module(name)
   begin
     eval classdef
   rescue
-    print "Problem loading module '%s', was it already completed?" % name
+    VIM::evaluate( "s:ErrMsg( 'Problem loading module \"%s\", was it already completed?' )" % name )
   end
 end
 
@@ -303,7 +305,7 @@ def load_rails()
       require 'console_with_helpers'
       VIM::command('let s:rubycomplete_rails_loaded = 1')
     rescue
-      print "Error loading rails environment"
+      VIM::evaluate( "s:ErrMsg('Error loading rails environment')" )
     end
   end
 end

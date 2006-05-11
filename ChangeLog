@@ -1,3 +1,8 @@
+2006-05-11  Mark Guzman <segfault@hasno.info>
+	* autoload/rubycomplete.vim: added checks for the existance of 
+	global config variables per dkearns' patch. refined error messages 
+	to use vim error style
+
 2006-05-11  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* syntax/ruby.vim: make sure rubyDocumentation is highlighted even if
