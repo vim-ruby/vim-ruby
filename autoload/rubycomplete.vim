@@ -34,7 +34,7 @@ endif
 function! s:ErrMsg(msg)
     echohl ErrorMsg
     echo a:msg
-    echohl None 
+    echohl None
 endfunction
 
 function! s:GetBufferRubyModule(name)
@@ -257,7 +257,7 @@ end
 
 def get_buffer_classes()
   # this will be a little expensive.
-  allow_aggressive_load = VIM::evaluate("exists('g:rubycomplete_classes_in_global') && g:rubycomplete_classes_in_global") 
+  allow_aggressive_load = VIM::evaluate("exists('g:rubycomplete_classes_in_global') && g:rubycomplete_classes_in_global")
   return [] if allow_aggressive_load != '1'
 
   buf = VIM::Buffer.current
@@ -323,7 +323,7 @@ def get_completions(base)
 
   input = VIM::Buffer.current.line
   cpos = VIM::Window.current.cursor[1] - 1
-  input = input[0..cpos] 
+  input = input[0..cpos]
   input += base
   input = input.sub(/.*[ \t\n\"\\'`><=;|&{(]/, '') # Readline.basic_word_break_characters
 
