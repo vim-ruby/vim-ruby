@@ -90,7 +90,7 @@ function! s:GetRubyVarType(v)
         return vtp
     endif
     call setpos('.',pos)
-    if g:rubycomplete_rails == 1 && s:rubycomplete_rails_loaded == 1
+    if exists('g:rubycomplete_rails') && g:rubycomplete_rails == 1 && s:rubycomplete_rails_loaded == 1
         let ctors = '\(now\|new\|open\|get_instance\|find\|create\)'
     else
         let ctors = '\(now\|new\|open\|get_instance\)'
@@ -255,7 +255,7 @@ end
 
 def get_buffer_classes()
   # this will be a little expensive.
-  allow_aggressive_load = VIM::evaluate('g:rubycomplete_classes_in_global')
+  allow_aggressive_load = VIM::evaluate("exists('g:rubycomplete_classes_in_global') && g:rubycomplete_classes_in_global") 
   return [] if allow_aggressive_load != '1'
 
   buf = VIM::Buffer.current
@@ -273,7 +273,7 @@ def get_buffer_classes()
 end
 
 def load_rails()
-  allow_rails = VIM::evaluate('g:rubycomplete_rails')
+  allow_rails = VIM::evaluate("exists('g:rubycomplete_rails') && g:rubycomplete_rails")
   return if allow_rails != '1'
 
   buf_path = VIM::evaluate('expand("%:p")')
@@ -309,7 +309,7 @@ def load_rails()
 end
 
 def get_rails_helpers
-  allow_rails = VIM::evaluate('g:rubycomplete_rails')
+  allow_rails = VIM::evaluate("exists('g:rubycomplete_rails') && g:rubycomplete_rails")
   rails_loaded = VIM::evaluate('s:rubycomplete_rails_loaded')
   return [] if allow_rails != '1' || rails_loaded != '1'
   return RailsWords
