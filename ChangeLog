@@ -1,4 +1,10 @@
+2006-05-12  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* syntax/ruby.vim: match the pseudo operators such as '+=' when
+	ruby_operators is defined
+
 2006-05-11  Mark Guzman <segfault@hasno.info>
+
 	* autoload/rubycomplete.vim: added checks for the existance of 
 	global config variables per dkearns' patch. refined error messages 
 	to use vim error style
