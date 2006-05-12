@@ -33,7 +33,8 @@ if exists("ruby_space_errors")
 endif
 
 if exists("ruby_operators")
-  syn match  rubyOperator        "\%(\^\|\~\|\%(class\s*\)\@<!<<\|<=>\|<=\|\%(<\|\<class\s\+\u\w*\s*\)\@<!<[^<]\@=\|===\|==\|=\~\|!\~\|>>\|>=\|>\||\|-\|/\|\*\*\|\*\|&\|%\|+\)"
+  syn match  rubyOperator        "\%(\^\|\~\|\%(class\s*\)\@<!<<\|<=>\|<=\|\%(<\|\<class\s\+\u\w*\s*\)\@<!<[^<]\@=\|===\|==\|=\~\|>>\|>=\|>\||\|-\|/\|\*\*\|\*\|&\|%\|+\)"
+  syn match  rubyPseudoOperator  "\%(-=\|/=\|\*\*=\|\*=\|&&\|&=\|&&=\|||\||=\|||=\|%=\|+=\|!\~\|!=\)"
   syn region rubyBracketOperator matchgroup=rubyOperator start="\%([_[:lower:]]\w*[?!=]\=\|}\)\@<=\[\s*" end="\s*]"
 endif
 
@@ -272,6 +273,7 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubySymbol			rubyIdentifier
   HiLink rubyKeyword			Keyword
   HiLink rubyOperator			Operator
+  HiLink rubyPseudoOperator		rubyOperator
   HiLink rubyBeginEnd			Statement
   HiLink rubyAccess			Statement
   HiLink rubyAttribute			Statement
