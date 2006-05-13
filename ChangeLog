@@ -1,3 +1,8 @@
+2006-05-13  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* ftplugin/ruby.vim: test for '&omnifunc', rather than the Vim
+	version, before setting it; add omnifunc to b:undo_ftplugin
+
 2006-05-12  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* syntax/ruby.vim: match the pseudo operators such as '+=' when
