@@ -55,6 +55,7 @@ setlocal includeexpr=substitute(substitute(v:fname,'::','/','g'),'$','.rb','')
 setlocal suffixesadd=.rb
 
 if version >= 700
+if exists('&ofu')
   setlocal omnifunc=rubycomplete#Complete
 endif
 
@@ -87,7 +88,7 @@ if has("gui_win32") && !exists("b:browsefilter")
 		     \ "All Files (*.*)\t*.*\n"
 endif
 
-let b:undo_ftplugin = "setl fo< inc< inex< sua< def< com< cms< path< "
+let b:undo_ftplugin = "setl fo< inc< inex< sua< def< com< cms< path< ofu<"
       \ "| unlet! b:browsefilter b:match_ignorecase b:match_words b:match_skip"
 
 let &cpo = s:cpo_save
