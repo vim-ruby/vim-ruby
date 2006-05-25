@@ -301,8 +301,13 @@ def load_rails()
     begin
       require bootfile
       require envfile
-      require 'console_app'
-      require 'console_with_helpers'
+      begin
+        require 'console_app'
+        require 'console_with_helpers'
+      rescue
+        # 1.0
+      end
+      Rails::Initializer.run
       VIM::command('let s:rubycomplete_rails_loaded = 1')
     rescue
       VIM::evaluate( "s:ErrMsg('Error loading rails environment')" )
@@ -317,6 +322,23 @@ def get_rails_helpers
   return RailsWords
 end
 
+def add_rails_columns( cls )
+  allow_rails = VIM::evaluate("exists('g:rubycomplete_rails') && g:rubycomplete_rails")
+  rails_loaded = VIM::evaluate('s:rubycomplete_rails_loaded')
+  return [] if allow_rails != '1' || rails_loaded != '1'
+  eval( "#{cls}.establish_connection" )
+  return [] unless eval( "#{cls}.ancestors.include?(ActiveRecord::Base).to_s" )
+  col = eval( "#{cls}.column_names" )
+  return col if col
+  return []
+end
+
+def clean_sel(sel, msg)
+  sel.delete_if { |x| x == nil }
+  sel.uniq!
+  sel.grep(/^#{Regexp.quote(msg)}/) if msg != nil
+end
+
 def get_completions(base)
   load_requires
   load_rails
@@ -325,66 +347,70 @@ def get_completions(base)
   cpos = VIM::Window.current.cursor[1] - 1
   input = input[0..cpos]
   input += base
-  input = input.sub(/.*[ \t\n\"\\'`><=;|&{(]/, '') # Readline.basic_word_break_characters
+  input.sub!(/.*[ \t\n\"\\'`><=;|&{(]/, '') # Readline.basic_word_break_characters
+  input.sub!(/self\./, '')
+
 
   message = nil
   receiver = nil
-  candidates = []
+  methods = []
+  variables = []
+  classes = []
 
   case input
     when /^(\/[^\/]*\/)\.([^.]*)$/ # Regexp
       receiver = $1
       message = Regexp.quote($2)
-      candidates = Regexp.instance_methods(true)
+      methods = Regexp.instance_methods(true)
 
     when /^([^\]]*\])\.([^.]*)$/ # Array
       receiver = $1
       message = Regexp.quote($2)
-      candidates = Array.instance_methods(true)
+      methods = Array.instance_methods(true)
 
     when /^([^\}]*\})\.([^.]*)$/ # Proc or Hash
       receiver = $1
       message = Regexp.quote($2)
-      candidates = Proc.instance_methods(true) | Hash.instance_methods(true)
+      methods = Proc.instance_methods(true) | Hash.instance_methods(true)
 
     when /^(:[^:.]*)$/ # Symbol
       if Symbol.respond_to?(:all_symbols)
         receiver = $1
-        candidates = Symbol.all_symbols.collect{|s| s.id2name}
-        candidates.delete_if { |c| c.match( /'/ ) }
+        methods = Symbol.all_symbols.collect{|s| s.id2name}
+        methods.delete_if { |c| c.match( /'/ ) }
       end
 
     when /^::([A-Z][^:\.\(]*)$/ # Absolute Constant or class methods
       receiver = $1
-      candidates = Object.constants
-      candidates.grep(/^#{receiver}/).collect{|e| "::" + e}
+      methods = Object.constants
+      methods.grep(/^#{receiver}/).collect{|e| "::" + e}
 
     when /^(((::)?[A-Z][^:.\(]*)+)::?([^:.]*)$/ # Constant or class methods
       receiver = $1
       message = Regexp.quote($4)
       begin
-        candidates = eval("#{receiver}.constants | #{receiver}.methods")
+        methods = eval("#{receiver}.constants | #{receiver}.methods")
       rescue Exception
-        candidates = []
+        methods = []
       end
-      candidates.grep(/^#{message}/).collect{|e| receiver + "::" + e}
+      methods.grep(/^#{message}/).collect{|e| receiver + "::" + e}
 
     when /^(:[^:.]+)\.([^.]*)$/ # Symbol
       receiver = $1
       message = Regexp.quote($2)
-      candidates = Symbol.instance_methods(true)
+      methods = Symbol.instance_methods(true)
 
     when /^([0-9_]+(\.[0-9_]+)?(e[0-9]+)?)\.([^.]*)$/ # Numeric
       receiver = $1
       message = Regexp.quote($4)
       begin
-        candidates = eval(receiver).methods
+        methods = eval(receiver).methods
       rescue Exception
-        candidates
+        methods = []
       end
 
     when /^(\$[^.]*)$/ #global
-      candidates = global_variables.grep(Regexp.new(Regexp.quote($1)))
+      methods = global_variables.grep(Regexp.new(Regexp.quote($1)))
 
     when /^((\.?[^.]+)+)\.([^.]*)$/ # variable
       receiver = $1
@@ -397,37 +423,38 @@ def get_completions(base)
         load_buffer_class( vartype )
 
         begin
-          candidates = eval("#{vartype}.instance_methods")
+          methods = eval("#{vartype}.instance_methods")
+          variables = eval("#{vartype}.instance_variables")
         rescue Exception
-          candidates = []
         end
       elsif (cv).include?(receiver)
         # foo.func and foo is local var.
-        candidates = eval("#{receiver}.methods")
+        methods = eval("#{receiver}.methods")
+        vartype = receiver
       elsif /^[A-Z]/ =~ receiver and /\./ !~ receiver
+        vartype = receiver
         # Foo::Bar.func
         begin
-          candidates = eval("#{receiver}.methods")
+          methods = eval("#{receiver}.methods")
         rescue Exception
-          candidates = []
         end
       else
         # func1.func2
-        candidates = []
         ObjectSpace.each_object(Module){|m|
           next if m.name != "IRB::Context" and
             /^(IRB|SLex|RubyLex|RubyToken)/ =~ m.name
-          candidates.concat m.instance_methods(false)
+          methods.concat m.instance_methods(false)
         }
       end
+      variables += add_rails_columns( "#{vartype}" ) if vartype && vartype.length > 0
 
     when /^\(?\s*[A-Za-z0-9:^@.%\/+*\(\)]+\.\.\.?[A-Za-z0-9:^@.%\/+*\(\)]+\s*\)?\.([^.]*)/
       message = $1
-      candidates = Range.instance_methods(true)
+      methods = Range.instance_methods(true)
 
     when /^\.([^.]*)$/ # unknown(maybe String)
       message = Regexp.quote($1)
-      candidates = String.instance_methods(true)
+      methods = String.instance_methods(true)
 
   else
     inclass = eval( VIM::evaluate("s:IsInClassDef()") )
@@ -441,8 +468,9 @@ def get_completions(base)
         message = input
         load_buffer_class( receiver )
         begin
-          candidates = eval( "#{receiver}.instance_methods" )
-          candidates += get_rails_helpers
+          methods = eval( "#{receiver}.instance_methods" )
+          methods += get_rails_helpers
+          variables += add_rails_columns( "#{receiver}" )
         rescue Exception
           found = nil
         end
@@ -450,25 +478,29 @@ def get_completions(base)
     end
 
     if inclass == nil || found == nil
-      candidates = eval("self.class.constants")
-      candidates += get_buffer_classes
+      classes = eval("self.class.constants")
+      classes += get_buffer_classes
       message = receiver = input
     end
   end
 
-  candidates.delete_if { |x| x == nil }
-  candidates.uniq!
-  candidates.sort!
-  candidates = candidates.grep(/^#{Regexp.quote(message)}/) if message != nil
+  methods = clean_sel( methods, message )
+  methods = (methods-Object.instance_methods)
+  variables = clean_sel( variables, message )
+  classes = clean_sel( classes, message )
+  valid = []
+  valid += methods.collect { |m| { :name => m, :type => 'm' } }
+  valid += variables.collect { |v| { :name => v, :type => 'v' } }
+  valid += classes.collect { |c| { :name => c, :type => 't' } }
+  valid.sort! { |x,y| x[:name] <=> y[:name] }
 
   outp = ""
-  valid = (candidates-Object.instance_methods)
 
   rg = 0..valid.length
   rg.step(150) do |x|
     stpos = 0+x
     enpos = 150+x
-    valid[stpos..enpos].each { |c| outp += "{'word':'%s','item':'%s'}," % [ c, c ] }
+    valid[stpos..enpos].each { |c| outp += "{'word':'%s','item':'%s','kind':'%s'}," % [ c[:name], c[:name], c[:type] ] }
     outp.sub!(/,$/, '')
 
     VIM::command("call extend(g:rubycomplete_completions, [%s])" % outp)

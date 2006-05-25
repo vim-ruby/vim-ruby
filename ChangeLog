@@ -1,3 +1,10 @@
+2006-05-25	Mark Guzman	 <segfault@hasno.info>
+	
+	* autoload/rubycomplete.vim: added rails column support. 
+	switched to dictionary with type specifiers for methods,
+	classes, and variables. started/added rails 1.0 support.
+	added rails database connection support.
+
 2006-05-25  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* syntax/ruby.vim: use a region for the rubyMultiLineComment syntax
