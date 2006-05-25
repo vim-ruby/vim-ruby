@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		Ruby
 " Maintainer:		Doug Kearns <dougkearns@gmail.com>
-" Info:			$Id: ruby.vim,v 1.91 2006/05/12 08:50:01 dkearns Exp $
+" Info:			$Id: ruby.vim,v 1.92 2006/05/25 07:46:57 dkearns Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -213,7 +213,7 @@ syn match   rubySharpBang     "\%^#!.*" display
 syn keyword rubyTodo	      FIXME NOTE TODO XXX contained
 syn match   rubyComment       "#.*" contains=rubySharpBang,rubySpaceError,rubyTodo,@Spell
 if !exists("ruby_no_comment_fold")
-  syn match  rubyMultiLineComment "\(^\s*#.*\n\)\{2,}" contains=rubyComment transparent fold
+  syn region rubyMultilineComment start="\%(\%(^\s*#.*\n\)\@<!\%(^\s*#.*\n\)\)\%(\(^\s*#.*\n\)\{1,}\)\@=" end="\%(^\s*#.*\n\)\@<=\%(^\s*#.*\n\)\%(^\s*#\)\@!" contains=rubyComment transparent fold keepend
   syn region rubyDocumentation    start="^=begin\s*$" end="^=end\s*$" contains=rubySpaceError,rubyTodo,@Spell fold
 else
   syn region rubyDocumentation    start="^=begin\s*$" end="^=end\s*$" contains=rubySpaceError,rubyTodo,@Spell

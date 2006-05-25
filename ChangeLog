@@ -1,3 +1,9 @@
+2006-05-25  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* syntax/ruby.vim: use a region for the rubyMultiLineComment syntax
+	group instead of a multiline match pattern as it is faster; rename
+	rubyMultiLineComment to rubyMultilineComment
+
 2006-05-13  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* ftplugin/ruby.vim: test for '&omnifunc', rather than the Vim
