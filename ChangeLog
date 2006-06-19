@@ -1,3 +1,15 @@
+2006-06-19	Mark Guzman  <segfault@hasno.info>
+
+	* autoload/rubycomplete.vim: modified to change the default
+	buffer loading behavior. buffers are no longer loaded/parsed 
+	automatically. enabling this feature requires setting the 
+	variable g:rubycomplete_buffer_loading. this was done as
+	a security measure, the default vim7 install should not
+	execute any code.
+
+	* autoload/rubycomplete.vim: symbol completion now works. i 
+	tested with global symbols as well as rails symbols.
+
 2006-05-26  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* ftplugin/ruby.vim: fix typo

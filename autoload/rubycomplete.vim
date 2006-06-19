@@ -30,6 +30,11 @@ if !exists("g:rubycomplete_classes_in_global")
     let g:rubycomplete_classes_in_global = 0
 endif
 
+if !exists("g:rubycomplete_buffer_loading")
+    let g:rubycomplete_classes_in_global = 0
+endif
+
+
 " {{{ vim-side support functions
 function! s:ErrMsg(msg)
     echohl ErrorMsg
@@ -229,6 +234,8 @@ def load_buffer_module(name)
 end
 
 def get_buffer_entity(name, vimfun)
+  loading_allowed = VIM::evaluate("exists('g:rubycomplete_buffer_loading') && g:rubycomplete_buffer_loading")
+  return nil if loading_allowed != '1'
   return nil if /(\"|\')+/.match( name )
   buf = VIM::Buffer.current
   nums = eval( VIM::evaluate( vimfun % name ) )
@@ -257,8 +264,9 @@ end
 
 def get_buffer_classes()
   # this will be a little expensive.
+  loading_allowed = VIM::evaluate("exists('g:rubycomplete_buffer_loading') && g:rubycomplete_buffer_loading")
   allow_aggressive_load = VIM::evaluate("exists('g:rubycomplete_classes_in_global') && g:rubycomplete_classes_in_global")
-  return [] if allow_aggressive_load != '1'
+  return [] if allow_aggressive_load != '1' || loading_allowed != '1'
 
   buf = VIM::Buffer.current
   eob = buf.length
@@ -340,8 +348,11 @@ def clean_sel(sel, msg)
 end
 
 def get_completions(base)
-  load_requires
-  load_rails
+  loading_allowed = VIM::evaluate("exists('g:rubycomplete_buffer_loading') && g:rubycomplete_buffer_loading")
+  if loading_allowed == '1'
+    load_requires
+    load_rails
+  end
 
   input = VIM::Buffer.current.line
   cpos = VIM::Window.current.cursor[1] - 1
@@ -349,7 +360,6 @@ def get_completions(base)
   input += base
   input.sub!(/.*[ \t\n\"\\'`><=;|&{(]/, '') # Readline.basic_word_break_characters
   input.sub!(/self\./, '')
-
 
   message = nil
   receiver = nil
@@ -376,6 +386,7 @@ def get_completions(base)
     when /^(:[^:.]*)$/ # Symbol
       if Symbol.respond_to?(:all_symbols)
         receiver = $1
+        message = $1.sub( /:/, '' )
         methods = Symbol.all_symbols.collect{|s| s.id2name}
         methods.delete_if { |c| c.match( /'/ ) }
       end
@@ -489,7 +500,7 @@ def get_completions(base)
   variables = clean_sel( variables, message )
   classes = clean_sel( classes, message )
   valid = []
-  valid += methods.collect { |m| { :name => m, :type => 'm' } }
+  valid += methods.collect { |m| { :name => m, :type => 'f' } }
   valid += variables.collect { |v| { :name => v, :type => 'v' } }
   valid += classes.collect { |c| { :name => c, :type => 't' } }
   valid.sort! { |x,y| x[:name] <=> y[:name] }
