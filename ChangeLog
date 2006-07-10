@@ -1,4 +1,8 @@
-2006-06-19	Mark Guzman  <segfault@hasno.info>
+2006-07-10  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* syntax/ruby.vim: fold all multiline strings
+
+2006-06-19  Mark Guzman  <segfault@hasno.info>
 
 	* autoload/rubycomplete.vim: modified to change the default
 	buffer loading behavior. buffers are no longer loaded/parsed 
@@ -482,7 +486,7 @@
 2005-08-27  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* bin/vim-ruby-install.rb: add Env.determine_home_dir using
-	%HOMEDRIVE%%HOMEPATH% as HOME on windows if HOME is not explicitly set
+	%HOMEDRIVE%%HOMEPATH% as HOME on Windows if HOME is not explicitly set
 
 	* syntax/ruby.vim: fix regression in rubyOptDoBlock
 
