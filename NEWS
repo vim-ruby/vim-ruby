@@ -1,3 +1,41 @@
+= 2006.07.11
+
+== Omni Completion
+
+A new omni completion function is now included which offers IntelliSense-like
+functionality. See :help ft-ruby-omni for further information.
+
+Note: This will only work with Vim 7.x, compiled with the Ruby interface
+(+ruby), and Ruby 1.8.x
+
+== Ruby Filetype Support
+
+Matchit support has been improved to include (), {}, and [] in the list of
+patterns meaning these will be appropriately skipped when included in comments.
+
+== Ruby Syntax Highlighting
+
+Operators can now be highlighted by defining the Vim global variable
+"ruby_operators".
+
+Multiline comments will now be folded. This can be disabled by defining the
+"ruby_no_comment_fold" Vim variable.
+
+== Filetype Detection
+
+RJS and RXML templates are now detected as being 'filetype=ruby'.
+
+== FAQ
+
+There is a new FAQ document included. This is a work in progress and any
+feedback would be appreciated.
+
+== Bug Fixes
+
+Ruby syntax file - if/unless modifiers after a method name ending with [?!=]
+should now be highlighted correctly.
+
+
 = 2005.10.07
 
 == Vim 6.4

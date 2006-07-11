@@ -27,9 +27,9 @@ For would-be contributors:
   - Thank you very much for taking an interest.
 
 Contents of the project:
-  - The compiler, ftdetect, ftplugin, indent and syntax directories contain
-    the ruby.vim files that are to be copied to a location somewhere in the Vim
-    'runtimepath'.
+  - The autoload, compiler, ftdetect, ftplugin, indent and syntax directories
+    contain the ruby*.vim files that are to be copied to a location somewhere
+    in the Vim 'runtimepath'.
   - vim-ruby-install.rb performs this copying.
 
 How you get these files into Vim:
@@ -68,7 +68,7 @@ CVS topics:
 Any questions or suggestions?
   - If there's something about the project or its concepts that you don't
     understand, send an email to the project maintainer, Gavin Sinclair
-    (gsinclair at soyabean.com.au).
+    (gsinclair at gmail.com).
   - To ask about the contents of the configuration files, ask on the mailing
     list, as different people maintain the different files.  Gavin knows
     nothing about the syntax file, for instance. (Come to think of it, nor does
