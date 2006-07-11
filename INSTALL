@@ -1,16 +1,17 @@
-= Installing Vim-Ruby
+= Installing vim-ruby
 
-The Vim-Ruby runtime files may be installed via the vim-ruby gem or by
+The vim-ruby runtime files may be installed via the vim-ruby gem or by
 downloading an archive file from http://rubyforge.org/frs/?group_id=16
 
 NOTE: the installer vim-ruby-install.rb currently only supports Unix and
 Windows systems; other platforms may require a manual install.  This installer
 is new and users with significant local modifications to their vim-ruby files
-are encouraged to make a manual backup of each prior to installation.
+are encouraged to make a manual backup prior to installation.
 
 == Prerequisites
 
-1. Vim 6.x (6.3 recommended)
+1. Vim 6.x (7.0 recommended; 7.0 compiled with the Ruby interface is required
+            for omni completion)
    http://www.vim.org/
 
 2. Ruby 1.8.x
@@ -41,26 +42,40 @@ Windows
 C:\tmp> [unzip] vim-ruby.YYYY.MM.DD.tgz
 C:\tmp> ruby vim-ruby.YYY.MM.DD\bin\vim-ruby-install.rb
 
-=== Manual Installation
+== Manual Installation
 
 Alternatively, you can simply copy the desired files to an appropriate
 directory in your runtime path.  For single user use this would typically be
 $HOME/.vim on Unix systems and $HOME/vimfiles on Windows and for system-wide
 use these would be installed in $VIM/vimfiles.
 
-== Vim versions < 6.3
+== Vim Version Dependencies
 
-For versions of Vim less than 6.3 the supplied ftdetect/ruby.vim file, used for
-filetype detection, will be ignored.  In order for the filetype detection to
-operate correctly the autocommands specified in ftdetect/ruby.vim need to be
-executed.  See :help new-filetype, in Vim, for a mechanism to achieve this
-which is appropriate for your version of Vim.
+Some features of the vim-ruby package depend on specific versions and features
+of Vim, as follows.
 
-Again, we recommend you use the latest version of Vim at all times, where
-possible.
+=== Versions >= 7.0 compiled without the Ruby interface
+
+The omni completion script (autoload/rubycomplete.vim) will be installed but
+the 'omnifunc' option will not be set to use this if Vim was not compiled with
+the Ruby interface (+ruby).
+
+=== Versions < 7.0
+
+While omni completion is a Vim 7.x series feature the supplied completion
+script will still be installed to facilitate an easier upgrade.  It will simply
+be ignored by versions of Vim less than 7.0.
+
+=== Versions < 6.3
+
+The supplied filetype detection script (ftdetect/ruby.vim file) will be
+installed but ignored.  In order for the filetype detection to operate
+correctly the autocommands specified in ftdetect/ruby.vim need to be executed.
+See :help new-filetype, in Vim, for a mechanism to achieve this which is
+appropriate for your version of Vim.
 
 == Problems
 
-If you have any problems installing the Vim-Ruby configuration files please
+If you have any problems installing the vim-ruby configuration files please
 send a message to the mailing list (http://rubyforge.org/mail/?group_id=16) or
 post an item to the tracker (http://rubyforge.org/tracker/?group_id=16).

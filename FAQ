@@ -52,8 +52,8 @@ Again, see installation instructions below.
 
 If you obtained the vim-ruby files via RubyGems, run: >
 
-  	vim-ruby-install.rb
-	
+	vim-ruby-install.rb
+
 If you downloaded a tarball, unpack it, change to the created directory, and
 run: >
 
@@ -71,6 +71,7 @@ Here is an example installation transcript:
 		2) E:/Vim/vimfiles ~
  ~
 	Please select one (or anything else to specify another directory): 2 ~
+	autoload/rubycomplete.vim -> E:/Vim/vimfiles/autoload/rubycomplete.vim ~
 	compiler/eruby.vim        -> E:/Vim/vimfiles/compiler/eruby.vim ~
 	compiler/ruby.vim         -> E:/Vim/vimfiles/compiler/ruby.vim ~
 	compiler/rubyunit.vim     -> E:/Vim/vimfiles/compiler/rubyunit.vim ~
@@ -209,7 +210,7 @@ Yes: vim-ruby-devel@rubyforge.org.  Only subscribers can post.  To join, visit:
 	http://rubyforge.org/mailman/listinfo/vim-ruby-devel
 
 The list is mirrored at: >
-	
+
 	http://news.gmane.org/gmane.comp.editors.vim.vim%2druby.devel
 
 
