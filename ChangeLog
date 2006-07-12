@@ -1,3 +1,7 @@
+2006-07-12	Mark Guzman	 <segfault@hasno.info>
+	* autoload/rubycomplete.vim: added in-buffer method def handling. also
+	added an inital attempt at handling completion in a rails view
+
 2006-07-11  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* FAQ, INSTALL, NEWS, README, doc/ft-ruby-syntax.txt: update
