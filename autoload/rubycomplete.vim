@@ -1,7 +1,7 @@
 " Vim completion script
 " Language:             Ruby
 " Maintainer:           Mark Guzman <segfault@hasno.info>
-" Info:                 $Id: rubycomplete.vim,v 1.33 2006/06/19 17:10:24 segy Exp $
+" Info:                 $Id: rubycomplete.vim,v 1.34 2006/07/12 04:13:11 segy Exp $
 " URL:                  http://vim-ruby.rubyforge.org
 " Anon CVS:             See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
@@ -74,15 +74,18 @@ function! s:GetBufferRubyEntity( name, type )
 endfunction
 
 function! s:IsInClassDef()
+    return s:IsPosInClassDef( line('.') )
+endfunction
+
+function! s:IsPosInClassDef(pos)
     let [snum,enum] = s:GetBufferRubyEntity( '.*', "class" )
     let ret = 'nil'
-    let pos = line('.')
 
-    if snum < pos && pos < enum
+    if snum < a:pos && a:pos < enum
         let ret = snum . '..' . enum
     endif
 
-    return ret
+    return ret   
 endfunction
 
 function! s:GetRubyVarType(v)
@@ -217,7 +220,7 @@ def load_buffer_class(name)
 
   begin
     eval classdef
-  rescue
+  rescue Exception
     VIM::evaluate( "s:ErrMsg( 'Problem loading class \"%s\", was it already completed?' )" % name )
   end
 end
@@ -228,7 +231,7 @@ def load_buffer_module(name)
 
   begin
     eval classdef
-  rescue
+  rescue Exception
     VIM::evaluate( "s:ErrMsg( 'Problem loading module \"%s\", was it already completed?' )" % name )
   end
 end
@@ -262,27 +265,37 @@ def get_var_type( receiver )
   end
 end
 
-def get_buffer_classes()
+def get_buffer_entity_list( type )
   # this will be a little expensive.
   loading_allowed = VIM::evaluate("exists('g:rubycomplete_buffer_loading') && g:rubycomplete_buffer_loading")
   allow_aggressive_load = VIM::evaluate("exists('g:rubycomplete_classes_in_global') && g:rubycomplete_classes_in_global")
   return [] if allow_aggressive_load != '1' || loading_allowed != '1'
-
+ 
   buf = VIM::Buffer.current
   eob = buf.length
   ret = []
   rg = 1..eob
+  re = eval( "/^\s*%s\s*([A-Za-z0-9_-]*)(\s*<\s*([A-Za-z0-9_:-]*))?\s*/" % type )
 
   rg.each do |x|
-    if /^\s*class\s*([A-Za-z0-9_-]*)(\s*<\s*([A-Za-z0-9_:-]*))?\s*/.match( buf[x] )
-      ret.push $1
+    if re.match( buf[x] )
+      next if type == "def" && eval( VIM::evaluate("s:IsPosInClassDef(%s)" % x) ) != nil
+      ret.push $1 
     end
   end
 
-  return ret
+  return ret  
 end
 
-def load_rails()
+def get_buffer_methods
+  return get_buffer_entity_list( "def" )
+end
+
+def get_buffer_classes
+  return get_buffer_entity_list( "class" )
+end
+
+def load_rails
   allow_rails = VIM::evaluate("exists('g:rubycomplete_rails') && g:rubycomplete_rails")
   return if allow_rails != '1'
 
@@ -312,12 +325,12 @@ def load_rails()
       begin
         require 'console_app'
         require 'console_with_helpers'
-      rescue
-        # 1.0
+      rescue Exception
+        # assume 1.0
       end
       Rails::Initializer.run
       VIM::command('let s:rubycomplete_rails_loaded = 1')
-    rescue
+    rescue Exception
       VIM::evaluate( "s:ErrMsg('Error loading rails environment')" )
     end
   end
@@ -345,6 +358,25 @@ def clean_sel(sel, msg)
   sel.delete_if { |x| x == nil }
   sel.uniq!
   sel.grep(/^#{Regexp.quote(msg)}/) if msg != nil
+end
+
+def get_rails_view_methods
+  allow_rails = VIM::evaluate("exists('g:rubycomplete_rails') && g:rubycomplete_rails")
+  rails_loaded = VIM::evaluate('s:rubycomplete_rails_loaded')
+  return [] if allow_rails != '1' || rails_loaded != '1'
+
+  buf_path = VIM::evaluate('expand("%:p")')
+  file_name = VIM::evaluate('expand("%:t")')
+  path = buf_path.gsub( file_name, '' )    
+
+  return [] unless /.*.{1}app.{1}views.{1}.*.{1}/.match( path )
+
+  clspl = File.basename( path ).camelize.pluralize
+  cls = clspl.singularize
+  ret = []
+  ret += eval( "#{cls}.instance_methods" )
+  ret += eval( "#{clspl}Helper.instance_methods" )
+  return ret
 end
 
 def get_completions(base)
@@ -489,6 +521,8 @@ def get_completions(base)
     end
 
     if inclass == nil || found == nil
+      methods = get_buffer_methods
+      methods += get_rails_view_methods
       classes = eval("self.class.constants")
       classes += get_buffer_classes
       message = receiver = input
