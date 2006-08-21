@@ -1,10 +1,11 @@
 " Vim completion script
 " Language:             Ruby
 " Maintainer:           Mark Guzman <segfault@hasno.info>
-" Info:                 $Id: rubycomplete.vim,v 1.34 2006/07/12 04:13:11 segy Exp $
+" Info:                 $Id: rubycomplete.vim,v 1.35 2006/08/21 19:52:49 segy Exp $
 " URL:                  http://vim-ruby.rubyforge.org
 " Anon CVS:             See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
+" Version:              0.7
 " ----------------------------------------------------------------------------
 "
 " Ruby IRB/Complete author: Keiju ISHITSUKA(keiju@ishitsuka.com)
@@ -155,7 +156,7 @@ function! rubycomplete#Complete(findstart, base)
     "findstart = 0 when we need to return the list of completions
     else
         let g:rubycomplete_completions = []
-        execute "ruby get_completions('" . a:base . "')"
+        execute "ruby VimRubyCompletion.get_completions('" . a:base . "')"
         return g:rubycomplete_completions
     endif
 endfunction
@@ -164,396 +165,407 @@ endfunction
 function! s:DefRuby()
 ruby << RUBYEOF
 # {{{ ruby completion
-RailsWords = [
-      "has_many", "has_one",
-      "belongs_to",
-    ]
+class VimRubyCompletion
+  # {{{ constants
+  @@RailsWords = [
+        "has_many", "has_one",
+        "belongs_to",
+      ]
 
-ReservedWords = [
-      "BEGIN", "END",
-      "alias", "and",
-      "begin", "break",
-      "case", "class",
-      "def", "defined", "do",
-      "else", "elsif", "end", "ensure",
-      "false", "for",
-      "if", "in",
-      "module",
-      "next", "nil", "not",
-      "or",
-      "redo", "rescue", "retry", "return",
-      "self", "super",
-      "then", "true",
-      "undef", "unless", "until",
-      "when", "while",
-      "yield",
-    ]
+  @@ReservedWords = [
+        "BEGIN", "END",
+        "alias", "and",
+        "begin", "break",
+        "case", "class",
+        "def", "defined", "do",
+        "else", "elsif", "end", "ensure",
+        "false", "for",
+        "if", "in",
+        "module",
+        "next", "nil", "not",
+        "or",
+        "redo", "rescue", "retry", "return",
+        "self", "super",
+        "then", "true",
+        "undef", "unless", "until",
+        "when", "while",
+        "yield",
+      ]
 
-Operators = [ "%", "&", "*", "**", "+",  "-",  "/",
-      "<", "<<", "<=", "<=>", "==", "===", "=~", ">", ">=", ">>",
-      "[]", "[]=", "^", ]
+  @@Operators = [ "%", "&", "*", "**", "+",  "-",  "/",
+        "<", "<<", "<=", "<=>", "==", "===", "=~", ">", ">=", ">>",
+        "[]", "[]=", "^", ]
+  #}}} constants
 
 
-def load_requires
-  buf = VIM::Buffer.current
-  enum = buf.line_number
-  nums = Range.new( 1, enum )
-  nums.each do |x|
-    ln = buf[x]
-    begin
-      eval( "require %s" % $1 ) if /.*require\s*(.*)$/.match( ln )
-    rescue Exception
-      #ignore?
-    end
-  end
-end
-
-def load_buffer_class(name)
-  classdef = get_buffer_entity(name, 's:GetBufferRubyClass("%s")')
-  return if classdef == nil
-
-  pare = /^\s*class\s*(.*)\s*<\s*(.*)\s*\n/.match( classdef )
-  load_buffer_class( $2 ) if pare != nil
-
-  mixre = /.*\n\s*include\s*(.*)\s*\n/.match( classdef )
-  load_buffer_module( $2 ) if mixre != nil
-
-  begin
-    eval classdef
-  rescue Exception
-    VIM::evaluate( "s:ErrMsg( 'Problem loading class \"%s\", was it already completed?' )" % name )
-  end
-end
-
-def load_buffer_module(name)
-  classdef = get_buffer_entity(name, 's:GetBufferRubyModule("%s")')
-  return if classdef == nil
-
-  begin
-    eval classdef
-  rescue Exception
-    VIM::evaluate( "s:ErrMsg( 'Problem loading module \"%s\", was it already completed?' )" % name )
-  end
-end
-
-def get_buffer_entity(name, vimfun)
-  loading_allowed = VIM::evaluate("exists('g:rubycomplete_buffer_loading') && g:rubycomplete_buffer_loading")
-  return nil if loading_allowed != '1'
-  return nil if /(\"|\')+/.match( name )
-  buf = VIM::Buffer.current
-  nums = eval( VIM::evaluate( vimfun % name ) )
-  return nil if nums == nil
-  return nil if nums.min == nums.max && nums.min == 0
-
-  cur_line = VIM::Buffer.current.line_number
-  classdef = ""
-  nums.each do |x|
-    if x != cur_line
+  def load_requires
+    buf = VIM::Buffer.current
+    enum = buf.line_number
+    nums = Range.new( 1, enum )
+    nums.each do |x|
       ln = buf[x]
-      classdef += "%s\n" % ln
+      begin
+        eval( "require %s" % $1 ) if /.*require\s*(.*)$/.match( ln )
+      rescue Exception
+        #ignore?
+      end
     end
   end
 
-  return classdef
-end
+  def load_buffer_class(name)
+    classdef = get_buffer_entity(name, 's:GetBufferRubyClass("%s")')
+    return if classdef == nil
 
-def get_var_type( receiver )
-  if /(\"|\')+/.match( receiver )
-    "String"
-  else
-    VIM::evaluate("s:GetRubyVarType('%s')" % receiver)
-  end
-end
+    pare = /^\s*class\s*(.*)\s*<\s*(.*)\s*\n/.match( classdef )
+    load_buffer_class( $2 ) if pare != nil
 
-def get_buffer_entity_list( type )
-  # this will be a little expensive.
-  loading_allowed = VIM::evaluate("exists('g:rubycomplete_buffer_loading') && g:rubycomplete_buffer_loading")
-  allow_aggressive_load = VIM::evaluate("exists('g:rubycomplete_classes_in_global') && g:rubycomplete_classes_in_global")
-  return [] if allow_aggressive_load != '1' || loading_allowed != '1'
- 
-  buf = VIM::Buffer.current
-  eob = buf.length
-  ret = []
-  rg = 1..eob
-  re = eval( "/^\s*%s\s*([A-Za-z0-9_-]*)(\s*<\s*([A-Za-z0-9_:-]*))?\s*/" % type )
+    mixre = /.*\n\s*include\s*(.*)\s*\n/.match( classdef )
+    load_buffer_module( $2 ) if mixre != nil
 
-  rg.each do |x|
-    if re.match( buf[x] )
-      next if type == "def" && eval( VIM::evaluate("s:IsPosInClassDef(%s)" % x) ) != nil
-      ret.push $1 
-    end
-  end
-
-  return ret  
-end
-
-def get_buffer_methods
-  return get_buffer_entity_list( "def" )
-end
-
-def get_buffer_classes
-  return get_buffer_entity_list( "class" )
-end
-
-def load_rails
-  allow_rails = VIM::evaluate("exists('g:rubycomplete_rails') && g:rubycomplete_rails")
-  return if allow_rails != '1'
-
-  buf_path = VIM::evaluate('expand("%:p")')
-  file_name = VIM::evaluate('expand("%:t")')
-  path = buf_path.gsub( file_name, '' )
-  path.gsub!( /\\/, "/" )
-  pup = [ "./", "../", "../../", "../../../", "../../../../" ]
-  pok = nil
-
-  pup.each do |sup|
-    tpok = "%s%sconfig" % [ path, sup ]
-    if File.exists?( tpok )
-      pok = tpok
-      break
-    end
-  end
-
-  return if pok == nil
-
-  bootfile = pok + "/boot.rb"
-  envfile = pok + "/environment.rb"
-  if File.exists?( bootfile ) && File.exists?( envfile )
     begin
-      require bootfile
-      require envfile
-      begin
-        require 'console_app'
-        require 'console_with_helpers'
-      rescue Exception
-        # assume 1.0
-      end
-      Rails::Initializer.run
-      VIM::command('let s:rubycomplete_rails_loaded = 1')
+      eval classdef
     rescue Exception
-      VIM::evaluate( "s:ErrMsg('Error loading rails environment')" )
+      VIM::evaluate( "s:ErrMsg( 'Problem loading class \"%s\", was it already completed?' )" % name )
     end
   end
-end
 
-def get_rails_helpers
-  allow_rails = VIM::evaluate("exists('g:rubycomplete_rails') && g:rubycomplete_rails")
-  rails_loaded = VIM::evaluate('s:rubycomplete_rails_loaded')
-  return [] if allow_rails != '1' || rails_loaded != '1'
-  return RailsWords
-end
+  def load_buffer_module(name)
+    classdef = get_buffer_entity(name, 's:GetBufferRubyModule("%s")')
+    return if classdef == nil
 
-def add_rails_columns( cls )
-  allow_rails = VIM::evaluate("exists('g:rubycomplete_rails') && g:rubycomplete_rails")
-  rails_loaded = VIM::evaluate('s:rubycomplete_rails_loaded')
-  return [] if allow_rails != '1' || rails_loaded != '1'
-  eval( "#{cls}.establish_connection" )
-  return [] unless eval( "#{cls}.ancestors.include?(ActiveRecord::Base).to_s" )
-  col = eval( "#{cls}.column_names" )
-  return col if col
-  return []
-end
-
-def clean_sel(sel, msg)
-  sel.delete_if { |x| x == nil }
-  sel.uniq!
-  sel.grep(/^#{Regexp.quote(msg)}/) if msg != nil
-end
-
-def get_rails_view_methods
-  allow_rails = VIM::evaluate("exists('g:rubycomplete_rails') && g:rubycomplete_rails")
-  rails_loaded = VIM::evaluate('s:rubycomplete_rails_loaded')
-  return [] if allow_rails != '1' || rails_loaded != '1'
-
-  buf_path = VIM::evaluate('expand("%:p")')
-  file_name = VIM::evaluate('expand("%:t")')
-  path = buf_path.gsub( file_name, '' )    
-
-  return [] unless /.*.{1}app.{1}views.{1}.*.{1}/.match( path )
-
-  clspl = File.basename( path ).camelize.pluralize
-  cls = clspl.singularize
-  ret = []
-  ret += eval( "#{cls}.instance_methods" )
-  ret += eval( "#{clspl}Helper.instance_methods" )
-  return ret
-end
-
-def get_completions(base)
-  loading_allowed = VIM::evaluate("exists('g:rubycomplete_buffer_loading') && g:rubycomplete_buffer_loading")
-  if loading_allowed == '1'
-    load_requires
-    load_rails
+    begin
+      eval classdef
+    rescue Exception
+      VIM::evaluate( "s:ErrMsg( 'Problem loading module \"%s\", was it already completed?' )" % name )
+    end
   end
 
-  input = VIM::Buffer.current.line
-  cpos = VIM::Window.current.cursor[1] - 1
-  input = input[0..cpos]
-  input += base
-  input.sub!(/.*[ \t\n\"\\'`><=;|&{(]/, '') # Readline.basic_word_break_characters
-  input.sub!(/self\./, '')
+  def get_buffer_entity(name, vimfun)
+    loading_allowed = VIM::evaluate("exists('g:rubycomplete_buffer_loading') && g:rubycomplete_buffer_loading")
+    return nil if loading_allowed != '1'
+    return nil if /(\"|\')+/.match( name )
+    buf = VIM::Buffer.current
+    nums = eval( VIM::evaluate( vimfun % name ) )
+    return nil if nums == nil
+    return nil if nums.min == nums.max && nums.min == 0
 
-  message = nil
-  receiver = nil
-  methods = []
-  variables = []
-  classes = []
-
-  case input
-    when /^(\/[^\/]*\/)\.([^.]*)$/ # Regexp
-      receiver = $1
-      message = Regexp.quote($2)
-      methods = Regexp.instance_methods(true)
-
-    when /^([^\]]*\])\.([^.]*)$/ # Array
-      receiver = $1
-      message = Regexp.quote($2)
-      methods = Array.instance_methods(true)
-
-    when /^([^\}]*\})\.([^.]*)$/ # Proc or Hash
-      receiver = $1
-      message = Regexp.quote($2)
-      methods = Proc.instance_methods(true) | Hash.instance_methods(true)
-
-    when /^(:[^:.]*)$/ # Symbol
-      if Symbol.respond_to?(:all_symbols)
-        receiver = $1
-        message = $1.sub( /:/, '' )
-        methods = Symbol.all_symbols.collect{|s| s.id2name}
-        methods.delete_if { |c| c.match( /'/ ) }
+    cur_line = VIM::Buffer.current.line_number
+    classdef = ""
+    nums.each do |x|
+      if x != cur_line
+        ln = buf[x]
+        classdef += "%s\n" % ln if /class|def\s+|include/.match(ln)
+        classdef += "end\n" if /def\s+/.match(ln)
       end
+    end
+    classdef += "end\n" if classdef.length > 1
 
-    when /^::([A-Z][^:\.\(]*)$/ # Absolute Constant or class methods
-      receiver = $1
-      methods = Object.constants
-      methods.grep(/^#{receiver}/).collect{|e| "::" + e}
+    return classdef
+  end
 
-    when /^(((::)?[A-Z][^:.\(]*)+)::?([^:.]*)$/ # Constant or class methods
-      receiver = $1
-      message = Regexp.quote($4)
+  def get_var_type( receiver )
+    if /(\"|\')+/.match( receiver )
+      "String"
+    else
+      VIM::evaluate("s:GetRubyVarType('%s')" % receiver)
+    end
+  end
+
+  def get_buffer_entity_list( type )
+    # this will be a little expensive.
+    loading_allowed = VIM::evaluate("exists('g:rubycomplete_buffer_loading') && g:rubycomplete_buffer_loading")
+    allow_aggressive_load = VIM::evaluate("exists('g:rubycomplete_classes_in_global') && g:rubycomplete_classes_in_global")
+    return [] if allow_aggressive_load != '1' || loading_allowed != '1'
+  
+    buf = VIM::Buffer.current
+    eob = buf.length
+    ret = []
+    rg = 1..eob
+    re = eval( "/^\s*%s\s*([A-Za-z0-9_-]*)(\s*<\s*([A-Za-z0-9_:-]*))?\s*/" % type )
+
+    rg.each do |x|
+      if re.match( buf[x] )
+        next if type == "def" && eval( VIM::evaluate("s:IsPosInClassDef(%s)" % x) ) != nil
+        ret.push $1 
+      end
+    end
+
+    return ret  
+  end
+
+  def get_buffer_methods
+    return get_buffer_entity_list( "def" )
+  end
+
+  def get_buffer_classes
+    return get_buffer_entity_list( "class" )
+  end
+
+  def load_rails
+    allow_rails = VIM::evaluate("exists('g:rubycomplete_rails') && g:rubycomplete_rails")
+    return if allow_rails != '1'
+
+    buf_path = VIM::evaluate('expand("%:p")')
+    file_name = VIM::evaluate('expand("%:t")')
+    path = buf_path.gsub( file_name, '' )
+    path.gsub!( /\\/, "/" )
+    pup = [ "./", "../", "../../", "../../../", "../../../../" ]
+    pok = nil
+
+    pup.each do |sup|
+      tpok = "%s%sconfig" % [ path, sup ]
+      if File.exists?( tpok )
+        pok = tpok
+        break
+      end
+    end
+
+    return if pok == nil
+
+    bootfile = pok + "/boot.rb"
+    envfile = pok + "/environment.rb"
+    if File.exists?( bootfile ) && File.exists?( envfile )
       begin
-        methods = eval("#{receiver}.constants | #{receiver}.methods")
-      rescue Exception
-        methods = []
-      end
-      methods.grep(/^#{message}/).collect{|e| receiver + "::" + e}
-
-    when /^(:[^:.]+)\.([^.]*)$/ # Symbol
-      receiver = $1
-      message = Regexp.quote($2)
-      methods = Symbol.instance_methods(true)
-
-    when /^([0-9_]+(\.[0-9_]+)?(e[0-9]+)?)\.([^.]*)$/ # Numeric
-      receiver = $1
-      message = Regexp.quote($4)
-      begin
-        methods = eval(receiver).methods
-      rescue Exception
-        methods = []
-      end
-
-    when /^(\$[^.]*)$/ #global
-      methods = global_variables.grep(Regexp.new(Regexp.quote($1)))
-
-    when /^((\.?[^.]+)+)\.([^.]*)$/ # variable
-      receiver = $1
-      message = Regexp.quote($3)
-      load_buffer_class( receiver )
-
-      cv = eval("self.class.constants")
-      vartype = get_var_type( receiver )
-      if vartype != ''
-        load_buffer_class( vartype )
-
+        require bootfile
+        require envfile
         begin
-          methods = eval("#{vartype}.instance_methods")
-          variables = eval("#{vartype}.instance_variables")
+          require 'console_app'
+          require 'console_with_helpers'
         rescue Exception
+          # assume 1.0
         end
-      elsif (cv).include?(receiver)
-        # foo.func and foo is local var.
-        methods = eval("#{receiver}.methods")
-        vartype = receiver
-      elsif /^[A-Z]/ =~ receiver and /\./ !~ receiver
-        vartype = receiver
-        # Foo::Bar.func
-        begin
-          methods = eval("#{receiver}.methods")
-        rescue Exception
-        end
-      else
-        # func1.func2
-        ObjectSpace.each_object(Module){|m|
-          next if m.name != "IRB::Context" and
-            /^(IRB|SLex|RubyLex|RubyToken)/ =~ m.name
-          methods.concat m.instance_methods(false)
-        }
+        Rails::Initializer.run
+        VIM::command('let s:rubycomplete_rails_loaded = 1')
+      rescue Exception
+        VIM::evaluate( "s:ErrMsg('Error loading rails environment')" )
       end
-      variables += add_rails_columns( "#{vartype}" ) if vartype && vartype.length > 0
+    end
+  end
 
-    when /^\(?\s*[A-Za-z0-9:^@.%\/+*\(\)]+\.\.\.?[A-Za-z0-9:^@.%\/+*\(\)]+\s*\)?\.([^.]*)/
-      message = $1
-      methods = Range.instance_methods(true)
+  def get_rails_helpers
+    allow_rails = VIM::evaluate("exists('g:rubycomplete_rails') && g:rubycomplete_rails")
+    rails_loaded = VIM::evaluate('s:rubycomplete_rails_loaded')
+    return [] if allow_rails != '1' || rails_loaded != '1'
+    return @@RailsWords
+  end
 
-    when /^\.([^.]*)$/ # unknown(maybe String)
-      message = Regexp.quote($1)
-      methods = String.instance_methods(true)
+  def add_rails_columns( cls )
+    allow_rails = VIM::evaluate("exists('g:rubycomplete_rails') && g:rubycomplete_rails")
+    rails_loaded = VIM::evaluate('s:rubycomplete_rails_loaded')
+    return [] if allow_rails != '1' || rails_loaded != '1'
+    eval( "#{cls}.establish_connection" )
+    return [] unless eval( "#{cls}.ancestors.include?(ActiveRecord::Base).to_s" )
+    col = eval( "#{cls}.column_names" )
+    return col if col
+    return []
+  end
 
-  else
-    inclass = eval( VIM::evaluate("s:IsInClassDef()") )
+  def clean_sel(sel, msg)
+    sel.delete_if { |x| x == nil }
+    sel.uniq!
+    sel.grep(/^#{Regexp.quote(msg)}/) if msg != nil
+  end
 
-    if inclass != nil
-      classdef = "%s\n" % VIM::Buffer.current[ inclass.min ]
-      found = /^\s*class\s*([A-Za-z0-9_-]*)(\s*<\s*([A-Za-z0-9_:-]*))?\s*\n$/.match( classdef )
+  def get_rails_view_methods
+    allow_rails = VIM::evaluate("exists('g:rubycomplete_rails') && g:rubycomplete_rails")
+    rails_loaded = VIM::evaluate('s:rubycomplete_rails_loaded')
+    return [] if allow_rails != '1' || rails_loaded != '1'
 
-      if found != nil
+    buf_path = VIM::evaluate('expand("%:p")')
+    file_name = VIM::evaluate('expand("%:t")')
+    path = buf_path.gsub( file_name, '' )    
+
+    return [] unless /.*.{1}app.{1}views.{1}.*.{1}/.match( path )
+
+    clspl = File.basename( path ).camelize.pluralize
+    cls = clspl.singularize
+    ret = []
+    ret += eval( "#{cls}.instance_methods" )
+    ret += eval( "#{clspl}Helper.instance_methods" )
+    return ret
+  end
+
+  def self.get_completions(base)
+    b = VimRubyCompletion.new
+    b.get_completions base
+  end
+
+  def get_completions(base)
+    loading_allowed = VIM::evaluate("exists('g:rubycomplete_buffer_loading') && g:rubycomplete_buffer_loading")
+    if loading_allowed == '1'
+      load_requires
+      load_rails
+    end
+
+    input = VIM::Buffer.current.line
+    cpos = VIM::Window.current.cursor[1] - 1
+    input = input[0..cpos]
+    input += base
+    input.sub!(/.*[ \t\n\"\\'`><=;|&{(]/, '') # Readline.basic_word_break_characters
+    input.sub!(/self\./, '')
+
+    message = nil
+    receiver = nil
+    methods = []
+    variables = []
+    classes = []
+
+    case input
+      when /^(\/[^\/]*\/)\.([^.]*)$/ # Regexp
         receiver = $1
-        message = input
+        message = Regexp.quote($2)
+        methods = Regexp.instance_methods(true)
+
+      when /^([^\]]*\])\.([^.]*)$/ # Array
+        receiver = $1
+        message = Regexp.quote($2)
+        methods = Array.instance_methods(true)
+
+      when /^([^\}]*\})\.([^.]*)$/ # Proc or Hash
+        receiver = $1
+        message = Regexp.quote($2)
+        methods = Proc.instance_methods(true) | Hash.instance_methods(true)
+
+      when /^(:[^:.]*)$/ # Symbol
+        if Symbol.respond_to?(:all_symbols)
+          receiver = $1
+          message = $1.sub( /:/, '' )
+          methods = Symbol.all_symbols.collect{|s| s.id2name}
+          methods.delete_if { |c| c.match( /'/ ) }
+        end
+
+      when /^::([A-Z][^:\.\(]*)$/ # Absolute Constant or class methods
+        receiver = $1
+        methods = Object.constants
+        methods.grep(/^#{receiver}/).collect{|e| "::" + e}
+
+      when /^(((::)?[A-Z][^:.\(]*)+)::?([^:.]*)$/ # Constant or class methods
+        receiver = $1
+        message = Regexp.quote($4)
+        begin
+          methods = eval("#{receiver}.constants | #{receiver}.methods")
+        rescue Exception
+          methods = []
+        end
+        methods.grep(/^#{message}/).collect{|e| receiver + "::" + e}
+
+      when /^(:[^:.]+)\.([^.]*)$/ # Symbol
+        receiver = $1
+        message = Regexp.quote($2)
+        methods = Symbol.instance_methods(true)
+
+      when /^([0-9_]+(\.[0-9_]+)?(e[0-9]+)?)\.([^.]*)$/ # Numeric
+        receiver = $1
+        message = Regexp.quote($4)
+        begin
+          methods = eval(receiver).methods
+        rescue Exception
+          methods = []
+        end
+
+      when /^(\$[^.]*)$/ #global
+        methods = global_variables.grep(Regexp.new(Regexp.quote($1)))
+
+      when /^((\.?[^.]+)+)\.([^.]*)$/ # variable
+        receiver = $1
+        message = Regexp.quote($3)
         load_buffer_class( receiver )
-        begin
-          methods = eval( "#{receiver}.instance_methods" )
-          methods += get_rails_helpers
-          variables += add_rails_columns( "#{receiver}" )
-        rescue Exception
-          found = nil
+
+        cv = eval("self.class.constants")
+        vartype = get_var_type( receiver )
+        if vartype != ''
+          load_buffer_class( vartype )
+
+          begin
+            methods = eval("#{vartype}.instance_methods")
+            variables = eval("#{vartype}.instance_variables")
+          rescue Exception
+          end
+        elsif (cv).include?(receiver)
+          # foo.func and foo is local var.
+          methods = eval("#{receiver}.methods")
+          vartype = receiver
+        elsif /^[A-Z]/ =~ receiver and /\./ !~ receiver
+          vartype = receiver
+          # Foo::Bar.func
+          begin
+            methods = eval("#{receiver}.methods")
+          rescue Exception
+          end
+        else
+          # func1.func2
+          ObjectSpace.each_object(Module){|m|
+            next if m.name != "IRB::Context" and
+              /^(IRB|SLex|RubyLex|RubyToken)/ =~ m.name
+            methods.concat m.instance_methods(false)
+          }
         end
+        variables += add_rails_columns( "#{vartype}" ) if vartype && vartype.length > 0
+
+      when /^\(?\s*[A-Za-z0-9:^@.%\/+*\(\)]+\.\.\.?[A-Za-z0-9:^@.%\/+*\(\)]+\s*\)?\.([^.]*)/
+        message = $1
+        methods = Range.instance_methods(true)
+
+      when /^\.([^.]*)$/ # unknown(maybe String)
+        message = Regexp.quote($1)
+        methods = String.instance_methods(true)
+
+    else
+      inclass = eval( VIM::evaluate("s:IsInClassDef()") )
+
+      if inclass != nil
+        classdef = "%s\n" % VIM::Buffer.current[ inclass.min ]
+        found = /^\s*class\s*([A-Za-z0-9_-]*)(\s*<\s*([A-Za-z0-9_:-]*))?\s*\n$/.match( classdef )
+
+        if found != nil
+          receiver = $1
+          message = input
+          load_buffer_class( receiver )
+          begin
+            methods = eval( "#{receiver}.instance_methods" )
+            methods += get_rails_helpers
+            variables += add_rails_columns( "#{receiver}" )
+          rescue Exception
+            found = nil
+          end
+        end
+      end
+
+      if inclass == nil || found == nil
+        methods = get_buffer_methods
+        methods += get_rails_view_methods
+        classes = eval("self.class.constants")
+        classes += get_buffer_classes
+        message = receiver = input
       end
     end
 
-    if inclass == nil || found == nil
-      methods = get_buffer_methods
-      methods += get_rails_view_methods
-      classes = eval("self.class.constants")
-      classes += get_buffer_classes
-      message = receiver = input
+    methods = clean_sel( methods, message )
+    methods = (methods-Object.instance_methods)
+    variables = clean_sel( variables, message )
+    classes = clean_sel( classes, message )
+    valid = []
+    valid += methods.collect { |m| { :name => m, :type => 'f' } }
+    valid += variables.collect { |v| { :name => v, :type => 'v' } }
+    valid += classes.collect { |c| { :name => c, :type => 't' } }
+    valid.sort! { |x,y| x[:name] <=> y[:name] }
+
+    outp = ""
+
+    rg = 0..valid.length
+    rg.step(150) do |x|
+      stpos = 0+x
+      enpos = 150+x
+      valid[stpos..enpos].each { |c| outp += "{'word':'%s','item':'%s','kind':'%s'}," % [ c[:name], c[:name], c[:type] ] }
+      outp.sub!(/,$/, '')
+
+      VIM::command("call extend(g:rubycomplete_completions, [%s])" % outp)
+      outp = ""
     end
   end
 
-  methods = clean_sel( methods, message )
-  methods = (methods-Object.instance_methods)
-  variables = clean_sel( variables, message )
-  classes = clean_sel( classes, message )
-  valid = []
-  valid += methods.collect { |m| { :name => m, :type => 'f' } }
-  valid += variables.collect { |v| { :name => v, :type => 'v' } }
-  valid += classes.collect { |c| { :name => c, :type => 't' } }
-  valid.sort! { |x,y| x[:name] <=> y[:name] }
-
-  outp = ""
-
-  rg = 0..valid.length
-  rg.step(150) do |x|
-    stpos = 0+x
-    enpos = 150+x
-    valid[stpos..enpos].each { |c| outp += "{'word':'%s','item':'%s','kind':'%s'}," % [ c[:name], c[:name], c[:type] ] }
-    outp.sub!(/,$/, '')
-
-    VIM::command("call extend(g:rubycomplete_completions, [%s])" % outp)
-    outp = ""
-  end
-end
-
-# }}} ruby completion
+end # VimRubyCompletion
+# }}} ruby completion 
 RUBYEOF
 endfunction
 
