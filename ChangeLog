@@ -1,3 +1,7 @@
+2006-08-21  Mark Guzman  <segfault@hasno.info>
+	* autoload/rubycomplete.vim: modified the buffer loading code to prevent
+	syntax errors from stopping completion
+
 2006-07-12	Mark Guzman	 <segfault@hasno.info>
 	* autoload/rubycomplete.vim: added in-buffer method def handling. also
 	added an inital attempt at handling completion in a rails view
