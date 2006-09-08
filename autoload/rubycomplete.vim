@@ -5,7 +5,6 @@
 " URL:                  http://vim-ruby.rubyforge.org
 " Anon CVS:             See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
-" Version:              0.7
 " ----------------------------------------------------------------------------
 "
 " Ruby IRB/Complete author: Keiju ISHITSUKA(keiju@ishitsuka.com)
@@ -35,6 +34,9 @@ if !exists("g:rubycomplete_buffer_loading")
     let g:rubycomplete_classes_in_global = 0
 endif
 
+if !exists("g:rubycomplete_rails_proactive")
+    let g:rubycomplete_rails_proactive = 0
+endif
 
 " {{{ vim-side support functions
 function! s:ErrMsg(msg)
@@ -93,23 +95,27 @@ function! s:GetRubyVarType(v)
     let stopline = 1
     let vtp = ''
     let pos = getpos('.')
-    let [lnum,lcol] = searchpos('^\s*#\s*@var\s*'.a:v.'\>\s\+[^ \t]\+\s*$','nb',stopline)
+    let sstr = '^\s*#\s*@var\s*'.a:v.'\>\s\+[^ \t]\+\s*$'
+    let [lnum,lcol] = searchpos(sstr,'nb',stopline)
     if lnum != 0 && lcol != 0
         call setpos('.',pos)
         let str = getline(lnum)
-        let vtp = substitute(str,'^\s*#\s*@var\s*'.a:v.'\>\s\+\([^ \t]\+\)\s*$','\1','')
+        let vtp = substitute(str,sstr,'\1','')
         return vtp
     endif
     call setpos('.',pos)
+    let ctors = '\(now\|new\|open\|get_instance'
     if exists('g:rubycomplete_rails') && g:rubycomplete_rails == 1 && s:rubycomplete_rails_loaded == 1
-        let ctors = '\(now\|new\|open\|get_instance\|find\|create\)'
+        let ctors = ctors.'\|find\|create'
     else
-        let ctors = '\(now\|new\|open\|get_instance\)'
     endif
+    let ctors = ctors.'\)'
 
-    let [lnum,lcol] = searchpos(''.a:v.'\>\s*[+\-*/]*=\s*\([^ \t]\+.' . ctors .'\>\|[\[{"''/]\|%r{\|[A-Za-z0-9@:\-()]\+...\?\)','nb',stopline)
+    let fstr = '=\s*\([^ \t]\+.' . ctors .'\>\|[\[{"''/]\|%r{\|[A-Za-z0-9@:\-()\.]\+...\?\)'
+    let sstr = ''.a:v.'\>\s*[+\-*/]*'.fstr
+    let [lnum,lcol] = searchpos(sstr,'nb',stopline)
     if lnum != 0 && lcol != 0
-        let str = matchstr(getline(lnum),'=\s*\([^ \t]\+.' . ctors . '\>\|[\[{"''/]\|%r{\|[A-Za-z0-9@:\-()]\+...\?\)',lcol)
+        let str = matchstr(getline(lnum),fstr,lcol)
         let str = substitute(str,'^=\s*','','')
         call setpos('.',pos)
         if str == '"' || str == ''''
@@ -167,6 +173,7 @@ ruby << RUBYEOF
 # {{{ ruby completion
 class VimRubyCompletion
   # {{{ constants
+  @@debug = false
   @@RailsWords = [
         "has_many", "has_one",
         "belongs_to",
@@ -199,6 +206,11 @@ class VimRubyCompletion
 
 
   def load_requires
+    begin
+      require 'rubygems'
+    rescue Exception
+      #ignore?
+    end
     buf = VIM::Buffer.current
     enum = buf.line_number
     nums = Range.new( 1, enum )
@@ -254,8 +266,11 @@ class VimRubyCompletion
     nums.each do |x|
       if x != cur_line
         ln = buf[x]
-        classdef += "%s\n" % ln if /class|def\s+|include/.match(ln)
-        classdef += "end\n" if /def\s+/.match(ln)
+        if /(module|class|def|include)\s+/.match(ln)
+            classdef += "%s\n" % ln 
+            classdef += "end\n" if /def\s+/.match(ln)
+            dprint ln
+        end
       end
     end
     classdef += "end\n" if classdef.length > 1
@@ -269,6 +284,10 @@ class VimRubyCompletion
     else
       VIM::evaluate("s:GetRubyVarType('%s')" % receiver)
     end
+  end
+
+  def dprint( txt )
+    print txt if @@debug
   end
 
   def get_buffer_entity_list( type )
@@ -293,12 +312,24 @@ class VimRubyCompletion
     return ret  
   end
 
+  def get_buffer_modules
+    return get_buffer_entity_list( "modules" )
+  end
+
   def get_buffer_methods
     return get_buffer_entity_list( "def" )
   end
 
   def get_buffer_classes
     return get_buffer_entity_list( "class" )
+  end
+
+  def self.pre_load_rails
+    require 'thread'
+    Thread.new do
+        v = VimRubyCompletion.new
+        v.load_rails
+    end
   end
 
   def load_rails
@@ -353,10 +384,14 @@ class VimRubyCompletion
     allow_rails = VIM::evaluate("exists('g:rubycomplete_rails') && g:rubycomplete_rails")
     rails_loaded = VIM::evaluate('s:rubycomplete_rails_loaded')
     return [] if allow_rails != '1' || rails_loaded != '1'
-    eval( "#{cls}.establish_connection" )
-    return [] unless eval( "#{cls}.ancestors.include?(ActiveRecord::Base).to_s" )
-    col = eval( "#{cls}.column_names" )
-    return col if col
+    begin
+        eval( "#{cls}.establish_connection" )
+        return [] unless eval( "#{cls}.ancestors.include?(ActiveRecord::Base).to_s" )
+        col = eval( "#{cls}.column_names" )
+        return col if col
+    rescue
+        return []
+    end
     return []
   end
 
@@ -427,6 +462,7 @@ class VimRubyCompletion
         methods = Proc.instance_methods(true) | Hash.instance_methods(true)
 
       when /^(:[^:.]*)$/ # Symbol
+        dprint "symbol"
         if Symbol.respond_to?(:all_symbols)
           receiver = $1
           message = $1.sub( /:/, '' )
@@ -435,11 +471,13 @@ class VimRubyCompletion
         end
 
       when /^::([A-Z][^:\.\(]*)$/ # Absolute Constant or class methods
+        dprint "const or cls"
         receiver = $1
         methods = Object.constants
         methods.grep(/^#{receiver}/).collect{|e| "::" + e}
 
       when /^(((::)?[A-Z][^:.\(]*)+)::?([^:.]*)$/ # Constant or class methods
+        dprint "const or cls 2"
         receiver = $1
         message = Regexp.quote($4)
         begin
@@ -473,6 +511,7 @@ class VimRubyCompletion
 
         cv = eval("self.class.constants")
         vartype = get_var_type( receiver )
+        dprint "vartype: %s" % vartype
         if vartype != ''
           load_buffer_class( vartype )
 
@@ -480,6 +519,7 @@ class VimRubyCompletion
             methods = eval("#{vartype}.instance_methods")
             variables = eval("#{vartype}.instance_variables")
           rescue Exception
+            dprint "load_buffer_class err: %s" % $!
           end
         elsif (cv).include?(receiver)
           # foo.func and foo is local var.
@@ -536,8 +576,11 @@ class VimRubyCompletion
         methods += get_rails_view_methods
         classes = eval("self.class.constants")
         classes += get_buffer_classes
+        classes += get_buffer_modules
         message = receiver = input
       end
+
+      methods += Kernel.public_methods
     end
 
     methods = clean_sel( methods, message )
@@ -572,4 +615,9 @@ endfunction
 let s:rubycomplete_rails_loaded = 0
 
 call s:DefRuby()
+
+
+if g:rubycomplete_rails_proactive == 1
+    execute "ruby VimRubyCompletion.pre_load_rails"
+endif
 " vim:tw=78:sw=4:ts=8:et:fdm=marker:ft=vim:norl:
