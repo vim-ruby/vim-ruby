@@ -1,3 +1,7 @@
+2006-09-07  Mark Guzman	 <segfault@hasno.info>
+	* autoload/rubycomplete.vim: autoload rubygems if possible. added
+	debugging print. clean up the buffer loading code a bit
+
 2006-08-21  Mark Guzman  <segfault@hasno.info>
 	* autoload/rubycomplete.vim: modified the buffer loading code to prevent
 	syntax errors from stopping completion
