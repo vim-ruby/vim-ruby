@@ -1,10 +1,11 @@
 " Vim completion script
 " Language:             Ruby
 " Maintainer:           Mark Guzman <segfault@hasno.info>
-" Info:                 $Id: rubycomplete.vim,v 1.36 2006/09/08 02:59:25 segy Exp $
+" Info:                 $Id: rubycomplete.vim,v 1.37 2006/09/19 04:10:32 segy Exp $
 " URL:                  http://vim-ruby.rubyforge.org
 " Anon CVS:             See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
+" Maintainer Version:   0.7
 " ----------------------------------------------------------------------------
 "
 " Ruby IRB/Complete author: Keiju ISHITSUKA(keiju@ishitsuka.com)
@@ -88,7 +89,7 @@ function! s:IsPosInClassDef(pos)
         let ret = snum . '..' . enum
     endif
 
-    return ret   
+    return ret
 endfunction
 
 function! s:GetRubyVarType(v)
@@ -171,14 +172,15 @@ endfunction
 function! s:DefRuby()
 ruby << RUBYEOF
 # {{{ ruby completion
+
+begin
+    require 'rubygems'
+rescue Exception
+    #ignore?
+end
 class VimRubyCompletion
   # {{{ constants
   @@debug = false
-  @@RailsWords = [
-        "has_many", "has_one",
-        "belongs_to",
-      ]
-
   @@ReservedWords = [
         "BEGIN", "END",
         "alias", "and",
@@ -206,11 +208,6 @@ class VimRubyCompletion
 
 
   def load_requires
-    begin
-      require 'rubygems'
-    rescue Exception
-      #ignore?
-    end
     buf = VIM::Buffer.current
     enum = buf.line_number
     nums = Range.new( 1, enum )
@@ -266,8 +263,8 @@ class VimRubyCompletion
     nums.each do |x|
       if x != cur_line
         ln = buf[x]
-        if /(module|class|def|include)\s+/.match(ln)
-            classdef += "%s\n" % ln 
+        if /^\s*(module|class|def|include)\s+/.match(ln)
+            classdef += "%s\n" % ln
             classdef += "end\n" if /def\s+/.match(ln)
             dprint ln
         end
@@ -295,7 +292,7 @@ class VimRubyCompletion
     loading_allowed = VIM::evaluate("exists('g:rubycomplete_buffer_loading') && g:rubycomplete_buffer_loading")
     allow_aggressive_load = VIM::evaluate("exists('g:rubycomplete_classes_in_global') && g:rubycomplete_classes_in_global")
     return [] if allow_aggressive_load != '1' || loading_allowed != '1'
-  
+
     buf = VIM::Buffer.current
     eob = buf.length
     ret = []
@@ -305,11 +302,11 @@ class VimRubyCompletion
     rg.each do |x|
       if re.match( buf[x] )
         next if type == "def" && eval( VIM::evaluate("s:IsPosInClassDef(%s)" % x) ) != nil
-        ret.push $1 
+        ret.push $1
       end
     end
 
-    return ret  
+    return ret
   end
 
   def get_buffer_modules
@@ -324,13 +321,6 @@ class VimRubyCompletion
     return get_buffer_entity_list( "class" )
   end
 
-  def self.pre_load_rails
-    require 'thread'
-    Thread.new do
-        v = VimRubyCompletion.new
-        v.load_rails
-    end
-  end
 
   def load_rails
     allow_rails = VIM::evaluate("exists('g:rubycomplete_rails') && g:rubycomplete_rails")
@@ -338,23 +328,38 @@ class VimRubyCompletion
 
     buf_path = VIM::evaluate('expand("%:p")')
     file_name = VIM::evaluate('expand("%:t")')
-    path = buf_path.gsub( file_name, '' )
-    path.gsub!( /\\/, "/" )
-    pup = [ "./", "../", "../../", "../../../", "../../../../" ]
-    pok = nil
+    vim_dir = VIM::evaluate('getcwd()')
+    file_dir = buf_path.gsub( file_name, '' )
+    file_dir.gsub!( /\\/, "/" )
+    vim_dir.gsub!( /\\/, "/" )
+    vim_dir << "/"
+    dirs = [ vim_dir, file_dir ]
+    sdirs = [ "", "./", "../", "../../", "../../../", "../../../../" ]
+    rails_base = nil
 
-    pup.each do |sup|
-      tpok = "%s%sconfig" % [ path, sup ]
-      if File.exists?( tpok )
-        pok = tpok
-        break
+    dirs.each do |dir|
+      sdirs.each do |sub|
+        trail = "%s%s" % [ dir, sub ]
+        tcfg = "%sconfig" % trail
+
+        if File.exists?( tcfg )
+          rails_base = trail
+          break
+        end
       end
+      break if rails_base
     end
 
-    return if pok == nil
+    return if rails_base == nil
+    $:.push rails_base unless $:.index( rails_base )
 
-    bootfile = pok + "/boot.rb"
-    envfile = pok + "/environment.rb"
+    rails_config = rails_base + "config/"
+    rails_lib = rails_base + "lib/"
+    $:.push rails_config unless $:.index( rails_config )
+    $:.push rails_lib unless $:.index( rails_lib )
+
+    bootfile = rails_config + "boot.rb"
+    envfile = rails_config + "environment.rb"
     if File.exists?( bootfile ) && File.exists?( envfile )
       begin
         require bootfile
@@ -363,11 +368,13 @@ class VimRubyCompletion
           require 'console_app'
           require 'console_with_helpers'
         rescue Exception
+          dprint "Rails 1.1+ Error %s" % $!
           # assume 1.0
         end
-        Rails::Initializer.run
+        eval( "Rails::Initializer.run" )
         VIM::command('let s:rubycomplete_rails_loaded = 1')
       rescue Exception
+        dprint "Rails Error %s" % $!
         VIM::evaluate( "s:ErrMsg('Error loading rails environment')" )
       end
     end
@@ -377,7 +384,31 @@ class VimRubyCompletion
     allow_rails = VIM::evaluate("exists('g:rubycomplete_rails') && g:rubycomplete_rails")
     rails_loaded = VIM::evaluate('s:rubycomplete_rails_loaded')
     return [] if allow_rails != '1' || rails_loaded != '1'
-    return @@RailsWords
+
+    buf_path = VIM::evaluate('expand("%:p")')
+    buf_path.gsub!( /\\/, "/" )
+    path_elm = buf_path.split( "/" )
+    i = path_elm.index( "app" )
+
+    return [] unless i
+    i += 1
+    type = path_elm[i]
+    type.downcase!
+
+    ret = []
+    case type
+      when "views"
+        ret += ActionView::Base.instance_methods
+        ret += ActionView::Base.methods
+      when "controllers"
+        ret += ActionController::Base.instance_methods
+        ret += ActionController::Base.methods
+      when "models"
+        ret += ActiveRecord::Base.instance_methods
+        ret += ActiveRecord::Base.methods
+    end
+
+    return ret
   end
 
   def add_rails_columns( cls )
@@ -407,13 +438,16 @@ class VimRubyCompletion
     return [] if allow_rails != '1' || rails_loaded != '1'
 
     buf_path = VIM::evaluate('expand("%:p")')
-    file_name = VIM::evaluate('expand("%:t")')
-    path = buf_path.gsub( file_name, '' )    
+    buf_path.gsub!( /\\/, "/" )
+    pelm = buf_path.split( "/" )
+    idx = pelm.index( "views" )
 
-    return [] unless /.*.{1}app.{1}views.{1}.*.{1}/.match( path )
+    return [] unless idx
+    idx += 1
 
-    clspl = File.basename( path ).camelize.pluralize
+    clspl = pelm[idx].camelize.pluralize
     cls = clspl.singularize
+
     ret = []
     ret += eval( "#{cls}.instance_methods" )
     ret += eval( "#{clspl}Helper.instance_methods" )
@@ -573,6 +607,7 @@ class VimRubyCompletion
 
       if inclass == nil || found == nil
         methods = get_buffer_methods
+        methods += get_rails_helpers
         methods += get_rails_view_methods
         classes = eval("self.class.constants")
         classes += get_buffer_classes
@@ -608,7 +643,7 @@ class VimRubyCompletion
   end
 
 end # VimRubyCompletion
-# }}} ruby completion 
+# }}} ruby completion
 RUBYEOF
 endfunction
 
@@ -617,7 +652,4 @@ let s:rubycomplete_rails_loaded = 0
 call s:DefRuby()
 
 
-if g:rubycomplete_rails_proactive == 1
-    execute "ruby VimRubyCompletion.pre_load_rails"
-endif
 " vim:tw=78:sw=4:ts=8:et:fdm=marker:ft=vim:norl:

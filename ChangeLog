@@ -1,3 +1,8 @@
+2006-09-19	Mark Guzman	 <segfault@hasno.info>
+	* autoload/rubycomplete.vim: improved rails view support. included
+	rails helpers in rails completions. kernel elements are also included
+	in default completions. improved the handling of "broken" code.
+
 2006-09-07  Mark Guzman	 <segfault@hasno.info>
 	* autoload/rubycomplete.vim: autoload rubygems if possible. added
 	debugging print. clean up the buffer loading code a bit
