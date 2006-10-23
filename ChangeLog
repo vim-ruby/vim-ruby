@@ -1,9 +1,14 @@
-2006-09-19	Mark Guzman	 <segfault@hasno.info>
+2006-10-24  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* syntax/eruby.vim: recognise '-' trim mode block delimiters (Nikolai
+	Weibull)
+
+2006-09-19  Mark Guzman  <segfault@hasno.info>
 	* autoload/rubycomplete.vim: improved rails view support. included
 	rails helpers in rails completions. kernel elements are also included
 	in default completions. improved the handling of "broken" code.
 
-2006-09-07  Mark Guzman	 <segfault@hasno.info>
+2006-09-07  Mark Guzman  <segfault@hasno.info>
 	* autoload/rubycomplete.vim: autoload rubygems if possible. added
 	debugging print. clean up the buffer loading code a bit
 
@@ -11,7 +16,8 @@
 	* autoload/rubycomplete.vim: modified the buffer loading code to prevent
 	syntax errors from stopping completion
 
-2006-07-12	Mark Guzman	 <segfault@hasno.info>
+2006-07-12  Mark Guzman  <segfault@hasno.info>
+
 	* autoload/rubycomplete.vim: added in-buffer method def handling. also
 	added an inital attempt at handling completion in a rails view
 
