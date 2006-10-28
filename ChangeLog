@@ -1,18 +1,26 @@
+2006-10-28  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
+
+	* syntax/ruby.vim: remove accidently included nextgroup arg in
+	'heredoc' syntax group definitions 
+
 2006-10-24  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* syntax/eruby.vim: recognise '-' trim mode block delimiters (Nikolai
 	Weibull)
 
 2006-09-19  Mark Guzman  <segfault@hasno.info>
+
 	* autoload/rubycomplete.vim: improved rails view support. included
 	rails helpers in rails completions. kernel elements are also included
 	in default completions. improved the handling of "broken" code.
 
 2006-09-07  Mark Guzman  <segfault@hasno.info>
+
 	* autoload/rubycomplete.vim: autoload rubygems if possible. added
 	debugging print. clean up the buffer loading code a bit
 
 2006-08-21  Mark Guzman  <segfault@hasno.info>
+
 	* autoload/rubycomplete.vim: modified the buffer loading code to prevent
 	syntax errors from stopping completion
 
@@ -36,13 +44,13 @@
 2006-06-19  Mark Guzman  <segfault@hasno.info>
 
 	* autoload/rubycomplete.vim: modified to change the default
-	buffer loading behavior. buffers are no longer loaded/parsed 
-	automatically. enabling this feature requires setting the 
+	buffer loading behavior. buffers are no longer loaded/parsed
+	automatically. enabling this feature requires setting the
 	variable g:rubycomplete_buffer_loading. this was done as
 	a security measure, the default vim7 install should not
 	execute any code.
 
-	* autoload/rubycomplete.vim: symbol completion now works. i 
+	* autoload/rubycomplete.vim: symbol completion now works. i
 	tested with global symbols as well as rails symbols.
 
 2006-05-26  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
@@ -51,7 +59,7 @@
 
 2006-05-25  Mark Guzman  <segfault@hasno.info>
 
-	* autoload/rubycomplete.vim: added rails column support. 
+	* autoload/rubycomplete.vim: added rails column support.
 	switched to dictionary with type specifiers for methods,
 	classes, and variables. started/added rails 1.0 support.
 	added rails database connection support.
@@ -74,8 +82,8 @@
 
 2006-05-11  Mark Guzman <segfault@hasno.info>
 
-	* autoload/rubycomplete.vim: added checks for the existance of 
-	global config variables per dkearns' patch. refined error messages 
+	* autoload/rubycomplete.vim: added checks for the existance of
+	global config variables per dkearns' patch. refined error messages
 	to use vim error style
 
 2006-05-11  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
@@ -107,8 +115,8 @@
 
 2006-05-07  Mark Guzman  <segfault@hasno.info>
 
-	* autoload/rubycomplete.vim: Switched to script local vars, 
-	per patch from dkearns. removed secondary array clause. applied 
+	* autoload/rubycomplete.vim: Switched to script local vars,
+	per patch from dkearns. removed secondary array clause. applied
 	patch provided by dkearns, fixes input handling.
 
 2006-05-07  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
@@ -129,40 +137,40 @@
 2006-04-28  Mark Guzman  <segfault@hasno.info>
 
 	* autoload/rubycomplete.vim: started adding raw range support
-	1..2.<C-x><C-o>. fixed the symbol completion bug, where you 
+	1..2.<C-x><C-o>. fixed the symbol completion bug, where you
 	would end up with a double colon.
 
 2006-04-27  Mark Guzman  <segfault@hasno.info>
 
-	* autoload/rubycomplete.vim: added variable type detection for 
+	* autoload/rubycomplete.vim: added variable type detection for
 	Ranges. added handlers for string completion: "test".<C-x><C-o>
 
 2006-04-26  Mark Guzman  <segfault@hasno.info>
 
-	* autoload/rubycomplete.vim: removed cWORD expansion in favor of 
-	grabbing the whole line. added support for completing variables 
+	* autoload/rubycomplete.vim: removed cWORD expansion in favor of
+	grabbing the whole line. added support for completing variables
 	inside operations and parameter lists. removed excess cruft code.
-	removed commented code.   
+	removed commented code.
 
-	* autoload/rubycomplete.vim: fixed the truncation code. this fixes 
-	f.chomp! <C-x><C-o> returning chomp! again, where it should provide 
+	* autoload/rubycomplete.vim: fixed the truncation code. this fixes
+	f.chomp! <C-x><C-o> returning chomp! again, where it should provide
 	the global list. It also fixes f.foo( a.B, b.<C-x><C-o> returning a's
 	list when it should return b's.
-	
+
 2006-04-26  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* autoload/rubycomplete.vim: set 'expandtab' properly
 
 2006-04-25  Mark Guzman  <segfault@hasno.info>
 
-	* autoload/rubycomplete.vim: started stripping out preceding 
-	assigment operation stuff. "x = A", would attempt to complete 
-	A using the global list. I've started removing old/commented 
+	* autoload/rubycomplete.vim: started stripping out preceding
+	assigment operation stuff. "x = A", would attempt to complete
+	A using the global list. I've started removing old/commented
 	code in an effort to slim down the file.
 
 2006-04-25  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
-	* autoload/rubycomplete.vim: remove excess whitespace 
+	* autoload/rubycomplete.vim: remove excess whitespace
 
 	* indent/ruby.vim: make sure 'smartindent' is disabled
 
@@ -189,7 +197,7 @@
 	controlling the addition of classes defined in the current buffer to
 	the global completion list
 
-	* autoload/rubycomplete.vim: the global variable list is now sorted 
+	* autoload/rubycomplete.vim: the global variable list is now sorted
 	and dups are removed
 
 	* autoload/rubycomplete.vim: fixed a bug with rails support, where
