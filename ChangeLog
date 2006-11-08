@@ -1,3 +1,7 @@
+2006-11-08  Tim Pope <vim@tpope.info>
+
+	* indent/eruby.vim: new indenting algorithm
+
 2006-11-08  Doug Kearns  <djkea2@gus.gscit.monash.edu.au>
 
 	* syntax/ruby.vim: don't include trailing whitespace in matches for
