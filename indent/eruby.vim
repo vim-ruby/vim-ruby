@@ -1,7 +1,7 @@
 " Vim indent file
 " Language:		eRuby
 " Maintainer:		Tim Pope <vimNOSPAM@tpope.info>
-" Info:			$Id: eruby.vim,v 1.5 2006/11/08 17:09:35 tpope Exp $
+" Info:			$Id: eruby.vim,v 1.6 2006/11/09 06:02:10 tpope Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -19,7 +19,7 @@ unlet! b:did_indent
 let b:did_indent = 1
 
 setlocal indentexpr=GetErubyIndent(v:lnum)
-setlocal indentkeys=o,O,*<Return>,<>>,{,},!^F,=end,=else,=elsif,=rescue,=ensure,=when
+setlocal indentkeys=o,O,*<Return>,<>>,{,},0),0],o,O,!^F,=end,=else,=elsif,=rescue,=ensure,=when
 
 " Only define the function once.
 if exists("*GetErubyIndent")
@@ -39,12 +39,12 @@ function! GetErubyIndent(lnum)
   let lnum = prevnonblank(a:lnum-1)
   let line = getline(lnum)
   let cline = getline(a:lnum)
-  if cline =~# '<%\s*\%(end\|else\|\%(elsif\|rescue\|ensure\|case\|when\).\{-\}\)\s*-\=%>'
+  if cline =~# '<%\s*\%(end\|else\|\%(ensure\|rescue\|elsif\|when\).\{-\}\)\s*\%(-\=%>\|$\)'
     let ind = ind - &sw
   endif
   if line =~# '\<do\%(\s*|[^|]*|\)\=\s*-\=%>'
     let ind = ind + &sw
-  elseif line =~# '<%\s*\%(if\|unless\|for\|while\|until\|def\|class\|module\|begin\|else\|elsif\|rescue\|ensure\|when\)\>.*%>'
+  elseif line =~# '<%\s*\%(module\|class\|def\|if\|for\|while\|until\|else\|elsif\|case\|when\|unless\|begin\|ensure\|rescue\)\>.*%>'
     let ind = ind + &sw
   endif
   if line =~# '^\s*<%[=#]\=\s*$'
