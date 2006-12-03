@@ -1,15 +1,25 @@
+2006-12-03  Doug Kearns  <dougkearns@gmail.com>
+
+	* CONTRIBUTORS: add tpope
+
+2006-12-01  Mark Guzman <segfault@hasno.info>
+
+	* ftplugin/ruby.vim: changed the path detection code to use the
+	built-in interpreter if it's available under windows
+
 2006-11-30  Mark Guzman <segfault@hasno.info>
-	* rubycomplete.vim: Display constants as defines. Added a rails
-	preloading option. Fixed a bug detecting ranges defined with %r{.
-	Added support for completion in rails migrations. Will now 
+
+	* autoload/rubycomplete.vim: Display constants as defines. Added a
+	rails preloading option. Fixed a bug detecting ranges defined with
+	%r{.  Added support for completion in rails migrations. Will now
 	fail-over to syntax completion automatically, if the vim isn't built
-	with ruby support. Added support for class detection using ObjectSpace.
-	Tweeked buffer searching code to find modules/classes reliably in more
-	cases.
+	with ruby support. Added support for class detection using
+	ObjectSpace.  Tweeked buffer searching code to find modules/classes
+	reliably in more cases.
 
 2006-11-09  Tim Pope  <vim@tpope.info>
 
-	* indent.ruby.vim: Only increase one 'shiftwidth' after a line ending
+	* indent/ruby.vim: Only increase one 'shiftwidth' after a line ending
 	with an open parenthesis.
 
 2006-11-08  Tim Pope  <vim@tpope.info>
