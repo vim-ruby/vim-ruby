@@ -47,7 +47,7 @@ function! GetErubyIndent(lnum)
   elseif line =~# '<%\s*\%(module\|class\|def\|if\|for\|while\|until\|else\|elsif\|case\|when\|unless\|begin\|ensure\|rescue\)\>.*%>'
     let ind = ind + &sw
   endif
-  if line =~# '^\s*<%[=#]\=\s*$'
+  if line =~# '^\s*<%[=#]\=\s*$' && cline !~# '^\s*end\>'
     let ind = ind + &sw
   endif
   if cline =~# '^\s*-\=%>\s*$'
