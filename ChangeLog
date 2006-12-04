@@ -1,3 +1,8 @@
+2006-12-04  Tim Pope  <vim@tpope.info>
+
+	* indent/eruby.vim: Special case for "end" on first line of multi-line
+	eRuby block.
+
 2006-12-03  Doug Kearns  <dougkearns@gmail.com>
 
 	* CONTRIBUTORS: add tpope
