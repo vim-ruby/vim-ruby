@@ -1,7 +1,7 @@
 " Vim completion script
 " Language:             Ruby
 " Maintainer:           Mark Guzman <segfault@hasno.info>
-" Info:                 $Id: rubycomplete.vim,v 1.38 2006/11/30 07:45:28 segy Exp $
+" Info:                 $Id: rubycomplete.vim,v 1.39 2006/12/13 21:20:47 segy Exp $
 " URL:                  http://vim-ruby.rubyforge.org
 " Anon CVS:             See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
@@ -149,7 +149,7 @@ function! s:GetRubyVarType(v)
     endif
     let ctors = ctors.'\)'
 
-    let fstr = '=\s*\([^ \t]\+.' . ctors .'\>\|[\[{"''/]\|%w\[\|%r{\|[A-Za-z0-9@:\-()\.]\+...\?\)'
+    let fstr = '=\s*\([^ \t]\+.' . ctors .'\>\|[\[{"''/]\|%[xwQqr][(\[{@]\|[A-Za-z0-9@:\-()\.]\+...\?\|lambda\|&\)'
     let sstr = ''.a:v.'\>\s*[+\-*/]*'.fstr
     let [lnum,lcol] = searchpos(sstr,'nb',stopline)
     if lnum != 0 && lcol != 0
@@ -157,7 +157,7 @@ function! s:GetRubyVarType(v)
         let str = substitute(str,'^=\s*','','')
 
         call setpos('.',pos)
-        if str == '"' || str == ''''
+        if str == '"' || str == '''' || stridx(tolower(str), '%q[') != -1
             return 'String'
         elseif str == '[' || stridx(str, '%w[') != -1
             return 'Array'
@@ -167,6 +167,8 @@ function! s:GetRubyVarType(v)
             return 'Regexp'
         elseif strlen(str) >= 4 && stridx(str,'..') != -1
             return 'Range'
+        elseif stridx(str, 'lambda') != -1 || str == '&'
+            return 'Proc'
         elseif strlen(str) > 4
             let l = stridx(str,'.')
             return str[0:l-1]
@@ -737,11 +739,13 @@ class VimRubyCompletion
         dprint "inclass == nil"
         methods = get_buffer_methods
         methods += get_rails_view_methods
+
         cls_const = Class.constants
         constants = cls_const.select { |c| /^[A-Z_-]+$/.match( c ) }
         classes = eval("self.class.constants") - constants
         classes += get_buffer_classes
         classes += get_buffer_modules
+
         include_objectspace = VIM::evaluate("exists('g:rubycomplete_include_objectspace') && g:rubycomplete_include_objectspace")
         ObjectSpace.each_object(Class) { |cls| classes << cls.to_s } if include_objectspace == "1"
         message = receiver = input
@@ -757,9 +761,11 @@ class VimRubyCompletion
     methods = (methods-Object.instance_methods) if include_object == "0"
     rbcmeth = (VimRubyCompletion.instance_methods-Object.instance_methods) # lets remove those rubycomplete methods
     methods = (methods-rbcmeth)
+
     variables = clean_sel( variables, message )
     classes = clean_sel( classes, message ) - ["VimRubyCompletion"]
     constants = clean_sel( constants, message )
+
     valid = []
     valid += methods.collect { |m| { :name => m, :type => 'm' } }
     valid += variables.collect { |v| { :name => v, :type => 'v' } }
