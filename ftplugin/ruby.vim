@@ -1,7 +1,7 @@
 " Vim filetype plugin
 " Language:             Ruby
 " Maintainer:           Gavin Sinclair <gsinclair at gmail.com>
-" Info:                 $Id: ruby.vim,v 1.27 2006/12/07 14:54:47 segy Exp $
+" Info:                 $Id: ruby.vim,v 1.28 2007/01/22 19:48:01 tpope Exp $
 " URL:                  http://vim-ruby.rubyforge.org
 " Anon CVS:             See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
@@ -65,7 +65,7 @@ setlocal comments=:#
 setlocal commentstring=#\ %s
 
 if !exists("s:rubypath")
-  if has("ruby")
+  if has("ruby") && has("win32")
     ruby VIM::command( 'let s:rubypath = "%s"' % ($: + begin; require %q{rubygems}; Gem.all_load_paths.sort.uniq; rescue LoadError; []; end).join(%q{,}) )
     let s:rubypath = '.,' . substitute(s:rubypath, '\%(^\|,\)\.\%(,\|$\)', ',,', '')
   elseif executable("ruby")
