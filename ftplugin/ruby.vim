@@ -90,8 +90,9 @@ if has("gui_win32") && !exists("b:browsefilter")
                      \ "All Files (*.*)\t*.*\n"
 endif
 
-let b:undo_ftplugin = "setl fo< inc< inex< sua< def< com< cms< path< ofu<"
+let b:undo_ftplugin = "setl fo< inc< inex< sua< def< com< cms< path<"
       \ "| unlet! b:browsefilter b:match_ignorecase b:match_words b:match_skip"
+      \ "| if exists('&ofu') && has('ruby') | setl ofu< | endif"
 
 let &cpo = s:cpo_save
 unlet s:cpo_save
