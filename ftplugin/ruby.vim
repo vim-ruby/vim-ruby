@@ -1,7 +1,7 @@
 " Vim filetype plugin
 " Language:             Ruby
 " Maintainer:           Gavin Sinclair <gsinclair at gmail.com>
-" Info:                 $Id: ruby.vim,v 1.28 2007/01/22 19:48:01 tpope Exp $
+" Info:                 $Id: ruby.vim,v 1.29 2007/02/10 09:38:43 dkearns Exp $
 " URL:                  http://vim-ruby.rubyforge.org
 " Anon CVS:             See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
@@ -90,8 +90,9 @@ if has("gui_win32") && !exists("b:browsefilter")
                      \ "All Files (*.*)\t*.*\n"
 endif
 
-let b:undo_ftplugin = "setl fo< inc< inex< sua< def< com< cms< path< ofu<"
+let b:undo_ftplugin = "setl fo< inc< inex< sua< def< com< cms< path<"
       \ "| unlet! b:browsefilter b:match_ignorecase b:match_words b:match_skip"
+      \ "| if exists('&ofu') && has('ruby') | setl ofu< | endif"
 
 let &cpo = s:cpo_save
 unlet s:cpo_save
