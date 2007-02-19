@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		Ruby
 " Maintainer:		Doug Kearns <dougkearns@gmail.com>
-" Info:			$Id: ruby.vim,v 1.95 2006/11/08 13:01:57 dkearns Exp $
+" Info:			$Id: ruby.vim,v 1.96 2007/02/19 01:49:49 tpope Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -42,7 +42,7 @@ endif
 " Expression Substitution and Backslash Notation
 syn match rubyEscape		"\\\\\|\\[abefnrstv]\|\\\o\{1,3}\|\\x\x\{1,2}"								contained display
 syn match rubyEscape		"\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)"	contained display
-syn match rubyInterpolation	"#{[^}]*}"				contained
+syn region rubyInterpolated	matchgroup=rubyInterpolation start="#{" end="}" contains=TOP						contained
 syn match rubyInterpolation	"#\%(\$\|@@\=\)\w\+"			contained display
 syn match rubyNoInterpolation	"\\#{[^}]*}"				contained
 syn match rubyNoInterpolation	"\\#\%(\$\|@@\=\)\w\+"			contained display
@@ -54,7 +54,7 @@ syn region rubyNestedCurlyBraces	start="{"	end="}"		skip="\\\\\|\\}"	transparent
 syn region rubyNestedAngleBrackets	start="<"	end=">"		skip="\\\\\|\\>"	transparent contained contains=@rubyStringSpecial,rubyNestedAngleBrackets,rubyDelimEscape
 syn region rubyNestedSquareBrackets	start="\["	end="\]"	skip="\\\\\|\\\]"	transparent contained contains=@rubyStringSpecial,rubyNestedSquareBrackets,rubyDelimEscape
 
-syn cluster rubyStringSpecial		contains=rubyInterpolation,rubyNoInterpolation,rubyEscape
+syn cluster rubyStringSpecial		contains=rubyInterpolation,rubyInterpolated,rubyNoInterpolation,rubyEscape
 syn cluster rubyExtendedStringSpecial	contains=@rubyStringSpecial,rubyNestedParentheses,rubyNestedCurlyBraces,rubyNestedAngleBrackets,rubyNestedSquareBrackets
 
 " Numbers and ASCII Codes
@@ -97,8 +97,8 @@ syn match rubyPredefinedConstant "\%(\%(\.\@<!\.\)\@<!\|::\)\_s*\zs\%(RUBY_VERSI
 "syn match rubyPredefinedConstant "\%(::\)\=\zs\%(NotImplementError\)\>"
 
 " Normal Regular Expression
-syn region rubyString matchgroup=rubyStringDelimiter start="\%(\%(^\|\<\%(and\|or\|while\|until\|unless\|if\|elsif\|when\|not\|then\)\|[;\~=!|&(,[>]\)\s*\)\@<=/" end="/[iomx]*" skip="\\\\\|\\/" contains=@rubyStringSpecial fold
-syn region rubyString matchgroup=rubyStringDelimiter start="\%(\<\%(split\|scan\|gsub\|sub\)\s*\)\@<=/" end="/[iomx]*" skip="\\\\\|\\/" contains=@rubyStringSpecial fold
+syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="\%(\%(^\|\<\%(and\|or\|while\|until\|unless\|if\|elsif\|when\|not\|then\)\|[;\~=!|&(,[>]\)\s*\)\@<=/" end="/[iomx]*" skip="\\\\\|\\/" contains=@rubyStringSpecial fold
+syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="\%(\<\%(split\|scan\|gsub\|sub\)\s*\)\@<=/" end="/[iomx]*" skip="\\\\\|\\/" contains=@rubyStringSpecial fold
 
 " Normal String and Shell Command Output
 syn region rubyString matchgroup=rubyStringDelimiter start="\"" end="\"" skip="\\\\\|\\\"" contains=@rubyStringSpecial fold
@@ -106,11 +106,11 @@ syn region rubyString matchgroup=rubyStringDelimiter start="'"	end="'"  skip="\\
 syn region rubyString matchgroup=rubyStringDelimiter start="`"	end="`"  skip="\\\\\|\\`"  contains=@rubyStringSpecial fold
 
 " Generalized Regular Expression
-syn region rubyString matchgroup=rubyStringDelimiter start="%r\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)"	end="\z1[iomx]*" skip="\\\\\|\\\z1" contains=@rubyStringSpecial fold
-syn region rubyString matchgroup=rubyStringDelimiter start="%r{"				end="}[iomx]*"	 skip="\\\\\|\\}"   contains=@rubyStringSpecial,rubyNestedCurlyBraces,rubyDelimEscape fold
-syn region rubyString matchgroup=rubyStringDelimiter start="%r<"				end=">[iomx]*"	 skip="\\\\\|\\>"   contains=@rubyStringSpecial,rubyNestedAngleBrackets,rubyDelimEscape fold
-syn region rubyString matchgroup=rubyStringDelimiter start="%r\["				end="\][iomx]*"	 skip="\\\\\|\\\]"  contains=@rubyStringSpecial,rubyNestedSquareBrackets,rubyDelimEscape fold
-syn region rubyString matchgroup=rubyStringDelimiter start="%r("				end=")[iomx]*"	 skip="\\\\\|\\)"   contains=@rubyStringSpecial,rubyNestedParentheses,rubyDelimEscape fold
+syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)"	end="\z1[iomx]*" skip="\\\\\|\\\z1" contains=@rubyStringSpecial fold
+syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r{"				end="}[iomx]*"	 skip="\\\\\|\\}"   contains=@rubyStringSpecial,rubyNestedCurlyBraces,rubyDelimEscape fold
+syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r<"				end=">[iomx]*"	 skip="\\\\\|\\>"   contains=@rubyStringSpecial,rubyNestedAngleBrackets,rubyDelimEscape fold
+syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r\["				end="\][iomx]*"	 skip="\\\\\|\\\]"  contains=@rubyStringSpecial,rubyNestedSquareBrackets,rubyDelimEscape fold
+syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r("				end=")[iomx]*"	 skip="\\\\\|\\)"   contains=@rubyStringSpecial,rubyNestedParentheses,rubyDelimEscape fold
 
 " Generalized Single Quoted String, Symbol and Array of Strings
 syn region rubyString matchgroup=rubyStringDelimiter start="%[qsw]\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1" fold
@@ -150,10 +150,10 @@ end
 
 " Expensive Mode - colorize *end* according to opening statement
 if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
-  syn region rubyFunction matchgroup=rubyDefine start="\<def\(\s\+\)\@="    end="\%(\s*\%(\s\|(\|;\|$\|#\)\)\@=" oneline
-  syn region rubyClass	  matchgroup=rubyDefine start="\<class\(\s\+\)\@="  end="\%(\s*\%(\s\|<\|;\|$\|#\)\)\@=" oneline
-  syn match  rubyDefine   "\<class\ze<<"
-  syn region rubyModule   matchgroup=rubyDefine start="\<module\(\s\+\)\@=" end="\%(\s*\%(\s\|;\|$\|#\)\)\@="	  oneline
+  syn region rubyFunction matchgroup=rubyDefine start="\<def\>\s*"    end="\%(\s*\%(\s\|(\|;\|$\|#\)\)\@=" oneline
+  syn region rubyClass	  matchgroup=rubyDefine start="\<class\>\s*"  end="\%(\s*\%(\s\|<\|;\|$\|#\)\)\@=" oneline
+  syn match  rubyDefine   "\<class\ze\s*<<"
+  syn region rubyModule   matchgroup=rubyDefine start="\<module\>\s*" end="\%(\s*\%(\s\|;\|$\|#\)\)\@="	  oneline
 
   syn region rubyBlock start="\<def\>"	  matchgroup=rubyDefine end="\<end\>" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo nextgroup=rubyFunction fold
   syn region rubyBlock start="\<class\>"  matchgroup=rubyDefine end="\<end\>" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo nextgroup=rubyClass	 fold
@@ -181,10 +181,10 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   exec "syn sync minlines=" . ruby_minlines
 
 else
-  syn region  rubyFunction matchgroup=rubyControl start="\<def\(\s\+\)\@="    end="\ze\%(\s\|(\|;\|$\)" oneline
-  syn region  rubyClass    matchgroup=rubyControl start="\<class\(\s\+\)\@="  end="\ze\%(\s\|<\|;\|$\)" oneline
-  syn match   rubyControl  "\<class\ze<<"
-  syn region  rubyModule   matchgroup=rubyControl start="\<module\(\s\+\)\@=" end="\ze\%(\s\|;\|$\)"	 oneline
+  syn region  rubyFunction matchgroup=rubyControl start="\<def\>\s*"    end="\ze\%(\s\|(\|;\|$\)" oneline
+  syn region  rubyClass    matchgroup=rubyControl start="\<class\>\s*"  end="\ze\%(\s\|<\|;\|$\)" oneline
+  syn match   rubyControl  "\<class\ze\s*<<"
+  syn region  rubyModule   matchgroup=rubyControl start="\<module\>\s*" end="\ze\%(\s\|;\|$\)"	 oneline
   syn keyword rubyControl case begin do for if unless while until end
 endif
 
@@ -289,7 +289,9 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubyInterpolation		Special
   HiLink rubyNoInterpolation		rubyString
   HiLink rubySharpBang			PreProc
+  HiLink rubyRegexpDelimiter		rubyStringDelimiter
   HiLink rubyStringDelimiter		Delimiter
+  HiLink rubyRegexp			rubyString
   HiLink rubyString			String
   HiLink rubyTodo			Todo
 
