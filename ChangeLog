@@ -1,3 +1,8 @@
+2007-02-20  Tim Pope  <vim@tpope.info>
+
+	* syntax/ruby.vim: Place class/module declarations in a separate
+	group.  Allow self to be highlighted in a method declaration.
+
 2007-02-18  Tim Pope  <vim@tpope.info>
 
 	* syntax/ruby.vim: Separate Regexp group.  Nest Ruby code inside

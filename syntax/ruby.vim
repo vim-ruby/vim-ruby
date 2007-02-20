@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		Ruby
 " Maintainer:		Doug Kearns <dougkearns@gmail.com>
-" Info:			$Id: ruby.vim,v 1.96 2007/02/19 01:49:49 tpope Exp $
+" Info:			$Id: ruby.vim,v 1.97 2007/02/20 22:52:49 tpope Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -150,14 +150,14 @@ end
 
 " Expensive Mode - colorize *end* according to opening statement
 if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
-  syn region rubyFunction matchgroup=rubyDefine start="\<def\>\s*"    end="\%(\s*\%(\s\|(\|;\|$\|#\)\)\@=" oneline
-  syn region rubyClass	  matchgroup=rubyDefine start="\<class\>\s*"  end="\%(\s*\%(\s\|<\|;\|$\|#\)\)\@=" oneline
-  syn match  rubyDefine   "\<class\ze\s*<<"
-  syn region rubyModule   matchgroup=rubyDefine start="\<module\>\s*" end="\%(\s*\%(\s\|;\|$\|#\)\)\@="	  oneline
+  syn region rubyFunction matchgroup=rubyDefine start="\<def\>\s*"    end="\%(\s*\%(\s\|(\|;\|$\|#\)\)\@=" oneline contains=rubyPseudoVariable
+  syn region rubyClass	  matchgroup=rubyType   start="\<class\>\s*"  end="\%(\s*\%(\s\|<\|;\|$\|#\)\)\@=" oneline
+  syn match  rubyType     "\<class\ze\s*<<"
+  syn region rubyModule   matchgroup=rubyType   start="\<module\>\s*" end="\%(\s*\%(\s\|;\|$\|#\)\)\@="	  oneline
 
   syn region rubyBlock start="\<def\>"	  matchgroup=rubyDefine end="\<end\>" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo nextgroup=rubyFunction fold
-  syn region rubyBlock start="\<class\>"  matchgroup=rubyDefine end="\<end\>" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo nextgroup=rubyClass	 fold
-  syn region rubyBlock start="\<module\>" matchgroup=rubyDefine end="\<end\>" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo nextgroup=rubyModule	 fold
+  syn region rubyBlock start="\<class\>"  matchgroup=rubyType   end="\<end\>" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo nextgroup=rubyClass	 fold
+  syn region rubyBlock start="\<module\>" matchgroup=rubyType   end="\<end\>" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo nextgroup=rubyModule	 fold
 
   " modifiers
   syn match  rubyControl "\<\%(if\|unless\|while\|until\)\>" display
@@ -181,7 +181,7 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   exec "syn sync minlines=" . ruby_minlines
 
 else
-  syn region  rubyFunction matchgroup=rubyControl start="\<def\>\s*"    end="\ze\%(\s\|(\|;\|$\)" oneline
+  syn region  rubyFunction matchgroup=rubyControl start="\<def\>\s*"    end="\ze\%(\s\|(\|;\|$\)" oneline contains=rubyPseudoVariable
   syn region  rubyClass    matchgroup=rubyControl start="\<class\>\s*"  end="\ze\%(\s\|<\|;\|$\)" oneline
   syn match   rubyControl  "\<class\ze\s*<<"
   syn region  rubyModule   matchgroup=rubyControl start="\<module\>\s*" end="\ze\%(\s\|;\|$\)"	 oneline
@@ -247,6 +247,7 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
     command -nargs=+ HiLink hi def link <args>
   endif
 
+  HiLink rubyType			rubyDefine
   HiLink rubyDefine			Define
   HiLink rubyFunction			Function
   HiLink rubyControl			Statement
