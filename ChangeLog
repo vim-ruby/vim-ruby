@@ -1,3 +1,7 @@
+2007-02-22  Doug Kearns  <dougkearns@gmail.com>
+
+	* syntax/ruby.vim: highlight short format interpolated variables
+
 2007-02-20  Tim Pope  <vim@tpope.info>
 
 	* syntax/ruby.vim: Place class/module declarations in a separate

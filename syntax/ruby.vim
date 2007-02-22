@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		Ruby
 " Maintainer:		Doug Kearns <dougkearns@gmail.com>
-" Info:			$Id: ruby.vim,v 1.97 2007/02/20 22:52:49 tpope Exp $
+" Info:			$Id: ruby.vim,v 1.98 2007/02/22 15:10:36 dkearns Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -43,9 +43,9 @@ endif
 syn match rubyEscape		"\\\\\|\\[abefnrstv]\|\\\o\{1,3}\|\\x\x\{1,2}"								contained display
 syn match rubyEscape		"\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)"	contained display
 syn region rubyInterpolated	matchgroup=rubyInterpolation start="#{" end="}" contains=TOP						contained
-syn match rubyInterpolation	"#\%(\$\|@@\=\)\w\+"			contained display
-syn match rubyNoInterpolation	"\\#{[^}]*}"				contained
-syn match rubyNoInterpolation	"\\#\%(\$\|@@\=\)\w\+"			contained display
+syn match rubyInterpolation	"#\ze\%(\$\|@@\=\)\w\+"	contained display nextgroup=rubyClassVariable,rubyInstanceVariable,rubyGlobalVariable
+syn match rubyNoInterpolation	"\\#{[^}]*}"		contained
+syn match rubyNoInterpolation	"\\#\%(\$\|@@\=\)\w\+"	contained display
 
 syn match rubyDelimEscape	"\\[(<{\[)>}\]]" transparent display contained contains=NONE
 
