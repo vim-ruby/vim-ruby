@@ -43,6 +43,7 @@ endif
 syn match rubyEscape		"\\\\\|\\[abefnrstv]\|\\\o\{1,3}\|\\x\x\{1,2}"								contained display
 syn match rubyEscape		"\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)"	contained display
 syn region rubyInterpolated	matchgroup=rubyInterpolation start="#{" end="}" contains=TOP						contained
+"syn match rubyInterpolation	"#\%(\$\|@@\=\)\w\+"	contained contains=rubyInstanceVariable,rubyClassVariable,rubyGlobalVariable display
 syn match rubyInterpolation	"#\ze\%(\$\|@@\=\)\w\+"	contained display nextgroup=rubyClassVariable,rubyInstanceVariable,rubyGlobalVariable
 syn match rubyNoInterpolation	"\\#{[^}]*}"		contained
 syn match rubyNoInterpolation	"\\#\%(\$\|@@\=\)\w\+"	contained display
@@ -70,7 +71,7 @@ syn match rubyFloat	"\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\%(\.\d\+\%(_\d\+\)*\)\=\%([eE
 syn match rubyLocalVariableOrMethod "\<[_[:lower:]][_[:alnum:]]*[?!=]\=" contains=NONE display transparent
 syn match rubyBlockArgument	    "&[_[:lower:]][_[:alnum:]]"		 contains=NONE display transparent
 
-syn match  rubyConstant			"\%(\%(\.\@<!\.\)\@<!\<\|::\)\_s*\zs\u\w*\>\%(\s*(\)\@!"
+syn match  rubyConstant			"\%(\%([.@$]\@<!\.\)\@<!\<\|::\)\_s*\zs\u\w*\>\%(\s*(\)\@!"
 syn match  rubyClassVariable		"@@\h\w*" display
 syn match  rubyInstanceVariable		"@\h\w*"  display
 syn match  rubyGlobalVariable		"$\%(\h\w*\|-.\)"
@@ -148,32 +149,37 @@ if exists('main_syntax') && main_syntax == 'eruby'
   let b:ruby_no_expensive = 1
 end
 
+syn match  rubyMethodDeclaration   "[_[:alnum:]@$][^[:space:];#(]*" contained contains=rubyFunction,rubyConstant,rubyBoolean,rubyPseudoVariable,rubyInstanceVariable,rubyClassVariable,rubyGlobalVariable
+syn match  rubyClassDeclaration    "[_[:alnum:]@$][^[:space:];#(]*" contained contains=rubyConstant
+syn match  rubyModuleDeclaration   "[_[:alnum:]@$][^[:space:];#(]*" contained contains=rubyConstant
+syn match  rubyFunction "\<[_[:lower:]][_[:alnum:]]*[?!=]\=.\@!" contained
 " Expensive Mode - colorize *end* according to opening statement
 if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
-  syn region rubyFunction matchgroup=rubyDefine start="\<def\>\s*"    end="\%(\s*\%(\s\|(\|;\|$\|#\)\)\@=" oneline contains=rubyPseudoVariable
-  syn region rubyClass	  matchgroup=rubyType   start="\<class\>\s*"  end="\%(\s*\%(\s\|<\|;\|$\|#\)\)\@=" oneline
-  syn match  rubyType     "\<class\ze\s*<<"
-  syn region rubyModule   matchgroup=rubyType   start="\<module\>\s*" end="\%(\s*\%(\s\|;\|$\|#\)\)\@="	  oneline
-
-  syn region rubyBlock start="\<def\>"	  matchgroup=rubyDefine end="\<end\>" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo nextgroup=rubyFunction fold
-  syn region rubyBlock start="\<class\>"  matchgroup=rubyType   end="\<end\>" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo nextgroup=rubyClass	 fold
-  syn region rubyBlock start="\<module\>" matchgroup=rubyType   end="\<end\>" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo nextgroup=rubyModule	 fold
+  syn match  rubyDefine "\<def\>"		nextgroup=rubyMethodDeclaration skipwhite skipnl
+  syn match  rubyClass  "\<class\>"		nextgroup=rubyClassDeclaration  skipwhite skipnl
+  syn match  rubyModule "\<module\>"		nextgroup=rubyModuleDeclaration skipwhite skipnl
+  syn region rubyBlock start="\<def\>"		matchgroup=rubyDefine end="\<end\>" contains=TOP fold
+  syn region rubyBlock start="\<class\>"	matchgroup=rubyClass  end="\<end\>" contains=TOP fold
+  syn region rubyBlock start="\<module\>"	matchgroup=rubyModule end="\<end\>" contains=TOP fold
 
   " modifiers
-  syn match  rubyControl "\<\%(if\|unless\|while\|until\)\>" display
+  syn match  rubyConditional "\<\%(if\|unless\)\>"   display
+  syn match  rubyLoop	     "\<\%(while\|until\)\>" display
 
   " *do* requiring *end*
-  syn region rubyDoBlock matchgroup=rubyControl start="\<do\>" end="\<end\>" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo fold
+  syn region rubyDoBlock matchgroup=rubyControl start="\<do\>" end="\<end\>" contains=TOP fold
 
   " *{* requiring *}*
-  syn region rubyCurlyBlock start="{" end="}" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo fold
+  syn region rubyCurlyBlock start="{" end="}" contains=TOP fold
 
   " statements without *do*
-  syn region rubyNoDoBlock matchgroup=rubyControl start="\<\%(case\|begin\)\>" start="\%(^\|\.\.\.\=\|[,;=([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\zs\%(if\|unless\)\>" end="\<end\>" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo fold
+  syn region rubyNoDoBlock matchgroup=rubyControl     start="\<begin\>" end="\<end\>" contains=TOP fold
+  syn region rubyNoDoBlock matchgroup=rubyConditional start="\<case\>" start="\%(^\|\.\.\.\=\|[,;=([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\zs\%(if\|unless\)\>" end="\<end\>" contains=TOP fold
+  syn keyword rubyConditional else elsif then when
 
   " statement with optional *do*
-  syn region rubyOptDoLine matchgroup=rubyControl start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[?:,;=([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" end="\%(\<do\>\|:\)" end="\ze\%(;\|$\)" oneline contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo
-  syn region rubyOptDoBlock start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyControl end="\<end\>" contains=ALLBUT,@rubyExtendedStringSpecial,rubyTodo nextgroup=rubyOptDoLine fold
+  syn region rubyOptDoLine matchgroup=rubyLoop start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[?:,;=([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" end="\%(\<do\>\|:\)" end="\ze\%(;\|$\)" oneline contains=TOP
+  syn region rubyOptDoBlock start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyLoop end="\<end\>" contains=TOP nextgroup=rubyOptDoLine fold
 
   if !exists("ruby_minlines")
     let ruby_minlines = 50
@@ -181,17 +187,16 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   exec "syn sync minlines=" . ruby_minlines
 
 else
-  syn region  rubyFunction matchgroup=rubyControl start="\<def\>\s*"    end="\ze\%(\s\|(\|;\|$\)" oneline contains=rubyPseudoVariable
-  syn region  rubyClass    matchgroup=rubyControl start="\<class\>\s*"  end="\ze\%(\s\|<\|;\|$\)" oneline
-  syn match   rubyControl  "\<class\ze\s*<<"
-  syn region  rubyModule   matchgroup=rubyControl start="\<module\>\s*" end="\ze\%(\s\|;\|$\)"	 oneline
-  syn keyword rubyControl case begin do for if unless while until end
+  syn match   rubyControl  "\<def\>"	nextgroup=rubyMethodDeclaration skipwhite skipnl
+  syn match   rubyControl  "\<class\>"	nextgroup=rubyClassDeclaration  skipwhite skipnl
+  syn match   rubyControl  "\<module\>"	nextgroup=rubyModuleDeclaration skipwhite skipnl
+  syn keyword rubyControl case begin do for if unless while until else elsif then when end
 endif
 
 " Keywords
 " Note: the following keywords have already been defined:
 " begin case class def do end for if module unless until while
-syn keyword rubyControl		and break else elsif ensure in next not or redo rescue retry return then when
+syn keyword rubyControl		and break ensure in next not or redo rescue retry return
 syn match   rubyOperator	"\<defined?" display
 syn keyword rubyKeyword		alias super undef yield
 syn keyword rubyBoolean		true false
@@ -247,32 +252,33 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
     command -nargs=+ HiLink hi def link <args>
   endif
 
-  HiLink rubyType			rubyDefine
+  HiLink rubyClass			rubyDefine
+  HiLink rubyModule			rubyDefine
   HiLink rubyDefine			Define
   HiLink rubyFunction			Function
+  HiLink rubyConditional		Conditional
+  HiLink rubyLoop			Loop
   HiLink rubyControl			Statement
   HiLink rubyInclude			Include
   HiLink rubyInteger			Number
-  HiLink rubyASCIICode			rubyInteger
+  HiLink rubyASCIICode			Character
   HiLink rubyFloat			Float
-  HiLink rubyBoolean			rubyPseudoVariable
+  HiLink rubyBoolean			Boolean
   HiLink rubyException			Exception
-  HiLink rubyClass			Type
-  HiLink rubyModule			Type
   if !exists("ruby_no_identifiers")
     HiLink rubyIdentifier		Identifier
   else
     HiLink rubyIdentifier		NONE
   endif
   HiLink rubyClassVariable		rubyIdentifier
-  HiLink rubyConstant			rubyIdentifier
+  HiLink rubyConstant			Type
   HiLink rubyGlobalVariable		rubyIdentifier
   HiLink rubyBlockParameter		rubyIdentifier
   HiLink rubyInstanceVariable		rubyIdentifier
   HiLink rubyPredefinedIdentifier	rubyIdentifier
   HiLink rubyPredefinedConstant		rubyPredefinedIdentifier
   HiLink rubyPredefinedVariable		rubyPredefinedIdentifier
-  HiLink rubySymbol			rubyIdentifier
+  HiLink rubySymbol			Constant
   HiLink rubyKeyword			Keyword
   HiLink rubyOperator			Operator
   HiLink rubyPseudoOperator		rubyOperator
@@ -304,4 +310,4 @@ endif
 
 let b:current_syntax = "ruby"
 
-" vim: nowrap sw=2 sts=2 ts=8 ff=unix:
+" vim: nowrap sw=2 sts=2 ts=8 noet ff=unix:

@@ -31,7 +31,7 @@ function! GetErubyIndent(lnum)
   call cursor(a:lnum,1)
   let inruby = searchpair('<%','','%>')
   call cursor(a:lnum,vcol)
-  if inruby
+  if inruby && getline(a:lnum) !~ '^<%'
     let ind = GetRubyIndent()
   else
     let ind = HtmlIndentGet(a:lnum)
