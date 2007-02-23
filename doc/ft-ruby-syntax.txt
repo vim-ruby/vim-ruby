@@ -20,10 +20,10 @@ the "ruby_minlines" variable to a value larger than 50: >
 Ideally, this value should be a number of lines large enough to embrace your
 largest class or module.
 
-Highlighting of special identifiers can be disabled by defining
-"ruby_no_identifiers": >
+Highlighting of special identifiers can be disabled by removing the
+rubyIdentifier highlighting: >
 
-	:let ruby_no_identifiers = 1
+	:hi link rubyIdentifier NONE
 <
 This will prevent highlighting of special identifiers like "ConstantName",
 "$global_var", "@@class_var", "@instance_var", "| block_param |", and
