@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		Ruby
 " Maintainer:		Doug Kearns <dougkearns@gmail.com>
-" Info:			$Id: ruby.vim,v 1.99 2007/02/22 17:32:03 tpope Exp $
+" Info:			$Id: ruby.vim,v 1.100 2007/02/23 13:21:05 dkearns Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -257,7 +257,7 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubyDefine			Define
   HiLink rubyFunction			Function
   HiLink rubyConditional		Conditional
-  HiLink rubyLoop			Loop
+  HiLink rubyLoop			Repeat
   HiLink rubyControl			Statement
   HiLink rubyInclude			Include
   HiLink rubyInteger			Number
