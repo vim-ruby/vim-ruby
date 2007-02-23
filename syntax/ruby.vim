@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		Ruby
 " Maintainer:		Doug Kearns <dougkearns@gmail.com>
-" Info:			$Id: ruby.vim,v 1.102 2007/02/23 17:52:03 tpope Exp $
+" Info:			$Id: ruby.vim,v 1.103 2007/02/23 18:10:05 tpope Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -156,7 +156,7 @@ syn match  rubyClassDeclaration    "[^[:space:];#(]\+" contained contains=rubyCo
 syn match  rubyModuleDeclaration   "[^[:space:];#(]\+" contained contains=rubyConstant
 syn match  rubyFunction "\<[_[:lower:]][_[:alnum:]]*[?!=]\=\.\@!" contained containedin=rubyMethodDeclaration
 syn match  rubyFunction "\%(\s\|^\)\@<=[_[:lower:]][_[:alnum:]]*[?!=]\=\%(\s\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2
-syn match  rubyFunction "\%([[:space:].]\|^\)\@<=\%(\[\]=\=\|\*\*\|[+-]@\=\|[*/%|^~]\|<<\|>>\|[<>]=\=\|<=>\|===\|=\~\)\%([[:space:];#(]\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2,rubyMethodDeclaration
+syn match  rubyFunction "\%([[:space:].]\|^\)\@<=\%(\[\]=\=\|\*\*\|[+-]@\=\|[*/%|^~]\|<<\|>>\|[<>]=\=\|<=>\|===\|=\~\|`\)\%([[:space:];#(]\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2,rubyMethodDeclaration
 " Expensive Mode - colorize *end* according to opening statement
 if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   syn match  rubyDefine "\<alias\>"		nextgroup=rubyAliasDeclaration  skipwhite skipnl
