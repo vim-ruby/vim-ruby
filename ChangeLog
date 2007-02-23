@@ -1,5 +1,10 @@
 2007-02-23  Doug Kearns  <dougkearns@gmail.com>
 
+	* syntax/ruby.vim: make sure multi-line backslash escaped
+	interpolation regions are highlighted as rubyString
+
+2007-02-23  Doug Kearns  <dougkearns@gmail.com>
+
 	* syntax/ruby.vim: link the rubyLoop syntax group to the Repeat
 	highlight group
 
