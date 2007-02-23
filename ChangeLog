@@ -1,6 +1,12 @@
+2007-02-23  Doug Kearns  <dougkearns@gmail.com>
+
+	* syntax/ruby.vim: link the rubyLoop syntax group to the Repeat
+	highlight group
+
 2007-02-22  Tim Pope  <vim@tpope.info>
 
 	* indent/eruby.vim: Fixed an edge case.
+
 	* syntax/ruby.vim: Simpler method and class declaration highlighting.
 	Changed some contains=ALLBUT,... to contains=TOP.  Altered some
 	highlight links: rubyConstant is now Type; rubySymbol is now Constant.

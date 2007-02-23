@@ -257,7 +257,7 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubyDefine			Define
   HiLink rubyFunction			Function
   HiLink rubyConditional		Conditional
-  HiLink rubyLoop			Loop
+  HiLink rubyLoop			Repeat
   HiLink rubyControl			Statement
   HiLink rubyInclude			Include
   HiLink rubyInteger			Number
