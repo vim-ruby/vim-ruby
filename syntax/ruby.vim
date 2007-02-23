@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		Ruby
 " Maintainer:		Doug Kearns <dougkearns@gmail.com>
-" Info:			$Id: ruby.vim,v 1.101 2007/02/23 13:57:23 dkearns Exp $
+" Info:			$Id: ruby.vim,v 1.102 2007/02/23 17:52:03 tpope Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -42,7 +42,7 @@ endif
 " Expression Substitution and Backslash Notation
 syn match rubyEscape		"\\\\\|\\[abefnrstv]\|\\\o\{1,3}\|\\x\x\{1,2}"								contained display
 syn match rubyEscape		"\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)"	contained display
-syn region rubyInterpolated	matchgroup=rubyInterpolation start="#{" end="}" contains=TOP						contained
+syn region rubyInterpolated	matchgroup=rubyInterpolation start="\\\@<!#{" end="}" contains=TOP						contained
 "syn match rubyInterpolation	"#\%(\$\|@@\=\)\w\+"	contained contains=rubyInstanceVariable,rubyClassVariable,rubyGlobalVariable display
 syn match rubyInterpolation	"#\ze\%(\$\|@@\=\)\w\+"	contained display nextgroup=rubyClassVariable,rubyInstanceVariable,rubyGlobalVariable
 syn region rubyNoInterpolation	start="\\#{" end="}"	contained
@@ -149,12 +149,17 @@ if exists('main_syntax') && main_syntax == 'eruby'
   let b:ruby_no_expensive = 1
 end
 
-syn match  rubyMethodDeclaration   "[_[:alnum:]@$][^[:space:];#(]*" contained contains=rubyFunction,rubyConstant,rubyBoolean,rubyPseudoVariable,rubyInstanceVariable,rubyClassVariable,rubyGlobalVariable
-syn match  rubyClassDeclaration    "[_[:alnum:]@$][^[:space:];#(]*" contained contains=rubyConstant
-syn match  rubyModuleDeclaration   "[_[:alnum:]@$][^[:space:];#(]*" contained contains=rubyConstant
-syn match  rubyFunction "\<[_[:lower:]][_[:alnum:]]*[?!=]\=.\@!" contained
+syn match  rubyAliasDeclaration    "[^[:space:];#.()]\+"  contained nextgroup=rubyAliasDeclaration2 skipwhite
+syn match  rubyAliasDeclaration2   "[^[:space:];#.()]\+"  contained
+syn match  rubyMethodDeclaration   "[^[:space:];#(]\+" contained contains=rubyConstant,rubyBoolean,rubyPseudoVariable,rubyInstanceVariable,rubyClassVariable,rubyGlobalVariable
+syn match  rubyClassDeclaration    "[^[:space:];#(]\+" contained contains=rubyConstant
+syn match  rubyModuleDeclaration   "[^[:space:];#(]\+" contained contains=rubyConstant
+syn match  rubyFunction "\<[_[:lower:]][_[:alnum:]]*[?!=]\=\.\@!" contained containedin=rubyMethodDeclaration
+syn match  rubyFunction "\%(\s\|^\)\@<=[_[:lower:]][_[:alnum:]]*[?!=]\=\%(\s\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2
+syn match  rubyFunction "\%([[:space:].]\|^\)\@<=\%(\[\]=\=\|\*\*\|[+-]@\=\|[*/%|^~]\|<<\|>>\|[<>]=\=\|<=>\|===\|=\~\)\%([[:space:];#(]\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2,rubyMethodDeclaration
 " Expensive Mode - colorize *end* according to opening statement
 if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
+  syn match  rubyDefine "\<alias\>"		nextgroup=rubyAliasDeclaration  skipwhite skipnl
   syn match  rubyDefine "\<def\>"		nextgroup=rubyMethodDeclaration skipwhite skipnl
   syn match  rubyClass  "\<class\>"		nextgroup=rubyClassDeclaration  skipwhite skipnl
   syn match  rubyModule "\<module\>"		nextgroup=rubyModuleDeclaration skipwhite skipnl
@@ -164,7 +169,7 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
 
   " modifiers
   syn match  rubyConditional "\<\%(if\|unless\)\>"   display
-  syn match  rubyLoop	     "\<\%(while\|until\)\>" display
+  syn match  rubyRepeat	     "\<\%(while\|until\)\>" display
 
   " *do* requiring *end*
   syn region rubyDoBlock matchgroup=rubyControl start="\<do\>" end="\<end\>" contains=TOP fold
@@ -178,8 +183,8 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   syn keyword rubyConditional else elsif then when
 
   " statement with optional *do*
-  syn region rubyOptDoLine matchgroup=rubyLoop start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[?:,;=([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" end="\%(\<do\>\|:\)" end="\ze\%(;\|$\)" oneline contains=TOP
-  syn region rubyOptDoBlock start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyLoop end="\<end\>" contains=TOP nextgroup=rubyOptDoLine fold
+  syn region rubyOptDoLine matchgroup=rubyRepeat start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[?:,;=([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" end="\%(\<do\>\|:\)" end="\ze\%(;\|$\)" oneline contains=TOP
+  syn region rubyOptDoBlock start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyRepeat end="\<end\>" contains=TOP nextgroup=rubyOptDoLine fold
 
   if !exists("ruby_minlines")
     let ruby_minlines = 50
@@ -191,6 +196,7 @@ else
   syn match   rubyControl  "\<class\>"	nextgroup=rubyClassDeclaration  skipwhite skipnl
   syn match   rubyControl  "\<module\>"	nextgroup=rubyModuleDeclaration skipwhite skipnl
   syn keyword rubyControl case begin do for if unless while until else elsif then when end
+  syn keyword rubyKeyword alias
 endif
 
 " Keywords
@@ -198,7 +204,7 @@ endif
 " begin case class def do end for if module unless until while
 syn keyword rubyControl		and break ensure in next not or redo rescue retry return
 syn match   rubyOperator	"\<defined?" display
-syn keyword rubyKeyword		alias super undef yield
+syn keyword rubyKeyword		super undef yield
 syn keyword rubyBoolean		true false
 syn keyword rubyPseudoVariable	nil self __FILE__ __LINE__
 syn keyword rubyBeginEnd	BEGIN END
@@ -257,7 +263,7 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubyDefine			Define
   HiLink rubyFunction			Function
   HiLink rubyConditional		Conditional
-  HiLink rubyLoop			Repeat
+  HiLink rubyRepeat			Repeat
   HiLink rubyControl			Statement
   HiLink rubyInclude			Include
   HiLink rubyInteger			Number
