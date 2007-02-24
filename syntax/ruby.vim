@@ -79,6 +79,7 @@ syn match  rubySymbol			":\@<!:\%(\^\|\~\|<<\|<=>\|<=\|<\|===\|==\|=\~\|>>\|>=\|
 syn match  rubySymbol			":\@<!:\$\%(-.\|[`~<=>_,;:!?/.'"@$*\&+0]\)"
 syn match  rubySymbol			":\@<!:\%(\$\|@@\=\)\=\h\w*[?!=]\="
 syn region rubySymbol			start=":\@<!:\"" end="\"" skip="\\\\\|\\\""
+syn region rubySymbol			start=":\@<!:\"" end="\"" skip="\\\\\|\\\"" contains=@rubyStringSpecial fold
 if exists("ruby_operators")
   syn match  rubyBlockParameter		"\%(\%(\%(\<do\>\|{\)\s*\)|\s*\)\@<=[( ,a-zA-Z0-9_*)]\+\%(\s*|\)\@=" display
 else
