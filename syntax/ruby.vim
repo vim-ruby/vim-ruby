@@ -156,7 +156,7 @@ syn match  rubyClassDeclaration    "[^[:space:];#(]\+" contained contains=rubyCo
 syn match  rubyModuleDeclaration   "[^[:space:];#(]\+" contained contains=rubyConstant
 syn match  rubyFunction "\<[_[:lower:]][_[:alnum:]]*[?!=]\=\.\@!" contained containedin=rubyMethodDeclaration
 syn match  rubyFunction "\%(\s\|^\)\@<=[_[:lower:]][_[:alnum:]]*[?!=]\=\%(\s\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2
-syn match  rubyFunction "\%([[:space:].]\|^\)\@<=\%(\[\]=\=\|\*\*\|[+-]@\=\|[*/%|^~]\|<<\|>>\|[<>]=\=\|<=>\|===\|=\~\|`\)\%([[:space:];#(]\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2,rubyMethodDeclaration
+syn match  rubyFunction "\%([[:space:].]\|^\)\@<=\%(\[\]=\=\|\*\*\|[+-]@\=\|[*/%|&^~]\|<<\|>>\|[<>]=\=\|<=>\|===\|==\|=\~\|`\)\%([[:space:];#(]\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2,rubyMethodDeclaration
 " Expensive Mode - colorize *end* according to opening statement
 if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   syn match  rubyDefine "\<alias\>"		nextgroup=rubyAliasDeclaration  skipwhite skipnl
