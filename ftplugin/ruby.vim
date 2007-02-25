@@ -1,7 +1,7 @@
 " Vim filetype plugin
 " Language:             Ruby
 " Maintainer:           Gavin Sinclair <gsinclair at gmail.com>
-" Info:                 $Id: ruby.vim,v 1.29 2007/02/10 09:38:43 dkearns Exp $
+" Info:                 $Id: ruby.vim,v 1.30 2007/02/25 05:19:10 tpope Exp $
 " URL:                  http://vim-ruby.rubyforge.org
 " Anon CVS:             See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
@@ -19,6 +19,8 @@ let b:did_ftplugin = 1
 
 let s:cpo_save = &cpo
 set cpo&vim
+
+setlocal keywordprg=ri
 
 " Matchit support
 if exists("loaded_matchit") && !exists("b:match_words")
