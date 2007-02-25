@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		Ruby
 " Maintainer:		Doug Kearns <dougkearns@gmail.com>
-" Info:			$Id: ruby.vim,v 1.106 2007/02/25 05:19:10 tpope Exp $
+" Info:			$Id: ruby.vim,v 1.107 2007/02/25 18:01:43 tpope Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -150,13 +150,13 @@ if exists('main_syntax') && main_syntax == 'eruby'
   let b:ruby_no_expensive = 1
 end
 
-syn match  rubyAliasDeclaration    "[^[:space:];#.()]\+"  contained nextgroup=rubyAliasDeclaration2 skipwhite
-syn match  rubyAliasDeclaration2   "[^[:space:];#.()]\+"  contained
+syn match  rubyAliasDeclaration    "[^[:space:];#.()]\+"  contained contains=rubySymbol,rubyGlobalVariable nextgroup=rubyAliasDeclaration2 skipwhite
+syn match  rubyAliasDeclaration2   "[^[:space:];#.()]\+"  contained contains=rubySymbol,rubyGlobalVariable
 syn match  rubyMethodDeclaration   "[^[:space:];#(]\+" contained contains=rubyConstant,rubyBoolean,rubyPseudoVariable,rubyInstanceVariable,rubyClassVariable,rubyGlobalVariable
 syn match  rubyClassDeclaration    "[^[:space:];#(]\+" contained contains=rubyConstant
 syn match  rubyModuleDeclaration   "[^[:space:];#(]\+" contained contains=rubyConstant
-syn match  rubyFunction "\<[_[:lower:]][_[:alnum:]]*[?!=]\=\.\@!" contained containedin=rubyMethodDeclaration
-syn match  rubyFunction "\%(\s\|^\)\@<=[_[:lower:]][_[:alnum:]]*[?!=]\=\%(\s\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2
+syn match  rubyFunction "\<[_[:alpha:]][_[:alnum:]]*[?!=]\=[[:alnum:].:?!=]\@!" contained containedin=rubyMethodDeclaration
+syn match  rubyFunction "\%(\s\|^\)\@<=[_[:alpha:]][_[:alnum:]]*[?!=]\=\%(\s\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2
 syn match  rubyFunction "\%([[:space:].]\|^\)\@<=\%(\[\]=\=\|\*\*\|[+-]@\=\|[*/%|&^~]\|<<\|>>\|[<>]=\=\|<=>\|===\|==\|=\~\|`\)\%([[:space:];#(]\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2,rubyMethodDeclaration
 " Expensive Mode - colorize *end* according to opening statement
 if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
