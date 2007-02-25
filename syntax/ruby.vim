@@ -164,7 +164,7 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   syn match  rubyDefine "\<def\>"		nextgroup=rubyMethodDeclaration skipwhite skipnl
   syn match  rubyClass  "\<class\>"		nextgroup=rubyClassDeclaration  skipwhite skipnl
   syn match  rubyModule "\<module\>"		nextgroup=rubyModuleDeclaration skipwhite skipnl
-  syn region rubyBlock start="\<def\>"		matchgroup=rubyDefine end="\<end\>" contains=TOP fold
+  syn region rubyBlock start="\<def\>"		matchgroup=rubyDefine end="\%(\<def\s\+\)\@<!\<end\>" contains=TOP fold
   syn region rubyBlock start="\<class\>"	matchgroup=rubyClass  end="\<end\>" contains=TOP fold
   syn region rubyBlock start="\<module\>"	matchgroup=rubyModule end="\<end\>" contains=TOP fold
 

@@ -20,6 +20,8 @@ let b:did_ftplugin = 1
 let s:cpo_save = &cpo
 set cpo&vim
 
+setlocal keywordprg=ri
+
 " Matchit support
 if exists("loaded_matchit") && !exists("b:match_words")
   let b:match_ignorecase = 0
