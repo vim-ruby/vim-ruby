@@ -1,5 +1,9 @@
 2007-02-26  Doug Kearns  <dougkearns@gmail.com>
 
+	* syntax/ruby.vim: make sure 'class << self' is always highlighted
+
+2007-02-26  Doug Kearns  <dougkearns@gmail.com>
+
 	* syntax/ruby.vim: reorganise string interpolation syntax groups
 
 2007-02-26  Doug Kearns  <dougkearns@gmail.com>
