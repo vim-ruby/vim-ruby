@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		Ruby
 " Maintainer:		Doug Kearns <dougkearns@gmail.com>
-" Info:			$Id: ruby.vim,v 1.110 2007/02/26 08:29:56 dkearns Exp $
+" Info:			$Id: ruby.vim,v 1.111 2007/02/26 09:51:06 dkearns Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -42,12 +42,13 @@ endif
 " Expression Substitution and Backslash Notation
 syn match rubyEscape		"\\\\\|\\[abefnrstv]\|\\\o\{1,3}\|\\x\x\{1,2}"								contained display
 syn match rubyEscape		"\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)"	contained display
-syn region rubyInterpolated	matchgroup=rubyInterpolation start="#{" end="}" contains=TOP						contained
-"syn match rubyInterpolation	"#\%(\$\|@@\=\)\w\+"	contained contains=rubyInstanceVariable,rubyClassVariable,rubyGlobalVariable display
-syn match rubyInterpolation	"#\ze\%(\$\|@@\=\)\w\+"	contained display nextgroup=rubyClassVariable,rubyInstanceVariable,rubyGlobalVariable
-syn region rubyNoInterpolation	start="\\#{" end="}"	contained
-syn match  rubyNoInterpolation	"\\#{"			contained display
-syn match  rubyNoInterpolation	"\\#\%(\$\|@@\=\)\w\+"	contained display
+
+syn region rubyInterpolation	      matchgroup=rubyInterpolationDelimiter start="#{" end="}" contained contains=TOP
+syn match  rubyInterpolation	      "#\%(\$\|@@\=\)\w\+"    display contained  contains=rubyInterpolationDelimiter,rubyInstanceVariable,rubyClassVariable,rubyGlobalVariable
+syn match  rubyInterpolationDelimiter "#\ze\%(\$\|@@\=\)\w\+" display contained 
+syn region rubyNoInterpolation	      start="\\#{" end="}"    contained
+syn match  rubyNoInterpolation	      "\\#{"		      display contained
+syn match  rubyNoInterpolation	      "\\#\%(\$\|@@\=\)\w\+"  display contained
 
 syn match rubyDelimEscape	"\\[(<{\[)>}\]]" transparent display contained contains=NONE
 
@@ -56,7 +57,7 @@ syn region rubyNestedCurlyBraces	start="{"	end="}"		skip="\\\\\|\\}"	transparent
 syn region rubyNestedAngleBrackets	start="<"	end=">"		skip="\\\\\|\\>"	transparent contained contains=@rubyStringSpecial,rubyNestedAngleBrackets,rubyDelimEscape
 syn region rubyNestedSquareBrackets	start="\["	end="\]"	skip="\\\\\|\\\]"	transparent contained contains=@rubyStringSpecial,rubyNestedSquareBrackets,rubyDelimEscape
 
-syn cluster rubyStringSpecial		contains=rubyInterpolation,rubyInterpolated,rubyNoInterpolation,rubyEscape
+syn cluster rubyStringSpecial		contains=rubyInterpolation,rubyNoInterpolation,rubyEscape
 syn cluster rubyExtendedStringSpecial	contains=@rubyStringSpecial,rubyNestedParentheses,rubyNestedCurlyBraces,rubyNestedAngleBrackets,rubyNestedSquareBrackets
 
 " Numbers and ASCII Codes
@@ -301,7 +302,7 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubyDataDirective		Delimiter
   HiLink rubyDocumentation		Comment
   HiLink rubyEscape			Special
-  HiLink rubyInterpolation		Special
+  HiLink rubyInterpolationDelimiter	Delimiter
   HiLink rubyNoInterpolation		rubyString
   HiLink rubySharpBang			PreProc
   HiLink rubyRegexpDelimiter		rubyStringDelimiter
