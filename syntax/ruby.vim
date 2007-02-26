@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		Ruby
 " Maintainer:		Doug Kearns <dougkearns@gmail.com>
-" Info:			$Id: ruby.vim,v 1.112 2007/02/26 14:06:00 dkearns Exp $
+" Info:			$Id: ruby.vim,v 1.113 2007/02/26 15:21:26 tpope Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -181,9 +181,11 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   syn region rubyCurlyBlock start="{" end="}" contains=TOP fold
 
   " statements without *do*
-  syn region rubyNoDoBlock matchgroup=rubyControl     start="\<begin\>" end="\<end\>" contains=TOP fold
-  syn region rubyNoDoBlock matchgroup=rubyConditional start="\<case\>" start="\%(^\|\.\.\.\=\|[,;=([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\zs\%(if\|unless\)\>" end="\<end\>" contains=TOP fold
-  syn keyword rubyConditional else elsif then when
+  syn region rubyNoDoBlock	  matchgroup=rubyControl     start="\<begin\>" end="\<end\>" contains=TOP fold
+  syn region rubyCaseBlock	  matchgroup=rubyConditional start="\<case\>"  end="\<end\>" contains=TOP fold
+  syn region rubyConditionalBlock matchgroup=rubyConditional start="\%(^\|\.\.\.\=\|[,;=([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\zs\%(if\|unless\)\>" end="\<end\>" contains=TOP fold
+  syn keyword rubyConditional then else when  contained containedin=rubyCaseBlock
+  syn keyword rubyConditional then else elsif contained containedin=rubyConditionalBlock
 
   " statement with optional *do*
   syn region rubyOptDoLine matchgroup=rubyRepeat start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[?:,;=([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" end="\%(\<do\>\|:\)" end="\ze\%(;\|$\)" oneline contains=TOP
