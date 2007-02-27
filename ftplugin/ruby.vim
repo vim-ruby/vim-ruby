@@ -64,6 +64,7 @@ if exists("&ofu") && has("ruby")
   setlocal omnifunc=rubycomplete#Complete
 endif
 
+" To activate, :set ballooneval
 if has('balloon_eval') && exists('+balloonexpr')
   setlocal balloonexpr=RubyBalloonexpr()
 endif
