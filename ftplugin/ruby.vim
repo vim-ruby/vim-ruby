@@ -1,7 +1,7 @@
 " Vim filetype plugin
 " Language:             Ruby
 " Maintainer:           Gavin Sinclair <gsinclair at gmail.com>
-" Info:                 $Id: ruby.vim,v 1.31 2007/02/27 15:40:36 tpope Exp $
+" Info:                 $Id: ruby.vim,v 1.32 2007/02/27 15:47:27 tpope Exp $
 " URL:                  http://vim-ruby.rubyforge.org
 " Anon CVS:             See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
@@ -64,6 +64,7 @@ if exists("&ofu") && has("ruby")
   setlocal omnifunc=rubycomplete#Complete
 endif
 
+" To activate, :set ballooneval
 if has('balloon_eval') && exists('+balloonexpr')
   setlocal balloonexpr=RubyBalloonexpr()
 endif
