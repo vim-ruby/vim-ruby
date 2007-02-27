@@ -20,7 +20,11 @@ let b:did_ftplugin = 1
 let s:cpo_save = &cpo
 set cpo&vim
 
-setlocal keywordprg=ri
+if has("gui_running") && !has("gui_win32")
+  setlocal keywordprg=ri\ -T
+else
+  setlocal keywordprg=ri
+endif
 
 " Matchit support
 if exists("loaded_matchit") && !exists("b:match_words")
@@ -60,6 +64,11 @@ if exists("&ofu") && has("ruby")
   setlocal omnifunc=rubycomplete#Complete
 endif
 
+if has('balloon_eval') && exists('+balloonexpr')
+  setlocal balloonexpr=RubyBalloonexpr()
+endif
+
+
 " TODO:
 "setlocal define=^\\s*def
 
@@ -92,12 +101,68 @@ if has("gui_win32") && !exists("b:browsefilter")
                      \ "All Files (*.*)\t*.*\n"
 endif
 
-let b:undo_ftplugin = "setl fo< inc< inex< sua< def< com< cms< path<"
+let b:undo_ftplugin = "setl fo< inc< inex< sua< def< com< cms< path< kp<"
       \ "| unlet! b:browsefilter b:match_ignorecase b:match_words b:match_skip"
       \ "| if exists('&ofu') && has('ruby') | setl ofu< | endif"
+      \ "| if has('balloon_eval') && exists('+bexpr') | setl bexpr< | endif"
 
 let &cpo = s:cpo_save
 unlet s:cpo_save
+
+if exists("g:did_ruby_ftplugin_functions")
+  finish
+endif
+let g:did_ruby_ftplugin_functions = 1
+
+function! RubyBalloonexpr()
+  if !exists('s:ri_found')
+    let s:ri_found = executable('ri')
+  endif
+  if s:ri_found
+    let line = getline(v:beval_lnum)
+    let b = matchstr(strpart(line,0,v:beval_col),'\%(\w\|[:.]\)*$')
+    let a = substitute(matchstr(strpart(line,v:beval_col),'^\w*\%([?!]\|\s*=\)\?'),'\s\+','','g')
+    let str = b.a
+    let before = strpart(line,0,v:beval_col-strlen(b))
+    let after  = strpart(line,v:beval_col+strlen(a))
+    if str =~ '^\.'
+      let str = substitute(str,'^\.','#','g')
+      if before =~ '\]\s*$'
+        let str = 'Array'.str
+      elseif before =~ '}\s*$'
+        " False positives from blocks here
+        let str = 'Hash'.str
+      elseif before =~ "[\"'`]\\s*$" || before =~ '\$\d\+\s*$'
+        let str = 'String'.str
+      elseif before =~ '\$\d\+\.\d\+\s*$'
+        let str = 'Float'.str
+      elseif before =~ '\$\d\+\s*$'
+        let str = 'Integer'.str
+      elseif before =~ '/\s*$'
+        let str = 'Regexp'.str
+      else
+        let str = substitute(str,'^#','.','')
+      endif
+    endif
+    let str = substitute(str,'.*\.\s*to_f\s*\.\s*','Float#','')
+    let str = substitute(str,'.*\.\s*to_i\%(nt\)\=\s*\.\s*','Integer#','')
+    let str = substitute(str,'.*\.\s*to_s\%(tr\)\=\s*\.\s*','String#','')
+    let str = substitute(str,'.*\.\s*to_sym\s*\.\s*','Symbol#','')
+    let str = substitute(str,'.*\.\s*to_a\%(ry\)\=\s*\.\s*','Array#','')
+    let str = substitute(str,'.*\.\s*to_proc\s*\.\s*','Proc#','')
+    if str !~ '^\w'
+      return ''
+    endif
+    silent! let res = substitute(system("ri -f simple -T \"".str.'"'),'\n$','','')
+    if res =~ '^Nothing known about' || res =~ '^Bad argument:'
+      return ''
+    endif
+    return res
+  else
+    return ""
+  endif
+endfunction
+
 
 "
 " Instructions for enabling "matchit" support:

@@ -1,3 +1,7 @@
+2007-02-27  Tim Pope  <vim@tpope.info>
+
+	* ftplugin/ruby.vim: Provide 'balloonexpr'.
+
 2007-02-27  Doug Kearns  <dougkearns@gmail.com>
 
 	* syntax/ruby.vim: add rubyPredefinedVariable to short-form
