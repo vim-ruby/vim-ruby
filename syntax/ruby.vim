@@ -44,7 +44,7 @@ syn match rubyEscape	"\\\\\|\\[abefnrstv]\|\\\o\{1,3}\|\\x\x\{1,2}"							 conta
 syn match rubyEscape	"\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)" contained display
 
 syn region rubyInterpolation	      matchgroup=rubyInterpolationDelimiter start="#{" end="}" contained contains=TOP
-syn match  rubyInterpolation	      "#\%(\$\|@@\=\)\w\+"    display contained  contains=rubyInterpolationDelimiter,rubyInstanceVariable,rubyClassVariable,rubyGlobalVariable
+syn match  rubyInterpolation	      "#\%(\$\|@@\=\)\w\+"    display contained  contains=rubyInterpolationDelimiter,rubyInstanceVariable,rubyClassVariable,rubyGlobalVariable,rubyPredefinedVariable
 syn match  rubyInterpolationDelimiter "#\ze\%(\$\|@@\=\)\w\+" display contained
 syn region rubyNoInterpolation	      start="\\#{" end="}"    contained
 syn match  rubyNoInterpolation	      "\\#{"		      display contained
