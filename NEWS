@@ -1,3 +1,46 @@
+= 2007.02.XX
+
+== Omni Completion
+
+RubyGems is now loaded by default if available.
+
+== Ruby Syntax Highlighting
+
+Ruby code is now highlighted inside interpolation regions.
+
+Symbols are now highlighted with the Constant highlight group. Constants and
+class names are now highlighted with the Type highlight group.
+
+Symbol names specified with a string now recognise interpolation and escape
+sequences.
+
+Alias statements now receive special highlighting similar to other
+'definitions'.
+
+== Ruby Filetype Support
+
+Matchit support has been improved to include (), {}, and [] in the list of
+patterns so that these will be appropriately skipped when included in comments.
+
+ri has been added as the 'keywordprg' and 'balloonexpr' is set to return the
+output of ri.
+
+== eRuby Indenting
+
+Tim Pope has taken over maintenance of the eRuby indent file.  Ruby code is now
+indented appropriately.
+
+== Bug Fixes
+
+Ruby syntax file
+  - trailing whitespace is no longer included with the def, class, module
+    keywords
+  - escaped interpolation regions should now be ignored in all cases
+
+eRuby syntax file
+  - '-' trim mode block delimiters are now recognised
+
+
 = 2006.07.11
 
 == Omni Completion

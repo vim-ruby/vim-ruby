@@ -1,3 +1,7 @@
+2007-02-28  Doug Kearns  <dougkearns@gmail.com>
+
+	* NEWS, CONTRIBUTORS: update documentation for next release
+
 2007-02-27  Tim Pope  <vim@tpope.info>
 
 	* ftplugin/ruby.vim: Provide 'balloonexpr'.
