@@ -183,13 +183,13 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   " statements without *do*
   syn region rubyNoDoBlock	  matchgroup=rubyControl     start="\<begin\>" end="\<end\>" contains=TOP fold
   syn region rubyCaseBlock	  matchgroup=rubyConditional start="\<case\>"  end="\<end\>" contains=TOP fold
-  syn region rubyConditionalBlock matchgroup=rubyConditional start="\%(\%(^\|\.\.\.\=\|[{?:,;=([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\%(if\|unless\)\>" end="\<end\>" contains=TOP fold
+  syn region rubyConditionalBlock matchgroup=rubyConditional start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\%(if\|unless\)\>" end="\<end\>" contains=TOP fold
   syn keyword rubyConditional then else when  contained containedin=rubyCaseBlock
   syn keyword rubyConditional then else elsif contained containedin=rubyConditionalBlock
 
   " statement with optional *do*
-  syn region rubyOptDoLine matchgroup=rubyRepeat start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[{?:,;=([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" end="\%(\<do\>\|:\)" end="\ze\%(;\|$\)" oneline contains=TOP
-  syn region rubyOptDoBlock start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[{?:,;=([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyRepeat end="\<end\>" contains=TOP nextgroup=rubyOptDoLine fold
+  syn region rubyOptDoLine matchgroup=rubyRepeat start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" end="\%(\<do\>\|:\)" end="\ze\%(;\|$\)" oneline contains=TOP
+  syn region rubyOptDoBlock start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyRepeat end="\<end\>" contains=TOP nextgroup=rubyOptDoLine fold
 
   if !exists("ruby_minlines")
     let ruby_minlines = 50
