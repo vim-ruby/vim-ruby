@@ -1,9 +1,9 @@
 " Vim filetype plugin
-" Language:             Ruby
-" Maintainer:           Gavin Sinclair <gsinclair at gmail.com>
-" Info:                 $Id: ruby.vim,v 1.32 2007/02/27 15:47:27 tpope Exp $
-" URL:                  http://vim-ruby.rubyforge.org
-" Anon CVS:             See above site
+" Language:		Ruby
+" Maintainer:		Gavin Sinclair <gsinclair at gmail.com>
+" Info:			$Id: ruby.vim,v 1.33 2007/03/02 04:39:38 dkearns Exp $
+" URL:			http://vim-ruby.rubyforge.org
+" Anon CVS:		See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
 " ----------------------------------------------------------------------------
 "
@@ -31,26 +31,26 @@ if exists("loaded_matchit") && !exists("b:match_words")
   let b:match_ignorecase = 0
 
  " TODO: improve optional do loops
- let b:match_words =
-    \ '\%(' .
-    \     '\%(\%(\.\|\:\:\)\s*\|\:\)\@<!\<\%(class\|module\|begin\|def\|case\|for\|do\)\>' .
-    \   '\|' .
-    \     '\%(\%(^\|\.\.\.\=\|[\,;=([<>~\*/%!&^|+-]\)\s*\)\@<=\%(if\|unless\|until\|while\)\>' .
-    \ '\)' .
-    \ ':' .
-    \ '\%(' .
-    \     '\%(\%(\.\|\:\:\)\s*\|\:\)\@<!\<\%(else\|elsif\|ensure\|when\)\>' .
-    \   '\|' .
-    \     '\%(\%(^\|;\)\s*\)\@<=\<rescue\>' .
-    \ '\)' .
-    \ ':' .
-    \ '\%(\%(\.\|\:\:\)\s*\|\:\)\@<!\<end\>' .
-    \ ',{:},\[:\],(:)'
+  let b:match_words =
+	\ '\%(' .
+	\     '\%(\%(\.\|\:\:\)\s*\|\:\)\@<!\<\%(class\|module\|begin\|def\|case\|for\|do\)\>' .
+	\   '\|' .
+	\     '\%(\%(^\|\.\.\.\=\|[{\:\,;([<>~\*/%&^|+-]\|\%(\<[_[\:lower\:]][_[\:alnum\:]]*\)\@<![!=?]\)\s*\)\@<=\%(if\|unless\|while\|until\)\>' .
+	\ '\)' .
+	\ ':' .
+	\ '\%(' .
+	\     '\%(\%(\.\|\:\:\)\s*\|\:\)\@<!\<\%(else\|elsif\|ensure\|when\)\>' .
+	\   '\|' .
+	\     '\%(\%(^\|;\)\s*\)\@<=\<rescue\>' .
+	\ '\)' .
+	\ ':' .
+	\ '\%(\%(\.\|\:\:\)\s*\|\:\)\@<!\<end\>' .
+	\ ',{:},\[:\],(:)'
 
   let b:match_skip =
-     \ "synIDattr(synID(line('.'),col('.'),0),'name') =~ '" .
-     \ "\\<ruby\\%(String\\|StringDelimiter\\|ASCIICode\\|Interpolation\\|" .
-     \ "NoInterpolation\\|Escape\\|Comment\\|Documentation\\)\\>'"
+	\ "synIDattr(synID(line('.'),col('.'),0),'name') =~ '" .
+	\ "\\<ruby\\%(String\\|StringDelimiter\\|ASCIICode\\|Interpolation\\|" .
+	\ "NoInterpolation\\|Escape\\|Comment\\|Documentation\\)\\>'"
 
 endif
 
