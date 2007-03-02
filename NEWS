@@ -1,15 +1,12 @@
-= 2007.02.XX
+= 2007.02.02
 
 == Omni Completion
 
-Fallback to syntax highlighting completion if Vim lacks the Ruby interface.
+Fall back to syntax highlighting completion if Vim lacks the Ruby interface.
 
 RubyGems is now loaded by default if available.
 
 Classes are detected using ObjectSpace.  Kernel methods are included in method
-completion.
-
-More robustness; failure to parse buffer no longer errors or prevents
 completion.
 
 Added completion in Rails views.  Rails helpers are included.  Rails migrations
@@ -17,16 +14,15 @@ now have completion.
 
 == Ruby Syntax Highlighting
 
-Ruby code is now highlighted inside interpolation regions.
+Ruby code is highlighted inside interpolation regions.
 
-Symbols are now highlighted with the Constant highlight group. Constants and
-class names are now highlighted with the Type highlight group.
+Symbols are now highlighted with the Constant highlight group; Constants and
+class names with the Type highlight group.
 
-Symbol names specified with a string now recognise interpolation and escape
+Symbol names specified with a string recognise interpolation and escape
 sequences.
 
-Alias statements now receive special highlighting similar to other
-'definitions'.
+Alias statements receive special highlighting similar to other 'definitions'.
 
 == Ruby Filetype Support
 
@@ -45,11 +41,17 @@ indented appropriately.
 
 Ruby syntax file
   - trailing whitespace is no longer included with the def, class, module
-    keywords
-  - escaped interpolation regions should now be ignored in all cases
+    keywords.
+  - escaped interpolation regions should now be ignored in all cases.
+  - conditional and loop statements are now highlighted correctly in more
+    locations (where they're used as expressions).
 
 eRuby syntax file
-  - '-' trim mode block delimiters are now recognised
+  - '-' trim mode block delimiters are now recognised.
+
+Omni Completion
+  - more robustness; failure to parse buffer no longer errors or prevents
+    completion.
 
 
 = 2006.07.11
