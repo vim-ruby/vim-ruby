@@ -1,3 +1,8 @@
+2002-03-02  Tim Pope  <vim@tpope.info>
+
+	* syntax/ruby.vim: Cope with (nonsensical) inclusion of : in
+	iskeyword.
+
 2007-03-02  Tim Pope  <vim@tpope.info>
 
 	* NEWS: Documented changes to omnicompletion.
