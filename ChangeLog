@@ -1,3 +1,7 @@
+2007-03-02  Doug Kearns  <dougkearns@gmail.com>
+
+	* NEWS: update documentation for next release
+
 2002-03-02  Tim Pope  <vim@tpope.info>
 
 	* syntax/ruby.vim: Cope with (nonsensical) inclusion of : in
