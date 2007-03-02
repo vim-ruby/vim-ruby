@@ -2,7 +2,18 @@
 
 == Omni Completion
 
+Fallback to syntax highlighting completion if Vim lacks the Ruby interface.
+
 RubyGems is now loaded by default if available.
+
+Classes are detected using ObjectSpace.  Kernel methods are included in method
+completion.
+
+More robustness; failure to parse buffer no longer errors or prevents
+completion.
+
+Added completion in Rails views.  Rails helpers are included.  Rails migrations
+now have completion.
 
 == Ruby Syntax Highlighting
 

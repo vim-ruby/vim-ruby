@@ -1,3 +1,7 @@
+2007-03-02  Tim Pope  <vim@tpope.info>
+
+	* NEWS: Documented changes to omnicompletion.
+
 2007-03-02  Doug Kearns  <dougkearns@gmail.com>
 
 	* ftplugin/ruby.vim: refine the conditional/loop expression vs
