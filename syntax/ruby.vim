@@ -171,8 +171,8 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   syn region rubyBlock start="\<module\>"	matchgroup=rubyModule end="\<end\>" contains=TOP fold
 
   " modifiers
-  syn match  rubyConditional "\<\%(if\|unless\)\>"   display
-  syn match  rubyRepeat	     "\<\%(while\|until\)\>" display
+  syn match  rubyConditionalModifier "\<\%(if\|unless\)\>"   display
+  syn match  rubyRepeatModifier	     "\<\%(while\|until\)\>" display
 
   " *do* requiring *end*
   syn region rubyDoBlock matchgroup=rubyControl start="\<do\>" end="\<end\>" contains=TOP fold
@@ -188,8 +188,8 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   syn keyword rubyConditional then else elsif contained containedin=rubyConditionalBlock
 
   " statement with optional *do*
-  syn region rubyOptDoLine matchgroup=rubyRepeat start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" end="\%(\<do\>\|:\)" end="\ze\%(;\|$\)" oneline contains=TOP
-  syn region rubyOptDoBlock start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyRepeat end="\<end\>" contains=TOP nextgroup=rubyOptDoLine fold
+  syn region rubyOptionalDoLine  matchgroup=rubyRepeat start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyOptionalDo end="\%(\<do\>\|:\)" end="\ze\%(;\|$\)" oneline contains=TOP
+  syn region rubyOptionalDoBlock start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyRepeat end="\<end\>" contains=TOP nextgroup=rubyOptionalDoLine fold
 
   if !exists("ruby_minlines")
     let ruby_minlines = 50
@@ -268,7 +268,10 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
   HiLink rubyDefine			Define
   HiLink rubyFunction			Function
   HiLink rubyConditional		Conditional
+  HiLink rubyConditionalModifier	rubyConditional
   HiLink rubyRepeat			Repeat
+  HiLink rubyRepeatModifier		rubyRepeat
+  HiLink rubyOptionalDo			rubyRepeat
   HiLink rubyControl			Statement
   HiLink rubyInclude			Include
   HiLink rubyInteger			Number
