@@ -30,28 +30,20 @@ endif
 if exists("loaded_matchit") && !exists("b:match_words")
   let b:match_ignorecase = 0
 
- " TODO: improve optional do loops
   let b:match_words =
-	\ '\%(' .
-	\     '\%(\%(\.\|\:\:\)\s*\|\:\)\@<!\<\%(class\|module\|begin\|def\|case\|for\|do\)\>' .
-	\   '\|' .
-	\     '\%(\%(^\|\.\.\.\=\|[{\:\,;([<>~\*/%&^|+-]\|\%(\<[_[\:lower\:]][_[\:alnum\:]]*\)\@<![!=?]\)\s*\)\@<=\%(if\|unless\|while\|until\)\>' .
-	\ '\)' .
+	\ '\<\%(if\|unless\|case\|while\|until\|for\|do\|class\|module\|def\|begin\)\>' .
 	\ ':' .
-	\ '\%(' .
-	\     '\%(\%(\.\|\:\:\)\s*\|\:\)\@<!\<\%(else\|elsif\|ensure\|when\)\>' .
-	\   '\|' .
-	\     '\%(\%(^\|;\)\s*\)\@<=\<rescue\>' .
-	\ '\)' .
+	\ '\<\%(else\|elsif\|ensure\|when\|rescue\)\>' .
 	\ ':' .
-	\ '\%(\%(\.\|\:\:\)\s*\|\:\)\@<!\<end\>' .
+	\ '\<end\>' .
 	\ ',{:},\[:\],(:)'
 
   let b:match_skip =
 	\ "synIDattr(synID(line('.'),col('.'),0),'name') =~ '" .
-	\ "\\<ruby\\%(String\\|StringDelimiter\\|ASCIICode\\|Interpolation\\|" .
-	\ "NoInterpolation\\|Escape\\|Comment\\|Documentation\\)\\>'"
-
+	\ "\\<ruby\\%(String\\|StringDelimiter\\|ASCIICode\\|Escape\\|" .
+	\ "Interpolation\\|NoInterpolation\\|Comment\\|Documentation\\|" .
+	\ "ConditionalModifier\\|RepeatModifier\\|OptionalDo\\|" .
+	\ "Function\\|BlockArgument\\|KeywordAsMethod\\)\\>'"
 endif
 
 setlocal formatoptions-=t formatoptions+=croql

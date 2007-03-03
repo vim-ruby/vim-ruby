@@ -1,5 +1,11 @@
 2007-03-03  Doug Kearns  <dougkearns@gmail.com>
 
+	* ftplugin/ruby.vim: simplify the b:match_words pattern by making
+	better use of b:match_skip in concert with the previous syntax group
+	additions
+
+2007-03-03  Doug Kearns  <dougkearns@gmail.com>
+
 	* syntax/ruby.vim: add rubyConditionalModifier and rubyRepeatModifier
 	syntax groups for conditional and loop modifiers and match the
 	optional 'do' or ':' in looping statements with a new rubyOptionalDo
