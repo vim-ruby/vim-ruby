@@ -1,7 +1,7 @@
 " Vim filetype plugin
 " Language:		Ruby
 " Maintainer:		Gavin Sinclair <gsinclair at gmail.com>
-" Info:			$Id: ruby.vim,v 1.34 2007/03/03 11:39:13 dkearns Exp $
+" Info:			$Id: ruby.vim,v 1.35 2007/03/05 14:20:25 dkearns Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
@@ -43,7 +43,8 @@ if exists("loaded_matchit") && !exists("b:match_words")
 	\ "\\<ruby\\%(String\\|StringDelimiter\\|ASCIICode\\|Escape\\|" .
 	\ "Interpolation\\|NoInterpolation\\|Comment\\|Documentation\\|" .
 	\ "ConditionalModifier\\|RepeatModifier\\|OptionalDo\\|" .
-	\ "Function\\|BlockArgument\\|KeywordAsMethod\\)\\>'"
+	\ "Function\\|BlockArgument\\|KeywordAsMethod\\|ClassVariable\\|" .
+	\ "InstanceVariable\\|GlobalVariable\\|Symbol\\)\\>'"
 endif
 
 setlocal formatoptions-=t formatoptions+=croql
