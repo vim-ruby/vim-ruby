@@ -43,7 +43,8 @@ if exists("loaded_matchit") && !exists("b:match_words")
 	\ "\\<ruby\\%(String\\|StringDelimiter\\|ASCIICode\\|Escape\\|" .
 	\ "Interpolation\\|NoInterpolation\\|Comment\\|Documentation\\|" .
 	\ "ConditionalModifier\\|RepeatModifier\\|OptionalDo\\|" .
-	\ "Function\\|BlockArgument\\|KeywordAsMethod\\)\\>'"
+	\ "Function\\|BlockArgument\\|KeywordAsMethod\\|ClassVariable\\|" .
+	\ "InstanceVariable\\|GlobalVariable\\|Symbol\\)\\>'"
 endif
 
 setlocal formatoptions-=t formatoptions+=croql

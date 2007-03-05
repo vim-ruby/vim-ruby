@@ -1,3 +1,7 @@
+2007-03-05  Doug Kearns  <dougkearns@gmail.com>
+
+	* ftplugin/ruby.vim: add sigil prefixed identifiers to b:match_skip
+
 2007-03-03  Doug Kearns  <dougkearns@gmail.com>
 
 	* ftplugin/ruby.vim: simplify the b:match_words pattern by making
