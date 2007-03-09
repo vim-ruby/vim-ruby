@@ -1,3 +1,8 @@
+2002-03-09  Tim Pope  <vim@tpope.info>
+
+	* ftplugin/ruby.vim: Skip class= and for= with matchit (really belongs
+	in ftplugin/eruby.vim).
+
 2007-03-05  Doug Kearns  <dougkearns@gmail.com>
 
 	* ftplugin/ruby.vim: add sigil prefixed identifiers to b:match_skip

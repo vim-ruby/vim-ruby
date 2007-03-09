@@ -1,7 +1,7 @@
 " Vim filetype plugin
 " Language:		Ruby
 " Maintainer:		Gavin Sinclair <gsinclair at gmail.com>
-" Info:			$Id: ruby.vim,v 1.35 2007/03/05 14:20:25 dkearns Exp $
+" Info:			$Id: ruby.vim,v 1.36 2007/03/09 15:14:41 tpope Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
@@ -31,7 +31,7 @@ if exists("loaded_matchit") && !exists("b:match_words")
   let b:match_ignorecase = 0
 
   let b:match_words =
-	\ '\<\%(if\|unless\|case\|while\|until\|for\|do\|class\|module\|def\|begin\)\>' .
+	\ '\<\%(if\|unless\|case\|while\|until\|for\|do\|class\|module\|def\|begin\)\>=\@!' .
 	\ ':' .
 	\ '\<\%(else\|elsif\|ensure\|when\|rescue\)\>' .
 	\ ':' .
