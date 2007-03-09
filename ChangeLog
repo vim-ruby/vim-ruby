@@ -1,5 +1,10 @@
 2002-03-09  Tim Pope  <vim@tpope.info>
 
+	* syntax/ruby.vim: Added OPTIMIZE alongside FIXME and TODO.  Mirrors
+	Edge Rails' new annotations extractor tasks.
+
+2002-03-09  Tim Pope  <vim@tpope.info>
+
 	* ftplugin/ruby.vim: Skip class= and for= with matchit (really belongs
 	in ftplugin/eruby.vim).
 
