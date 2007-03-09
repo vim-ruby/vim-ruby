@@ -31,7 +31,7 @@ if exists("loaded_matchit") && !exists("b:match_words")
   let b:match_ignorecase = 0
 
   let b:match_words =
-	\ '\<\%(if\|unless\|case\|while\|until\|for\|do\|class\|module\|def\|begin\)\>' .
+	\ '\<\%(if\|unless\|case\|while\|until\|for\|do\|class\|module\|def\|begin\)\>=\@!' .
 	\ ':' .
 	\ '\<\%(else\|elsif\|ensure\|when\|rescue\)\>' .
 	\ ':' .
