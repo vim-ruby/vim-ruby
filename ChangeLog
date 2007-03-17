@@ -1,3 +1,8 @@
+2007-03-17  Doug Kearns  <dougkearns@gmail.com>
+
+	* syntax/ruby.vim: allow regexp literals to be highlighted after the
+	'else' keyword
+
 2002-03-09  Tim Pope  <vim@tpope.info>
 
 	* syntax/ruby.vim: Added OPTIMIZE alongside FIXME and TODO.  Mirrors
