@@ -1,5 +1,11 @@
 2007-03-17  Doug Kearns  <dougkearns@gmail.com>
 
+	* syntax/ruby.vim: when ruby_operators is set don't match '>' in '=>';
+	fix some minor bugs in the highlighting of pseudo operators and
+	contain TOP in rubyBracketOperator
+
+2007-03-17  Doug Kearns  <dougkearns@gmail.com>
+
 	* syntax/ruby.vim: allow regexp literals to be highlighted after the
 	'else' keyword
 

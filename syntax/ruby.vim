@@ -34,9 +34,9 @@ endif
 
 " Operators
 if exists("ruby_operators")
-  syn match  rubyOperator	 "\%(\^\|\~\|\%(class\s*\)\@<!<<\|<=>\|<=\|\%(<\|\<class\s\+\u\w*\s*\)\@<!<[^<]\@=\|===\|==\|=\~\|>>\|>=\|>\||\|-\|/\|\*\*\|\*\|&\|%\|+\)"
-  syn match  rubyPseudoOperator  "\%(-=\|/=\|\*\*=\|\*=\|&&\|&=\|&&=\|||\||=\|||=\|%=\|+=\|!\~\|!=\)"
-  syn region rubyBracketOperator matchgroup=rubyOperator start="\%([_[:lower:]]\w*[?!=]\=\|}\)\@<=\[\s*" end="\s*]"
+  syn match  rubyOperator	 "\%(\^\|\~\|\%(class\s*\)\@<!<<\|<=>\|<=\|\%(<\|\<class\s\+\u\w*\s*\)\@<!<[^<]\@=\|===\|==\|=\~\|>>\|>=\|=\@<!>\||\|-\|/\|\*\*\|\*\|&\|%\|+\)"
+  syn match  rubyPseudoOperator  "\%(-=\|/=\|\*\*=\|\*=\|&&=\|&=\|&&\|||=\||=\|||\|%=\|+=\|!\~\|!=\)"
+  syn region rubyBracketOperator matchgroup=rubyOperator start="\%([_[:lower:]]\w*[?!=]\=\|[})]\)\@<=\[\s*" end="\s*]" contains=TOP
 endif
 
 " Expression Substitution and Backslash Notation
