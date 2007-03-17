@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		Ruby
 " Maintainer:		Doug Kearns <dougkearns@gmail.com>
-" Info:			$Id: ruby.vim,v 1.121 2007/03/17 07:00:57 dkearns Exp $
+" Info:			$Id: ruby.vim,v 1.122 2007/03/17 12:39:16 dkearns Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -34,9 +34,9 @@ endif
 
 " Operators
 if exists("ruby_operators")
-  syn match  rubyOperator	 "\%(\^\|\~\|\%(class\s*\)\@<!<<\|<=>\|<=\|\%(<\|\<class\s\+\u\w*\s*\)\@<!<[^<]\@=\|===\|==\|=\~\|>>\|>=\|>\||\|-\|/\|\*\*\|\*\|&\|%\|+\)"
-  syn match  rubyPseudoOperator  "\%(-=\|/=\|\*\*=\|\*=\|&&\|&=\|&&=\|||\||=\|||=\|%=\|+=\|!\~\|!=\)"
-  syn region rubyBracketOperator matchgroup=rubyOperator start="\%([_[:lower:]]\w*[?!=]\=\|}\)\@<=\[\s*" end="\s*]"
+  syn match  rubyOperator	 "\%(\^\|\~\|\%(class\s*\)\@<!<<\|<=>\|<=\|\%(<\|\<class\s\+\u\w*\s*\)\@<!<[^<]\@=\|===\|==\|=\~\|>>\|>=\|=\@<!>\||\|-\|/\|\*\*\|\*\|&\|%\|+\)"
+  syn match  rubyPseudoOperator  "\%(-=\|/=\|\*\*=\|\*=\|&&=\|&=\|&&\|||=\||=\|||\|%=\|+=\|!\~\|!=\)"
+  syn region rubyBracketOperator matchgroup=rubyOperator start="\%([_[:lower:]]\w*[?!=]\=\|[})]\)\@<=\[\s*" end="\s*]" contains=TOP
 endif
 
 " Expression Substitution and Backslash Notation
