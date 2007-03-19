@@ -1,3 +1,9 @@
+2007-03-19  Doug Kearns  <dougkearns@gmail.com>
+
+	* syntax/ruby.vim: highlight the scope and range operators when
+	ruby_operators is set; simplify block parameter highlighting by adding
+	the rubyBlockParameterList syntax group
+
 2007-03-17  Doug Kearns  <dougkearns@gmail.com>
 
 	* syntax/ruby.vim: when ruby_operators is set don't match '>' in '=>';
