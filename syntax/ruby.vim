@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		Ruby
 " Maintainer:		Doug Kearns <dougkearns@gmail.com>
-" Info:			$Id: ruby.vim,v 1.122 2007/03/17 12:39:16 dkearns Exp $
+" Info:			$Id: ruby.vim,v 1.123 2007/03/19 10:37:54 dkearns Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -34,7 +34,7 @@ endif
 
 " Operators
 if exists("ruby_operators")
-  syn match  rubyOperator	 "\%(\^\|\~\|\%(class\s*\)\@<!<<\|<=>\|<=\|\%(<\|\<class\s\+\u\w*\s*\)\@<!<[^<]\@=\|===\|==\|=\~\|>>\|>=\|=\@<!>\||\|-\|/\|\*\*\|\*\|&\|%\|+\)"
+  syn match  rubyOperator	 "\%([~!^&|*/%+-]\|\%(class\s*\)\@<!<<\|<=>\|<=\|\%(<\|\<class\s\+\u\w*\s*\)\@<!<[^<]\@=\|===\|==\|=\~\|>>\|>=\|=\@<!>\|\*\*\|\.\.\.\|\.\.\|::\)"
   syn match  rubyPseudoOperator  "\%(-=\|/=\|\*\*=\|\*=\|&&=\|&=\|&&\|||=\||=\|||\|%=\|+=\|!\~\|!=\)"
   syn region rubyBracketOperator matchgroup=rubyOperator start="\%([_[:lower:]]\w*[?!=]\=\|[})]\)\@<=\[\s*" end="\s*]" contains=TOP
 endif
@@ -82,11 +82,9 @@ syn match  rubySymbol			":\@<!:\$\%(-.\|[`~<=>_,;:!?/.'"@$*\&+0]\)"
 syn match  rubySymbol			":\@<!:\%(\$\|@@\=\)\=\h\w*[?!=]\="
 syn region rubySymbol			start=":\@<!:\"" end="\"" skip="\\\\\|\\\""
 syn region rubySymbol			start=":\@<!:\"" end="\"" skip="\\\\\|\\\"" contains=@rubyStringSpecial fold
-if exists("ruby_operators")
-  syn match  rubyBlockParameter		"\%(\%(\%(\<do\>\|{\)\s*\)|\s*\)\@<=[( ,a-zA-Z0-9_*)]\+\%(\s*|\)\@=" display
-else
-  syn match  rubyBlockParameter		"\%(\%(\<do\>\|{\)\s*\)\@<=|\s*\zs[( ,a-zA-Z0-9_*)]\+\ze\s*|" display
-endif
+
+syn match  rubyBlockParameter		"\h\w*" contained
+syn region rubyBlockParameterList	start="\%(\%(\<do\>\|{\)\s*\)\@<=|" end="|" oneline display contains=rubyBlockParameter
 
 syn match rubyPredefinedVariable #$[!$&"'*+,./0:;<=>?@\`~1-9]#
 syn match rubyPredefinedVariable "$_\>"											   display
