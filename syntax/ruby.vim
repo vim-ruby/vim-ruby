@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		Ruby
 " Maintainer:		Doug Kearns <dougkearns@gmail.com>
-" Info:			$Id: ruby.vim,v 1.123 2007/03/19 10:37:54 dkearns Exp $
+" Info:			$Id: ruby.vim,v 1.124 2007/03/20 12:19:19 dkearns Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -55,7 +55,11 @@ syn match rubyDelimEscape	"\\[(<{\[)>}\]]" transparent display contained contain
 syn region rubyNestedParentheses	start="("	end=")"		skip="\\\\\|\\)"	transparent contained contains=@rubyStringSpecial,rubyNestedParentheses,rubyDelimEscape
 syn region rubyNestedCurlyBraces	start="{"	end="}"		skip="\\\\\|\\}"	transparent contained contains=@rubyStringSpecial,rubyNestedCurlyBraces,rubyDelimEscape
 syn region rubyNestedAngleBrackets	start="<"	end=">"		skip="\\\\\|\\>"	transparent contained contains=@rubyStringSpecial,rubyNestedAngleBrackets,rubyDelimEscape
-syn region rubyNestedSquareBrackets	start="\["	end="\]"	skip="\\\\\|\\\]"	transparent contained contains=@rubyStringSpecial,rubyNestedSquareBrackets,rubyDelimEscape
+if exists("ruby_operators")
+  syn region rubyNestedSquareBrackets	start="\["	end="\]"	skip="\\\\\|\\\]"	transparent contained contains=@rubyStringSpecial,rubyNestedSquareBrackets,rubyDelimEscape
+else
+  syn region rubyNestedSquareBrackets	start="\["	end="\]"	skip="\\\\\|\\\]"	transparent containedin=rubyArrayLiteral contained contains=@rubyStringSpecial,rubyNestedSquareBrackets,rubyDelimEscape
+endif
 
 syn cluster rubyStringSpecial		contains=rubyInterpolation,rubyNoInterpolation,rubyEscape
 syn cluster rubyExtendedStringSpecial	contains=@rubyStringSpecial,rubyNestedParentheses,rubyNestedCurlyBraces,rubyNestedAngleBrackets,rubyNestedSquareBrackets
@@ -172,11 +176,10 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   syn match  rubyConditionalModifier "\<\%(if\|unless\)\>"   display
   syn match  rubyRepeatModifier	     "\<\%(while\|until\)\>" display
 
-  " *do* requiring *end*
   syn region rubyDoBlock matchgroup=rubyControl start="\<do\>" end="\<end\>" contains=TOP fold
-
-  " *{* requiring *}*
+  " curly bracket block or hash literal
   syn region rubyCurlyBlock start="{" end="}" contains=TOP fold
+syn region rubyArrayLiteral matchgroup=Error start="\%(\w\|[\]})]\)\@<!\[" end="]" contains=TOP fold
 
   " statements without *do*
   syn region rubyNoDoBlock	  matchgroup=rubyControl     start="\<begin\>" end="\<end\>" contains=TOP fold
