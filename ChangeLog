@@ -1,3 +1,8 @@
+2007-03-20  Doug Kearns  <dougkearns@gmail.com>
+
+	* syntax/ruby.vim: add rubyArrayLiteral syntax group for folding
+	multiline array literals
+
 2007-03-19  Doug Kearns  <dougkearns@gmail.com>
 
 	* syntax/ruby.vim: highlight the scope and range operators when
