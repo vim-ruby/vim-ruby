@@ -1,17 +1,13 @@
 " Vim syntax file
 " Language:		eRuby
 " Maintainer:		Doug Kearns <dougkearns@gmail.com>
-" Info:			$Id: eruby.vim,v 1.9 2006/10/23 15:03:03 dkearns Exp $
+" Info:			$Id: eruby.vim,v 1.10 2007/03/20 13:15:14 dkearns Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
 
-" For version 5.x: Clear all syntax items
-" For version 6.x: Quit when a syntax file was already loaded
-if version < 600
-  syntax clear
-elseif exists("b:current_syntax")
-  finish
+if exists("b:current_syntax")
+    finish
 endif
 
 if !exists("main_syntax")
@@ -29,27 +25,14 @@ endif
 
 syn cluster erubyRegions contains=erubyOneLiner,erubyBlock,erubyExpression,erubyComment
 
-syn region  erubyOneLiner   matchgroup=erubyDelimiter start="^%%\@!"    end="$"     contains=@rubyTop	     containedin=ALLBUT,@erubyRegions keepend oneline
+syn region  erubyOneLiner   matchgroup=erubyDelimiter start="^%%\@!"	end="$"     contains=@rubyTop	     containedin=ALLBUT,@erubyRegions keepend oneline
 syn region  erubyBlock	    matchgroup=erubyDelimiter start="<%%\@!-\=" end="-\=%>" contains=@rubyTop	     containedin=ALLBUT,@erubyRegions
-syn region  erubyExpression matchgroup=erubyDelimiter start="<%="       end="-\=%>" contains=@rubyTop	     containedin=ALLBUT,@erubyRegions
-syn region  erubyComment    matchgroup=erubyDelimiter start="<%#"       end="-\=%>" contains=rubyTodo,@Spell containedin=ALLBUT,@erubyRegions keepend
+syn region  erubyExpression matchgroup=erubyDelimiter start="<%="	end="-\=%>" contains=@rubyTop	     containedin=ALLBUT,@erubyRegions
+syn region  erubyComment    matchgroup=erubyDelimiter start="<%#"	end="-\=%>" contains=rubyTodo,@Spell containedin=ALLBUT,@erubyRegions keepend
 
-" Define the default highlighting.
-" For version 5.7 and earlier: only when not done already
-" For version 5.8 and later: only when an item doesn't have highlighting yet
-if version >= 508 || !exists("did_eruby_syntax_inits")
-  if version < 508
-    let did_ruby_syntax_inits = 1
-    command -nargs=+ HiLink hi link <args>
-  else
-    command -nargs=+ HiLink hi def link <args>
-  endif
+hi def link erubyDelimiter	Delimiter
+hi def link erubyComment	Comment
 
-  HiLink erubyDelimiter		Delimiter
-  HiLink erubyComment		Comment
-
-  delcommand HiLink
-endif
 let b:current_syntax = "eruby"
 
 if main_syntax == 'eruby'
