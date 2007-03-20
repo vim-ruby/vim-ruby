@@ -11,12 +11,8 @@
 " Thanks to perl.vim authors, and to Reimer Behrends. :-) (MN)
 " ----------------------------------------------------------------------------
 
-" For version 5.x: Clear all syntax items
-" For version 6.x: Quit when a syntax file was already loaded
-if version < 600
-  syntax clear
-elseif exists("b:current_syntax")
-  finish
+if exists("b:current_syntax")
+    finish
 endif
 
 if has("folding") && exists("ruby_fold")
@@ -253,75 +249,61 @@ syn match rubyKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(public\|require\|rai
 " __END__ Directive
 syn region rubyData matchgroup=rubyDataDirective start="^__END__$" end="\%$" fold
 
-" Define the default highlighting.
-" For version 5.7 and earlier: only when not done already
-" For version 5.8 and later: only when an item doesn't have highlighting yet
-if version >= 508 || !exists("did_ruby_syntax_inits")
-  if version < 508
-    let did_ruby_syntax_inits = 1
-    command -nargs=+ HiLink hi link <args>
-  else
-    command -nargs=+ HiLink hi def link <args>
-  endif
-
-  HiLink rubyClass			rubyDefine
-  HiLink rubyModule			rubyDefine
-  HiLink rubyDefine			Define
-  HiLink rubyFunction			Function
-  HiLink rubyConditional		Conditional
-  HiLink rubyConditionalModifier	rubyConditional
-  HiLink rubyRepeat			Repeat
-  HiLink rubyRepeatModifier		rubyRepeat
-  HiLink rubyOptionalDo			rubyRepeat
-  HiLink rubyControl			Statement
-  HiLink rubyInclude			Include
-  HiLink rubyInteger			Number
-  HiLink rubyASCIICode			Character
-  HiLink rubyFloat			Float
-  HiLink rubyBoolean			Boolean
-  HiLink rubyException			Exception
-  if !exists("ruby_no_identifiers")
-    HiLink rubyIdentifier		Identifier
-  else
-    HiLink rubyIdentifier		NONE
-  endif
-  HiLink rubyClassVariable		rubyIdentifier
-  HiLink rubyConstant			Type
-  HiLink rubyGlobalVariable		rubyIdentifier
-  HiLink rubyBlockParameter		rubyIdentifier
-  HiLink rubyInstanceVariable		rubyIdentifier
-  HiLink rubyPredefinedIdentifier	rubyIdentifier
-  HiLink rubyPredefinedConstant		rubyPredefinedIdentifier
-  HiLink rubyPredefinedVariable		rubyPredefinedIdentifier
-  HiLink rubySymbol			Constant
-  HiLink rubyKeyword			Keyword
-  HiLink rubyOperator			Operator
-  HiLink rubyPseudoOperator		rubyOperator
-  HiLink rubyBeginEnd			Statement
-  HiLink rubyAccess			Statement
-  HiLink rubyAttribute			Statement
-  HiLink rubyEval			Statement
-  HiLink rubyPseudoVariable		Constant
-
-  HiLink rubyComment			Comment
-  HiLink rubyData			Comment
-  HiLink rubyDataDirective		Delimiter
-  HiLink rubyDocumentation		Comment
-  HiLink rubyEscape			Special
-  HiLink rubyInterpolationDelimiter	Delimiter
-  HiLink rubyNoInterpolation		rubyString
-  HiLink rubySharpBang			PreProc
-  HiLink rubyRegexpDelimiter		rubyStringDelimiter
-  HiLink rubyStringDelimiter		Delimiter
-  HiLink rubyRegexp			rubyString
-  HiLink rubyString			String
-  HiLink rubyTodo			Todo
-
-  HiLink rubyError			Error
-  HiLink rubySpaceError			rubyError
-
-  delcommand HiLink
+hi def link rubyClass			rubyDefine
+hi def link rubyModule			rubyDefine
+hi def link rubyDefine			Define
+hi def link rubyFunction		Function
+hi def link rubyConditional		Conditional
+hi def link rubyConditionalModifier	rubyConditional
+hi def link rubyRepeat			Repeat
+hi def link rubyRepeatModifier		rubyRepeat
+hi def link rubyOptionalDo		rubyRepeat
+hi def link rubyControl			Statement
+hi def link rubyInclude			Include
+hi def link rubyInteger			Number
+hi def link rubyASCIICode		Character
+hi def link rubyFloat			Float
+hi def link rubyBoolean			Boolean
+hi def link rubyException		Exception
+if !exists("ruby_no_identifiers")
+  hi def link rubyIdentifier		Identifier
+else
+  hi def link rubyIdentifier		NONE
 endif
+hi def link rubyClassVariable		rubyIdentifier
+hi def link rubyConstant		Type
+hi def link rubyGlobalVariable		rubyIdentifier
+hi def link rubyBlockParameter		rubyIdentifier
+hi def link rubyInstanceVariable	rubyIdentifier
+hi def link rubyPredefinedIdentifier	rubyIdentifier
+hi def link rubyPredefinedConstant	rubyPredefinedIdentifier
+hi def link rubyPredefinedVariable	rubyPredefinedIdentifier
+hi def link rubySymbol			Constant
+hi def link rubyKeyword			Keyword
+hi def link rubyOperator		Operator
+hi def link rubyPseudoOperator		rubyOperator
+hi def link rubyBeginEnd		Statement
+hi def link rubyAccess			Statement
+hi def link rubyAttribute		Statement
+hi def link rubyEval			Statement
+hi def link rubyPseudoVariable		Constant
+
+hi def link rubyComment			Comment
+hi def link rubyData			Comment
+hi def link rubyDataDirective		Delimiter
+hi def link rubyDocumentation		Comment
+hi def link rubyEscape			Special
+hi def link rubyInterpolationDelimiter	Delimiter
+hi def link rubyNoInterpolation		rubyString
+hi def link rubySharpBang		PreProc
+hi def link rubyRegexpDelimiter		rubyStringDelimiter
+hi def link rubyStringDelimiter		Delimiter
+hi def link rubyRegexp			rubyString
+hi def link rubyString			String
+hi def link rubyTodo			Todo
+
+hi def link rubyError			Error
+hi def link rubySpaceError		rubyError
 
 let b:current_syntax = "ruby"
 

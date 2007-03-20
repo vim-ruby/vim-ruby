@@ -1,5 +1,10 @@
 2007-03-20  Doug Kearns  <dougkearns@gmail.com>
 
+	* syntax/ruby.vim, syntax/eruby.vim: remove the Vim version 5
+	compatibility code 
+
+2007-03-20  Doug Kearns  <dougkearns@gmail.com>
+
 	* syntax/ruby.vim: add rubyArrayLiteral syntax group for folding
 	multiline array literals
 
