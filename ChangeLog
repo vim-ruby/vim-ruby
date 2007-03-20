@@ -1,5 +1,10 @@
 2007-03-20  Doug Kearns  <dougkearns@gmail.com>
 
+	* indent/ruby.vim: ignore instance, class, and global variables named
+	"end" when looking to deindent the closing end token
+
+2007-03-20  Doug Kearns  <dougkearns@gmail.com>
+
 	* syntax/ruby.vim, syntax/eruby.vim: remove the Vim version 5
 	compatibility code 
 
