@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		Ruby
 " Maintainer:		Doug Kearns <dougkearns@gmail.com>
-" Info:			$Id: ruby.vim,v 1.126 2007/03/28 01:41:52 dkearns Exp $
+" Info:			$Id: ruby.vim,v 1.127 2007/03/28 05:11:47 dkearns Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -12,7 +12,7 @@
 " ----------------------------------------------------------------------------
 
 if exists("b:current_syntax")
-    finish
+  finish
 endif
 
 if has("folding") && exists("ruby_fold")
@@ -158,7 +158,9 @@ syn match  rubyModuleDeclaration   "[^[:space:];#]\+"	  contained contains=rubyC
 syn match  rubyFunction "\<[_[:alpha:]][_[:alnum:]]*[?!=]\=[[:alnum:].:?!=]\@!" contained containedin=rubyMethodDeclaration
 syn match  rubyFunction "\%(\s\|^\)\@<=[_[:alpha:]][_[:alnum:]]*[?!=]\=\%(\s\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2
 syn match  rubyFunction "\%([[:space:].]\|^\)\@<=\%(\[\]=\=\|\*\*\|[+-]@\=\|[*/%|&^~]\|<<\|>>\|[<>]=\=\|<=>\|===\|==\|=\~\|`\)\%([[:space:];#(]\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2,rubyMethodDeclaration
-" Expensive Mode - colorize *end* according to opening statement
+
+" Expensive Mode - match 'end' with the appropriate opening keyword for syntax
+" based folding and special highlighting of module/class/method definitions
 if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   syn match  rubyDefine "\<alias\>"		nextgroup=rubyAliasDeclaration	skipwhite skipnl
   syn match  rubyDefine "\<def\>"		nextgroup=rubyMethodDeclaration skipwhite skipnl
@@ -177,16 +179,17 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   syn region rubyCurlyBlock   start="{" end="}" contains=TOP fold
   syn region rubyArrayLiteral start="\%(\w\|[\]})]\)\@<!\[" end="]" contains=TOP fold
 
-  " statements without *do*
-  syn region rubyNoDoBlock	  matchgroup=rubyControl     start="\<begin\>" end="\<end\>" contains=TOP fold
-  syn region rubyCaseBlock	  matchgroup=rubyConditional start="\<case\>"  end="\<end\>" contains=TOP fold
-  syn region rubyConditionalBlock matchgroup=rubyConditional start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\%(if\|unless\)\>" end="\<end\>" contains=TOP fold
-  syn keyword rubyConditional then else when  contained containedin=rubyCaseBlock
-  syn keyword rubyConditional then else elsif contained containedin=rubyConditionalBlock
+  " statements without 'do'
+  syn region rubyBlockExpression       matchgroup=rubyControl	  start="\<begin\>" end="\<end\>" contains=TOP fold
+  syn region rubyCaseExpression	       matchgroup=rubyConditional start="\<case\>"  end="\<end\>" contains=TOP fold
+  syn region rubyConditionalExpression matchgroup=rubyConditional start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\%(if\|unless\)\>" end="\<end\>" contains=TOP fold
 
-  " statement with optional *do*
-  syn region rubyOptionalDoLine  matchgroup=rubyRepeat start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyOptionalDo end="\%(\<do\>\|:\)" end="\ze\%(;\|$\)" oneline contains=TOP
-  syn region rubyOptionalDoBlock start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyRepeat end="\<end\>" contains=TOP nextgroup=rubyOptionalDoLine fold
+  syn keyword rubyConditional then else when  contained containedin=rubyCaseExpression
+  syn keyword rubyConditional then else elsif contained containedin=rubyConditionalExpression
+
+  " statements with optional 'do'
+  syn region rubyOptionalDoLine   matchgroup=rubyRepeat start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyOptionalDo end="\%(\<do\>\|:\)" end="\ze\%(;\|$\)" oneline contains=TOP
+  syn region rubyRepeatExpression start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyRepeat end="\<end\>" contains=TOP nextgroup=rubyOptionalDoLine fold
 
   if !exists("ruby_minlines")
     let ruby_minlines = 50

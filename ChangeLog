@@ -1,5 +1,12 @@
 2007-03-28  Doug Kearns  <dougkearns@gmail.com>
 
+	* syntax/ruby.vim: rename the rubyNoDoBlock, rubyCaseBlock,
+	rubyConditionalBlock, and rubyOptionalDoBlock syntax groups to
+	rubyBlockExpression, rubyCaseExpression, rubyConditionalExpression,
+	and rubyRepeatExpression respectively
+
+2007-03-28  Doug Kearns  <dougkearns@gmail.com>
+
 	* syntax/ruby.vim: remove accidentally included matchgroup from
 	rubyArrayLiteral
 
