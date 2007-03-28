@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		Ruby
 " Maintainer:		Doug Kearns <dougkearns@gmail.com>
-" Info:			$Id: ruby.vim,v 1.127 2007/03/28 05:11:47 dkearns Exp $
+" Info:			$Id: ruby.vim,v 1.128 2007/03/28 05:16:16 dkearns Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -79,7 +79,8 @@ syn match  rubyInstanceVariable		"@\h\w*"  display
 syn match  rubyGlobalVariable		"$\%(\h\w*\|-.\)"
 syn match  rubySymbol			":\@<!:\%(\^\|\~\|<<\|<=>\|<=\|<\|===\|==\|=\~\|>>\|>=\|>\||\|-@\|-\|/\|\[]=\|\[]\|\*\*\|\*\|&\|%\|+@\|+\|`\)"
 syn match  rubySymbol			":\@<!:\$\%(-.\|[`~<=>_,;:!?/.'"@$*\&+0]\)"
-syn match  rubySymbol			":\@<!:\%(\$\|@@\=\)\=\h\w*[?!=]\="
+syn match  rubySymbol			":\@<!:\%(\$\|@@\=\)\=\h\w*"
+syn match  rubySymbol			":\@<!:\h\w*[?!=]\="
 syn region rubySymbol			start=":\@<!:\"" end="\"" skip="\\\\\|\\\""
 syn region rubySymbol			start=":\@<!:\"" end="\"" skip="\\\\\|\\\"" contains=@rubyStringSpecial fold
 

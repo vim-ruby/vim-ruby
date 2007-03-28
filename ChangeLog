@@ -1,5 +1,10 @@
 2007-03-28  Doug Kearns  <dougkearns@gmail.com>
 
+	* syntax/ruby.vim: don't match [!=?] as part of a sigil prefixed
+	symbol name
+
+2007-03-28  Doug Kearns  <dougkearns@gmail.com>
+
 	* syntax/ruby.vim: rename the rubyNoDoBlock, rubyCaseBlock,
 	rubyConditionalBlock, and rubyOptionalDoBlock syntax groups to
 	rubyBlockExpression, rubyCaseExpression, rubyConditionalExpression,
