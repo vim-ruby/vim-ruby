@@ -1,3 +1,8 @@
+2007-03-28  Doug Kearns  <dougkearns@gmail.com>
+
+	* syntax/ruby.vim: remove accidentally included matchgroup from
+	rubyArrayLiteral
+
 2007-03-20  Doug Kearns  <dougkearns@gmail.com>
 
 	* indent/ruby.vim: ignore instance, class, and global variables named

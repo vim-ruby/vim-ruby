@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		Ruby
 " Maintainer:		Doug Kearns <dougkearns@gmail.com>
-" Info:			$Id: ruby.vim,v 1.125 2007/03/20 13:15:14 dkearns Exp $
+" Info:			$Id: ruby.vim,v 1.126 2007/03/28 01:41:52 dkearns Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -174,8 +174,8 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
 
   syn region rubyDoBlock matchgroup=rubyControl start="\<do\>" end="\<end\>" contains=TOP fold
   " curly bracket block or hash literal
-  syn region rubyCurlyBlock start="{" end="}" contains=TOP fold
-syn region rubyArrayLiteral matchgroup=Error start="\%(\w\|[\]})]\)\@<!\[" end="]" contains=TOP fold
+  syn region rubyCurlyBlock   start="{" end="}" contains=TOP fold
+  syn region rubyArrayLiteral start="\%(\w\|[\]})]\)\@<!\[" end="]" contains=TOP fold
 
   " statements without *do*
   syn region rubyNoDoBlock	  matchgroup=rubyControl     start="\<begin\>" end="\<end\>" contains=TOP fold
