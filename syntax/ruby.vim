@@ -174,8 +174,8 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
 
   syn region rubyDoBlock matchgroup=rubyControl start="\<do\>" end="\<end\>" contains=TOP fold
   " curly bracket block or hash literal
-  syn region rubyCurlyBlock start="{" end="}" contains=TOP fold
-syn region rubyArrayLiteral matchgroup=Error start="\%(\w\|[\]})]\)\@<!\[" end="]" contains=TOP fold
+  syn region rubyCurlyBlock   start="{" end="}" contains=TOP fold
+  syn region rubyArrayLiteral start="\%(\w\|[\]})]\)\@<!\[" end="]" contains=TOP fold
 
   " statements without *do*
   syn region rubyNoDoBlock	  matchgroup=rubyControl     start="\<begin\>" end="\<end\>" contains=TOP fold
