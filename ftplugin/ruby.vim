@@ -33,7 +33,7 @@ if exists("loaded_matchit") && !exists("b:match_words")
   let b:match_words =
 	\ '\<\%(if\|unless\|case\|while\|until\|for\|do\|class\|module\|def\|begin\)\>=\@!' .
 	\ ':' .
-	\ '\<\%(else\|elsif\|ensure\|when\|rescue\)\>' .
+	\ '\<\%(else\|elsif\|ensure\|when\|rescue\|break\|redo\|next\|retry\)\>' .
 	\ ':' .
 	\ '\<end\>' .
 	\ ',{:},\[:\],(:)'
