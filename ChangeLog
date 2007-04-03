@@ -1,3 +1,8 @@
+2007-04-03  Doug Kearns  <dougkearns@gmail.com>
+
+	* syntax/ruby.vim: allow text to appear after, and on the same line,
+	as '=begin' in rubyDocumentation regions
+
 2007-03-31  Doug Kearns  <dougkearns@gmail.com>
 
 	* ftplugin/ruby.vim: add break, redo, next, and retry to b:match_words
