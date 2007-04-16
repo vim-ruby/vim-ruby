@@ -148,7 +148,7 @@ function! RubyBalloonexpr()
       return ''
     endif
     silent! let res = substitute(system("ri -f simple -T \"".str.'"'),'\n$','','')
-    if res =~ '^Nothing known about' || res =~ '^Bad argument:'
+    if res =~ '^Nothing known about' || res =~ '^Bad argument:' || res =~ '^More than one method'
       return ''
     endif
     return res
