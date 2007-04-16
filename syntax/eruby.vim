@@ -1,5 +1,5 @@
 " Vim syntax file
-" Language:		ERB
+" Language:		eRuby
 " Maintainer:		Tim Pope <vim@tpope.info>
 " Info:			$Id$
 " URL:			http://vim-ruby.rubyforge.org

@@ -16,9 +16,7 @@ set cpo-=C
 
 " Define some defaults in case the included ftplugins don't set them.
 let s:undo_ftplugin = ""
-let s:browsefilter = "Ruby Files (*.rb)\t*.rb\n" .
-		   \ "HTML Files (*.html, *.htm)\t*.html;*.htm\n" .
-		   \ "All Files (*.*)\t*.*\n"
+let s:browsefilter = "All Files (*.*)\t*.*\n"
 let s:match_words = ""
 
 runtime! ftplugin/html.vim ftplugin/html_*.vim ftplugin/html/*.vim
@@ -46,7 +44,7 @@ if exists("b:undo_ftplugin")
     let s:undo_ftplugin = b:undo_ftplugin . " | " . s:undo_ftplugin
 endif
 if exists ("b:browsefilter")
-    let s:browsefilter = b:browsefilter . s:browsefilter
+    let s:browsefilter = substitute(b:browsefilter,'\cAll Files (\*\.\*)\t\*\.\*\n','','') . s:browsefilter
 endif
 if exists("b:match_words")
     let s:match_words = b:match_words . ',' . s:match_words
@@ -54,7 +52,7 @@ endif
 
 " Change the browse dialog on Win32 to show mainly eRuby-related files
 if has("gui_win32")
-    let  b:browsefilter="eRuby Files (*.rhtml)\t*.rhtml\n" . s:browsefilter
+    let b:browsefilter="eRuby Files (*.erb, *.rhtml)\t*.erb;*.rhtml\n" . s:browsefilter
 endif
 
 " Load the combined list of match_words for matchit.vim
