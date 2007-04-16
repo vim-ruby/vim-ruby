@@ -1,7 +1,7 @@
 " Vim filetype plugin
 " Language:		Ruby
 " Maintainer:		Gavin Sinclair <gsinclair at gmail.com>
-" Info:			$Id: ruby.vim,v 1.37 2007/03/31 12:11:10 dkearns Exp $
+" Info:			$Id: ruby.vim,v 1.38 2007/04/16 15:15:01 tpope Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
@@ -148,7 +148,7 @@ function! RubyBalloonexpr()
       return ''
     endif
     silent! let res = substitute(system("ri -f simple -T \"".str.'"'),'\n$','','')
-    if res =~ '^Nothing known about' || res =~ '^Bad argument:'
+    if res =~ '^Nothing known about' || res =~ '^Bad argument:' || res =~ '^More than one method'
       return ''
     endif
     return res

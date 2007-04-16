@@ -8,4 +8,4 @@ au BufNewFile,BufRead [rR]akefile*				set filetype=ruby
 au BufNewFile,BufRead [rR]antfile,*.rant			set filetype=ruby
 
 " eRuby
-au BufNewFile,BufRead *.rhtml					set filetype=eruby
+au BufNewFile,BufRead *.erb,*.rhtml				set filetype=eruby

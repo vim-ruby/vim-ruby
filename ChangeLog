@@ -1,3 +1,8 @@
+2007-04-16  Tim Pope  <vim@tpope.info>
+
+	* ftdetect/ruby.vim: detect *.erb as eruby
+	* syntax/eruby.vim: determine subtype by inspecting filename
+
 2007-04-03  Doug Kearns  <dougkearns@gmail.com>
 
 	* syntax/ruby.vim: allow text to appear after, and on the same line,
