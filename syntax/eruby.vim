@@ -1,6 +1,6 @@
 " Vim syntax file
 " Language:		eRuby
-" Maintainer:		Tim Pope <vim@tpope.info>
+" Maintainer:		Tim Pope <vimNOSPAM@tpope.info>
 " Info:			$Id$
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
@@ -14,35 +14,31 @@ if !exists("main_syntax")
   let main_syntax = 'eruby'
 endif
 
-if !exists("b:eruby_subtype")
+if !exists("b:eruby_subtype") && main_syntax == 'eruby'
   let s:lines = getline(1)."\n".getline(2)."\n".getline(3)."\n".getline(4)."\n".getline(5)."\n".getline("$")
   let b:eruby_subtype = matchstr(s:lines,'eruby_subtype=\zs\w\+')
-  " Check extension if main_syntax wasn't set.  main_syntax can be set if this
-  " file is included from yet another syntax file.
-  if main_syntax == 'eruby' && b:eruby_subtype == ''
+  if b:eruby_subtype == ''
     let b:eruby_subtype = matchstr(substitute(expand("%:t"),'\c\.erb$','',''),'\.\zs\w\+$')
   endif
   if b:eruby_subtype == 'rhtml'
     let b:eruby_subtype = 'html'
+  elseif b:eruby_subtype == 'rb'
+    let b:eruby_subtype = 'ruby'
   elseif b:eruby_subtype == 'yml'
     let b:eruby_subtype = 'yaml'
   elseif b:eruby_subtype == 'txt'
     " Conventional; not a real file type
     let b:eruby_subtype = 'text'
-  elseif b:eruby_subtype == '' && main_syntax == 'eruby'
+  elseif b:eruby_subtype == ''
     let b:eruby_subtype == 'html'
   endif
 endif
 
-if version < 600
-  syn include @rubyTop <sfile>:p:h/ruby.vim
-else
-  if b:eruby_subtype != ''
-    exe "runtime! syntax/".b:eruby_subtype.".vim"
-    unlet! b:current_syntax
-  endif
-  syn include @rubyTop syntax/ruby.vim
+if exists("b:eruby_subtype") && b:eruby_subtype != ''
+  exe "runtime! syntax/".b:eruby_subtype.".vim"
+  unlet! b:current_syntax
 endif
+syn include @rubyTop syntax/ruby.vim
 
 syn cluster erubyRegions contains=erubyOneLiner,erubyBlock,erubyExpression,erubyComment
 
