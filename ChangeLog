@@ -1,3 +1,8 @@
+2007-04-20  Tim Pope  <vim@tpope.info>
+
+	* ftplugin/eruby.vim: refined subtype detection
+	* syntax/eruby.vim: refined subtype detection
+
 2007-04-17  Tim Pope  <vim@tpope.info>
 
 	* syntax/ruby.vim: highlight %s() as a symbol, not a string
