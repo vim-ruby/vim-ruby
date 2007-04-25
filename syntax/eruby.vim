@@ -32,7 +32,7 @@ if !exists("b:eruby_subtype") && main_syntax == 'eruby'
     " Conventional; not a real file type
     let b:eruby_subtype = 'text'
   elseif b:eruby_subtype == ''
-    let b:eruby_subtype == 'html'
+    let b:eruby_subtype = 'html'
   endif
 endif
 

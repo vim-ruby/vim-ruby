@@ -1,3 +1,8 @@
+2007-04-24  Tim Pope  <vim@tpope.info>
+
+	* ftplugin/eruby.vim: fixed typo in subtype detection
+	* syntax/eruby.vim: fixed typo in subtype detection
+
 2007-04-20  Tim Pope  <vim@tpope.info>
 
 	* ftplugin/eruby.vim: refined subtype detection
