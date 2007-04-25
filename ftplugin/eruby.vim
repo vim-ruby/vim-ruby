@@ -1,7 +1,7 @@
 " Vim filetype plugin
 " Language:		eRuby
 " Maintainer:		Tim Pope <vimNOSPAM@tpope.info>
-" Info:			$Id: eruby.vim,v 1.8 2007/04/20 13:54:56 tpope Exp $
+" Info:			$Id: eruby.vim,v 1.9 2007/04/25 18:00:58 tpope Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -37,7 +37,7 @@ if !exists("b:eruby_subtype")
     " Conventional; not a real file type
     let b:eruby_subtype = 'text'
   elseif b:eruby_subtype == ''
-    let b:eruby_subtype == 'html'
+    let b:eruby_subtype = 'html'
   endif
 endif
 
