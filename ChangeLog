@@ -1,12 +1,17 @@
+2007-05-05  Tim Pope  <vim@tpope.info>
+
+	* syntax/ruby.vim: eliminated some false positves for here docs,
+	symbols, ASCII codes, and conditionals as statement modifiers
+	* syntax/ruby.vim: added "neus" to regexp flags
+
 2007-04-24  Tim Pope  <vim@tpope.info>
 
-	* ftplugin/eruby.vim: fixed typo in subtype detection
-	* syntax/eruby.vim: fixed typo in subtype detection
+	* ftplugin/eruby.vim, syntax/eruby.vim: fixed typo in subtype
+	detection
 
 2007-04-20  Tim Pope  <vim@tpope.info>
 
-	* ftplugin/eruby.vim: refined subtype detection
-	* syntax/eruby.vim: refined subtype detection
+	* ftplugin/eruby.vim, syntax/eruby.vim: refined subtype detection
 
 2007-04-17  Tim Pope  <vim@tpope.info>
 
