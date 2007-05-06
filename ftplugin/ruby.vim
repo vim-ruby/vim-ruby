@@ -1,7 +1,7 @@
 " Vim filetype plugin
 " Language:		Ruby
 " Maintainer:		Gavin Sinclair <gsinclair at gmail.com>
-" Info:			$Id: ruby.vim,v 1.38 2007/04/16 15:15:01 tpope Exp $
+" Info:			$Id: ruby.vim,v 1.39 2007/05/06 16:38:40 tpope Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
@@ -96,9 +96,26 @@ if has("gui_win32") && !exists("b:browsefilter")
 endif
 
 let b:undo_ftplugin = "setl fo< inc< inex< sua< def< com< cms< path< kp<"
-      \ "| unlet! b:browsefilter b:match_ignorecase b:match_words b:match_skip"
-      \ "| if exists('&ofu') && has('ruby') | setl ofu< | endif"
-      \ "| if has('balloon_eval') && exists('+bexpr') | setl bexpr< | endif"
+      \."| unlet! b:browsefilter b:match_ignorecase b:match_words b:match_skip"
+      \."| if exists('&ofu') && has('ruby') | setl ofu< | endif"
+      \."| if has('balloon_eval') && exists('+bexpr') | setl bexpr< | endif"
+
+if !exists("g:no_plugin_maps") && !exists("g:no_ruby_maps")
+
+  noremap <silent> <buffer> [m :<C-U>call <SID>searchsyn('\<def\>','rubyDefine','b')<CR>
+  noremap <silent> <buffer> ]m :<C-U>call <SID>searchsyn('\<def\>','rubyDefine','')<CR>
+  noremap <silent> <buffer> [M :<C-U>call <SID>searchsyn('\<end\>','rubyDefine','b')<CR>
+  noremap <silent> <buffer> ]M :<C-U>call <SID>searchsyn('\<end\>','rubyDefine','')<CR>
+
+  noremap <silent> <buffer> [[ :<C-U>call <SID>searchsyn('\<\%(class\<Bar>module\)\>','rubyModule\<Bar>rubyClass','b')<CR>
+  noremap <silent> <buffer> ]] :<C-U>call <SID>searchsyn('\<\%(class\<Bar>module\)\>','rubyModule\<Bar>rubyClass','')<CR>
+  noremap <silent> <buffer> [] :<C-U>call <SID>searchsyn('\<end\>','rubyModule\<Bar>rubyClass','b')<CR>
+  noremap <silent> <buffer> ][ :<C-U>call <SID>searchsyn('\<end\>','rubyModule\<Bar>rubyClass','')<CR>
+
+  let b:undo_ftplugin = b:undo_ftplugin
+        \."| sil! exe 'unmap <buffer> [[' | sil! exe 'unmap <buffer> ]]' | sil! exe 'unmap <buffer> []' | sil! exe 'unmap <buffer> ]['"
+        \."| sil! exe 'unmap <buffer> [m' | sil! exe 'unmap <buffer> ]m' | sil! exe 'unmap <buffer> [M' | sil! exe 'unmap <buffer> ]M'"
+endif
 
 let &cpo = s:cpo_save
 unlet s:cpo_save
@@ -157,6 +174,28 @@ function! RubyBalloonexpr()
   endif
 endfunction
 
+function! s:searchsyn(pattern,syn,flags)
+    norm! m'
+    let i = 0
+    let cnt = v:count ? v:count : 1
+    while i < cnt
+        let i = i + 1
+        let line = line('.')
+        let col  = col('.')
+        let pos = search(a:pattern,'W'.a:flags)
+        while pos != 0 && s:synname() !~# a:syn
+            let pos = search(a:pattern,'W'.a:flags)
+        endwhile
+        if pos == 0
+            call cursor(line,col)
+            return
+        endif
+    endwhile
+endfunction
+
+function! s:synname()
+    return synIDattr(synID(line('.'),col('.'),0),'name')
+endfunction
 
 "
 " Instructions for enabling "matchit" support:
