@@ -1,7 +1,11 @@
 2007-05-06  Tim Pope  <vim@tpope.info>
 
-	* ftplugin/eruby.vim, syntax/eruby.vim: added a default suptype option
-
+	* ftplugin/ruby.vim: maps for [[, ]], [], ][, [m, ]m, [M, ]M
+
+2007-05-06  Tim Pope  <vim@tpope.info>
+
+	* ftplugin/eruby.vim, syntax/eruby.vim: added a default subtype option
+
 2007-05-06  Tim Pope  <vim@tpope.info>
 
 	* syntax/ruby.vim: Highlight punctuation variables in string
