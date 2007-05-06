@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		eRuby
 " Maintainer:		Tim Pope <vimNOSPAM@tpope.info>
-" Info:			$Id: eruby.vim,v 1.15 2007/04/25 18:00:59 tpope Exp $
+" Info:			$Id: eruby.vim,v 1.16 2007/05/06 16:05:40 tpope Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -12,6 +12,10 @@ endif
 
 if !exists("main_syntax")
   let main_syntax = 'eruby'
+endif
+
+if !exists("g:eruby_default_subtype")
+  let g:eruby_default_subtype = "html"
 endif
 
 if !exists("b:eruby_subtype") && main_syntax == 'eruby'
@@ -32,7 +36,7 @@ if !exists("b:eruby_subtype") && main_syntax == 'eruby'
     " Conventional; not a real file type
     let b:eruby_subtype = 'text'
   elseif b:eruby_subtype == ''
-    let b:eruby_subtype = 'html'
+    let b:eruby_subtype = g:eruby_default_subtype
   endif
 endif
 
