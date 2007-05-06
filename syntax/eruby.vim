@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		eRuby
 " Maintainer:		Tim Pope <vimNOSPAM@tpope.info>
-" Info:			$Id: eruby.vim,v 1.17 2007/05/06 17:55:04 tpope Exp $
+" Info:			$Id: eruby.vim,v 1.18 2007/05/06 23:56:12 tpope Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -41,7 +41,7 @@ if !exists("b:eruby_subtype") && main_syntax == 'eruby'
 endif
 
 if !exists("b:eruby_nest_level")
-  let b:eruby_nest_level = strlen(substitute(substitute(substitute(expand("%:t"),'@','','g'),'\c\.erb\>','@','g'),'[^@]','','g'))
+  let b:eruby_nest_level = strlen(substitute(substitute(substitute(expand("%:t"),'@','','g'),'\c\.\%(erb\|rhtml\)\>','@','g'),'[^@]','','g'))
 endif
 if !b:eruby_nest_level
   let b:eruby_nest_level = 1

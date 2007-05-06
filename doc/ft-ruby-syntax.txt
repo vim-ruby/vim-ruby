@@ -1,4 +1,4 @@
-RUBY						*ruby.vim* *ruby-syntax*
+RUBY						*ruby.vim* *ft-ruby-syntax*
 
 There are a number of options to the Ruby syntax highlighting.
 
@@ -16,7 +16,7 @@ scrolling backwards, which are fixed when redrawing with CTRL-L, try setting
 the "ruby_minlines" variable to a value larger than 50: >
 
 	:let ruby_minlines = 100
->
+<
 Ideally, this value should be a number of lines large enough to embrace your
 largest class or module.
 

@@ -1,5 +1,10 @@
 2007-05-06  Tim Pope  <vim@tpope.info>
 
+	* doc/ft-ruby-syntax.txt: bring into sync with upstream
+	* ftdetect/ruby.vim: Rails extensions
+
+2007-05-06  Tim Pope  <vim@tpope.info>
+
 	* NEWS: update documentation for next release
 	* syntax/eruby.vim: allow for nesting (foo.erb.erb)
 	* syntax/ruby.vim: removed : from rubyOptionalDoLine (falsely matches
