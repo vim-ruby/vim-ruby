@@ -1,3 +1,8 @@
+2007-05-06  Tim Pope  <vim@tpope.info>
+
+	* syntax/ruby.vim: Highlight punctuation variables in string
+	interpolation, and flag invalid ones as errors
+
 2007-05-05  Tim Pope  <vim@tpope.info>
 
 	* syntax/ruby.vim: eliminated some false positves for here docs,
