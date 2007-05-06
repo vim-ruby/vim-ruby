@@ -41,7 +41,7 @@ if !exists("b:eruby_subtype") && main_syntax == 'eruby'
 endif
 
 if !exists("b:eruby_nest_level")
-  let b:eruby_nest_level = strlen(substitute(substitute(substitute(expand("%:t"),'@','','g'),'\c\.erb\>','@','g'),'[^@]','','g'))
+  let b:eruby_nest_level = strlen(substitute(substitute(substitute(expand("%:t"),'@','','g'),'\c\.\%(erb\|rhtml\)\>','@','g'),'[^@]','','g'))
 endif
 if !b:eruby_nest_level
   let b:eruby_nest_level = 1
