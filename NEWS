@@ -1,3 +1,57 @@
+= 2007.05.07
+
+== Ruby Syntax Highlighting
+
+Highlight OPTIMIZE alongside FIXME and TODO.
+
+Multiline array literals can now be folded.
+
+== Ruby Filetype Support
+
+Added mappings for [[, ]], [], ][, [m, ]m, [M, and ]M.  The first four bounce
+between class and module declarations, and the last four between method
+declarations.
+
+== eRuby Syntax Highlighting
+
+Tim Pope has taken over maintenance of the eRuby syntax file.  The subtype of
+the file is now determined dynamically from the filename, rather than being
+hardwired to HTML.  It can be overridden with b:eruby_subtype.
+
+== eRuby Filetype Support
+
+Tim Pope has taken over maintenance of the eRuby filetype plugin.  Like with
+the syntax file, the subtype is now determined dynamically.
+
+== eRuby Indenting
+
+As with the syntax file and filetype plugin, the subtype is now determined
+dynamically.
+
+== Bug Fixes
+
+Ruby syntax file
+  - when ruby_operators is set, highlight scope and range operators, and don't
+    match '>' in =>'
+  - regexp literals are highlighted after the 'else' keyword
+  - don't match [!=?] as part of a sigil prefixed symbol name
+  - allow text to appear after, and on the same line, as '=begin' in
+    rubyDocumentation regions
+  - highlight %s() ans a symbol, not a string
+  - eliminated some false positves for here docs, symbols, ASCII codes, and
+    conditionals as statement modifiers
+  - added "neus" to regexp flags
+  - Highlight punctuation variables in string interpolation, and flag invalid
+    ones as errors
+  - removed : from rubyOptionalDoLine (falsely matches on symbols)
+
+Ruby filetype plugin
+  - eliminated some false positives with the matchit patterns
+
+Ruby indent plugin
+  - ignore instance, class, and global variables named "end"
+
+
 = 2007.03.02
 
 == Omni Completion
