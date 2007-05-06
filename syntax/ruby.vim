@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		Ruby
 " Maintainer:		Doug Kearns <dougkearns@gmail.com>
-" Info:			$Id: ruby.vim,v 1.132 2007/05/05 07:12:30 tpope Exp $
+" Info:			$Id: ruby.vim,v 1.133 2007/05/06 05:37:19 tpope Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -42,9 +42,12 @@ syn match rubyEscape	"\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)
 syn region rubyInterpolation	      matchgroup=rubyInterpolationDelimiter start="#{" end="}" contained contains=TOP
 syn match  rubyInterpolation	      "#\%(\$\|@@\=\)\w\+"    display contained  contains=rubyInterpolationDelimiter,rubyInstanceVariable,rubyClassVariable,rubyGlobalVariable,rubyPredefinedVariable
 syn match  rubyInterpolationDelimiter "#\ze\%(\$\|@@\=\)\w\+" display contained
+syn match  rubyInterpolation	      "#\$\%(-\w\|\W\)"       display contained  contains=rubyInterpolationDelimiter,rubyPredefinedVariable,rubyInvalidVariable
+syn match  rubyInterpolationDelimiter "#\ze\$\%(-\w\|\W\)"    display contained
 syn region rubyNoInterpolation	      start="\\#{" end="}"    contained
 syn match  rubyNoInterpolation	      "\\#{"		      display contained
 syn match  rubyNoInterpolation	      "\\#\%(\$\|@@\=\)\w\+"  display contained
+syn match  rubyNoInterpolation	      "\\#\$\W"               display contained
 
 syn match rubyDelimEscape	"\\[(<{\[)>}\]]" transparent display contained contains=NONE
 
@@ -87,6 +90,7 @@ syn region rubySymbol			start="[]})\"':]\@<!:\"" end="\"" skip="\\\\\|\\\"" cont
 syn match  rubyBlockParameter		"\h\w*" contained
 syn region rubyBlockParameterList	start="\%(\%(\<do\>\|{\)\s*\)\@<=|" end="|" oneline display contains=rubyBlockParameter
 
+syn match rubyInvalidVariable    "$[^ A-Za-z-]"
 syn match rubyPredefinedVariable #$[!$&"'*+,./0:;<=>?@\`~1-9]#
 syn match rubyPredefinedVariable "$_\>"											   display
 syn match rubyPredefinedVariable "$-[0FIKadilpvw]\>"									   display
@@ -311,6 +315,7 @@ hi def link rubyRegexp			rubyString
 hi def link rubyString			String
 hi def link rubyTodo			Todo
 
+hi def link rubyInvalidVariable		Error
 hi def link rubyError			Error
 hi def link rubySpaceError		rubyError
 
