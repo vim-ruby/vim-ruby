@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		Ruby
 " Maintainer:		Doug Kearns <dougkearns@gmail.com>
-" Info:			$Id: ruby.vim,v 1.133 2007/05/06 05:37:19 tpope Exp $
+" Info:			$Id: ruby.vim,v 1.134 2007/05/06 17:55:04 tpope Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -198,7 +198,7 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   syn keyword rubyConditional then else elsif contained containedin=rubyConditionalExpression
 
   " statements with optional 'do'
-  syn region rubyOptionalDoLine   matchgroup=rubyRepeat start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyOptionalDo end="\%(\<do\>\|:\)" end="\ze\%(;\|$\)" oneline contains=TOP
+  syn region rubyOptionalDoLine   matchgroup=rubyRepeat start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyOptionalDo end="\%(\<do\>\)" end="\ze\%(;\|$\)" oneline contains=TOP
   syn region rubyRepeatExpression start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyRepeat end="\<end\>" contains=TOP nextgroup=rubyOptionalDoLine fold
 
   if !exists("ruby_minlines")
