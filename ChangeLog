@@ -1,5 +1,9 @@
 2007-05-06  Tim Pope  <vim@tpope.info>
 
+	* ftplugin/eruby.vim, syntax/eruby.vim: added a default suptype option
+
+2007-05-06  Tim Pope  <vim@tpope.info>
+
 	* syntax/ruby.vim: Highlight punctuation variables in string
 	interpolation, and flag invalid ones as errors
 

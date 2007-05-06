@@ -19,6 +19,10 @@ let s:undo_ftplugin = ""
 let s:browsefilter = "All Files (*.*)\t*.*\n"
 let s:match_words = ""
 
+if !exists("g:eruby_default_subtype")
+  let g:eruby_default_subtype = "html"
+endif
+
 if !exists("b:eruby_subtype")
   let s:lines = getline(1)."\n".getline(2)."\n".getline(3)."\n".getline(4)."\n".getline(5)."\n".getline("$")
   let b:eruby_subtype = matchstr(s:lines,'eruby_subtype=\zs\w\+')
@@ -37,7 +41,7 @@ if !exists("b:eruby_subtype")
     " Conventional; not a real file type
     let b:eruby_subtype = 'text'
   elseif b:eruby_subtype == ''
-    let b:eruby_subtype = 'html'
+    let b:eruby_subtype = g:eruby_default_subtype
   endif
 endif
 
