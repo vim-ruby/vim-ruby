@@ -1,3 +1,7 @@
+2007-05-09  Tim Pope  <vim@tpope.info>
+
+	* syntax/ruby.vim: added module_function keyword
+
 2007-05-06  Tim Pope  <vim@tpope.info>
 
 	* doc/ft-ruby-syntax.txt: bring into sync with upstream

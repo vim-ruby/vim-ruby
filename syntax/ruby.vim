@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		Ruby
 " Maintainer:		Doug Kearns <dougkearns@gmail.com>
-" Info:			$Id: ruby.vim,v 1.134 2007/05/06 17:55:04 tpope Exp $
+" Info:			$Id: ruby.vim,v 1.135 2007/05/10 01:36:57 tpope Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -226,7 +226,7 @@ syn keyword rubyBeginEnd	BEGIN END
 
 " Special Methods
 if !exists("ruby_no_special_methods")
-  syn keyword rubyAccess    public protected private
+  syn keyword rubyAccess    public protected private module_function
   syn keyword rubyAttribute attr attr_accessor attr_reader attr_writer
   syn match   rubyControl   "\<\%(exit!\|\%(abort\|at_exit\|exit\|fork\|loop\|trap\)\>\)"
   syn keyword rubyEval	    eval class_eval instance_eval module_eval
