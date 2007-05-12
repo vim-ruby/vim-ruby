@@ -20,23 +20,6 @@ the "ruby_minlines" variable to a value larger than 50: >
 Ideally, this value should be a number of lines large enough to embrace your
 largest class or module.
 
-Highlighting of special identifiers can be disabled by removing the
-rubyIdentifier highlighting: >
-
-	:hi link rubyIdentifier NONE
-<
-This will prevent highlighting of special identifiers like "ConstantName",
-"$global_var", "@@class_var", "@instance_var", "| block_param |", and
-":symbol".
-
-Significant methods of Kernel, Module and Object are highlighted by default.
-This can be disabled by defining "ruby_no_special_methods": >
-
-	:let ruby_no_special_methods = 1
-<
-This will prevent highlighting of important methods such as "require", "attr",
-"private", "raise" and "proc".
-
 Ruby operators can be highlighted. This is enabled by defining
 "ruby_operators": >
 
@@ -51,17 +34,5 @@ as errors.  This can be refined by defining "ruby_no_trail_space_error" and
 "ruby_no_tab_space_error" which will ignore trailing whitespace and tabs after
 spaces respectively.
 
-Folding can be enabled by defining "ruby_fold": >
-
-	:let ruby_fold = 1
-<
-This will set the 'foldmethod' option to "syntax" and allow folding of
-classes, modules, methods, code blocks, heredocs and comments.
-
-Folding of multiline comments can be disabled by defining
-"ruby_no_comment_fold": >
-
-	:let ruby_no_comment_fold = 1
-<
 
  vim:tw=78:sw=4:ts=8:ft=help:norl:

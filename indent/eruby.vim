@@ -40,7 +40,12 @@ if exists("*GetErubyIndent")
   finish
 endif
 
-function! GetErubyIndent()
+function! GetErubyIndent(...)
+  if a:0 && a:1 == '.'
+    let v:lnum = line('.')
+  elseif a:0 =~ '^\d'
+    let v:lnum = a:1
+  endif
   let vcol = col('.')
   call cursor(v:lnum,1)
   let inruby = searchpair('<%','','%>')
