@@ -1,3 +1,8 @@
+2007-05-11  Tim Pope  <vim@tpope.info>
+
+	* indent/eruby.vim: GetRubyIndent() takes an argument for debugging
+	* doc/ft-ruby-syntax.txt: clean up some cruft
+
 2007-05-09  Tim Pope  <vim@tpope.info>
 
 	* syntax/ruby.vim: added module_function keyword
