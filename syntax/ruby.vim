@@ -54,11 +54,7 @@ syn match rubyDelimEscape	"\\[(<{\[)>}\]]" transparent display contained contain
 syn region rubyNestedParentheses	start="("	end=")"		skip="\\\\\|\\)"	transparent contained contains=@rubyStringSpecial,rubyNestedParentheses,rubyDelimEscape
 syn region rubyNestedCurlyBraces	start="{"	end="}"		skip="\\\\\|\\}"	transparent contained contains=@rubyStringSpecial,rubyNestedCurlyBraces,rubyDelimEscape
 syn region rubyNestedAngleBrackets	start="<"	end=">"		skip="\\\\\|\\>"	transparent contained contains=@rubyStringSpecial,rubyNestedAngleBrackets,rubyDelimEscape
-if exists("ruby_operators")
-  syn region rubyNestedSquareBrackets	start="\["	end="\]"	skip="\\\\\|\\\]"	transparent contained contains=@rubyStringSpecial,rubyNestedSquareBrackets,rubyDelimEscape
-else
-  syn region rubyNestedSquareBrackets	start="\["	end="\]"	skip="\\\\\|\\\]"	transparent containedin=rubyArrayLiteral contained contains=@rubyStringSpecial,rubyNestedSquareBrackets,rubyDelimEscape
-endif
+syn region rubyNestedSquareBrackets	start="\["	end="\]"	skip="\\\\\|\\\]"	transparent contained contains=@rubyStringSpecial,rubyNestedSquareBrackets,rubyDelimEscape
 
 syn cluster rubyStringSpecial		contains=rubyInterpolation,rubyNoInterpolation,rubyEscape
 syn cluster rubyExtendedStringSpecial	contains=@rubyStringSpecial,rubyNestedParentheses,rubyNestedCurlyBraces,rubyNestedAngleBrackets,rubyNestedSquareBrackets
@@ -83,7 +79,7 @@ syn match  rubyGlobalVariable		"$\%(\h\w*\|-.\)"
 syn match  rubySymbol			"[]})\"':]\@<!:\%(\^\|\~\|<<\|<=>\|<=\|<\|===\|==\|=\~\|>>\|>=\|>\||\|-@\|-\|/\|\[]=\|\[]\|\*\*\|\*\|&\|%\|+@\|+\|`\)"
 syn match  rubySymbol			"[]})\"':]\@<!:\$\%(-.\|[`~<=>_,;:!?/.'"@$*\&+0]\)"
 syn match  rubySymbol			"[]})\"':]\@<!:\%(\$\|@@\=\)\=\h\w*"
-syn match  rubySymbol			"[]})\"':]\@<!:\h\w*[?!=]\="
+syn match  rubySymbol			"[]})\"':]\@<!:\h\w*\%([?!=]>\@!\)\="
 syn region rubySymbol			start="[]})\"':]\@<!:\"" end="\"" skip="\\\\\|\\\""
 syn region rubySymbol			start="[]})\"':]\@<!:\"" end="\"" skip="\\\\\|\\\"" contains=@rubyStringSpecial fold
 
