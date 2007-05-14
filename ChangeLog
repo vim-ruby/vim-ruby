@@ -1,3 +1,8 @@
+2007-05-14  Tim Pope  <vim@tpope.info>
+
+	* syntax/ruby.vim: fixed problem highlighting [foo[:bar]]
+	* syntax/ruby.vim: don't highlight = in {:foo=>"bar"}
+
 2007-05-11  Tim Pope  <vim@tpope.info>
 
 	* indent/eruby.vim: GetRubyIndent() takes an argument for debugging
