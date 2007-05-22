@@ -162,7 +162,7 @@ syn match  rubyAliasDeclaration    "[^[:space:];#.()]\+"  contained contains=rub
 syn match  rubyAliasDeclaration2   "[^[:space:];#.()]\+"  contained contains=rubySymbol,rubyGlobalVariable,rubyPredefinedVariable
 syn match  rubyMethodDeclaration   "[^[:space:];#(]\+"	  contained contains=rubyConstant,rubyBoolean,rubyPseudoVariable,rubyInstanceVariable,rubyClassVariable,rubyGlobalVariable
 syn match  rubyClassDeclaration    "[^[:space:];#<]\+"	  contained contains=rubyConstant
-syn match  rubyModuleDeclaration   "[^[:space:];#]\+"	  contained contains=rubyConstant
+syn match  rubyModuleDeclaration   "[^[:space:];#<]\+"	  contained contains=rubyConstant
 syn match  rubyFunction "\<[_[:alpha:]][_[:alnum:]]*[?!=]\=[[:alnum:].:?!=]\@!" contained containedin=rubyMethodDeclaration
 syn match  rubyFunction "\%(\s\|^\)\@<=[_[:alpha:]][_[:alnum:]]*[?!=]\=\%(\s\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2
 syn match  rubyFunction "\%([[:space:].]\|^\)\@<=\%(\[\]=\=\|\*\*\|[+-]@\=\|[*/%|&^~]\|<<\|>>\|[<>]=\=\|<=>\|===\|==\|=\~\|`\)\%([[:space:];#(]\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2,rubyMethodDeclaration

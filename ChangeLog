@@ -1,3 +1,13 @@
+2007-05-22  Tim Pope  <vim@tpope.info>
+
+	* syntax/ruby.vim: made module declaration match mirror class
+	declaration match
+	* ftdetect/ruby.vim: added .irbrc
+
+2007-05-16  Tim Pope  <vim@tpope.info>
+
+	* syntax/ruby.vim: revert from using TOP to ALLBUT
+
 2007-05-15  Tim Pope  <vim@tpope.info>
 
 	* syntax/eruby.vim: handle %%> properly
