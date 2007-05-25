@@ -34,15 +34,14 @@ set cpo&vim
 " ============
 
 " Regex of syntax group names that are or delimit string or are comments.
-let s:syng_strcom = '\<ruby\%(String\|StringDelimiter\|ASCIICode' .
-      \ '\|Interpolation\|NoInterpolation\|Escape\|Comment\|Documentation\)\>'
+let s:syng_strcom = '\<ruby\%(String\|StringEscape\|ASCIICode' .
+      \ '\|Interpolation\|NoInterpolation\|Comment\|Documentation\)\>'
 
 " Regex of syntax group names that are strings.
 let s:syng_string =
-      \ '\<ruby\%(String\|StringDelimiter\|Interpolation\|NoInterpolation\|StringEscape\)\>'
+      \ '\<ruby\%(String\|Interpolation\|NoInterpolation\|StringEscape\)\>'
 
 " Regex of syntax group names that are strings or documentation.
-" Delimiters excluded.
 let s:syng_stringdoc =
   \'\<ruby\%(String\|Interpolation\|NoInterpolation\|StringEscape\|Documentation\)\>'
 
@@ -251,7 +250,7 @@ function GetRubyIndent()
 
   " If we are in a multi-line string or line-comment, don't do anything to it.
   if s:IsInStringOrDocumentation(v:lnum, matchend(line, '^\s*') + 1)
-    "return indent('.')
+    return indent('.')
   endif
 
   " 3.3. Work on the previous line. {{{2
