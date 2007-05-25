@@ -39,15 +39,16 @@ let s:syng_strcom = '\<ruby\%(String\|StringDelimiter\|ASCIICode' .
 
 " Regex of syntax group names that are strings.
 let s:syng_string =
-      \ '\<ruby\%(String\|StringDelimiter\|Interpolation\|NoInterpolation\|Escape\)\>'
+      \ '\<ruby\%(String\|StringDelimiter\|Interpolation\|NoInterpolation\|StringEscape\)\>'
 
 " Regex of syntax group names that are strings or documentation.
+" Delimiters excluded.
 let s:syng_stringdoc =
-  \'\<ruby\%(String\|StringDelimiter\|Interpolation\|NoInterpolation\|Escape\|Documentation\)\>'
+  \'\<ruby\%(String\|Interpolation\|NoInterpolation\|StringEscape\|Documentation\)\>'
 
 " Expression used to check whether we should skip a match with searchpair().
 let s:skip_expr =
-      \ "synIDattr(synID(line('.'),col('.'),0),'name') =~ '".s:syng_strcom."'"
+      \ "synIDattr(synID(line('.'),col('.'),1),'name') =~ '".s:syng_strcom."'"
 
 " Regex used for words that, at the start of a line, add a level of indent.
 let s:ruby_indent_keywords = '^\s*\zs\<\%(module\|class\|def\|if\|for' .
@@ -97,17 +98,17 @@ let s:block_regex =
 
 " Check if the character at lnum:col is inside a string, comment, or is ascii.
 function s:IsInStringOrComment(lnum, col)
-  return synIDattr(synID(a:lnum, a:col, 0), 'name') =~ s:syng_strcom
+  return synIDattr(synID(a:lnum, a:col, 1), 'name') =~ s:syng_strcom
 endfunction
 
 " Check if the character at lnum:col is inside a string.
 function s:IsInString(lnum, col)
-  return synIDattr(synID(a:lnum, a:col, 0), 'name') =~ s:syng_string
+  return synIDattr(synID(a:lnum, a:col, 1), 'name') =~ s:syng_string
 endfunction
 
 " Check if the character at lnum:col is inside a string or documentation.
 function s:IsInStringOrDocumentation(lnum, col)
-  return synIDattr(synID(a:lnum, a:col, 0), 'name') =~ s:syng_stringdoc
+  return synIDattr(synID(a:lnum, a:col, 1), 'name') =~ s:syng_stringdoc
 endfunction
 
 " Find line above 'lnum' that isn't empty, in a comment, or in a string.
@@ -250,7 +251,7 @@ function GetRubyIndent()
 
   " If we are in a multi-line string or line-comment, don't do anything to it.
   if s:IsInStringOrDocumentation(v:lnum, matchend(line, '^\s*') + 1)
-    return indent('.')
+    "return indent('.')
   endif
 
   " 3.3. Work on the previous line. {{{2
