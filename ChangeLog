@@ -1,3 +1,7 @@
+2007-05-26  Tim Pope  <vim@tpope.info>
+
+	* syntax/ruby.vim: added rubyBlockParameter to @rubyNoTop
+
 2007-05-25  Tim Pope  <vim@tpope.info>
 
 	* indent/ruby.vim: removed string delimiters from string matches

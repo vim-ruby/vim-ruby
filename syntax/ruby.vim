@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		Ruby
 " Maintainer:		Doug Kearns <dougkearns@gmail.com>
-" Info:			$Id: ruby.vim,v 1.139 2007/05/25 15:09:44 tpope Exp $
+" Info:			$Id: ruby.vim,v 1.140 2007/05/26 05:30:50 tpope Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -167,7 +167,7 @@ syn match  rubyFunction "\<[_[:alpha:]][_[:alnum:]]*[?!=]\=[[:alnum:].:?!=]\@!" 
 syn match  rubyFunction "\%(\s\|^\)\@<=[_[:alpha:]][_[:alnum:]]*[?!=]\=\%(\s\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2
 syn match  rubyFunction "\%([[:space:].]\|^\)\@<=\%(\[\]=\=\|\*\*\|[+-]@\=\|[*/%|&^~]\|<<\|>>\|[<>]=\=\|<=>\|===\|==\|=\~\|`\)\%([[:space:];#(]\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2,rubyMethodDeclaration
 
-syn cluster rubyDeclaration	contains=rubyAliasDeclaration,rubyAliasDeclaration2,rubyMethodDeclaration,rubyClassDeclaration,rubyModuleDeclaration,rubyFunction
+syn cluster rubyDeclaration	contains=rubyAliasDeclaration,rubyAliasDeclaration2,rubyMethodDeclaration,rubyModuleDeclaration,rubyClassDeclaration,rubyFunction,rubyBlockParameter
 
 " Expensive Mode - match 'end' with the appropriate opening keyword for syntax
 " based folding and special highlighting of module/class/method definitions
