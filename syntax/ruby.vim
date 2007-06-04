@@ -123,11 +123,11 @@ syn region rubyString matchgroup=rubyStringDelimiter start="%[qw]{"				    end="
 syn region rubyString matchgroup=rubyStringDelimiter start="%[qw]<"				    end=">"   skip="\\\\\|\\>"	 fold	contains=rubyNestedAngleBrackets,rubyDelimEscape
 syn region rubyString matchgroup=rubyStringDelimiter start="%[qw]\["				    end="\]"  skip="\\\\\|\\\]"	 fold	contains=rubyNestedSquareBrackets,rubyDelimEscape
 syn region rubyString matchgroup=rubyStringDelimiter start="%[qw]("				    end=")"   skip="\\\\\|\\)"	 fold	contains=rubyNestedParentheses,rubyDelimEscape
-syn region rubySymbol				     start="%[s]\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)"   end="\z1" skip="\\\\\|\\\z1" fold
-syn region rubySymbol				     start="%[s]{"				    end="}"   skip="\\\\\|\\}"	 fold	contains=rubyNestedCurlyBraces,rubyDelimEscape
-syn region rubySymbol				     start="%[s]<"				    end=">"   skip="\\\\\|\\>"	 fold	contains=rubyNestedAngleBrackets,rubyDelimEscape
-syn region rubySymbol				     start="%[s]\["				    end="\]"  skip="\\\\\|\\\]"	 fold	contains=rubyNestedSquareBrackets,rubyDelimEscape
-syn region rubySymbol				     start="%[s]("				    end=")"   skip="\\\\\|\\)"	 fold	contains=rubyNestedParentheses,rubyDelimEscape
+syn region rubySymbol matchgroup=rubySymbolDelimiter start="%[s]\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)"   end="\z1" skip="\\\\\|\\\z1" fold
+syn region rubySymbol matchgroup=rubySymbolDelimiter start="%[s]{"				    end="}"   skip="\\\\\|\\}"	 fold	contains=rubyNestedCurlyBraces,rubyDelimEscape
+syn region rubySymbol matchgroup=rubySymbolDelimiter start="%[s]<"				    end=">"   skip="\\\\\|\\>"	 fold	contains=rubyNestedAngleBrackets,rubyDelimEscape
+syn region rubySymbol matchgroup=rubySymbolDelimiter start="%[s]\["				    end="\]"  skip="\\\\\|\\\]"	 fold	contains=rubyNestedSquareBrackets,rubyDelimEscape
+syn region rubySymbol matchgroup=rubySymbolDelimiter start="%[s]("				    end=")"   skip="\\\\\|\\)"	 fold	contains=rubyNestedParentheses,rubyDelimEscape
 
 " Generalized Double Quoted String and Array of Strings and Shell Command Output
 " Note: %= is not matched here as the beginning of a double quoted string
@@ -310,6 +310,7 @@ hi def link rubyInterpolationDelimiter	Delimiter
 hi def link rubyNoInterpolation		rubyString
 hi def link rubySharpBang		PreProc
 hi def link rubyRegexpDelimiter		rubyStringDelimiter
+hi def link rubySymbolDelimiter		rubyStringDelimiter
 hi def link rubyStringDelimiter		Delimiter
 hi def link rubyRegexp			rubyString
 hi def link rubyString			String
