@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		Ruby
 " Maintainer:		Doug Kearns <dougkearns@gmail.com>
-" Info:			$Id: ruby.vim,v 1.141 2007/06/04 17:35:38 tpope Exp $
+" Info:			$Id: ruby.vim,v 1.142 2007/06/22 16:01:58 tpope Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -34,7 +34,7 @@ endif
 if exists("ruby_operators")
   syn match  rubyOperator	 "\%([~!^&|*/%+-]\|\%(class\s*\)\@<!<<\|<=>\|<=\|\%(<\|\<class\s\+\u\w*\s*\)\@<!<[^<]\@=\|===\|==\|=\~\|>>\|>=\|=\@<!>\|\*\*\|\.\.\.\|\.\.\|::\)"
   syn match  rubyPseudoOperator  "\%(-=\|/=\|\*\*=\|\*=\|&&=\|&=\|&&\|||=\||=\|||\|%=\|+=\|!\~\|!=\)"
-  syn region rubyBracketOperator matchgroup=rubyOperator start="\%([_[:lower:]]\w*[?!=]\=\|[})]\)\@<=\[\s*" end="\s*]" contains=ALLBUT,@rubyNotTop
+  syn region rubyBracketOperator matchgroup=rubyOperator start="\%(\w[?!]\=\|[]})]\)\@<=\[\s*" end="\s*]" contains=ALLBUT,@rubyNotTop
 endif
 
 " Expression Substitution and Backslash Notation
@@ -161,8 +161,8 @@ end
 syn match  rubyAliasDeclaration    "[^[:space:];#.()]\+"  contained contains=rubySymbol,rubyGlobalVariable,rubyPredefinedVariable nextgroup=rubyAliasDeclaration2 skipwhite
 syn match  rubyAliasDeclaration2   "[^[:space:];#.()]\+"  contained contains=rubySymbol,rubyGlobalVariable,rubyPredefinedVariable
 syn match  rubyMethodDeclaration   "[^[:space:];#(]\+"	  contained contains=rubyConstant,rubyBoolean,rubyPseudoVariable,rubyInstanceVariable,rubyClassVariable,rubyGlobalVariable
-syn match  rubyClassDeclaration    "[^[:space:];#<]\+"	  contained contains=rubyConstant
-syn match  rubyModuleDeclaration   "[^[:space:];#<]\+"	  contained contains=rubyConstant
+syn match  rubyClassDeclaration    "[^[:space:];#<]\+"	  contained contains=rubyConstant,rubyOperator
+syn match  rubyModuleDeclaration   "[^[:space:];#<]\+"	  contained contains=rubyConstant,rubyOperator
 syn match  rubyFunction "\<[_[:alpha:]][_[:alnum:]]*[?!=]\=[[:alnum:].:?!=]\@!" contained containedin=rubyMethodDeclaration
 syn match  rubyFunction "\%(\s\|^\)\@<=[_[:alpha:]][_[:alnum:]]*[?!=]\=\%(\s\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2
 syn match  rubyFunction "\%([[:space:].]\|^\)\@<=\%(\[\]=\=\|\*\*\|[+-]@\=\|[*/%|&^~]\|<<\|>>\|[<>]=\=\|<=>\|===\|==\|=\~\|`\)\%([[:space:];#(]\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2,rubyMethodDeclaration
