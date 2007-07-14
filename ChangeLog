@@ -1,3 +1,7 @@
+2007-07-14  Tim Pope  <vim@tpope.info>
+
+	* syntax/eruby.vim: fixed ALLBUT clauses to refer to right group
+
 2007-06-22  Tim Pope  <vim@tpope.info>
 
 	* syntax/ruby.vim: include operator highlighting in class/module

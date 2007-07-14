@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		eRuby
 " Maintainer:		Tim Pope <vimNOSPAM@tpope.info>
-" Info:			$Id: eruby.vim,v 1.19 2007/05/15 17:10:58 tpope Exp $
+" Info:			$Id: eruby.vim,v 1.20 2007/07/14 17:38:33 tpope Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -55,10 +55,10 @@ syn include @rubyTop syntax/ruby.vim
 
 syn cluster erubyRegions contains=erubyOneLiner,erubyBlock,erubyExpression,erubyComment
 
-exe 'syn region  erubyOneLiner   matchgroup=erubyDelimiter start="^%\{1,'.b:eruby_nest_level.'\}%\@!"    end="$"     contains=@rubyTop	     containedin=ALLBUT,@erbRegions keepend oneline'
-exe 'syn region  erubyBlock      matchgroup=erubyDelimiter start="<%\{1,'.b:eruby_nest_level.'\}%\@!-\=" end="-\=%\@<!%\{1,'.b:eruby_nest_level.'\}>" contains=@rubyTop        containedin=ALLBUT,@erbRegions keepend'
-exe 'syn region  erubyExpression matchgroup=erubyDelimiter start="<%\{1,'.b:eruby_nest_level.'\}="       end="-\=%\@<!%\{1,'.b:eruby_nest_level.'\}>" contains=@rubyTop        containedin=ALLBUT,@erbRegions keepend'
-exe 'syn region  erubyComment    matchgroup=erubyDelimiter start="<%\{1,'.b:eruby_nest_level.'\}#"       end="-\=%\@<!%\{1,'.b:eruby_nest_level.'\}>" contains=rubyTodo,@Spell containedin=ALLBUT,@erbRegions keepend'
+exe 'syn region  erubyOneLiner   matchgroup=erubyDelimiter start="^%\{1,'.b:eruby_nest_level.'\}%\@!"    end="$"     contains=@rubyTop	     containedin=ALLBUT,@erubyRegions keepend oneline'
+exe 'syn region  erubyBlock      matchgroup=erubyDelimiter start="<%\{1,'.b:eruby_nest_level.'\}%\@!-\=" end="-\=%\@<!%\{1,'.b:eruby_nest_level.'\}>" contains=@rubyTop        containedin=ALLBUT,@erubyRegions keepend'
+exe 'syn region  erubyExpression matchgroup=erubyDelimiter start="<%\{1,'.b:eruby_nest_level.'\}="       end="-\=%\@<!%\{1,'.b:eruby_nest_level.'\}>" contains=@rubyTop        containedin=ALLBUT,@erubyRegions keepend'
+exe 'syn region  erubyComment    matchgroup=erubyDelimiter start="<%\{1,'.b:eruby_nest_level.'\}#"       end="-\=%\@<!%\{1,'.b:eruby_nest_level.'\}>" contains=rubyTodo,@Spell containedin=ALLBUT,@erubyRegions keepend'
 
 " Define the default highlighting.
 " For version 5.7 and earlier: only when not done already
