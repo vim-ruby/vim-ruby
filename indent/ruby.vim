@@ -1,7 +1,7 @@
 " Vim indent file
 " Language:		Ruby
 " Maintainer:		Nikolai Weibull <now at bitwi.se>
-" Info:			$Id: ruby.vim,v 1.42 2007/05/25 15:57:41 tpope Exp $
+" Info:			$Id: ruby.vim,v 1.43 2007/07/16 17:45:20 tpope Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -53,7 +53,7 @@ let s:skip_expr =
 let s:ruby_indent_keywords = '^\s*\zs\<\%(module\|class\|def\|if\|for' .
       \ '\|while\|until\|else\|elsif\|case\|when\|unless\|begin\|ensure' .
       \ '\|rescue\)\>' .
-      \ '\|\%([*+/,=:-]\|<<\|>>\)\s*\zs' .
+      \ '\|\%([*+/,=-]\|<<\|>>\|:\s\)\s*\zs' .
       \    '\<\%(if\|for\|while\|until\|case\|unless\|begin\)\>'
 
 " Regex used for words that, at the start of a line, remove a level of indent.
@@ -65,7 +65,7 @@ let s:ruby_deindent_keywords =
 " TODO: the do here should be restricted somewhat (only at end of line)?
 let s:end_start_regex = '^\s*\zs\<\%(module\|class\|def\|if\|for' .
       \ '\|while\|until\|case\|unless\|begin\)\>' .
-      \ '\|\%([*+/,=:-]\|<<\|>>\)\s*\zs' .
+      \ '\|\%([*+/,=-]\|<<\|>>\|:\s\)\s*\zs' .
       \    '\<\%(if\|for\|while\|until\|case\|unless\|begin\)\>' .
       \ '\|\<do\>'
 
