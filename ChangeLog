@@ -1,3 +1,7 @@
+2007-07-16  Tim Pope  <vim@tpope.info>
+
+	* indent/ruby.vim: prevent symbols like :for from indenting
+
 2007-07-14  Tim Pope  <vim@tpope.info>
 
 	* syntax/eruby.vim: fixed ALLBUT clauses to refer to right group
