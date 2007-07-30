@@ -174,6 +174,7 @@ syn cluster rubyDeclaration	contains=rubyAliasDeclaration,rubyAliasDeclaration2,
 if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   syn match  rubyDefine "\<alias\>"		nextgroup=rubyAliasDeclaration	skipwhite skipnl
   syn match  rubyDefine "\<def\>"		nextgroup=rubyMethodDeclaration skipwhite skipnl
+  syn match  rubyDefine "\<undef\>"		nextgroup=rubyFunction skipwhite skipnl
   syn match  rubyClass	"\<class\>"		nextgroup=rubyClassDeclaration	skipwhite skipnl
   syn match  rubyModule "\<module\>"		nextgroup=rubyModuleDeclaration skipwhite skipnl
   syn region rubyBlock start="\<def\>"		matchgroup=rubyDefine end="\%(\<def\_s\+\)\@<!\<end\>" contains=ALLBUT,@rubyNotTop fold
@@ -211,7 +212,7 @@ else
   syn match   rubyControl "\<class\>"	nextgroup=rubyClassDeclaration	skipwhite skipnl
   syn match   rubyControl "\<module\>"	nextgroup=rubyModuleDeclaration skipwhite skipnl
   syn keyword rubyControl case begin do for if unless while until else elsif then when end
-  syn keyword rubyKeyword alias
+  syn keyword rubyKeyword alias undef
 endif
 
 " Keywords
@@ -219,7 +220,7 @@ endif
 " begin case class def do end for if module unless until while
 syn keyword rubyControl		and break ensure in next not or redo rescue retry return
 syn match   rubyOperator	"\<defined?" display
-syn keyword rubyKeyword		super undef yield
+syn keyword rubyKeyword		super yield
 syn keyword rubyBoolean		true false
 syn keyword rubyPseudoVariable	nil self __FILE__ __LINE__
 syn keyword rubyBeginEnd	BEGIN END

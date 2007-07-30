@@ -1,3 +1,7 @@
+2007-07-30  Tim Pope  <vim@tpope.info>
+
+	* syntax/ruby.vim: highlight undef like def
+
 2007-07-16  Tim Pope  <vim@tpope.info>
 
 	* indent/ruby.vim: prevent symbols like :for from indenting
