@@ -1,7 +1,7 @@
 " Vim indent file
 " Language:		Ruby
 " Maintainer:		Nikolai Weibull <now at bitwi.se>
-" Info:			$Id: ruby.vim,v 1.43 2007/07/16 17:45:20 tpope Exp $
+" Info:			$Id: ruby.vim,v 1.44 2007/08/07 15:41:50 tpope Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -78,7 +78,7 @@ let s:end_end_regex = '\%(^\|[^.:@$]\)\@<=\<end\>'
 " Expression used for searchpair() call for finding match for 'end' keyword.
 let s:end_skip_expr = s:skip_expr .
       \ ' || (expand("<cword>") == "do"' .
-      \ ' && getline(".") =~ "^\\s*\\<while\\|until\\|for\\>")'
+      \ ' && getline(".") =~ "^\\s*\\<\\(while\\|until\\|for\\)\\>")'
 
 " Regex that defines continuation lines, not including (, {, or [.
 let s:continuation_regex = '\%([\\*+/.,=:-]\|\W[|&?]\|||\|&&\)\s*\%(#.*\)\=$'
