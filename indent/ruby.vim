@@ -78,7 +78,7 @@ let s:end_end_regex = '\%(^\|[^.:@$]\)\@<=\<end\>'
 " Expression used for searchpair() call for finding match for 'end' keyword.
 let s:end_skip_expr = s:skip_expr .
       \ ' || (expand("<cword>") == "do"' .
-      \ ' && getline(".") =~ "^\\s*\\<while\\|until\\|for\\>")'
+      \ ' && getline(".") =~ "^\\s*\\<\\(while\\|until\\|for\\)\\>")'
 
 " Regex that defines continuation lines, not including (, {, or [.
 let s:continuation_regex = '\%([\\*+/.,=:-]\|\W[|&?]\|||\|&&\)\s*\%(#.*\)\=$'
