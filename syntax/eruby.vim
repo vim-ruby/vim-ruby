@@ -61,21 +61,10 @@ exe 'syn region  erubyExpression matchgroup=erubyDelimiter start="<%\{1,'.b:erub
 exe 'syn region  erubyComment    matchgroup=erubyDelimiter start="<%\{1,'.b:eruby_nest_level.'\}#"       end="-\=%\@<!%\{1,'.b:eruby_nest_level.'\}>" contains=rubyTodo,@Spell containedin=ALLBUT,@erubyRegions keepend'
 
 " Define the default highlighting.
-" For version 5.7 and earlier: only when not done already
-" For version 5.8 and later: only when an item doesn't have highlighting yet
-if version >= 508 || !exists("did_eruby_syntax_inits")
-  if version < 508
-    let did_ruby_syntax_inits = 1
-    command -nargs=+ HiLink hi link <args>
-  else
-    command -nargs=+ HiLink hi def link <args>
-  endif
 
-  HiLink erubyDelimiter		Delimiter
-  HiLink erubyComment		Comment
+hi def link erubyDelimiter		Delimiter
+hi def link erubyComment		Comment
 
-  delcommand HiLink
-endif
 let b:current_syntax = 'eruby'
 
 if main_syntax == 'eruby'
