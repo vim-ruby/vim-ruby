@@ -1,3 +1,8 @@
+2007-09-06  Tim Pope  <vim@tpope.info>
+
+	* syntax/eruby.vim: remove Vim 5.x specific sections
+	* syntax/ruby.vim: highlight negative sign in numbers
+
 2007-08-07  Tim Pope  <vim@tpope.info>
 
 	* indent/ruby.vim: fix while/until/for match in skip regexp
