@@ -1,3 +1,7 @@
+2007-09-14  Tim Pope  <vim@tpope.info>
+
+	* compiler/rspec.vim: new compiler plugin for rspec
+
 2007-09-06  Tim Pope  <vim@tpope.info>
 
 	* syntax/eruby.vim: remove Vim 5.x specific sections
