@@ -1,3 +1,7 @@
+2007-10-01  Tim Pope  <vim@tpope.info>
+
+	* syntax/ruby.vim: removed some false positives (e.g., include?, nil?)
+
 2007-09-14  Tim Pope  <vim@tpope.info>
 
 	* compiler/rspec.vim: new compiler plugin for rspec

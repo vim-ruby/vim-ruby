@@ -193,14 +193,14 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   " statements without 'do'
   syn region rubyBlockExpression       matchgroup=rubyControl	  start="\<begin\>" end="\<end\>" contains=ALLBUT,@rubyNotTop fold
   syn region rubyCaseExpression	       matchgroup=rubyConditional start="\<case\>"  end="\<end\>" contains=ALLBUT,@rubyNotTop fold
-  syn region rubyConditionalExpression matchgroup=rubyConditional start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+=-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!?]\)\s*\)\@<=\%(if\|unless\)\>" end="\<end\>" contains=ALLBUT,@rubyNotTop fold
+  syn region rubyConditionalExpression matchgroup=rubyConditional start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+=-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![?!]\)\s*\)\@<=\%(if\|unless\)\>" end="\<end\>" contains=ALLBUT,@rubyNotTop fold
 
-  syn keyword rubyConditional then else when  contained containedin=rubyCaseExpression
-  syn keyword rubyConditional then else elsif contained containedin=rubyConditionalExpression
+  syn match rubyConditional "\<\%(then\|else\|when\)\>[?!]\@!"  contained containedin=rubyCaseExpression
+  syn match rubyConditional "\<\%(then\|else\|elsif\)\>[?!]\@!" contained containedin=rubyConditionalExpression
 
   " statements with optional 'do'
-  syn region rubyOptionalDoLine   matchgroup=rubyRepeat start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyOptionalDo end="\%(\<do\>\)" end="\ze\%(;\|$\)" oneline contains=ALLBUT,@rubyNotTop
-  syn region rubyRepeatExpression start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyRepeat end="\<end\>" contains=ALLBUT,@rubyNotTop nextgroup=rubyOptionalDoLine fold
+  syn region rubyOptionalDoLine   matchgroup=rubyRepeat start="\<for\>[?!]\@!" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyOptionalDo end="\%(\<do\>\)" end="\ze\%(;\|$\)" oneline contains=ALLBUT,@rubyNotTop
+  syn region rubyRepeatExpression start="\<for\>[?!]\@!" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyRepeat end="\<end\>" contains=ALLBUT,@rubyNotTop nextgroup=rubyOptionalDoLine fold
 
   if !exists("ruby_minlines")
     let ruby_minlines = 50
@@ -208,31 +208,35 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   exec "syn sync minlines=" . ruby_minlines
 
 else
-  syn match   rubyControl "\<def\>"	nextgroup=rubyMethodDeclaration skipwhite skipnl
-  syn match   rubyControl "\<class\>"	nextgroup=rubyClassDeclaration	skipwhite skipnl
-  syn match   rubyControl "\<module\>"	nextgroup=rubyModuleDeclaration skipwhite skipnl
-  syn keyword rubyControl case begin do for if unless while until else elsif then when end
-  syn keyword rubyKeyword alias undef
+  syn match   rubyControl "\<def\>[?!]\@!"	nextgroup=rubyMethodDeclaration skipwhite skipnl
+  syn match   rubyControl "\<class\>[?!]\@!"	nextgroup=rubyClassDeclaration	skipwhite skipnl
+  syn match   rubyControl "\<module\>[?!]\@!"	nextgroup=rubyModuleDeclaration skipwhite skipnl
+  syn match   rubyControl "\<\%(case\|begin\|do\|for\|if\|unless\|while\|until\|else\|elsif\|then\|when\|end\)\>[?!]\@!"
+  syn match   rubyKeyword "\<\%(alias\|undef\)\>[?!]\@!"
 endif
 
 " Keywords
 " Note: the following keywords have already been defined:
 " begin case class def do end for if module unless until while
-syn keyword rubyControl		and break ensure in next not or redo rescue retry return
+syn match   rubyControl		"\<\%(and\|break\|ensure\|in\|next\|not\|or\|redo\|rescue\|retry\|return\)\>[?!]\@!"
 syn match   rubyOperator	"\<defined?" display
-syn keyword rubyKeyword		super yield
-syn keyword rubyBoolean		true false
-syn keyword rubyPseudoVariable	nil self __FILE__ __LINE__
-syn keyword rubyBeginEnd	BEGIN END
+syn match   rubyKeyword		"\<\%(super\|yield\)\>[?!]\@!"
+syn match   rubyBoolean		"\<\%(true\|false\)\>[?!]\@!"
+syn match   rubyPseudoVariable	"\<\%(nil\|self\|__FILE__\|__LINE__\)\>[?!]\@!"
+syn match   rubyBeginEnd	"\<\%(BEGIN\|END\)\>[?!]\@!"
 
 " Special Methods
 if !exists("ruby_no_special_methods")
   syn keyword rubyAccess    public protected private module_function
-  syn keyword rubyAttribute attr attr_accessor attr_reader attr_writer
-  syn match   rubyControl   "\<\%(exit!\|\%(abort\|at_exit\|exit\|fork\|loop\|trap\)\>\)"
+  " attr is a common variable name
+  syn match   rubyAttribute "\%(\%(^\|;\)\s*\)\@<=attr\>\(\s*[.=]\)\@!"
+  syn keyword rubyAttribute attr_accessor attr_reader attr_writer
+  syn match   rubyControl   "\<\%(exit!\|\%(abort\|at_exit\|exit\|fork\|loop\|trap\)\>[?!]\@!\)"
   syn keyword rubyEval	    eval class_eval instance_eval module_eval
   syn keyword rubyException raise fail catch throw
-  syn keyword rubyInclude   autoload extend include load require
+  " false positive with 'include?'
+  syn match   rubyInclude   "\<include\>[?!]\@!"
+  syn keyword rubyInclude   autoload extend load require
   syn keyword rubyKeyword   callcc caller lambda proc
 endif
 
@@ -252,6 +256,9 @@ syn match rubyKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(alias\|and\|begin\|b
 syn match rubyKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(elsif\|end\|ensure\|false\|for\|if\|in\|module\|next\|nil\)\>"			transparent contains=NONE
 syn match rubyKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(not\|or\|redo\|rescue\|retry\|return\|self\|super\|then\|true\)\>"			transparent contains=NONE
 syn match rubyKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(undef\|unless\|until\|when\|while\|yield\|BEGIN\|END\|__FILE__\|__LINE__\)\>"	transparent contains=NONE
+
+syn match rubyKeywordAsMethod "\<\%(alias\|begin\|case\|class\|def\|do\|end\)[?!]"		transparent contains=NONE
+syn match rubyKeywordAsMethod "\<\%(if\|module\|undef\|unless\|until\|while\)[?!]"		transparent contains=NONE
 
 syn match rubyKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(abort\|at_exit\|attr\|attr_accessor\|attr_reader\)\>"	transparent contains=NONE
 syn match rubyKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(attr_writer\|autoload\|callcc\|catch\|caller\)\>"		transparent contains=NONE
