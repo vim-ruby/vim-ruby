@@ -1,3 +1,7 @@
+2007-12-17  Tim Pope  <vim@tpope.info>
+
+	* indent/eruby.vim: treat <%- like <%
+
 2007-10-01  Tim Pope  <vim@tpope.info>
 
 	* syntax/ruby.vim: removed some false positives (e.g., include?, nil?)
