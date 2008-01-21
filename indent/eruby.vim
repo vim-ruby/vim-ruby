@@ -1,7 +1,7 @@
 " Vim indent file
 " Language:		eRuby
 " Maintainer:		Tim Pope <vimNOSPAM@tpope.info>
-" Info:			$Id: eruby.vim,v 1.11 2007/12/17 18:35:15 tpope Exp $
+" Info:			$Id: eruby.vim,v 1.12 2008/01/21 15:15:19 tpope Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -58,10 +58,10 @@ function! GetErubyIndent(...)
   let lnum = prevnonblank(v:lnum-1)
   let line = getline(lnum)
   let cline = getline(v:lnum)
-  if cline =~# '<%-\=\s*\%(end\|else\|\%(ensure\|rescue\|elsif\|when\).\{-\}\)\s*\%(-\=%>\|$\)'
+  if cline =~# '<%-\=\s*\%(}\|end\|else\|\%(ensure\|rescue\|elsif\|when\).\{-\}\)\s*\%(-\=%>\|$\)'
     let ind = ind - &sw
   endif
-  if line =~# '\<do\%(\s*|[^|]*|\)\=\s*-\=%>'
+  if line =~# '\%({\|\<do\)\%(\s*|[^|]*|\)\=\s*-\=%>'
     let ind = ind + &sw
   elseif line =~# '<%-\=\s*\%(module\|class\|def\|if\|for\|while\|until\|else\|elsif\|case\|when\|unless\|begin\|ensure\|rescue\)\>.*%>'
     let ind = ind + &sw
