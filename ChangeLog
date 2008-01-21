@@ -1,3 +1,7 @@
+2008-01-21  Tim Pope  <vim@tpope.info>
+
+	* indent/eruby.vim: indent { and } like do and end
+
 2007-12-17  Tim Pope  <vim@tpope.info>
 
 	* indent/eruby.vim: treat <%- like <%

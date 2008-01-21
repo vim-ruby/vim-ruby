@@ -58,10 +58,10 @@ function! GetErubyIndent(...)
   let lnum = prevnonblank(v:lnum-1)
   let line = getline(lnum)
   let cline = getline(v:lnum)
-  if cline =~# '<%-\=\s*\%(end\|else\|\%(ensure\|rescue\|elsif\|when\).\{-\}\)\s*\%(-\=%>\|$\)'
+  if cline =~# '<%-\=\s*\%(}\|end\|else\|\%(ensure\|rescue\|elsif\|when\).\{-\}\)\s*\%(-\=%>\|$\)'
     let ind = ind - &sw
   endif
-  if line =~# '\<do\%(\s*|[^|]*|\)\=\s*-\=%>'
+  if line =~# '\%({\|\<do\)\%(\s*|[^|]*|\)\=\s*-\=%>'
     let ind = ind + &sw
   elseif line =~# '<%-\=\s*\%(module\|class\|def\|if\|for\|while\|until\|else\|elsif\|case\|when\|unless\|begin\|ensure\|rescue\)\>.*%>'
     let ind = ind + &sw
