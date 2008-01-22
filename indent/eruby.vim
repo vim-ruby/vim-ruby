@@ -48,7 +48,7 @@ function! GetErubyIndent(...)
   endif
   let vcol = col('.')
   call cursor(v:lnum,1)
-  let inruby = searchpair('<%','','%>')
+  let inruby = searchpair('<%','','%>','W')
   call cursor(v:lnum,vcol)
   if inruby && getline(v:lnum) !~ '^<%'
     let ind = GetRubyIndent()
