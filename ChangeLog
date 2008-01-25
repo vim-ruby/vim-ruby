@@ -1,3 +1,7 @@
+2008-01-25  Tim Pope  <vim@tpope.info>
+
+	* syntax/ruby.vim: highlight several regexp constructs
+
 2008-01-21  Tim Pope  <vim@tpope.info>
 
 	* indent/eruby.vim: per Bram's advice, use 'W' searchpair flag
