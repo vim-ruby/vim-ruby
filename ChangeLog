@@ -1,3 +1,7 @@
+2008-01-28  Tim Pope  <vim@tpope.info>
+
+	* syntax/ruby.vim: better heuristic for regexps as method arguments
+
 2008-01-25  Tim Pope  <vim@tpope.info>
 
 	* syntax/ruby.vim: highlight several regexp constructs
