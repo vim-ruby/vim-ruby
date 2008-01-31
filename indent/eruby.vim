@@ -1,7 +1,7 @@
 " Vim indent file
 " Language:		eRuby
 " Maintainer:		Tim Pope <vimNOSPAM@tpope.info>
-" Info:			$Id: eruby.vim,v 1.13 2008/01/22 15:23:18 tpope Exp $
+" Info:			$Id: eruby.vim,v 1.14 2008/01/31 23:23:08 tpope Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -12,7 +12,7 @@ endif
 
 runtime! indent/ruby.vim
 unlet! b:did_indent
-set indentexpr=
+setlocal indentexpr=
 
 if exists("b:eruby_subtype")
   exe "runtime! indent/".b:eruby_subtype.".vim"
