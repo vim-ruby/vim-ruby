@@ -12,7 +12,7 @@ endif
 
 runtime! indent/ruby.vim
 unlet! b:did_indent
-set indentexpr=
+setlocal indentexpr=
 
 if exists("b:eruby_subtype")
   exe "runtime! indent/".b:eruby_subtype.".vim"
