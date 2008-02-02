@@ -1,3 +1,8 @@
+2008-02-01	Mark Guzman	<segfault@hasno.info>
+
+	* autoload/rubycomplete.vim: switch vim variable checking to a more
+	rubyish method
+
 2008-01-31  Tim Pope  <vim@tpope.info>
 
 	* indent/eruby.vim: setlocal, not set indentexpr
