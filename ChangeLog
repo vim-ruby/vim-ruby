@@ -1,4 +1,8 @@
-2008-02-01	Mark Guzman	<segfault@hasno.info>
+2008-02-13  Tim Pope  <code@tpope.net>
+
+	* syntax/ruby.vim: keepend on // regexps and add \/ escape
+
+2008-02-01  Mark Guzman  <segfault@hasno.info>
 
 	* autoload/rubycomplete.vim: switch vim variable checking to a more
 	rubyish method
