@@ -1,7 +1,7 @@
 " Vim indent file
 " Language:		Ruby
 " Maintainer:		Nikolai Weibull <now at bitwi.se>
-" Info:			$Id: ruby.vim,v 1.44 2007/08/07 15:41:50 tpope Exp $
+" Info:			$Id: ruby.vim,v 1.45 2008/02/17 20:46:36 tpope Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -258,6 +258,11 @@ function GetRubyIndent()
 
   " Find a non-blank, non-multi-line string line above the current line.
   let lnum = s:PrevNonBlankNonString(v:lnum - 1)
+
+  " If the line is empty and inside a string, use the previous line.
+  if line =~ '^\s*$' && lnum != prevnonblank(v:lnum - 1)
+    return indent(prevnonblank(v:lnum))
+  endif
 
   " At the start of the file use zero indent.
   if lnum == 0

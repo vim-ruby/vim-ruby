@@ -1,4 +1,8 @@
-2008-02-13  Tim Pope  <code@tpope.net>
+2008-02-17  Tim Pope  <vim@tpope.info>
+
+	* indent/ruby.vim: Copy previous string indent inside strings
+
+2008-02-13  Tim Pope  <vim@tpope.info>
 
 	* syntax/ruby.vim: keepend on // regexps and add \/ escape
 
