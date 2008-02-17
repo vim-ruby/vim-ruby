@@ -259,6 +259,11 @@ function GetRubyIndent()
   " Find a non-blank, non-multi-line string line above the current line.
   let lnum = s:PrevNonBlankNonString(v:lnum - 1)
 
+  " If the line is empty and inside a string, use the previous line.
+  if line =~ '^\s*$' && lnum != prevnonblank(v:lnum - 1)
+    return indent(prevnonblank(v:lnum))
+  endif
+
   " At the start of the file use zero indent.
   if lnum == 0
     return 0
