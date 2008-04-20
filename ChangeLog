@@ -236,12 +236,12 @@
 	* syntax/ruby.vim: allow regexp literals to be highlighted after the
 	'else' keyword
 
-2002-03-09  Tim Pope  <vim@tpope.info>
+2007-03-09  Tim Pope  <vim@tpope.info>
 
 	* syntax/ruby.vim: Added OPTIMIZE alongside FIXME and TODO.  Mirrors
 	Edge Rails' new annotations extractor tasks.
 
-2002-03-09  Tim Pope  <vim@tpope.info>
+2007-03-09  Tim Pope  <vim@tpope.info>
 
 	* ftplugin/ruby.vim: Skip class= and for= with matchit (really belongs
 	in ftplugin/eruby.vim).
@@ -271,7 +271,7 @@
 
 	* NEWS: update documentation for next release
 
-2002-03-02  Tim Pope  <vim@tpope.info>
+2007-03-02  Tim Pope  <vim@tpope.info>
 
 	* syntax/ruby.vim: Cope with (nonsensical) inclusion of : in
 	iskeyword.
