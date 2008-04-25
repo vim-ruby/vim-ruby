@@ -1,3 +1,7 @@
+2008-04-25  Tim Pope  <vim@tpope.info>
+
+	* ftplugin/eruby.vim, syntax/eruby.vim: guard against recursion
+
 2008-04-21  Tim Pope  <vim@tpope.info>
 
 	* indent/eruby.vim: don't let ruby indent %> lines
