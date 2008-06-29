@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		eRuby
 " Maintainer:		Tim Pope <vimNOSPAM@tpope.info>
-" Info:			$Id: eruby.vim,v 1.22 2008/04/25 15:14:00 tpope Exp $
+" Info:			$Id: eruby.vim,v 1.23 2008/06/29 04:18:43 tpope Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -71,4 +71,4 @@ if main_syntax == 'eruby'
   unlet main_syntax
 endif
 
-" vim: nowrap sw=2 sts=2 ts=8 ff=unix:
+" vim: nowrap sw=2 sts=2 ts=8:

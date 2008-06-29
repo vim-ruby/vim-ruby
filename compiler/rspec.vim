@@ -1,7 +1,7 @@
 " Vim compiler file
 " Language:		RSpec
 " Maintainer:		Tim Pope <vimNOSPAM@tpope.info>
-" Info:			$Id: rspec.vim,v 1.1 2007/09/14 14:40:11 tpope Exp $
+" Info:			$Id: rspec.vim,v 1.2 2008/06/29 04:18:42 tpope Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -38,4 +38,4 @@ CompilerSet errorformat=
 let &cpo = s:cpo_save
 unlet s:cpo_save
 
-" vim: nowrap sw=2 sts=2 ts=8 ff=unix:
+" vim: nowrap sw=2 sts=2 ts=8:
