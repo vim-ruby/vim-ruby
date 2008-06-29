@@ -1,3 +1,7 @@
+2008-06-29  Tim Pope  <vim@tpope.info>
+
+	* syntax/ruby.vim: don't match $_foo as an invalid variable
+
 2008-04-25  Tim Pope  <vim@tpope.info>
 
 	* ftplugin/eruby.vim, syntax/eruby.vim: guard against recursion

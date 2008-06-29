@@ -107,7 +107,7 @@ syn region rubySymbol			start="[]})\"':]\@<!:\"" end="\"" skip="\\\\\|\\\"" cont
 syn match  rubyBlockParameter		"\h\w*" contained
 syn region rubyBlockParameterList	start="\%(\%(\<do\>\|{\)\s*\)\@<=|" end="|" oneline display contains=rubyBlockParameter
 
-syn match rubyInvalidVariable    "$[^ A-Za-z-]"
+syn match rubyInvalidVariable    "$[^ A-Za-z_-]"
 syn match rubyPredefinedVariable #$[!$&"'*+,./0:;<=>?@\`~1-9]#
 syn match rubyPredefinedVariable "$_\>"											   display
 syn match rubyPredefinedVariable "$-[0FIKadilpvw]\>"									   display
