@@ -1,5 +1,9 @@
 2008-06-29  Tim Pope  <vim@tpope.info>
 
+	* syntax/ruby.vim: revert highlighting of - as number
+
+2008-06-29  Tim Pope  <vim@tpope.info>
+
 	* indent/eruby.vim: fix quirk in optional argument handling
 
 2008-06-29  Tim Pope  <vim@tpope.info>
