@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:		Ruby
 " Maintainer:		Doug Kearns <dougkearns@gmail.com>
-" Info:			$Id: ruby.vim,v 1.149 2008/04/20 20:58:02 tpope Exp $
+" Info:			$Id: ruby.vim,v 1.150 2008/06/29 04:04:13 tpope Exp $
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
@@ -107,7 +107,7 @@ syn region rubySymbol			start="[]})\"':]\@<!:\"" end="\"" skip="\\\\\|\\\"" cont
 syn match  rubyBlockParameter		"\h\w*" contained
 syn region rubyBlockParameterList	start="\%(\%(\<do\>\|{\)\s*\)\@<=|" end="|" oneline display contains=rubyBlockParameter
 
-syn match rubyInvalidVariable    "$[^ A-Za-z-]"
+syn match rubyInvalidVariable    "$[^ A-Za-z_-]"
 syn match rubyPredefinedVariable #$[!$&"'*+,./0:;<=>?@\`~1-9]#
 syn match rubyPredefinedVariable "$_\>"											   display
 syn match rubyPredefinedVariable "$-[0FIKadilpvw]\>"									   display
