@@ -43,7 +43,7 @@ endif
 function! GetErubyIndent(...)
   if a:0 && a:1 == '.'
     let v:lnum = line('.')
-  elseif a:0 =~ '^\d'
+  elseif a:0 && a:1 =~ '^\d'
     let v:lnum = a:1
   endif
   let vcol = col('.')
@@ -75,4 +75,4 @@ function! GetErubyIndent(...)
   return ind
 endfunction
 
-" vim:set sw=2 sts=2 ts=8 noet ff=unix:
+" vim:set sw=2 sts=2 ts=8 noet:
