@@ -1,3 +1,8 @@
+2008-06-29  Mark Guzman  <segfault@hasno.info>
+
+	* autoload/rubycomplete.vim: resolve a typo in the configuration initialization
+	section
+	
 2008-06-29  Tim Pope  <vim@tpope.info>
 
 	* syntax/ruby.vim: revert highlighting of - as number

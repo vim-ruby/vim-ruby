@@ -1,7 +1,7 @@
 " Vim completion script
 " Language:             Ruby
 " Maintainer:           Mark Guzman <segfault@hasno.info>
-" Info:                 $Id: rubycomplete.vim,v 1.40 2008/02/02 04:13:55 segy Exp $
+" Info:                 $Id: rubycomplete.vim,v 1.41 2008/06/30 06:50:45 segy Exp $
 " URL:                  http://vim-ruby.rubyforge.org
 " Anon CVS:             See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
@@ -36,7 +36,7 @@ if !exists("g:rubycomplete_classes_in_global")
 endif
 
 if !exists("g:rubycomplete_buffer_loading")
-    let g:rubycomplete_classes_in_global = 0
+    let g:rubycomplete_buffer_loading = 0
 endif
 
 if !exists("g:rubycomplete_include_object")
