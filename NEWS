@@ -1,3 +1,10 @@
+= 2008.07.XX
+
+== Filetype Detection
+
+The IRB RC file (.irbrc) is now detected as being a Ruby file.
+
+
 = 2007.05.07
 
 == Ruby Syntax Highlighting

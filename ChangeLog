@@ -1,3 +1,7 @@
+2008-07-08  Doug Kearns  <dougkearns@gmail.com>
+
+	* NEWS: begin updating for the pending release
+
 2008-06-29  Mark Guzman  <segfault@hasno.info>
 
 	* autoload/rubycomplete.vim: resolve a typo in the configuration initialization
