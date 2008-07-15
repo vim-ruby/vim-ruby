@@ -1,3 +1,8 @@
+2008-07-15  Doug Kearns  <dougkearns@gmail.com>
+
+	* FAQ, README, etc/website/index.html: update the references to
+	RubyGarden's VimRubySupport page
+
 2008-07-08  Doug Kearns  <dougkearns@gmail.com>
 
 	* NEWS: begin updating for the pending release
