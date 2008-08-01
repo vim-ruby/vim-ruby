@@ -1,7 +1,6 @@
 " Vim compiler file
 " Language:		eRuby
 " Maintainer:		Doug Kearns <dougkearns@gmail.com>
-" Info:			$Id$
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
