@@ -22,7 +22,7 @@ For regular users:
   - RubyForge also features forums, but the mailing list is better.
 
 For would-be contributors:
-  - Please get the latest from anonymous CVS.
+  - Please get the latest from Git.
   - Please join the mailing list and discuss changes, submit patches, etc.
   - Thank you very much for taking an interest.
 
@@ -33,9 +33,8 @@ Contents of the project:
   - vim-ruby-install.rb performs this copying.
 
 How you get these files into Vim:
-  - By downloading the project via a snapshot or anonymous CVS, you can keep
-    up with the latest, make changes, and install the files to a Vim
-    directory.
+  - By downloading the project via a snapshot or Git, you can keep up with
+    the latest, make changes, and install the files to a Vim directory.
   - By downloading one of the tarballs, you can easily install the latest
     stable or development version wherever you like on your machine.  No
     README, no vim-ruby-install.rb, just Vim files.  You would typically
@@ -50,14 +49,15 @@ Understanding the configuration files:
   - Email any one of us or ruby-talk if you want more information added to
     this page.
 
-CVS topics:
+Git topics:
+  - Project was migrated from CVS in August, 2008.
   - Files are tagged according to which version of Vim they are released in.
   - The project was initiated in July 2003, when the current version of Vim
-    was 6.2.  Thus every file began its life tagged as vim6_2.
+    was 6.2.  Thus every file began its life tagged as vim6.2.
   - Modifications to the files are made in the expectation that they need to
     be tested by interested users.  They therefore (probably) don't have a
-    tag, and are available via "cvs update -A", or a development snapshot.
-  - When a modification is considered stable, it is tagged "stable".
+    tag, and are available via "git pull --rebase", or a development snapshot.
+  - When a modification is considered stable, it is given a tag.
     Everything that is stable gets released in vim-ruby-YYY.MM.DD.tar.gz files.
   - When a new version of Vim is about to be released, the stable tarball is
     contributed to it.  After it has been released, the files are tagged
