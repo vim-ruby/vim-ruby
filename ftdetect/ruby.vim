@@ -11,7 +11,7 @@ au BufNewFile,BufRead [rR]akefile,*.rake		set filetype=ruby
 au BufNewFile,BufRead [rR]antfile,*.rant		set filetype=ruby
 
 " IRB config
-au BufNewFile,BufRead .irbrc				set filetype=ruby
+au BufNewFile,BufRead .irbrc,irbrc			set filetype=ruby
 
 " eRuby
 au BufNewFile,BufRead *.erb,*.rhtml			set filetype=eruby

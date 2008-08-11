@@ -1,3 +1,7 @@
+2008-08-11  Doug Kearns  <dougkearns@gmail.com>
+
+	* ftdetect/ruby.vim: match irbrc as a Ruby filetype
+
 2008-07-15  Doug Kearns  <dougkearns@gmail.com>
 
 	* FAQ, README, etc/website/index.html: update the references to
