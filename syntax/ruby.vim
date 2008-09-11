@@ -39,6 +39,7 @@ endif
 " Expression Substitution and Backslash Notation
 syn match rubyStringEscape	"\\\\\|\\[abefnrstv]\|\\\o\{1,3}\|\\x\x\{1,2}"							 contained display
 syn match rubyStringEscape	"\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)" contained display
+syn match rubyQuoteEscape	"\\[\\']" contained display
 
 syn region rubyInterpolation	      matchgroup=rubyInterpolationDelimiter start="#{" end="}" contained contains=ALLBUT,@rubyNotTop
 syn match  rubyInterpolation	      "#\%(\$\|@@\=\)\w\+"    display contained  contains=rubyInterpolationDelimiter,rubyInstanceVariable,rubyClassVariable,rubyGlobalVariable,rubyPredefinedVariable
@@ -100,7 +101,7 @@ syn match  rubySymbol			"[]})\"':]\@<!:\%(\^\|\~\|<<\|<=>\|<=\|<\|===\|==\|=\~\|
 syn match  rubySymbol			"[]})\"':]\@<!:\$\%(-.\|[`~<=>_,;:!?/.'"@$*\&+0]\)"
 syn match  rubySymbol			"[]})\"':]\@<!:\%(\$\|@@\=\)\=\h\w*"
 syn match  rubySymbol			"[]})\"':]\@<!:\h\w*\%([?!=]>\@!\)\="
-syn region rubySymbol			start="[]})\"':]\@<!:\"" end="\"" skip="\\\\\|\\\""
+syn region rubySymbol			start="[]})\"':]\@<!:'"  end="'"  skip="\\\\\|\\'"  contains=rubyQuoteEscape fold
 syn region rubySymbol			start="[]})\"':]\@<!:\"" end="\"" skip="\\\\\|\\\"" contains=@rubyStringSpecial fold
 
 syn match  rubyBlockParameter		"\h\w*" contained
@@ -132,7 +133,7 @@ syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r("				end=")[iomxn
 
 " Normal String and Shell Command Output
 syn region rubyString matchgroup=rubyStringDelimiter start="\"" end="\"" skip="\\\\\|\\\"" contains=@rubyStringSpecial fold
-syn region rubyString matchgroup=rubyStringDelimiter start="'"	end="'"  skip="\\\\\|\\'"			       fold
+syn region rubyString matchgroup=rubyStringDelimiter start="'"	end="'"  skip="\\\\\|\\'"  contains=rubyQuoteEscape    fold
 syn region rubyString matchgroup=rubyStringDelimiter start="`"	end="`"  skip="\\\\\|\\`"  contains=@rubyStringSpecial fold
 
 " Generalized Single Quoted String, Symbol and Array of Strings
@@ -333,6 +334,7 @@ hi def link rubyDataDirective		Delimiter
 hi def link rubyDocumentation		Comment
 hi def link rubyTodo			Todo
 
+hi def link rubyQuoteEscape		rubyStringEscape
 hi def link rubyStringEscape		Special
 hi def link rubyInterpolationDelimiter	Delimiter
 hi def link rubyNoInterpolation		rubyString
