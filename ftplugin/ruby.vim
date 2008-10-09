@@ -114,6 +114,13 @@ if !exists("g:no_plugin_maps") && !exists("g:no_ruby_maps")
   let b:undo_ftplugin = b:undo_ftplugin
         \."| sil! exe 'unmap <buffer> [[' | sil! exe 'unmap <buffer> ]]' | sil! exe 'unmap <buffer> []' | sil! exe 'unmap <buffer> ]['"
         \."| sil! exe 'unmap <buffer> [m' | sil! exe 'unmap <buffer> ]m' | sil! exe 'unmap <buffer> [M' | sil! exe 'unmap <buffer> ]M'"
+
+  if maparg("\<C-]>",'n') == ''
+    nnoremap <silent> <buffer>  <C-]> :<C-U>exe v:count1."tag <C-R>=RubyCursorIdentifier()<CR>"<CR>
+    nnoremap <silent> <buffer> g<C-]> :<C-U>exe        "tjump <C-R>=RubyCursorIdentifier()<CR>"<CR>
+    nnoremap <silent> <buffer> g]     :<C-U>exe      "tselect <C-R>=RubyCursorIdentifier()<CR>"<CR>
+    let b:undo_ftplugin = b:undo_ftplugin."| sil! exe 'nunmap <buffer> <C-]>'| sil! exe 'nunmap <buffer> g<C-]>'| sil! exe 'nunmap <buffer> g]'"
+  endif
 endif
 
 let &cpo = s:cpo_save
