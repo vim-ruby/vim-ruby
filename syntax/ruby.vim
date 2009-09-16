@@ -101,6 +101,7 @@ syn match  rubySymbol			"[]})\"':]\@<!:\%(\^\|\~\|<<\|<=>\|<=\|<\|===\|==\|=\~\|
 syn match  rubySymbol			"[]})\"':]\@<!:\$\%(-.\|[`~<=>_,;:!?/.'"@$*\&+0]\)"
 syn match  rubySymbol			"[]})\"':]\@<!:\%(\$\|@@\=\)\=\h\w*"
 syn match  rubySymbol			"[]})\"':]\@<!:\h\w*\%([?!=]>\@!\)\="
+syn match  rubySymbol			"[]})\"':]\@<!\h\w*[!?]\=:\@="
 syn region rubySymbol			start="[]})\"':]\@<!:'"  end="'"  skip="\\\\\|\\'"  contains=rubyQuoteEscape fold
 syn region rubySymbol			start="[]})\"':]\@<!:\"" end="\"" skip="\\\\\|\\\"" contains=@rubyStringSpecial fold
 
