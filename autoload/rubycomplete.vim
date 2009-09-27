@@ -4,7 +4,7 @@
 " URL:                  http://vim-ruby.rubyforge.org
 " Anon CVS:             See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
-" Maintainer Version:   0.8
+" Maintainer Version:   0.8.1
 " ----------------------------------------------------------------------------
 "
 " Ruby IRB/Complete author: Keiju ISHITSUKA(keiju@ishitsuka.com)
@@ -631,7 +631,7 @@ class VimRubyCompletion
         methods = Object.constants
         methods.grep(/^#{receiver}/).collect{|e| "::" + e}
 
-      when /^(((::)?[A-Z][^:.\(]*)+)::?([^:.]*)$/ # Constant or class methods
+      when /^(((::)?[A-Z][^:.\(]*)+?)::?([^:.]*)$/ # Constant or class methods
         receiver = $1
         message = Regexp.quote($4)
         dprint "const or cls 2 [recv: \'%s\', msg: \'%s\']" % [ receiver, message ]
@@ -665,7 +665,7 @@ class VimRubyCompletion
         dprint "global"
         methods = global_variables.grep(Regexp.new(Regexp.quote($1)))
 
-      when /^((\.?[^.]+)+)\.([^.]*)$/ # variable
+      when /^((\.?[^.]+)+?)\.([^.]*)$/ # variable
         dprint "variable"
         receiver = $1
         message = Regexp.quote($3)
