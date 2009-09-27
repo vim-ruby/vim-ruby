@@ -1,3 +1,8 @@
+2009-09-27  Mark Guzman  <segfault@hasno.info>
+
+	* autoload/rubycomplete.vim: pplying a patch from Yoshimasa Niwa resolving
+	a possible runaway CPU issue when matching context regexes
+
 2008-08-11  Doug Kearns  <dougkearns@gmail.com>
 
 	* ftdetect/ruby.vim: match irbrc as a Ruby filetype
