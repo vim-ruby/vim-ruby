@@ -177,7 +177,7 @@ function s:LineHasOpeningBrackets(lnum)
 endfunction
 
 function s:Match(lnum, regex)
-  let col = match(getline(a:lnum), a:regex) + 1
+  let col = match(getline(a:lnum), '\C'.a:regex) + 1
   return col > 0 && !s:IsInStringOrComment(a:lnum, col) ? col : 0
 endfunction
 
