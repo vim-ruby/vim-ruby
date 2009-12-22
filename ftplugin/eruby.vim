@@ -1,6 +1,6 @@
 " Vim filetype plugin
 " Language:		eRuby
-" Maintainer:		Tim Pope <vimNOSPAM@tpope.info>
+" Maintainer:		Tim Pope <vimNOSPAM@tpope.org>
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
