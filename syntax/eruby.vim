@@ -64,7 +64,7 @@ exe 'syn region  erubyComment    matchgroup=erubyDelimiter start="<%\{1,'.b:erub
 
 " Define the default highlighting.
 
-hi def link erubyDelimiter		Delimiter
+hi def link erubyDelimiter		PreProc
 hi def link erubyComment		Comment
 
 let b:current_syntax = 'eruby'
