@@ -29,7 +29,7 @@ if !exists("b:eruby_subtype")
     let b:eruby_subtype = matchstr(&filetype,'^eruby\.\zs\w\+')
   endif
   if b:eruby_subtype == ''
-    let b:eruby_subtype = matchstr(substitute(expand("%:t"),'\c\%(\.erb\|\.eruby\)\+$','',''),'\.\zs\w\+$')
+    let b:eruby_subtype = matchstr(substitute(expand("%:t"),'\c\%(\.erb\|\.eruby\|\.erubis\)\+$','',''),'\.\zs\w\+$')
   endif
   if b:eruby_subtype == 'rhtml'
     let b:eruby_subtype = 'html'
