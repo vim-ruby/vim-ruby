@@ -44,11 +44,6 @@ How you get these files into Vim:
     are present.  The purpose of downloading and installing them from
     RubyForge is to get the latest version of them.
 
-Understanding the configuration files:
-  - See http://www.rubygarden.org/Ruby/page/show/VimRubySupport
-  - Email any one of us or ruby-talk if you want more information added to
-    this page.
-
 Git topics:
   - Project was migrated from CVS in August, 2008.
   - Files are tagged according to which version of Vim they are released in.
