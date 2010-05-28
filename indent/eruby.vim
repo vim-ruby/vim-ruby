@@ -61,7 +61,7 @@ function! GetErubyIndent(...)
   if cline =~# '^\s*<%-\=\s*\%(}\|end\|else\|\%(ensure\|rescue\|elsif\|when\).\{-\}\)\s*\%(-\=%>\|$\)'
     let ind = ind - &sw
   endif
-  if line =~# '\S\s*<%-\=\s*\%(}\|end\).\{-\}\)\s*\%(-\=%>\|$\)'
+  if line =~# '\S\s*<%-\=\s*\%(}\|end\).\{-\}\s*\%(-\=%>\|$\)'
     let ind = ind - &sw
   endif
   if line =~# '\%({\|\<do\)\%(\s*|[^|]*|\)\=\s*-\=%>'
