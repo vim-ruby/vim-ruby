@@ -29,4 +29,4 @@ au BufNewFile,BufRead .autotest				set filetype=ruby
 au BufNewFile,BufRead *.erb,*.rhtml			set filetype=eruby
 
 " Thor
-au BufNewFile,BufRead [tT]horfile,*.thor    set filetype=ruby
+au BufNewFile,BufRead [tT]horfile,*.thor		set filetype=ruby
