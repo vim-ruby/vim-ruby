@@ -50,7 +50,7 @@ function! GetErubyIndent(...)
   call cursor(v:lnum,1)
   let inruby = searchpair('<%','','%>','W')
   call cursor(v:lnum,vcol)
-  if inruby && getline(v:lnum) !~ '^<%\|^\s*-\=%>'
+  if inruby && getline(v:lnum) !~ '^<%\|^\s*[-=]\=%>'
     let ind = GetRubyIndent()
   else
     exe "let ind = ".b:eruby_subtype_indentexpr
@@ -58,15 +58,15 @@ function! GetErubyIndent(...)
   let lnum = prevnonblank(v:lnum-1)
   let line = getline(lnum)
   let cline = getline(v:lnum)
-  if cline =~# '^\s*<%-\=\s*\%(}\|end\|else\|\%(ensure\|rescue\|elsif\|when\).\{-\}\)\s*\%(-\=%>\|$\)'
+  if cline =~# '^\s*<%[-=]\=\s*\%(}\|end\|else\|\%(ensure\|rescue\|elsif\|when\).\{-\}\)\s*\%([-=]\=%>\|$\)'
     let ind = ind - &sw
   endif
-  if line =~# '\S\s*<%-\=\s*\%(}\|end\).\{-\}\s*\%(-\=%>\|$\)'
+  if line =~# '\S\s*<%[-=]\=\s*\%(}\|end\).\{-\}\s*\%([-=]\=%>\|$\)'
     let ind = ind - &sw
   endif
-  if line =~# '\%({\|\<do\)\%(\s*|[^|]*|\)\=\s*-\=%>'
+  if line =~# '\%({\|\<do\)\%(\s*|[^|]*|\)\=\s*[-=]\=%>'
     let ind = ind + &sw
-  elseif line =~# '<%-\=\s*\%(module\|class\|def\|if\|for\|while\|until\|else\|elsif\|case\|when\|unless\|begin\|ensure\|rescue\)\>.*%>'
+  elseif line =~# '<%[-=]\=\s*\%(module\|class\|def\|if\|for\|while\|until\|else\|elsif\|case\|when\|unless\|begin\|ensure\|rescue\)\>.*%>'
     let ind = ind + &sw
   endif
   if line =~# '^\s*<%[=#-]\=\s*$' && cline !~# '^\s*end\>'
@@ -75,7 +75,7 @@ function! GetErubyIndent(...)
   if line !~# '^\s*<%' && line =~# '%>\s*$'
     let ind = ind - &sw
   endif
-  if cline =~# '^\s*-\=%>\s*$'
+  if cline =~# '^\s*[-=]\=%>\s*$'
     let ind = ind - &sw
   endif
   return ind
