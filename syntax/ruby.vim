@@ -253,7 +253,7 @@ endif
 
 " Special Methods
 if !exists("ruby_no_special_methods")
-  syn keyword rubyAccess    public protected private module_function
+  syn keyword rubyAccess    public protected private public_class_method private_class_method module_function
   " attr is a common variable name
   syn match   rubyAttribute "\%(\%(^\|;\)\s*\)\@<=attr\>\(\s*[.=]\)\@!"
   syn keyword rubyAttribute attr_accessor attr_reader attr_writer
