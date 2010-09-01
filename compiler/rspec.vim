@@ -1,7 +1,6 @@
 " Vim compiler file
 " Language:		RSpec
 " Maintainer:		Tim Pope <vimNOSPAM@tpope.org>
-" Last Change:		2009 Dec 22
 " URL:			http://vim-ruby.rubyforge.org
 " Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
