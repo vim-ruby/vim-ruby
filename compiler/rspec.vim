@@ -20,6 +20,7 @@ set cpo-=C
 CompilerSet makeprg=spec
 
 CompilerSet errorformat=
+    \%-Z%f:%l:%.%#,%E%\\d%\\+)%.%#,%C%m,%Z,
     \%+W'%.%#'\ FAILED,
     \%+I'%.%#'\ FIXED,
     \%-Cexpected:%.%#,
