@@ -17,9 +17,10 @@ endif
 let s:cpo_save = &cpo
 set cpo-=C
 
-CompilerSet makeprg=spec
+CompilerSet makeprg=rspec
 
 CompilerSet errorformat=
+    \%-Z\ \ \ \ \ \#\ %f:%l:%.%#,%E\ \ %\\d%\\+)%.%#,%C%m,%Z,
     \%-Z%f:%l:%.%#,%E%\\d%\\+)%.%#,%C%m,%Z,
     \%+W'%.%#'\ FAILED,
     \%+I'%.%#'\ FIXED,
