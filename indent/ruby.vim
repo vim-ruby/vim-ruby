@@ -156,24 +156,29 @@ function s:GetMSL(lnum)
 endfunction
 
 " Check if line 'lnum' has more opening brackets than closing ones.
-function s:LineHasOpeningBrackets(lnum)
-  let open_0 = 0
-  let open_2 = 0
-  let open_4 = 0
+function s:CountOpenBrackets(lnum)
+  let open = { 'parentheses': 0, 'braces': 0, 'brackets': 0 }
   let line = getline(a:lnum)
   let pos = match(line, '[][(){}]', 0)
   while pos != -1
     if !s:IsInStringOrComment(a:lnum, pos + 1)
-      let idx = stridx('(){}[]', line[pos])
-      if idx % 2 == 0
-	let open_{idx} = open_{idx} + 1
-      else
-	let open_{idx - 1} = open_{idx - 1} - 1
+      if line[pos] == '('
+	let open.parentheses += 1
+      elseif line[pos] == ')'
+	let open.parentheses -= 1
+      elseif line[pos] == '{'
+	let open.braces += 1
+      elseif line[pos] == '}'
+	let open.braces -= 1
+      elseif line[pos] == '['
+	let open.brackets += 1
+      elseif line[pos] == ']'
+	let open.brackets -= 1
       endif
     endif
     let pos = match(line, '[][(){}]', pos + 1)
   endwhile
-  return (open_0 > 0) . (open_2 > 0) . (open_4 > 0)
+  return open
 endfunction
 
 function s:Match(lnum, regex)
@@ -280,14 +285,14 @@ function GetRubyIndent()
   " If the previous line contained an opening bracket, and we are still in it,
   " add indent depending on the bracket type.
   if line =~ '[[({]'
-    let counts = s:LineHasOpeningBrackets(lnum)
-    if counts[0] == '1' && searchpair('(', '', ')', 'bW', s:skip_expr) > 0
+    let open = s:CountOpenBrackets(lnum)
+    if open.parentheses > 0 && searchpair('(', '', ')', 'bW', s:skip_expr) > 0
       if col('.') + 1 == col('$')
 	return ind + &sw
       else
 	return virtcol('.')
       endif
-    elseif counts[1] == '1' || counts[2] == '1'
+    elseif open.braces > 0 || open.brackets > 0
       return ind + &sw
     else
       call cursor(v:lnum, vcol)
