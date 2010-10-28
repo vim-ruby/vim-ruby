@@ -217,7 +217,7 @@ function GetRubyIndent()
     let bs = strpart('(){}[]', stridx(')}]', line[col - 1]) * 2, 2)
     if searchpair(escape(bs[0], '\['), '', bs[1], 'bW', s:skip_expr) > 0
       if line[col-1]==')' && col('.') != col('$') - 1
-	let ind = virtcol('.')-1
+	let ind = virtcol('.') - 1
       else
 	let ind = indent(s:GetMSL(line('.')))
       endif
