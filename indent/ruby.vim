@@ -156,29 +156,35 @@ function s:GetMSL(lnum)
 endfunction
 
 " Check if line 'lnum' has more opening brackets than closing ones.
-function s:CountOpenBrackets(lnum)
-  let open = { 'parentheses': 0, 'braces': 0, 'brackets': 0 }
+function s:FindRightmostOpenBracket(lnum)
+  let open = {'parentheses': [], 'braces': [], 'brackets': []}
   let line = getline(a:lnum)
   let pos = match(line, '[][(){}]', 0)
   while pos != -1
     if !s:IsInStringOrComment(a:lnum, pos + 1)
       if line[pos] == '('
-	let open.parentheses += 1
+	call add(open.parentheses, {'type': '(', 'pos': pos})
       elseif line[pos] == ')'
-	let open.parentheses -= 1
+	let open.parentheses = open.parentheses[0:-2]
       elseif line[pos] == '{'
-	let open.braces += 1
+	call add(open.braces, {'type': '{', 'pos': pos})
       elseif line[pos] == '}'
-	let open.braces -= 1
+	let open.braces = open.braces[0:-2]
       elseif line[pos] == '['
-	let open.brackets += 1
+	call add(open.brackets, {'type': '[', 'pos': pos})
       elseif line[pos] == ']'
-	let open.brackets -= 1
+	let open.brackets = open.brackets[0:-2]
       endif
     endif
     let pos = match(line, '[][(){}]', pos + 1)
   endwhile
-  return open
+  let rightmost = {'type': '(', 'pos': -1}
+  for open in open.parentheses + open.braces + open.brackets
+    if open.pos > rightmost.pos
+      let rightmost = open
+    endif
+  endfor
+  return rightmost
 endfunction
 
 function s:Match(lnum, regex)
@@ -285,15 +291,17 @@ function GetRubyIndent()
   " If the previous line contained an opening bracket, and we are still in it,
   " add indent depending on the bracket type.
   if line =~ '[[({]'
-    let open = s:CountOpenBrackets(lnum)
-    if open.parentheses > 0 && searchpair('(', '', ')', 'bW', s:skip_expr) > 0
-      if col('.') + 1 == col('$')
-	return ind + &sw
+    let open = s:FindRightmostOpenBracket(lnum)
+    if open.pos != -1
+      if open.type == '(' && searchpair('(', '', ')', 'bW', s:skip_expr) > 0
+	if col('.') + 1 == col('$')
+	  return ind + &sw
+	else
+	  return virtcol('.')
+	endif
       else
-	return virtcol('.')
+	return matchend(line, '\S', open.pos + 1) - 1
       endif
-    elseif open.braces > 0 || open.brackets > 0
-      return ind + &sw
     else
       call cursor(v:lnum, vcol)
     end
