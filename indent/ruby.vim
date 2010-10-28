@@ -81,12 +81,12 @@ let s:end_skip_expr = s:skip_expr .
       \ ' && getline(".") =~ "^\\s*\\<\\(while\\|until\\|for\\):\\@!\\>")'
 
 " Regex that defines continuation lines, not including (, {, or [.
-let s:continuation_regex = '\%([\\.,:*/%+]\|\%(<%\)\@<![=-]\|\W[|&?]\|||\|&&\)\s*\%(#.*\)\=$'
+let s:continuation_regex = '\%([\\.,:*/%+]\|and\|or\|\%(<%\)\@<![=-]\|\W[|&?]\|||\|&&\)\s*\%(#.*\)\=$'
 
 " Regex that defines continuation lines.
 " TODO: this needs to deal with if ...: and so on
 let s:continuation_regex2 =
-      \ '\%([({[\\.,:*/%+]\|\%(<%\)\@<![=-]\|\W[|&?]\|||\|&&\)\s*\%(#.*\)\=$'
+      \ '\%([({[\\.,:*/%+]\|and\|or\|\%(<%\)\@<![=-]\|\W[|&?]\|||\|&&\)\s*\%(#.*\)\=$'
 
 " Regex that defines blocks.
 let s:block_regex =
