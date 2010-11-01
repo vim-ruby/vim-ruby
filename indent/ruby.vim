@@ -301,7 +301,8 @@ function GetRubyIndent()
 	  return virtcol('.')
 	endif
       else
-	return matchend(line, '\S', open.pos + 1) - 1
+	let nonspace = matchend(line, '\S', open.pos + 1) - 1
+	return nonspace > 0 ? nonspace : ind + &sw
       endif
     else
       call cursor(v:lnum, vcol)
