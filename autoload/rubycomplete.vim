@@ -4,7 +4,7 @@
 " URL:                  http://vim-ruby.rubyforge.org
 " Anon CVS:             See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
-" Maintainer Version:   0.8.1
+" Maintainer Version:   0.9
 " ----------------------------------------------------------------------------
 "
 " Ruby IRB/Complete author: Keiju ISHITSUKA(keiju@ishitsuka.com)
@@ -267,53 +267,75 @@ class VimRubyCompletion
   end
 
   def load_buffer_class(name)
-    dprint "load_buffer_class(%s) START" % name
+    cur_mth = "load_buffer_class"
+    dprint "%s(%s) START" % [cur_mth, name]
+
+    if name.index("::")
+      dprint "found namespaced class"
+      namebits = name.split("::")
+      namebits[0..-2].each do |nb| 
+        dprint "attempting to load #{nb}"
+        load_buffer_class(nb) || load_buffer_module(nb)
+      end
+      name = namebits.last
+    end
+
     classdef = get_buffer_entity(name, 's:GetBufferRubyClass("%s")')
-    return if classdef == nil
+    return nil if classdef == nil
 
     pare = /^\s*class\s*(.*)\s*<\s*(.*)\s*\n/.match( classdef )
-    load_buffer_class( $2 ) if pare != nil  && $2 != name # load parent class if needed
+    load_buffer_class( $2 ) if pare && $2 != name # load parent class if needed
 
     mixre = /.*\n\s*include\s*(.*)\s*\n/.match( classdef )
-    load_buffer_module( $2 ) if mixre != nil && $2 != name # load mixins if needed
+    load_buffer_module( $2 ) if mixre && $2 != name # load mixins if needed
 
+    load_ok = nil
     begin
-      eval classdef
+      load_ok = eval classdef
     rescue Exception
+      dprint "%s(%s) Exception: %s" % [cur_mth, name, $!]
       VIM::evaluate( "s:ErrMsg( 'Problem loading class \"%s\", was it already completed?' )" % name )
     end
-    dprint "load_buffer_class(%s) END" % name
+
+    dprint "%s(%s) END" % [cur_mth, name]
+    load_ok
   end
 
   def load_buffer_module(name)
-    dprint "load_buffer_module(%s) START" % name
+    cur_mth = "load_buffer_module"
+    dprint "%s(%s) START" % [ cur_mth, name ]
     classdef = get_buffer_entity(name, 's:GetBufferRubyModule("%s")')
-    return if classdef == nil
+    return nil if classdef == nil
 
+    load_ok = nil
     begin
-      eval classdef
+      load_ok = eval classdef
     rescue Exception
+      dprint "%s(%s) Exception: %s" % [cur_mth, name, $!]
       VIM::evaluate( "s:ErrMsg( 'Problem loading module \"%s\", was it already completed?' )" % name )
     end
-    dprint "load_buffer_module(%s) END" % name
+
+    dprint "%s(%s) END" % [ cur_mth, name ]
+    load_ok
   end
 
   def get_buffer_entity(name, vimfun)
+    cur_mth = "get_buffer_entity"
     loading_allowed = VIM::evaluate("exists('g:rubycomplete_buffer_loading') && g:rubycomplete_buffer_loading")
     return nil if loading_allowed.to_i.zero?
     return nil if /(\"|\')+/.match( name )
     buf = VIM::Buffer.current
     nums = eval( VIM::evaluate( vimfun % name ) )
-    return nil if nums == nil
+    return nil unless nums
     return nil if nums.min == nums.max && nums.min == 0
 
-    dprint "get_buffer_entity START"
+    dprint "%s START" % cur_mth
     visited = []
     clscnt = 0
     bufname = VIM::Buffer.current.name
     classdef = ""
     cur_line = VIM::Buffer.current.line_number
-    while (nums != nil && !(nums.min == 0 && nums.max == 0) )
+    while (nums && !(nums.min == 0 && nums.max == 0) )
       dprint "visited: %s" % visited.to_s
       break if visited.index( nums )
       visited << nums
@@ -323,7 +345,7 @@ class VimRubyCompletion
           next if x == 0
           ln = buf[x]
           if /^\s*(module|class|def|include)\s+/.match(ln)
-            clscnt += 1 if $1 == "class"
+            clscnt += 1 if $1 == "class" || $1 == "module" # allow in-progress completions of structures.
             #dprint "\$1$1
             classdef += "%s\n" % ln
             classdef += "end\n" if /def\s+/.match(ln)
@@ -333,17 +355,21 @@ class VimRubyCompletion
       end
 
       nm = "%s(::.*)*\", %s, \"" % [ name, nums.last ]
-      nums = eval( VIM::evaluate( vimfun % nm ) )
+      begin
+        nums = eval( VIM::evaluate( vimfun % nm ) )
+      rescue Exception
+        dprint "%s(%s) Exception: %s" % [cur_mth, name, $!]
+        VIM::evaluate( "s:ErrMsg( 'Problem loading module \"%s\", possible parse error.' )" % name )
+      end
       dprint "nm: \"%s\"" % nm
       dprint "vimfun: %s" % (vimfun % nm)
       dprint "got nums: %s" % nums.to_s
     end
     if classdef.length > 1
         classdef += "end\n"*clscnt
-        # classdef = "class %s\n%s\nend\n" % [ bufname.gsub( /\/|\\/, "_" ), classdef ]
     end
 
-    dprint "get_buffer_entity END"
+    dprint "%s END" % cur_mth
     dprint "classdef====start"
     lns = classdef.split( "\n" )
     lns.each { |x| dprint x }
@@ -377,7 +403,7 @@ class VimRubyCompletion
 
     rg.each do |x|
       if re.match( buf[x] )
-        next if type == "def" && eval( VIM::evaluate("s:IsPosInClassDef(%s)" % x) ) != nil
+        next if type == "def" && eval( VIM::evaluate("s:IsPosInClassDef(%s)" % x) ) 
         ret.push $1
       end
     end
@@ -527,7 +553,7 @@ class VimRubyCompletion
   def clean_sel(sel, msg)
     sel.delete_if { |x| x == nil }
     sel.uniq!
-    sel.grep(/^#{Regexp.quote(msg)}/) if msg != nil
+    sel.grep(/^#{Regexp.quote(msg)}/) if msg 
   end
 
   def get_rails_view_methods
@@ -716,12 +742,12 @@ class VimRubyCompletion
       dprint "default/other"
       inclass = eval( VIM::evaluate("s:IsInClassDef()") )
 
-      if inclass != nil
+      if inclass
         dprint "inclass"
         classdef = "%s\n" % VIM::Buffer.current[ inclass.min ]
         found = /^\s*class\s*([A-Za-z0-9_-]*)(\s*<\s*([A-Za-z0-9_:-]*))?\s*\n$/.match( classdef )
 
-        if found != nil
+        if found
           receiver = $1
           message = input
           load_buffer_class( receiver )
