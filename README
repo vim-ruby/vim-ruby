@@ -1,5 +1,5 @@
                     +-----------------------------------+
-                    | vim-ruby RubyForge project README |
+                    | vim-ruby github project README |
                     +-----------------------------------+
 
 Summary:
@@ -7,8 +7,8 @@ Summary:
   within Vim.  See the project homepage for more details.
 
 Web links:
-  Homepage: http://vim-ruby.rubyforge.org
-  Project:  http://www.rubyforge.org/vim-ruby
+  Homepage: https://github.com/vim-ruby
+  Explanation:  http://github.com/vim-ruby/vim-ruby/wiki
 
 For regular users:
   - The project page should have two tarballs for download:
@@ -16,10 +16,9 @@ For regular users:
      - vim-ruby-devel-YYYY.MM.DD.tar.gz  (cutting-edge features we'd like you
        to test)
   - Please give feedback through the bug tracking and feature request features
-    of RubyForge.
-  - Feel free to join discussions on the vim-ruby-devel mailing list.
-    Instructions on how to join are in the project page somewhere.
-  - RubyForge also features forums, but the mailing list is better.
+    of github.
+  - Feel free to join discussions on the vim-ruby-devel mailing list:
+    http://rubyforge.org/mail/?group_id=16
 
 For would-be contributors:
   - Please get the latest from Git.
@@ -42,7 +41,7 @@ How you get these files into Vim:
     ($HOME/vimfiles on Windows) for personal use.
   - Remember that when you install Vim in the first place, all of these files
     are present.  The purpose of downloading and installing them from
-    RubyForge is to get the latest version of them.
+    github is to get the latest version of them.
 
 Git topics:
   - Project was migrated from CVS in August, 2008.
@@ -70,13 +69,7 @@ Any questions or suggestions?
     Doug - djk)
 
 Project gossip:
-  - Two of the configuration file maintainers, Doug Kearns and Gavin Sinclair,
-    live in Australia (Jindabyne and Sydney respectively).  Tim Hammerquist,
-    the last man standing, has lived in the Reno/Lake Tahoe area of Nevada,
-    USA, since the late 1970s and doesn't like to gamble; a waste, really.
   - While the individual effort to maintain these files has a long history,
-    this actual project began in late July 2003.  Therefore, if you're reading
-    this soon thereafter and something doesn't make sense, now is the time to
-    let us know.
+    this actual project began in late July 2003.
 
                            --= End of Document =--
