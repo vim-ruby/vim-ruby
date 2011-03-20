@@ -1,7 +1,7 @@
 " Vim completion script
 " Language:             Ruby
 " Maintainer:           Mark Guzman <segfault@hasno.info>
-" URL:                  http://vim-ruby.rubyforge.org
+" URL:                  https://github.com/vim-ruby/vim-ruby
 " Anon CVS:             See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
 " Maintainer Version:   0.8.1

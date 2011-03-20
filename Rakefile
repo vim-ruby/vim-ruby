@@ -26,8 +26,7 @@ def gemspec
     s.executables           = ['vim-ruby-install.rb']
     s.author                = 'Gavin Sinclair et al.'
     s.email                 = 'gsinclair@soyabean.com.au'
-    s.homepage              = 'http://vim-ruby.rubyforge.org'
-    s.rubyforge_project     = 'vim-ruby'
+    s.homepage              = 'https://github.com/vim-ruby/vim-ruby'
     s.has_rdoc              = false
   end
 end

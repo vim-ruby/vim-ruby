@@ -4,7 +4,7 @@
 
 			    The vim-ruby Project FAQ
 
-			 http://vim-ruby.rubyforge.org
+			 https://github.com/vim-ruby/vim-ruby
 
 The vim-ruby project maintains Ruby-related configuration files for Vim.  This
 FAQ contains all you need to know about it.
@@ -43,7 +43,7 @@ The easiest way is to run: >
 
 If you don't have RubyGems, download a tarball from: >
 
-	http://rubyforge.org/projects/vim-ruby/
+	https://github.com/vim-ruby/vim-ruby/downloads
 
 Again, see installation instructions below.
 
@@ -191,13 +191,13 @@ appropriate.  Try creating these lines of code and hitting SHIFT-ENTER:
 
 For other suggestions, search the web or look at: >
 
-	http://www.rubygarden.org/Ruby/page/show/VimRubySupport
+	https://github.com/vim-ruby/vim-ruby/wiki/VimRubySupport
 
 
 *vim-ruby-faq-X* How can I report a bug? *vim-ruby-bug-reporting*
 
 Bug reports are most welcome.  In order of preference:
- - submit a bug at http://rubyforge.org/tracker/?group_id=16
+ - submit a bug at https://github.com/vim-ruby/vim-ruby/issues
  - send an email to the mailing list (see below)
  - email the maintainer (email address appears in each configuration file)
 
@@ -232,16 +232,13 @@ asking there.
 *vim-ruby-faq-X* Can you repeat all the web pages listed in this FAQ?
 
 Homepage *vim-ruby-homepage* : >
-	http://vim-ruby.rubyforge.org
-
-Project page: >
-	http://rubyforge.org/projects/vim-ruby/
+	https://github.com/vim-ruby/vim-ruby/
 
 Bug tracker: >
-	http://rubyforge.org/tracker/?group_id=16
+	https://github.com/vim-ruby/vim-ruby/issues
 
 Relevant Wiki page: >
-	http://rubygarden.org/ruby?VimRubySupport
+	https://github.com/vim-ruby/vim-ruby/wiki
 
 Mailing list archives: >
 	http://news.gmane.org/gmane.comp.editors.vim.vim%2druby.devel
