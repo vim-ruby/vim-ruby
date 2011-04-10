@@ -72,10 +72,10 @@ if !exists("s:ruby_path")
   if exists("g:ruby_path")
     let s:ruby_path = g:ruby_path
   elseif has("ruby") && has("win32")
-    ruby VIM::command( 'let s:ruby_path = "%s"' % ($: + begin; require %q{rubygems}; Gem.all_load_paths.sort.uniq; rescue LoadError; []; end).join(%q{,}) )
+    ruby VIM::command( 'let s:ruby_path = "%s"' % $:.join(%q{,}) )
     let s:ruby_path = '.,' . substitute(s:ruby_path, '\%(^\|,\)\.\%(,\|$\)', ',,', '')
   elseif executable("ruby")
-    let s:code = "print ($: + begin; require %q{rubygems}; Gem.all_load_paths.sort.uniq; rescue LoadError; []; end).join(%q{,})"
+    let s:code = "print $:.join(%q{,})"
     if &shellxquote == "'"
       let s:ruby_path = system('ruby -e "' . s:code . '"')
     else
