@@ -262,7 +262,7 @@ if !exists("ruby_no_special_methods")
   syn keyword rubyException raise fail catch throw
   " false positive with 'include?'
   syn match   rubyInclude   "\<include\>[?!]\@!"
-  syn keyword rubyInclude   autoload extend load require
+  syn keyword rubyInclude   autoload extend load require require_relative
   syn keyword rubyKeyword   callcc caller lambda proc
 endif
 
