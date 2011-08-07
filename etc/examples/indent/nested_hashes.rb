@@ -1,10 +1,12 @@
 class Foo
+  # nested do ... end blocks:
   var.func1(:param => 'value') do
     var.func2(:param => 'value') do
       puts "test"
     end
   end
 
+  # nested { ... } blocks
   var.func1(:param => 'value') {
     var.func2(:param => 'value') {
       foo({ bar => baz })
@@ -13,14 +15,15 @@ class Foo
     }
   }
 
+  # nested hash
   foo, bar = {
     :bar => {
       :one => 'two',
-      :three => 'four',
       :five => 'six'
     }
   }
 
+  # nested { ... } blocks with a continued first line
   var.
     func1(:param => 'value') {
       var.func2(:param => 'value') {
@@ -28,14 +31,7 @@ class Foo
       }
   }
 
-  var.
-    func1(:param => 'value') {
-      func1_5(:param => 'value')
-  var.func2(:param => 'value') {
-    puts "test"
-  }
-  }
-
+  # nested hashes with a continued first line
   foo,
     bar = {
       :bar => {
@@ -43,5 +39,15 @@ class Foo
         :one => 'two',
         :three => 'four'
       }
+  }
+
+  # TODO nested { ... } blocks with a continued first line and a function call
+  # inbetween
+  var.
+    func1(:param => 'value') {
+      func1_5(:param => 'value')
+  var.func2(:param => 'value') {
+    puts "test"
+  }
   }
 end
