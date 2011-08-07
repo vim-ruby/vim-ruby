@@ -81,12 +81,15 @@ let s:end_skip_expr = s:skip_expr .
       \ ' && getline(".") =~ "^\\s*\\<\\(while\\|until\\|for\\):\\@!\\>")'
 
 " Regex that defines continuation lines, not including (, {, or [.
-let s:continuation_regex = '\%([\\.,:*/%+]\|and\|or\|\%(<%\)\@<![=-]\|\W[|&?]\|||\|&&\)\s*\%(#.*\)\=$'
+let s:non_bracket_continuation_regex = '\%([\\.,:*/%+]\|and\|or\|\%(<%\)\@<![=-]\|\W[|&?]\|||\|&&\)\s*\%(#.*\)\=$'
 
 " Regex that defines continuation lines.
 " TODO: this needs to deal with if ...: and so on
-let s:continuation_regex2 =
+let s:continuation_regex =
       \ '\%([({[\\.,:*/%+]\|and\|or\|\%(<%\)\@<![=-]\|\W[|&?]\|||\|&&\)\s*\%(#.*\)\=$'
+
+" Regex that defines bracket continuations
+let s:bracket_continuation_regex = '\%([({[]\)\s*\%(#.*\)\=$'
 
 " Regex that defines blocks.
 let s:block_regex =
@@ -139,18 +142,35 @@ endfunction
 function s:GetMSL(lnum)
   " Start on the line we're at and use its indent.
   let msl = a:lnum
+  let msl_body = getline(msl)
   let lnum = s:PrevNonBlankNonString(a:lnum - 1)
   while lnum > 0
     " If we have a continuation line, or we're in a string, use line as MSL.
     " Otherwise, terminate search as we have found our MSL already.
     let line = getline(lnum)
-    let col = match(line, s:continuation_regex2) + 1
-    if (col > 0 && !s:IsInStringOrComment(lnum, col))
-	  \ || s:IsInString(lnum, strlen(line))
+
+    if line =~ s:non_bracket_continuation_regex && msl_body =~ s:non_bracket_continuation_regex
+      " If the current line is a non-bracket continuation and so is the
+      " previous one, keep its indent and continue looking for an MSL.
       let msl = lnum
+    elseif line =~ s:non_bracket_continuation_regex && msl_body =~ s:bracket_continuation_regex
+      " If the current line is a non-bracket continuation, but the previous is
+      " a bracket one, respect the previous' indentation, and stop here.
+      return lnum
+    elseif line =~ s:bracket_continuation_regex && msl_body =~ s:bracket_continuation_regex
+      " If both lines are bracket continuations, use the current one's and
+      " stop here
+      return msl
     else
-      break
+      let col = match(line, s:continuation_regex) + 1
+      if (col > 0 && !s:IsInStringOrComment(lnum, col))
+	    \ || s:IsInString(lnum, strlen(line))
+	let msl = lnum
+      else
+	break
+      endif
     endif
+
     let lnum = s:PrevNonBlankNonString(lnum - 1)
   endwhile
   return msl
@@ -289,7 +309,7 @@ function GetRubyIndent(...)
 
   " If the previous line ended with a block opening, add a level of indent.
   if s:Match(lnum, s:block_regex)
-    return indent(s:GetMSL(lnum)) + &sw
+    return indent(lnum) + &sw
   endif
 
   " If the previous line contained an opening bracket, and we are still in it,
@@ -353,7 +373,7 @@ function GetRubyIndent(...)
   " If the previous line wasn't a MSL and is continuation return its indent.
   " TODO: the || s:IsInString() thing worries me a bit.
   if p_lnum != lnum
-    if s:Match(p_lnum,s:continuation_regex)||s:IsInString(p_lnum,strlen(line))
+    if s:Match(p_lnum,s:non_bracket_continuation_regex)||s:IsInString(p_lnum,strlen(line))
       return ind
     endif
   endif
@@ -374,7 +394,7 @@ function GetRubyIndent(...)
   endif
 
   " If the previous line ended with [*+/.-=], indent one extra level.
-  if s:Match(lnum, s:continuation_regex)
+  if s:Match(lnum, s:non_bracket_continuation_regex)
     if lnum == p_lnum
       let ind = msl_ind + &sw
     else
