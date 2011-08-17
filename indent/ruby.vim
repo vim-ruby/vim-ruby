@@ -17,7 +17,7 @@ let b:did_indent = 1
 setlocal nosmartindent
 
 " Now, set up our indentation expression and keys that trigger it.
-setlocal indentexpr=GetRubyIndent()
+setlocal indentexpr=GetRubyIndent(v:lnum)
 setlocal indentkeys=0{,0},0),0],!^F,o,O,e
 setlocal indentkeys+==end,=elsif,=when,=ensure,=rescue,==begin,==end
 
@@ -206,26 +206,29 @@ endfunction
 " 3. GetRubyIndent Function {{{1
 " =========================
 
-function GetRubyIndent()
+function GetRubyIndent(...)
   " 3.1. Setup {{{2
   " ----------
 
-  " Set up variables for restoring position in file.  Could use v:lnum here.
+  " For the current line, use the first argument if given, else v:lnum
+  let clnum = a:0 ? a:1 : v:lnum
+
+  " Set up variables for restoring position in file.  Could use clnum here.
   let vcol = col('.')
 
   " 3.2. Work on the current line {{{2
   " -----------------------------
 
   " Get the current line.
-  let line = getline(v:lnum)
+  let line = getline(clnum)
   let ind = -1
 
   " If we got a closing bracket on an empty line, find its match and indent
   " according to it.  For parentheses we indent to its column - 1, for the
   " others we indent to the containing line's MSL's level.  Return -1 if fail.
   let col = matchend(line, '^\s*[]})]')
-  if col > 0 && !s:IsInStringOrComment(v:lnum, col)
-    call cursor(v:lnum, col)
+  if col > 0 && !s:IsInStringOrComment(clnum, col)
+    call cursor(clnum, col)
     let bs = strpart('(){}[]', stridx(')}]', line[col - 1]) * 2, 2)
     if searchpair(escape(bs[0], '\['), '', bs[1], 'bW', s:skip_expr) > 0
       if line[col-1]==')' && col('.') != col('$') - 1
@@ -244,8 +247,8 @@ function GetRubyIndent()
 
   " If we have a deindenting keyword, find its match and indent to its level.
   " TODO: this is messy
-  if s:Match(v:lnum, s:ruby_deindent_keywords)
-    call cursor(v:lnum, 1)
+  if s:Match(clnum, s:ruby_deindent_keywords)
+    call cursor(clnum, 1)
     if searchpair(s:end_start_regex, s:end_middle_regex, s:end_end_regex, 'bW',
 	    \ s:end_skip_expr) > 0
       let line = getline('.')
@@ -260,7 +263,7 @@ function GetRubyIndent()
   endif
 
   " If we are in a multi-line string or line-comment, don't do anything to it.
-  if s:IsInStringOrDocumentation(v:lnum, matchend(line, '^\s*') + 1)
+  if s:IsInStringOrDocumentation(clnum, matchend(line, '^\s*') + 1)
     return indent('.')
   endif
 
@@ -268,11 +271,11 @@ function GetRubyIndent()
   " -------------------------------
 
   " Find a non-blank, non-multi-line string line above the current line.
-  let lnum = s:PrevNonBlankNonString(v:lnum - 1)
+  let lnum = s:PrevNonBlankNonString(clnum - 1)
 
   " If the line is empty and inside a string, use the previous line.
-  if line =~ '^\s*$' && lnum != prevnonblank(v:lnum - 1)
-    return indent(prevnonblank(v:lnum))
+  if line =~ '^\s*$' && lnum != prevnonblank(clnum - 1)
+    return indent(prevnonblank(clnum))
   endif
 
   " At the start of the file use zero indent.
@@ -305,7 +308,7 @@ function GetRubyIndent()
 	return nonspace > 0 ? nonspace : ind + &sw
       endif
     else
-      call cursor(v:lnum, vcol)
+      call cursor(clnum, vcol)
     end
   endif
 
