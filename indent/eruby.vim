@@ -50,7 +50,7 @@ function! GetErubyIndent(...)
   let inruby = searchpair('<%','','%>','W')
   call cursor(v:lnum,vcol)
   if inruby && getline(v:lnum) !~ '^<%\|^\s*[-=]\=%>'
-    let ind = GetRubyIndent()
+    let ind = GetRubyIndent(v:lnum)
   else
     exe "let ind = ".b:eruby_subtype_indentexpr
   endif
