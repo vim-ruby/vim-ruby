@@ -71,21 +71,24 @@ setlocal commentstring=#\ %s
 if !exists("s:ruby_path")
   if exists("g:ruby_path")
     let s:ruby_path = g:ruby_path
-  elseif has("ruby") && has("win32")
-    ruby VIM::command( 'let s:ruby_path = "%s"' % $:.join(%q{,}) )
-    let s:ruby_path = '.,' . substitute(s:ruby_path, '\%(^\|,\)\.\%(,\|$\)', ',,', '')
-  elseif executable("ruby")
-    let s:code = "print $:.join(%q{,})"
-    if &shellxquote == "'"
-      let s:ruby_path = system('ruby -e "' . s:code . '"')
-    else
-      let s:ruby_path = system("ruby -e '" . s:code . "'")
-    endif
-    let s:ruby_path = '.,' . substitute(s:ruby_path, '\%(^\|,\)\.\%(,\|$\)', ',,', '')
   else
-    " If we can't call ruby to get its path, just default to using the
-    " current directory and the directory of the current file.
-    let s:ruby_path = ".,,"
+    if has("ruby") && has("win32")
+      ruby VIM::command( 'let s:ruby_path = "%s"' % $:.join(%q{,}) )
+      let s:ruby_path = substitute(s:ruby_path, '\%(^\|,\)\.\%(,\|$\)', ',,', '')
+    elseif executable("ruby")
+      let s:code = "print $:.join(%q{,})"
+      if &shellxquote == "'"
+        let s:ruby_path = system('ruby -e "' . s:code . '"')
+      else
+        let s:ruby_path = system("ruby -e '" . s:code . "'")
+      endif
+      let s:ruby_path = substitute(s:ruby_path, '\%(^\|,\)\.\%(,\|$\)', ',,', '')
+    else
+      let s:ruby_path = substitute($RUBYLIB,':',',','g')
+    endif
+    if &g:path !~# '\v^\.%(,/%(usr|emx)/include)=,,$'
+      let s:ruby_path = substitute(&g:path,',,$',',','') . ',' . s:ruby_path
+    endif
   endif
 endif
 
