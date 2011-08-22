@@ -144,6 +144,17 @@ if !exists("g:no_plugin_maps") && !exists("g:no_ruby_maps")
           \."| sil! exe 'nunmap <buffer> <C-W>g<C-]>'| sil! exe 'nunmap <buffer> <C-W>g]'"
           \."| sil! exe 'nunmap <buffer> <C-W>}'| sil! exe 'nunmap <buffer> <C-W>g}'"
   endif
+
+  if maparg("gf",'n') == ''
+    " By using findfile() rather than gf's normal behavior, we prevent
+    " erroneously editing a directory.
+    nnoremap <silent> <buffer> gf         :<C-U>exe <SID>gf(v:count1,"gf",'edit')<CR>
+    nnoremap <silent> <buffer> <C-W>f     :<C-U>exe <SID>gf(v:count1,"\<Lt>C-W>f",'split')<CR>
+    nnoremap <silent> <buffer> <C-W><C-F> :<C-U>exe <SID>gf(v:count1,"\<Lt>C-W>\<Lt>C-F>",'split')<CR>
+    nnoremap <silent> <buffer> <C-W>gf    :<C-U>exe <SID>gf(v:count1,"\<Lt>C-W>gf",'tabedit')<CR>
+    let b:undo_ftplugin = b:undo_ftplugin
+          \."| sil! exe 'nunmap <buffer> gf' | sil! exe 'nunmap <buffer> <C-W>f' | sil! exe 'nunmap <buffer> <C-W><C-F>' | sil! exe 'nunmap <buffer> <C-W>gf'"
+  endif
 endif
 
 let &cpo = s:cpo_save
@@ -241,6 +252,19 @@ function! RubyCursorIdentifier()
   let raw          = matchstr(getline('.')[col-1 : ],pattern)
   let stripped     = substitute(substitute(raw,'\s\+=$','=',''),'^\s*:\=','','')
   return stripped == '' ? expand("<cword>") : stripped
+endfunction
+
+function! s:gf(count,map,edit) abort
+  let target = expand('<cfile>')
+  if target =~# '^\%(require\|load\)$' && getline('.') =~# '^\s*\%(require\|load\) \(["'']\).*\1'
+    let target = matchstr(getline('.'),'^\s*\%(require\|load\) \(["'']\)\zs.\{-\}\ze\1')
+  endif
+  let found = findfile(target, &path, a:count)
+  if found ==# ''
+    return 'norm! '.a:count.a:map
+  else
+    return a:edit.' '.fnameescape(found)
+  endif
 endfunction
 
 "
