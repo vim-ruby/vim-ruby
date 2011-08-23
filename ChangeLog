@@ -1,3 +1,5 @@
+This file is no longer maintained.  Consult the Git log for newer changes.
+
 2009-09-27  Mark Guzman  <segfault@hasno.info>
 
 	* autoload/rubycomplete.vim: pplying a patch from Yoshimasa Niwa resolving
