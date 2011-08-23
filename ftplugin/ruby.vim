@@ -256,8 +256,9 @@ endfunction
 
 function! s:gf(count,map,edit) abort
   let target = expand('<cfile>')
-  if target =~# '^\%(require\|load\)$' && getline('.') =~# '^\s*\%(require\|load\) \(["'']\).*\1'
-    let target = matchstr(getline('.'),'^\s*\%(require\|load\) \(["'']\)\zs.\{-\}\ze\1')
+  if target =~# '^\%(require\|load\|autoload\)$' && getline('.') =~# '^\s*\%(require \|load \|autoload :\w\+,\)\s*\(["'']\).*\1'
+    let target = matchstr(getline('.'),'\(["'']\)\zs.\{-\}\ze\1')
+    let g:target = target
   endif
   let found = findfile(target, &path, a:count)
   if found ==# ''
