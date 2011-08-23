@@ -1,16 +1,11 @@
 " Vim filetype plugin
 " Language:		Ruby
-" Maintainer:		Gavin Sinclair <gsinclair at gmail.com>
+" Maintainer:		Tim Pope <vimNOSPAM@tpope.org>
 " URL:			https://github.com/vim-ruby/vim-ruby
 " Anon CVS:		See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
 " ----------------------------------------------------------------------------
-"
-" Original matchit support thanks to Ned Konz.  See his ftplugin/ruby.vim at
-"   http://bike-nomad.com/vim/ruby.vim.
-" ----------------------------------------------------------------------------
 
-" Only do this when not done yet for this buffer
 if (exists("b:did_ftplugin"))
   finish
 endif
