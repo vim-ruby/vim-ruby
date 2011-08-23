@@ -17,21 +17,15 @@ endif
 let s:cpo_save = &cpo
 set cpo-=C
 
-CompilerSet makeprg=spec
+CompilerSet makeprg=rspec
 
 CompilerSet errorformat=
-    \%+W'%.%#'\ FAILED,
-    \%+I'%.%#'\ FIXED,
-    \%-Cexpected:%.%#,
-    \%-C\ \ \ \ \ got:%.%#,
+    \%f:%l:\ %tarning:\ %m,
     \%E%.%#:in\ `load':\ %f:%l:%m,
-    \%C%f:%l:,
-    \%W%f:%l:\ warning:\ %m,
-    \%E%f:%l:in\ %*[^:]:\ %m,
-    \%E%f:%l:\ %m,
-    \%-Z%\tfrom\ %f:%l,
-    \%-Z%p^%.%#,
-    \%-C%.%#,
+    \%E%f:%l:in\ `%*[^']':\ %m,
+    \%-Z\ \ \ \ \ \#\ %f:%l:%.%#,
+    \%E\ \ %\\d%\\+)%.%#,
+    \%C\ \ \ \ \ %m,
     \%-G%.%#
 
 let &cpo = s:cpo_save
