@@ -100,7 +100,6 @@ let b:undo_ftplugin = "setl fo< inc< inex< sua< def< com< cms< path< kp<"
       \."| if has('balloon_eval') && exists('+bexpr') | setl bexpr< | endif"
 
 if !exists("g:no_plugin_maps") && !exists("g:no_ruby_maps")
-
   nnoremap <silent> <buffer> [m :<C-U>call <SID>searchsyn('\<def\>','rubyDefine','b','n')<CR>
   nnoremap <silent> <buffer> ]m :<C-U>call <SID>searchsyn('\<def\>','rubyDefine','','n')<CR>
   nnoremap <silent> <buffer> [M :<C-U>call <SID>searchsyn('\<end\>','rubyDefine','b','n')<CR>
@@ -119,9 +118,15 @@ if !exists("g:no_plugin_maps") && !exists("g:no_ruby_maps")
   xnoremap <silent> <buffer> [] :<C-U>call <SID>searchsyn('\<end\>','rubyModule\<Bar>rubyClass','b','v')<CR>
   xnoremap <silent> <buffer> ][ :<C-U>call <SID>searchsyn('\<end\>','rubyModule\<Bar>rubyClass','','v')<CR>
 
+  onoremap <silent> <buffer> im :<C-U>call <SID>wrap_i('[m',']M')<CR>
+  onoremap <silent> <buffer> am :<C-U>call <SID>wrap_a('[m',']M')<CR>
+  onoremap <silent> <buffer> ic :<C-U>call <SID>wrap_i('[[','][')<CR>
+  onoremap <silent> <buffer> ac :<C-U>call <SID>wrap_a('[[','][')<CR>
+
   let b:undo_ftplugin = b:undo_ftplugin
         \."| sil! exe 'unmap <buffer> [[' | sil! exe 'unmap <buffer> ]]' | sil! exe 'unmap <buffer> []' | sil! exe 'unmap <buffer> ]['"
         \."| sil! exe 'unmap <buffer> [m' | sil! exe 'unmap <buffer> ]m' | sil! exe 'unmap <buffer> [M' | sil! exe 'unmap <buffer> ]M'"
+        \."! sil! exe 'ounmap <buffer> im'| sil! exe 'ounmap <buffer> am'| sil! exe 'ounmap <buffer> ic'| sil! exe 'ounmap <buffer> ac'"
 
   if maparg("\<C-]>",'n') == ''
     nnoremap <silent> <buffer> <C-]>       :<C-U>exe  v:count1."tag <C-R>=RubyCursorIdentifier()<CR>"<CR>
@@ -233,6 +238,32 @@ endfunction
 
 function! s:synname()
     return synIDattr(synID(line('.'),col('.'),0),'name')
+endfunction
+
+function! s:wrap_i(back,forward)
+  execute 'norm k'.a:forward
+  let line = line('.')
+  execute 'norm '.a:back
+  if line('.') == line - 1
+    return s:wrap_a(a:back,a:forward)
+  endif
+  execute 'norm jV'.a:forward.'k'
+endfunction
+
+function! s:wrap_a(back,forward)
+  execute 'norm '.a:forward
+  let g:one = line('.')
+  if line('.') < line('$') && getline(line('.')+1) ==# ''
+    let g:d = 'a'
+    execute 'norm jV'.a:back
+  else
+    execute 'norm '.a:back
+    if line('.') > 1 && getline(line('.')-1) ==# ''
+      execute 'norm kV'.a:forward
+    else
+      execute 'norm V'.a:forward
+    endif
+  endif
 endfunction
 
 function! RubyCursorIdentifier()
