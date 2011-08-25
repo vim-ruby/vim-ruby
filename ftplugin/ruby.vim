@@ -69,12 +69,17 @@ if !exists("s:ruby_path")
   else
     if has("ruby") && has("win32")
       ruby VIM::command( 'let s:ruby_paths = split("%s",",")' % $:.join(%q{,}) )
-    elseif executable("ruby")
+    elseif executable('ruby')
       let s:code = "print $:.join(%q{,})"
-      if &shellxquote == "'"
-        let s:ruby_paths = split(system('ruby -e "' . s:code . '"'),",")
+      if executable('env') && $PATH !~# '\s'
+        let prefix = 'env PATH='.$PATH.' '
       else
-        let s:ruby_paths = split(system("ruby -e '" . s:code . "'"),",")
+        let prefix = ''
+      endif
+      if &shellxquote == "'"
+        let s:ruby_paths = split(system(prefix.'ruby -e "' . s:code . '"'),',')
+      else
+        let s:ruby_paths = split(system(prefix."ruby -e '" . s:code . "'"),',')
       endif
     else
       let s:ruby_paths = split($RUBYLIB,':')
