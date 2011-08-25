@@ -65,22 +65,21 @@ setlocal commentstring=#\ %s
 
 if !exists("s:ruby_path")
   if exists("g:ruby_path")
-    let s:ruby_path = g:ruby_path
+    let s:ruby_path = type(g:ruby_path) == type([]) ? join(g:ruby_path,',') : g:ruby_path
   else
     if has("ruby") && has("win32")
-      ruby VIM::command( 'let s:ruby_path = "%s"' % $:.join(%q{,}) )
-      let s:ruby_path = substitute(s:ruby_path, '\%(^\|,\)\.\%(,\|$\)', ',,', '')
+      ruby VIM::command( 'let s:ruby_paths = split("%s",",")' % $:.join(%q{,}) )
     elseif executable("ruby")
       let s:code = "print $:.join(%q{,})"
       if &shellxquote == "'"
-        let s:ruby_path = system('ruby -e "' . s:code . '"')
+        let s:ruby_paths = split(system('ruby -e "' . s:code . '"'),",")
       else
-        let s:ruby_path = system("ruby -e '" . s:code . "'")
+        let s:ruby_paths = split(system("ruby -e '" . s:code . "'"),",")
       endif
-      let s:ruby_path = substitute(s:ruby_path, '\%(^\|,\)\.\%(,\|$\)', ',,', '')
     else
-      let s:ruby_path = substitute($RUBYLIB,':',',','g')
+      let s:ruby_paths = split($RUBYLIB,':')
     endif
+    let s:ruby_path = substitute(join(s:ruby_paths,","), '\%(^\|,\)\.\%(,\|$\)', ',,', '')
     if &g:path !~# '\v^\.%(,/%(usr|emx)/include)=,,$'
       let s:ruby_path = substitute(&g:path,',,$',',','') . ',' . s:ruby_path
     endif
@@ -88,13 +87,16 @@ if !exists("s:ruby_path")
 endif
 
 let &l:path = s:ruby_path
+if exists('s:ruby_paths')
+  let &l:tags = &g:tags . ',' . join(map(copy(s:ruby_paths),'v:val."/tags"'),',')
+endif
 
 if has("gui_win32") && !exists("b:browsefilter")
   let b:browsefilter = "Ruby Source Files (*.rb)\t*.rb\n" .
                      \ "All Files (*.*)\t*.*\n"
 endif
 
-let b:undo_ftplugin = "setl fo< inc< inex< sua< def< com< cms< path< kp<"
+let b:undo_ftplugin = "setl fo< inc< inex< sua< def< com< cms< path< tags< kp<"
       \."| unlet! b:browsefilter b:match_ignorecase b:match_words b:match_skip"
       \."| if exists('&ofu') && has('ruby') | setl ofu< | endif"
       \."| if has('balloon_eval') && exists('+bexpr') | setl bexpr< | endif"
