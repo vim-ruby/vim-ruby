@@ -13,6 +13,9 @@ au BufNewFile,BufRead [rR]antfile,*.rant		set filetype=ruby
 " IRB config
 au BufNewFile,BufRead .irbrc,irbrc			set filetype=ruby
 
+" Pry config
+au BufNewFile,BufRead .pryrc				set filetype=ruby
+
 " Rackup
 au BufNewFile,BufRead *.ru				set filetype=ruby
 
@@ -21,6 +24,9 @@ au BufNewFile,BufRead Capfile				set filetype=ruby
 
 " Bundler
 au BufNewFile,BufRead Gemfile				set filetype=ruby
+
+" Vagrant
+au BufNewFile,BufRead [vV]agrantfile                    set filetype=ruby
 
 " Autotest
 au BufNewFile,BufRead .autotest				set filetype=ruby
