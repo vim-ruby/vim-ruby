@@ -259,9 +259,7 @@ endfunction
 
 function! s:wrap_a(back,forward)
   execute 'norm '.a:forward
-  let g:one = line('.')
   if line('.') < line('$') && getline(line('.')+1) ==# ''
-    let g:d = 'a'
     execute 'norm jV'.a:back
   else
     execute 'norm '.a:back
