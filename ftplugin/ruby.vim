@@ -43,7 +43,7 @@ endif
 
 setlocal formatoptions-=t formatoptions+=croql
 
-setlocal include=^\\s*\\<\\(load\\\|\w*require\\)\\>
+setlocal include=^\\s*\\<\\(load\\>\\\|require\\>\\\|autoload\\s*:\\=[\"']\\=\\h\\w*[\"']\\=,\\)
 setlocal includeexpr=substitute(substitute(v:fname,'::','/','g'),'$','.rb','')
 setlocal suffixesadd=.rb
 
