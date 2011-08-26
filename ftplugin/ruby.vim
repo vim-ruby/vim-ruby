@@ -291,8 +291,12 @@ endfunction
 
 function! s:gf(count,map,edit) abort
   let target = expand('<cfile>')
-  if target ==# 'require_relative' && getline('.') =~# '^\s*require_relative\s*\(["'']\).*\1'
+  if target ==# '^require' && getline('.') =~# '^\s*require_relative\s*\(["'']\).*\1'
     let target = matchstr(getline('.'),'\(["'']\)\zs.\{-\}\ze\1')
+    return a:edit.' %:h/'.target.'.rb'
+  endif
+  if target =~# '^\%(require\|load\|autoload\)$' && getline('.') =~# '^\s*\%(require \|load \|autoload :\w\+,\)\s*\|^\s*require(\=\s*File\.expand_path(\(["'']\)\.\./.*\1,\s*__FILE__)'
+    let target = matchstr(getline('.'),'\(["'']\)\.\./\zs.\{-\}\ze\1')
     return a:edit.' %:h/'.target.'.rb'
   endif
   if target =~# '^\%(require\|load\|autoload\)$' && getline('.') =~# '^\s*\%(require \|load \|autoload :\w\+,\)\s*\(["'']\).*\1'
