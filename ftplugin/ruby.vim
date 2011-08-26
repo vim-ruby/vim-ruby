@@ -260,14 +260,18 @@ endfunction
 function! s:wrap_a(back,forward)
   execute 'norm '.a:forward
   if line('.') < line('$') && getline(line('.')+1) ==# ''
-    execute 'norm jV'.a:back
+    let after = 1
+  endif
+  execute 'norm '.a:back
+  while getline(line('.')-1) =~# '^\s*#' && line('.')
+    -
+  endwhile
+  if exists('after')
+    execute 'norm V'.a:forward.'j'
+  elseif line('.') > 1 && getline(line('.')-1) =~# '^\s*$'
+    execute 'norm kV'.a:forward
   else
-    execute 'norm '.a:back
-    if line('.') > 1 && getline(line('.')-1) ==# ''
-      execute 'norm kV'.a:forward
-    else
-      execute 'norm V'.a:forward
-    endif
+    execute 'norm V'.a:forward
   endif
 endfunction
 
