@@ -48,7 +48,7 @@ let s:syng_string =
 
 " Regex of syntax group names that are strings or documentation.
 let s:syng_stringdoc =
-  \'\<ruby\%(String\|Interpolation\|NoInterpolation\|StringEscape\|Documentation\)\>'
+      \'\<ruby\%(String\|Interpolation\|NoInterpolation\|StringEscape\|Documentation\)\>'
 
 " Expression used to check whether we should skip a match with searchpair().
 let s:skip_expr =
@@ -128,14 +128,14 @@ function s:PrevNonBlankNonString(lnum)
     let line = getline(lnum)
     if line =~ '^=begin'
       if in_block
-	let in_block = 0
+        let in_block = 0
       else
-	break
+        break
       endif
     elseif !in_block && line =~ '^=end'
       let in_block = 1
     elseif !in_block && line !~ '^\s*#.*$' && !(s:IsInStringOrComment(lnum, 1)
-	  \ && s:IsInStringOrComment(lnum, strlen(line)))
+          \ && s:IsInStringOrComment(lnum, strlen(line)))
       break
     endif
     let lnum = prevnonblank(lnum - 1)
@@ -169,10 +169,10 @@ function s:GetMSL(lnum)
     else
       let col = match(line, s:continuation_regex) + 1
       if (col > 0 && !s:IsInStringOrComment(lnum, col))
-	    \ || s:IsInString(lnum, strlen(line))
-	let msl = lnum
+            \ || s:IsInString(lnum, strlen(line))
+        let msl = lnum
       else
-	break
+        break
       endif
     endif
 
@@ -189,17 +189,17 @@ function s:FindRightmostOpenBracket(lnum)
   while pos != -1
     if !s:IsInStringOrComment(a:lnum, pos + 1)
       if line[pos] == '('
-	call add(open.parentheses, {'type': '(', 'pos': pos})
+        call add(open.parentheses, {'type': '(', 'pos': pos})
       elseif line[pos] == ')'
-	let open.parentheses = open.parentheses[0:-2]
+        let open.parentheses = open.parentheses[0:-2]
       elseif line[pos] == '{'
-	call add(open.braces, {'type': '{', 'pos': pos})
+        call add(open.braces, {'type': '{', 'pos': pos})
       elseif line[pos] == '}'
-	let open.braces = open.braces[0:-2]
+        let open.braces = open.braces[0:-2]
       elseif line[pos] == '['
-	call add(open.brackets, {'type': '[', 'pos': pos})
+        call add(open.brackets, {'type': '[', 'pos': pos})
       elseif line[pos] == ']'
-	let open.brackets = open.brackets[0:-2]
+        let open.brackets = open.brackets[0:-2]
       endif
     endif
     let pos = match(line, '[][(){}]', pos + 1)
@@ -257,9 +257,9 @@ function GetRubyIndent(...)
     let bs = strpart('(){}[]', stridx(')}]', line[col - 1]) * 2, 2)
     if searchpair(escape(bs[0], '\['), '', bs[1], 'bW', s:skip_expr) > 0
       if line[col-1]==')' && col('.') != col('$') - 1
-	let ind = virtcol('.') - 1
+        let ind = virtcol('.') - 1
       else
-	let ind = indent(s:GetMSL(line('.')))
+        let ind = indent(s:GetMSL(line('.')))
       endif
     endif
     return ind
@@ -275,14 +275,14 @@ function GetRubyIndent(...)
   if s:Match(clnum, s:ruby_deindent_keywords)
     call cursor(clnum, 1)
     if searchpair(s:end_start_regex, s:end_middle_regex, s:end_end_regex, 'bW',
-	    \ s:end_skip_expr) > 0
+          \ s:end_skip_expr) > 0
       let line = getline('.')
       if strpart(line, 0, col('.') - 1) =~ '=\s*$' &&
-	    \ strpart(line, col('.') - 1, 2) !~ 'do' &&
-	    \ g:ruby_hanging_indent
-	let ind = virtcol('.') - 1
+            \ strpart(line, col('.') - 1, 2) !~ 'do' &&
+            \ g:ruby_hanging_indent
+        let ind = virtcol('.') - 1
       else
-	let ind = indent('.')
+        let ind = indent('.')
       endif
     endif
     return ind
@@ -324,14 +324,14 @@ function GetRubyIndent(...)
     let open = s:FindRightmostOpenBracket(lnum)
     if open.pos != -1
       if open.type == '(' && searchpair('(', '', ')', 'bW', s:skip_expr) > 0
-	if col('.') + 1 == col('$')
-	  return ind + &sw
-	else
-	  return virtcol('.')
-	endif
+        if col('.') + 1 == col('$')
+          return ind + &sw
+        else
+          return virtcol('.')
+        endif
       else
-	let nonspace = matchend(line, '\S', open.pos + 1) - 1
-	return nonspace > 0 ? nonspace : ind + &sw
+        let nonspace = matchend(line, '\S', open.pos + 1) - 1
+        return nonspace > 0 ? nonspace : ind + &sw
       endif
     else
       call cursor(clnum, vcol)
@@ -344,12 +344,12 @@ function GetRubyIndent(...)
   if col > 0
     call cursor(lnum, col)
     if searchpair(s:end_start_regex, '', s:end_end_regex, 'bW',
-		\ s:end_skip_expr) > 0
+          \ s:end_skip_expr) > 0
       let n = line('.')
       let ind = indent('.')
       let msl = s:GetMSL(n)
       if msl != n
-	let ind = indent(msl)
+        let ind = indent(msl)
       end
       return ind
     endif
@@ -364,7 +364,6 @@ function GetRubyIndent(...)
     else
       let ind = indent('.') + &sw
     endif
-"    let ind = indent(lnum) + &sw
     " TODO: make this better (we need to count them) (or, if a searchpair
     " fails, we know that something is lacking an end and thus we indent a
     " level
@@ -423,4 +422,4 @@ endfunction
 let &cpo = s:cpo_save
 unlet s:cpo_save
 
-" vim:set sw=2 sts=2 ts=8 noet:
+" vim:set sw=2 sts=2 ts=8 et:
