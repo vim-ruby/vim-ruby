@@ -137,11 +137,11 @@ if !exists("g:no_plugin_maps") && !exists("g:no_ruby_maps")
           \."! sil! exe 'ounmap <buffer> im' | sil! exe 'ounmap <buffer> am'"
   endif
 
-  if maparg('ic','n') == ''
-    onoremap <silent> <buffer> ic :<C-U>call <SID>wrap_i('[[','][')<CR>
-    onoremap <silent> <buffer> ac :<C-U>call <SID>wrap_a('[[','][')<CR>
+  if maparg('iM','n') == ''
+    onoremap <silent> <buffer> iM :<C-U>call <SID>wrap_i('[[','][')<CR>
+    onoremap <silent> <buffer> aM :<C-U>call <SID>wrap_a('[[','][')<CR>
     let b:undo_ftplugin = b:undo_ftplugin
-          \."| sil! exe 'ounmap <buffer> ic' | sil! exe 'ounmap <buffer> ac'"
+          \."| sil! exe 'ounmap <buffer> iM' | sil! exe 'ounmap <buffer> aM'"
   endif
 
   if maparg("\<C-]>",'n') == ''
