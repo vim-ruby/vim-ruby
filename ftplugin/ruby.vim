@@ -302,7 +302,7 @@ function! s:gf(count,map,edit) abort
   if getline('.') =~# '^\s*require_relative\s*\(["'']\).*\1\s*$'
     let target = matchstr(getline('.'),'\(["'']\)\zs.\{-\}\ze\1')
     return a:edit.' %:h/'.target.'.rb'
-  elseif getline('.') =~# '^\s*\%(require[( ]\|load[( ]\|autoload[( ]:\w\+,\)\s*\s*File\.expand_path(\(["'']\)\.\./.*\1,\s*__FILE__)\s*$'
+  elseif getline('.') =~# '^\s*\%(require[( ]\|load[( ]\|autoload[( ]:\w\+,\)\s*\s*\%(::\)\=File\.expand_path(\(["'']\)\.\./.*\1,\s*__FILE__)\s*$'
     let target = matchstr(getline('.'),'\(["'']\)\.\./\zs.\{-\}\ze\1')
     return a:edit.' %:h/'.target.'.rb'
   elseif getline('.') =~# '^\s*\%(require \|load \|autoload :\w\+,\)\s*\(["'']\).*\1\s*$'
