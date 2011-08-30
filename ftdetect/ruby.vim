@@ -25,8 +25,11 @@ au BufNewFile,BufRead Capfile				set filetype=ruby
 " Bundler
 au BufNewFile,BufRead Gemfile				set filetype=ruby
 
+" Guard
+au BufNewFile,BufRead Guardfile,.Guardfile		set filetype=ruby
+
 " Vagrant
-au BufNewFile,BufRead [vV]agrantfile                    set filetype=ruby
+au BufNewFile,BufRead [vV]agrantfile			set filetype=ruby
 
 " Autotest
 au BufNewFile,BufRead .autotest				set filetype=ruby
