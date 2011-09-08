@@ -1,7 +1,7 @@
 Installation
 ============
 
-In general, your favorite method work.  Here are some options.
+In general, your favorite method works.  Here are some options.
 
 With pathogen.vim
 -----------------
