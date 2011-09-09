@@ -257,30 +257,30 @@ function! s:synname()
 endfunction
 
 function! s:wrap_i(back,forward)
-  execute 'norm k'.a:forward
+  execute 'normal! k'.a:forward
   let line = line('.')
-  execute 'norm '.a:back
+  execute 'normal! '.a:back
   if line('.') == line - 1
     return s:wrap_a(a:back,a:forward)
   endif
-  execute 'norm jV'.a:forward.'k'
+  execute 'normal! jV'.a:forward.'k'
 endfunction
 
 function! s:wrap_a(back,forward)
-  execute 'norm '.a:forward
+  execute 'normal! '.a:forward
   if line('.') < line('$') && getline(line('.')+1) ==# ''
     let after = 1
   endif
-  execute 'norm '.a:back
+  execute 'normal! '.a:back
   while getline(line('.')-1) =~# '^\s*#' && line('.')
     -
   endwhile
   if exists('after')
-    execute 'norm V'.a:forward.'j'
+    execute 'normal! V'.a:forward.'j'
   elseif line('.') > 1 && getline(line('.')-1) =~# '^\s*$'
-    execute 'norm kV'.a:forward
+    execute 'normal! kV'.a:forward
   else
-    execute 'norm V'.a:forward
+    execute 'normal! V'.a:forward
   endif
 endfunction
 
