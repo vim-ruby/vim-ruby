@@ -68,7 +68,7 @@ if !exists("s:ruby_path")
     let s:ruby_path = type(g:ruby_path) == type([]) ? join(g:ruby_path,',') : g:ruby_path
   else
     if has("ruby") && has("win32")
-      ruby VIM::command( 'let s:ruby_paths = split("%s",",")' % $:.join(%q{,}) )
+      ruby ::VIM::command( 'let s:ruby_paths = split("%s",",")' % $:.join(%q{,}) )
     elseif executable('ruby')
       let s:code = "print $:.join(%q{,})"
       if executable('env') && $PATH !~# '\s'
