@@ -173,6 +173,9 @@ if !exists("g:no_plugin_maps") && !exists("g:no_ruby_maps")
   endif
 endif
 
+let &cpo = s:cpo_save
+unlet s:cpo_save
+
 if exists("g:did_ruby_ftplugin_functions")
   finish
 endif
@@ -315,9 +318,6 @@ function! s:gf(count,map,edit) abort
     return a:edit.' '.fnameescape(found)
   endif
 endfunction
-
-let &cpo = s:cpo_save
-unlet s:cpo_save
 
 "
 " Instructions for enabling "matchit" support:
