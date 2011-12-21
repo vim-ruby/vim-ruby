@@ -91,9 +91,11 @@ if !exists("s:ruby_path")
   endif
 endif
 
-let &l:path = s:ruby_path
-if exists('s:ruby_paths')
-  let &l:tags = &g:tags . ',' . join(map(copy(s:ruby_paths),'v:val."/tags"'),',')
+if stridx(&l:path, s:ruby_path) == -1
+  let &l:path = s:ruby_path
+endif
+if exists('s:ruby_paths') && stridx(&l:tags, join(map(copy(s:ruby_paths),'v:val."/tags"'),',')) == -1
+  let &l:tags .= ',' . join(map(copy(s:ruby_paths),'v:val."/tags"'),',')
 endif
 
 if has("gui_win32") && !exists("b:browsefilter")
