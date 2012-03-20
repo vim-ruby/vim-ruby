@@ -431,6 +431,7 @@ begin
     puts
     puts "Target directory '#{target_dir}' does not exist."
     response = Env.ask_user "Do you want to create it? [Yn] "
+    response = "y" if response.empty?
     if response.strip =~ /^y(es)?$/i
       FileUtils.mkdir_p(target_dir, :verbose => true)
     else
