@@ -42,3 +42,6 @@ au BufNewFile,BufRead [tT]horfile,*.thor		set filetype=ruby
 
 " Rabl
 au BufNewFile,BufRead *.rabl				set filetype=ruby
+
+" jbuilder
+au BufNewFile,BufRead *.jbuilder				set filetype=ruby
