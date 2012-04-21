@@ -88,6 +88,7 @@ if !exists("s:ruby_path")
     if &g:path !~# '\v^\.%(,/%(usr|emx)/include)=,,$'
       let s:ruby_path = substitute(&g:path,',,$',',','') . ',' . s:ruby_path
     endif
+    let s:ruby_path .= ',lib/**'
   endif
 endif
 
@@ -300,6 +301,18 @@ function! RubyCursorIdentifier()
   return stripped == '' ? expand("<cword>") : stripped
 endfunction
 
+function! s:gsub(str,pat,rep)
+  return substitute(a:str,'\v\C'.a:pat,a:rep,'g')
+endfunction
+
+function! s:underscore(str)
+  let str = s:gsub(a:str,'::','/')
+  let str = s:gsub(str,'(\u+)(\u\l)','\1_\2')
+  let str = s:gsub(str,'(\l|\d)(\u)','\1_\2')
+  let str = tolower(str)
+  return str
+endfunction
+
 function! s:gf(count,map,edit) abort
   if getline('.') =~# '^\s*require_relative\s*\(["'']\).*\1\s*$'
     let target = matchstr(getline('.'),'\(["'']\)\zs.\{-\}\ze\1')
@@ -309,11 +322,13 @@ function! s:gf(count,map,edit) abort
     return a:edit.' %:h/'.target.'.rb'
   elseif getline('.') =~# '^\s*\%(require \|load \|autoload :\w\+,\)\s*\(["'']\).*\1\s*$'
     let target = matchstr(getline('.'),'\(["'']\)\zs.\{-\}\ze\1')
+  elseif getline('.') =~# '^\s*\%(include\|extend\)\s\+\u\w*\(::\u\w*\)*\s*$'
+    let target = s:underscore(matchstr(getline('.'),'\s\zs\u\w*\(::\u\w*\)*\ze'))
   else
-    let target = expand('<cfile>')
+    let target = s:underscore(expand('<cfile>'))
   endif
   let g:target = target
-  let found = findfile(target, &path, a:count)
+  let found = findfile(target, s:ruby_path, a:count)
   if found ==# ''
     return 'norm! '.a:count.a:map
   else
