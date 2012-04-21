@@ -92,6 +92,14 @@ let s:continuation_regex =
 let s:bracket_continuation_regex = '\%([({[]\)\s*\%(#.*\)\=$'
 
 " Regex that defines blocks.
+"
+" Note that there's a slight problem with this regex and s:continuation_regex.
+" Code like this will be matched by both:
+"
+"   method_call do |(a, b)|
+"
+" The reason is that the pipe matches a hanging "|" operator.
+"
 let s:block_regex =
       \ '\%(\<do:\@!\>\|{\)\s*\%(|\s*(\=\%([*@&]\=\h\w*,\=\s*\)\%(,\s*(\=\s*[*@&]\=\h\w*)\=\)*|\)\=\s*\%(#.*\)\=$'
 
