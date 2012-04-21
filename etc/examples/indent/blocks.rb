@@ -8,6 +8,11 @@ proc do |foo, (a, b), bar|
   puts b
 end
 
+proc do |(a, (b, c)), d|
+  puts a, b
+  puts c, d
+end
+
 define_method "something" do |param|
   if param == 42
     do_something

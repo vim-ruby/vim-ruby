@@ -101,7 +101,7 @@ let s:bracket_continuation_regex = '\%([({[]\)\s*\%(#.*\)\=$'
 " The reason is that the pipe matches a hanging "|" operator.
 "
 let s:block_regex =
-      \ '\%(\<do:\@!\>\|{\)\s*\%(|\s*(\=\%([*@&]\=\h\w*,\=\s*\)\%(,\s*(\=\s*[*@&]\=\h\w*)\=\)*|\)\=\s*\%(#.*\)\=$'
+      \ '\%(\<do:\@!\>\|{\)\s*\%(|\s*(*\s*\%([*@&]\=\h\w*,\=\s*\)\%(,\s*(*\s*[*@&]\=\h\w*\s*)*\s*\)*|\)\=\s*\%(#.*\)\=$'
 
 " 2. Auxiliary Functions {{{1
 " ======================
