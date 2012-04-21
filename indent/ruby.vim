@@ -33,7 +33,7 @@ set cpo&vim
 " ============
 
 " Regex of syntax group names that are or delimit string or are comments.
-let s:syng_strcom = '\<ruby\%(Regexp\|RegexpDelimiter' .
+let s:syng_strcom = '\<ruby\%(Regexp\|RegexpDelimiter\|RegexpEscape' .
       \ '\|String\|StringEscape\|ASCIICode' .
       \ '\|Interpolation\|NoInterpolation\|Comment\|Documentation\)\>'
 
@@ -91,8 +91,16 @@ let s:continuation_regex =
 let s:bracket_continuation_regex = '\%([({[]\)\s*\%(#.*\)\=$'
 
 " Regex that defines blocks.
+"
+" Note that there's a slight problem with this regex and s:continuation_regex.
+" Code like this will be matched by both:
+"
+"   method_call do |(a, b)|
+"
+" The reason is that the pipe matches a hanging "|" operator.
+"
 let s:block_regex =
-      \ '\%(\<do:\@!\>\|{\)\s*\%(|\%([*@&]\=\h\w*,\=\s*\)\%(,\s*[*@&]\=\h\w*\)*|\)\=\s*\%(#.*\)\=$'
+      \ '\%(\<do:\@!\>\|{\)\s*\%(|\s*(\=\%([*@&]\=\h\w*,\=\s*\)\%(,\s*(\=\s*[*@&]\=\h\w*)\=\)*|\)\=\s*\%(#.*\)\=$'
 
 " 2. Auxiliary Functions {{{1
 " ======================
@@ -151,15 +159,41 @@ function s:GetMSL(lnum)
     if line =~ s:non_bracket_continuation_regex && msl_body =~ s:non_bracket_continuation_regex
       " If the current line is a non-bracket continuation and so is the
       " previous one, keep its indent and continue looking for an MSL.
+      "
+      " Example:
+      "   method_call one,
+      "     two,
+      "     three
+      "
       let msl = lnum
     elseif line =~ s:non_bracket_continuation_regex && (msl_body =~ s:bracket_continuation_regex || msl_body =~ s:block_regex)
       " If the current line is a bracket continuation or a block-starter, but
       " the previous is a non-bracket one, respect the previous' indentation,
       " and stop here.
+      "
+      " Example:
+      "   method_call one,
+      "     two {
+      "     three
+      "
       return lnum
     elseif line =~ s:bracket_continuation_regex && (msl_body =~ s:bracket_continuation_regex || msl_body =~ s:block_regex)
       " If both lines are bracket continuations (the current may also be a
       " block-starter), use the current one's and stop here
+      "
+      " Example:
+      "   method_call(
+      "     other_method_call(
+      "       foo
+      return msl
+    elseif line =~ s:block_regex && msl_body !~ s:continuation_regex && msl_body !~ s:block_regex
+      " If the previous line is a block-starter and the current one is
+      " mostly ordinary, use the current one as the MSL.
+      "
+      " Example:
+      "   method_call do
+      "     something
+      "     something_else
       return msl
     else
       let col = match(line, s:continuation_regex) + 1
