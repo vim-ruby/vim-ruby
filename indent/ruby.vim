@@ -63,10 +63,9 @@ let s:ruby_deindent_keywords =
 " Regex that defines the start-match for the 'end' keyword.
 "let s:end_start_regex = '\%(^\|[^.]\)\<\%(module\|class\|def\|if\|for\|while\|until\|case\|unless\|begin\|do\)\>'
 " TODO: the do here should be restricted somewhat (only at end of line)?
-let s:end_start_regex = '^\s*\zs\<\%(module\|class\|def\|if\|for' .
-      \ '\|while\|until\|case\|unless\|begin\):\@!\>' .
-      \ '\|\%([=,*/%+-]\|<<\|>>\|:\s\)\s*\zs' .
-      \    '\<\%(if\|for\|while\|until\|case\|unless\|begin\):\@!\>' .
+let s:end_start_regex =
+      \ '\%(^\s*\|[=,*/%+\-|;{]\|<<\|>>\|:\s\)\s*\zs' .
+      \ '\<\%(module\|class\|def\|if\|for\|while\|until\|case\|unless\|begin\):\@!\>' .
       \ '\|\<do:\@!\>'
 
 " Regex that defines the middle-match for the 'end' keyword.
