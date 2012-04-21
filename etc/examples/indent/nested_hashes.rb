@@ -35,7 +35,7 @@ class Foo
   foo,
     bar = {
     :bar => {
-      :foo { 'bar' => 'baz' },
+      :foo => { 'bar' => 'baz' },
       :one => 'two',
       :three => 'four'
     }
