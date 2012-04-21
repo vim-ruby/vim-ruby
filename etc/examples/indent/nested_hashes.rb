@@ -46,8 +46,8 @@ class Foo
   var.
     func1(:param => 'value') {
     func1_5(:param => 'value')
-  var.func2(:param => 'value') {
-    puts "test"
-  }
+    var.func2(:param => 'value') {
+      puts "test"
+    }
   }
 end
