@@ -306,12 +306,16 @@ function GetRubyIndent(...)
     call cursor(clnum, 1)
     if searchpair(s:end_start_regex, s:end_middle_regex, s:end_end_regex, 'bW',
           \ s:end_skip_expr) > 0
-      let line = getline('.')
+      let msl  = s:GetMSL(line('.'))
+      let line = getline(line('.'))
+
       if strpart(line, 0, col('.') - 1) =~ '=\s*$' &&
             \ strpart(line, col('.') - 1, 2) !~ 'do'
         let ind = virtcol('.') - 1
+      elseif getline(msl) =~ '=\s*$'
+        let ind = indent(line('.'))
       else
-        let ind = indent(s:GetMSL(line('.')))
+        let ind = indent(msl)
       endif
     endif
     return ind
