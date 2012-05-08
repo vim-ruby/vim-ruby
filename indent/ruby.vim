@@ -312,7 +312,7 @@ function GetRubyIndent(...)
       if strpart(line, 0, col('.') - 1) =~ '=\s*$' &&
             \ strpart(line, col('.') - 1, 2) !~ 'do'
         let ind = virtcol('.') - 1
-      elseif getline(msl) =~ '=\s*$'
+      elseif getline(msl) =~ '=\s*\(#.*\)\=$'
         let ind = indent(line('.'))
       else
         let ind = indent(msl)

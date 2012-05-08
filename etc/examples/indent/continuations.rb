@@ -16,7 +16,7 @@ variable =
     2
   end
 
-variable =
+variable = # evil comment
   case something
   when 'something'
     something_else
