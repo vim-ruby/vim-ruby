@@ -28,3 +28,8 @@ def foo
     puts h
   end
 end
+
+module X
+  Class.new do
+  end
+end
