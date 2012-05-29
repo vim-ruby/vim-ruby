@@ -401,6 +401,15 @@ function GetRubyIndent(...)
     return ind
   endif
 
+  " Look for an unbalanced closing bracket on the same line as code:
+  let col = s:Match(lnum, '\S\s*\zs[\]})]')
+  if col > 0
+    " find the matching opening bracket
+    call cursor(lnum, col)
+    normal! %
+    return indent('.')
+  endif
+
   " 3.4. Work on the MSL line. {{{2
   " --------------------------
 

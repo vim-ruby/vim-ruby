@@ -23,3 +23,7 @@ variable = # evil comment
   else
     other
   end
+
+x { y >>
+    z }
+w
