@@ -134,15 +134,21 @@ if !exists("g:no_plugin_maps") && !exists("g:no_ruby_maps")
   if maparg('im','n') == ''
     onoremap <silent> <buffer> im :<C-U>call <SID>wrap_i('[m',']M')<CR>
     onoremap <silent> <buffer> am :<C-U>call <SID>wrap_a('[m',']M')<CR>
+    xnoremap <silent> <buffer> im :<C-U>call <SID>wrap_i('[m',']M')<CR>
+    xnoremap <silent> <buffer> am :<C-U>call <SID>wrap_a('[m',']M')<CR>
     let b:undo_ftplugin = b:undo_ftplugin
           \."| sil! exe 'ounmap <buffer> im' | sil! exe 'ounmap <buffer> am'"
+          \."| sil! exe 'xunmap <buffer> im' | sil! exe 'xunmap <buffer> am'"
   endif
 
   if maparg('iM','n') == ''
     onoremap <silent> <buffer> iM :<C-U>call <SID>wrap_i('[[','][')<CR>
     onoremap <silent> <buffer> aM :<C-U>call <SID>wrap_a('[[','][')<CR>
+    xnoremap <silent> <buffer> iM :<C-U>call <SID>wrap_i('[[','][')<CR>
+    xnoremap <silent> <buffer> aM :<C-U>call <SID>wrap_a('[[','][')<CR>
     let b:undo_ftplugin = b:undo_ftplugin
           \."| sil! exe 'ounmap <buffer> iM' | sil! exe 'ounmap <buffer> aM'"
+          \."| sil! exe 'xunmap <buffer> iM' | sil! exe 'xunmap <buffer> aM'"
   endif
 
   if maparg("\<C-]>",'n') == ''
