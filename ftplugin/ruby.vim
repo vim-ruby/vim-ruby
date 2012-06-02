@@ -238,29 +238,29 @@ function! RubyBalloonexpr()
 endfunction
 
 function! s:searchsyn(pattern,syn,flags,mode)
-    norm! m'
-    if a:mode ==# 'v'
-      norm! gv
-    endif
-    let i = 0
-    let cnt = v:count ? v:count : 1
-    while i < cnt
-        let i = i + 1
-        let line = line('.')
-        let col  = col('.')
-        let pos = search(a:pattern,'W'.a:flags)
-        while pos != 0 && s:synname() !~# a:syn
-            let pos = search(a:pattern,'W'.a:flags)
-        endwhile
-        if pos == 0
-            call cursor(line,col)
-            return
-        endif
+  norm! m'
+  if a:mode ==# 'v'
+    norm! gv
+  endif
+  let i = 0
+  let cnt = v:count ? v:count : 1
+  while i < cnt
+    let i = i + 1
+    let line = line('.')
+    let col  = col('.')
+    let pos = search(a:pattern,'W'.a:flags)
+    while pos != 0 && s:synname() !~# a:syn
+      let pos = search(a:pattern,'W'.a:flags)
     endwhile
+    if pos == 0
+      call cursor(line,col)
+      return
+    endif
+  endwhile
 endfunction
 
 function! s:synname()
-    return synIDattr(synID(line('.'),col('.'),0),'name')
+  return synIDattr(synID(line('.'),col('.'),0),'name')
 endfunction
 
 function! s:wrap_i(back,forward)
