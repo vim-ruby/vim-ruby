@@ -17,7 +17,11 @@ endif
 let s:cpo_save = &cpo
 set cpo-=C
 
-CompilerSet makeprg=testrb
+if exists('testrb')
+    exec "CompilerSet makeprg=" . testrb
+else
+    CompilerSet makeprg=testrb
+endif
 
 CompilerSet errorformat=\%W\ %\\+%\\d%\\+)\ Failure:,
 			\%C%m\ [%f:%l]:,
