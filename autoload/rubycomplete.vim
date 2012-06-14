@@ -11,16 +11,23 @@
 " ----------------------------------------------------------------------------
 
 " {{{ requirement checks
+
+function! s:ErrMsg(msg)
+    echohl ErrorMsg
+    echo a:msg
+    echohl None
+endfunction
+
 if !has('ruby')
-    s:ErrMsg( "Error: Rubycomplete requires vim compiled with +ruby" )
-    s:ErrMsg( "Error: falling back to syntax completion" )
+    call s:ErrMsg( "Error: Rubycomplete requires vim compiled with +ruby" )
+    call s:ErrMsg( "Error: falling back to syntax completion" )
     " lets fall back to syntax completion
     setlocal omnifunc=syntaxcomplete#Complete
     finish
 endif
 
 if version < 700
-    s:ErrMsg( "Error: Required vim >= 7.0" )
+    call s:ErrMsg( "Error: Required vim >= 7.0" )
     finish
 endif
 " }}} requirement checks
@@ -49,12 +56,6 @@ endif
 
 " {{{ vim-side support functions
 let s:rubycomplete_debug = 0
-
-function! s:ErrMsg(msg)
-    echohl ErrorMsg
-    echo a:msg
-    echohl None
-endfunction
 
 function! s:dprint(msg)
     if s:rubycomplete_debug == 1
