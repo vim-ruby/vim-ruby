@@ -1,3 +1,15 @@
+do
+  something
+end
+
+def foo
+  a_hash = {:do => 'bar'}
+end
+
+def foo(job)
+  job.do!
+end
+
 proc do |(a, b)|
   puts a
   puts b
