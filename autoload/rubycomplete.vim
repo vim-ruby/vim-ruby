@@ -355,8 +355,10 @@ class VimRubyCompletion
   def get_var_type( receiver )
     if /(\"|\')+/.match( receiver )
       "String"
-    else
+    elsif /^\w+$/.match( receiver ) # to avoid "*args" pattern
       VIM::evaluate("s:GetRubyVarType('%s')" % receiver)
+    else
+      ''
     end
   end
 
