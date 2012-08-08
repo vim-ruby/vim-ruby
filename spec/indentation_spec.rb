@@ -1,6 +1,11 @@
 require 'tempfile'
 require 'open3'
 
+# Each spec here contains an example of correctly-indented code. When the
+# expect_indent method runs Vim, it dedents all of the code then reindents it.
+# It passes only if it matches the correcty-indented code that the spec
+# originally gave it.
+
 describe "indentation" do
   it "indents nested definitions" do
     expect_indent %{
