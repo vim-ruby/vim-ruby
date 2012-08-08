@@ -411,7 +411,7 @@ function GetRubyIndent(...)
   " If the previous line wasn't a MSL and is continuation return its indent.
   " TODO: the || s:IsInString() thing worries me a bit.
   if p_lnum != lnum
-    if s:Match(p_lnum,s:non_bracket_continuation_regex)||s:IsInString(p_lnum,strlen(line))
+    if s:Match(p_lnum, s:non_bracket_continuation_regex) || s:IsInString(p_lnum,strlen(line))
       return ind
     endif
   endif
