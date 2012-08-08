@@ -90,6 +90,9 @@ let s:continuation_regex =
 " Regex that defines bracket continuations
 let s:bracket_continuation_regex = '%\@<!\%([({[]\)\s*\%(#.*\)\=$'
 
+" Regex that defines the first part of a splat pattern
+let s:splat_regex = '[[,(]\s*\*\s*\%(#.*\)\=$'
+
 " Regex that defines blocks.
 "
 " Note that there's a slight problem with this regex and s:continuation_regex.
@@ -156,7 +159,17 @@ function s:GetMSL(lnum)
     " Otherwise, terminate search as we have found our MSL already.
     let line = getline(lnum)
 
-    if line =~ s:non_bracket_continuation_regex && msl_body =~ s:non_bracket_continuation_regex
+    if line =~ s:splat_regex
+      " If the above line looks like the "*" of a splat, use the current one's
+      " indentation.
+      "
+      " Example:
+      "   Hash[*
+      "     method_call do
+      "       something
+      "
+      return msl
+    elseif line =~ s:non_bracket_continuation_regex && msl_body =~ s:non_bracket_continuation_regex
       " If the current line is a non-bracket continuation and so is the
       " previous one, keep its indent and continue looking for an MSL.
       "
@@ -349,6 +362,11 @@ function GetRubyIndent(...)
   " If the previous line ended with a block opening, add a level of indent.
   if s:Match(lnum, s:block_regex)
     return indent(s:GetMSL(lnum)) + &sw
+  endif
+
+  " If the previous line ended with the "*" of a splat, add a level of indent
+  if line =~ s:splat_regex
+    return indent(lnum) + &sw
   endif
 
   " If the previous line contained an opening bracket, and we are still in it,
