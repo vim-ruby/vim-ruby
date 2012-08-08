@@ -1,9 +1,9 @@
 RUBY                                                    *ft-ruby-omni*
 
-Completion of Ruby code requires that vim be built with |+ruby|.
+Completion of Ruby code requires that Vim be built with |+ruby|.
 
 Ruby completion will parse your buffer on demand in order to provide a list of
-completions.  These completions will be drawn from modules loaded by 'require'
+completions.  These completions will be drawn from modules loaded by "require"
 and modules defined in the current buffer.
 
 The completions provided by CTRL-X CTRL-O are sensitive to the context:
@@ -17,14 +17,14 @@ The completions provided by CTRL-X CTRL-O are sensitive to the context:
  3. After '.', '::' or ':'           Methods applicable to the object being
                                        dereferenced
 
- 4. After ':' or ':foo'              Symbol name (beginning with 'foo')
+ 4. After ':' or ':foo'              Symbol name (beginning with "foo")
 
 Notes:
  - Vim will load/evaluate code in order to provide completions.  This may
-   cause some code execution, which may be a concern. This is no longer 
+   cause some code execution, which may be a concern. This is no longer
    enabled by default, to enable this feature add >
      let g:rubycomplete_buffer_loading = 1
-< - In context 1 above, Vim can parse the entire buffer to add a list of
+<- In context 1 above, Vim can parse the entire buffer to add a list of
    classes to the completion results. This feature is turned off by default,
    to enable it add >
      let g:rubycomplete_classes_in_global = 1
