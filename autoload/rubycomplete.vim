@@ -364,6 +364,10 @@ class VimRubyCompletion
     print txt if @@debug
   end
 
+  def escape_vim_singlequote_string(str)
+    str.gsub(/'/,"\\'")
+  end
+
   def get_buffer_entity_list( type )
     # this will be a little expensive.
     loading_allowed = VIM::evaluate("exists('g:rubycomplete_buffer_loading') && g:rubycomplete_buffer_loading")
@@ -526,9 +530,9 @@ class VimRubyCompletion
   end
 
   def clean_sel(sel, msg)
-    sel.delete_if { |x| x == nil }
-    sel.uniq!
-    sel.grep(/^#{Regexp.quote(msg)}/) if msg != nil
+    ret = sel.reject{|x|x.nil?}.uniq
+    ret = ret.grep(/^#{Regexp.quote(msg)}/) if msg != nil
+    ret
   end
 
   def get_rails_view_methods
@@ -779,7 +783,7 @@ class VimRubyCompletion
     rg.step(150) do |x|
       stpos = 0+x
       enpos = 150+x
-      valid[stpos..enpos].each { |c| outp += "{'word':'%s','item':'%s','kind':'%s'}," % [ c[:name], c[:name], c[:type] ] }
+      valid[stpos..enpos].each { |c| outp += "{'word':'%s','item':'%s','kind':'%s'}," % [ c[:name], c[:name], c[:type] ].map{|x|escape_vim_singlequote_string(x)} }
       outp.sub!(/,$/, '')
 
       VIM::command("call extend(g:rubycomplete_completions, [%s])" % outp)
