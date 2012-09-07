@@ -365,7 +365,7 @@ class VimRubyCompletion
   end
 
   def escape_vim_singlequote_string(str)
-    str.gsub(/'/,"\\'")
+    str.to_s.gsub(/'/,"\\'")
   end
 
   def get_buffer_entity_list( type )
