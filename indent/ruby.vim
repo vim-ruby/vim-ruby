@@ -105,6 +105,8 @@ let s:splat_regex = '[[,(]\s*\*\s*\%(#.*\)\=$'
 let s:block_regex =
       \ '\%(\<do:\@!\>\|%\@<!{\)\s*\%(|\s*(*\s*\%([*@&]\=\h\w*,\=\s*\)\%(,\s*(*\s*[*@&]\=\h\w*\s*)*\s*\)*|\)\=\s*\%(#.*\)\=$'
 
+let s:block_continuation_regex = '^[^])}\t ].*'.s:block_regex
+
 " 2. Auxiliary Functions {{{1
 " ======================
 
@@ -169,7 +171,8 @@ function s:GetMSL(lnum)
       "       something
       "
       return msl
-    elseif line =~ s:non_bracket_continuation_regex && msl_body =~ s:non_bracket_continuation_regex
+    elseif line =~ s:non_bracket_continuation_regex &&
+          \ msl_body =~ s:non_bracket_continuation_regex
       " If the current line is a non-bracket continuation and so is the
       " previous one, keep its indent and continue looking for an MSL.
       "
@@ -179,7 +182,8 @@ function s:GetMSL(lnum)
       "     three
       "
       let msl = lnum
-    elseif line =~ s:non_bracket_continuation_regex && (msl_body =~ s:bracket_continuation_regex || msl_body =~ s:block_regex)
+    elseif line =~ s:non_bracket_continuation_regex &&
+          \ (msl_body =~ s:bracket_continuation_regex || msl_body =~ s:block_continuation_regex)
       " If the current line is a bracket continuation or a block-starter, but
       " the previous is a non-bracket one, respect the previous' indentation,
       " and stop here.
@@ -190,7 +194,8 @@ function s:GetMSL(lnum)
       "     three
       "
       return lnum
-    elseif line =~ s:bracket_continuation_regex && (msl_body =~ s:bracket_continuation_regex || msl_body =~ s:block_regex)
+    elseif line =~ s:bracket_continuation_regex &&
+          \ (msl_body =~ s:bracket_continuation_regex || msl_body =~ s:block_continuation_regex)
       " If both lines are bracket continuations (the current may also be a
       " block-starter), use the current one's and stop here
       "
@@ -199,7 +204,9 @@ function s:GetMSL(lnum)
       "     other_method_call(
       "       foo
       return msl
-    elseif line =~ s:block_regex && msl_body !~ s:continuation_regex && msl_body !~ s:block_regex
+    elseif line =~ s:block_regex &&
+          \ msl_body !~ s:continuation_regex &&
+          \ msl_body !~ s:block_continuation_regex
       " If the previous line is a block-starter and the current one is
       " mostly ordinary, use the current one as the MSL.
       "

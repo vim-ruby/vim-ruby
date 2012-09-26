@@ -23,3 +23,9 @@ variable = # evil comment
   else
     other
   end
+
+array = [
+  :one,
+].each do |x|
+  puts x.to_s
+end
