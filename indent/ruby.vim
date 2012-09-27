@@ -105,7 +105,7 @@ let s:splat_regex = '[[,(]\s*\*\s*\%(#.*\)\=$'
 let s:block_regex =
       \ '\%(\<do:\@!\>\|%\@<!{\)\s*\%(|\s*(*\s*\%([*@&]\=\h\w*,\=\s*\)\%(,\s*(*\s*[*@&]\=\h\w*\s*)*\s*\)*|\)\=\s*\%(#.*\)\=$'
 
-let s:block_continuation_regex = '^[^])}\t ].*'.s:block_regex
+let s:block_continuation_regex = '^\s*[^])}\t ].*'.s:block_regex
 
 " 2. Auxiliary Functions {{{1
 " ======================
