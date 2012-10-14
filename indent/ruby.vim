@@ -413,7 +413,7 @@ function GetRubyIndent(...)
   "
   " If it contained hanging closing brackets, find the rightmost one, find its
   " match and indent according to that.
-  if line =~ '[][(){}]'
+  if line =~ '[[({]' || line =~ '[])}]\s*\%(#.*\)\=$'
     let [opening, closing] = s:ExtraBrackets(lnum)
 
     if opening.pos != -1
@@ -428,7 +428,7 @@ function GetRubyIndent(...)
         return nonspace > 0 ? nonspace : ind + &sw
       endif
     elseif closing.pos != -1
-      call cursor(lnum, closing.pos)
+      call cursor(lnum, closing.pos + 1)
       normal! %
       return indent('.')
     else
