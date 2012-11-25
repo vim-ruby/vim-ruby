@@ -222,8 +222,8 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
 
   syn region rubyDoBlock      matchgroup=rubyControl start="\<do\>" end="\<end\>"                 contains=ALLBUT,@rubyNotTop fold
   " curly bracket block or hash literal
-  syn region rubyCurlyBlock   start="{" end="}"							  contains=ALLBUT,@rubyNotTop fold
-  syn region rubyArrayLiteral matchgroup=rubyArrayDelimiter start="\%(\w\|[\]})]\)\@<!\[" end="]" contains=ALLBUT,@rubyNotTop fold
+  syn region rubyCurlyBlock	matchgroup=rubyCurlyBlockDelimiter  start="{" end="}"				contains=ALLBUT,@rubyNotTop fold
+  syn region rubyArrayLiteral	matchgroup=rubyArrayDelimiter	    start="\%(\w\|[\]})]\)\@<!\[" end="]"	contains=ALLBUT,@rubyNotTop fold
 
   " statements without 'do'
   syn region rubyBlockExpression       matchgroup=rubyControl	  start="\<begin\>" end="\<end\>" contains=ALLBUT,@rubyNotTop fold
