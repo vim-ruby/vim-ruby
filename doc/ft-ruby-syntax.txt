@@ -54,7 +54,7 @@ you may want to turn it off by defining the "ruby_no_expensive" variable: >
 <
 In this case the same color will be used for all control keywords.
 
-                                                               *ruby-minlines*
+                                                               *ruby_minlines*
 If you do want this feature enabled, but notice highlighting errors while
 scrolling backwards, which are fixed when redrawing with CTRL-L, try setting
 the "ruby_minlines" variable to a value larger than 50: >
