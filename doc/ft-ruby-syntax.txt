@@ -38,5 +38,6 @@ spaces respectively.
 <
 This will set the value |foldmethod| to "syntax" locally to the current buffer
 or window, which will enable syntax-based folding when editing Ruby filetypes.
+>
 
  vim:tw=78:sw=4:ts=8:ft=help:norl:
