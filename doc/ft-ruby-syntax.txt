@@ -1,4 +1,4 @@
-RUBY					             *ruby.vim* *ft-ruby-syntax*
+RUBY					*ruby.vim* *ft-ruby-syntax*
 
 There are a number of options to the Ruby syntax highlighting.
 
@@ -8,8 +8,7 @@ There are a number of options to the Ruby syntax highlighting.
 4. Reducing expensive operations      |ruby_no_expensive| |ruby_minlines|
 
 
-==============================================================================
-1. Ruby operators                                             *ruby_operators*
+1. Ruby operators				*ruby_operators*
 
 Ruby operators can be highlighted.
 
@@ -18,8 +17,7 @@ This is enabled by defining "ruby_operators": >
 	:let ruby_operators = 1
 <
 
-==============================================================================
-2. Whitespace errors                                       *ruby_space_errors*
+2. Whitespace errors				*ruby_space_errors*
 
 Whitespace errors can be highlighted by defining "ruby_space_errors": >
 
@@ -31,8 +29,7 @@ as errors.  This can be refined by defining "ruby_no_trail_space_error" and
 "ruby_no_tab_space_error" which will ignore trailing whitespace and tabs after
 spaces respectively.
 
-==============================================================================
-3. Folds                                                           *ruby_fold*
+3. Folds					*ruby_fold*
 
 Folds can be enabled by defining "ruby_fold": >
 
@@ -42,8 +39,7 @@ Folds can be enabled by defining "ruby_fold": >
 This will set the value |foldmethod| to "syntax" locally to the current buffer
 or window, which will enable syntax-based folding when editing Ruby filetypes.
 
-==============================================================================
-4. Reducing expensive operations                           *ruby_no_expensive*
+4. Reducing expensive operations		*ruby_no_expensive*
 
 By default, the "end" keyword is colorized according to the opening statement
 of the block it closes.  While useful, this feature can be expensive; if you
@@ -54,7 +50,8 @@ you may want to turn it off by defining the "ruby_no_expensive" variable: >
 <
 In this case the same color will be used for all control keywords.
 
-                                                               *ruby_minlines*
+						*ruby_minlines*
+
 If you do want this feature enabled, but notice highlighting errors while
 scrolling backwards, which are fixed when redrawing with CTRL-L, try setting
 the "ruby_minlines" variable to a value larger than 50: >
