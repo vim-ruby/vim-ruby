@@ -15,7 +15,7 @@ let s:cpo_save = &cpo
 set cpo&vim
 
 if has("gui_running") && !has("gui_win32")
-  setlocal keywordprg=ri\ -T
+  setlocal keywordprg=ri\ -T\ -f\ bs
 else
   setlocal keywordprg=ri
 endif
