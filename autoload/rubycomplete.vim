@@ -133,7 +133,7 @@ function! s:GetRubyVarType(v)
     let stopline = 1
     let vtp = ''
     let pos = getpos('.')
-    let sstr = '^\s*#\s*@var\s*'.a:v.'\>\s\+[^ \t]\+\s*$'
+    let sstr = '^\s*#\s*@var\s*'.escape(a:v, '*').'\>\s\+[^ \t]\+\s*$'
     let [lnum,lcol] = searchpos(sstr,'nb',stopline)
     if lnum != 0 && lcol != 0
         call setpos('.',pos)
