@@ -50,4 +50,7 @@ au BufNewFile,BufRead *.rabl			set filetype=ruby
 " Jbuilder
 au BufNewFile,BufRead *.jbuilder		set filetype=ruby
 
+" Puppet librarian
+au BufNewFile,BufRead Puppetfile		set filetype=ruby
+
 " vim: nowrap sw=2 sts=2 ts=8 noet:
