@@ -41,10 +41,6 @@ if exists("loaded_matchit") && !exists("b:match_words")
 	\ "InstanceVariable\\|GlobalVariable\\|Symbol\\)\\>'"
 endif
 
-if exists('g:loaded_surround') && !exists('b:surround_'.char2nr(':'))
-  let b:surround_{char2nr(':')} = ":\r"
-endif
-
 setlocal formatoptions-=t formatoptions+=croql
 
 setlocal include=^\\s*\\<\\(load\\>\\\|require\\>\\\|autoload\\s*:\\=[\"']\\=\\h\\w*[\"']\\=,\\)
