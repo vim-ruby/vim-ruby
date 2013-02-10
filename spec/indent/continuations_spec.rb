@@ -66,4 +66,12 @@ describe "Indenting" do
       end
     EOF
   end
+
+  specify "string interpolation" do
+    # See https://github.com/vim-ruby/vim-ruby/issues/93 for details
+    assert_correct_indenting <<-EOF
+      command = %|\#{file}|
+      settings.log.info("Returning: \#{command}")
+    EOF
+  end
 end
