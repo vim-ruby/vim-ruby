@@ -498,9 +498,7 @@ function GetRubyIndent(...)
 
   " If the previous line ended with [*+/.,-=], but wasn't a block ending,
   " indent one extra level.
-  if s:Match(lnum, s:non_bracket_continuation_regex)
-        \ && !s:Match(lnum, '^\s*\(}\|end\)')
-        \ && !s:IsInStringOrComment(lnum, len(line))
+  if s:Match(lnum, s:non_bracket_continuation_regex) && !s:Match(lnum, '^\s*\(}\|end\)')
     if lnum == p_lnum
       let ind = msl_ind + &sw
     else
