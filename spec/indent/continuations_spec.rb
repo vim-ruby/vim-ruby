@@ -83,4 +83,22 @@ describe "Indenting" do
       four
     EOF
   end
+
+  specify "brackets on their own line, followed by a comma" do
+    # See https://github.com/vim-ruby/vim-ruby/issues/124 for details
+    assert_correct_indenting <<-EOF
+      bla = {
+        :one => [
+          {:bla => :blub}
+        ],
+        :two => (
+          {:blub => :abc}
+        ),
+        :three => {
+          :blub => :abc
+        },
+        :four => 'five'
+      }
+    EOF
+  end
 end
