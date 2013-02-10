@@ -74,4 +74,13 @@ describe "Indenting" do
       settings.log.info("Returning: \#{command}")
     EOF
   end
+
+  specify "closing bracket not on its own line" do
+    # See https://github.com/vim-ruby/vim-ruby/issues/81 for details
+    assert_correct_indenting <<-EOF
+      one { two >>
+            three }
+      four
+    EOF
+  end
 end
