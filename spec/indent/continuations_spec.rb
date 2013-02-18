@@ -84,6 +84,17 @@ describe "Indenting" do
     EOF
   end
 
+  specify "lonesome single parenthesis in a method definition" do
+    # See https://github.com/vim-ruby/vim-ruby/issues/130 for details
+    assert_correct_indenting <<-EOF
+      def bar(
+        baz
+      )
+        return baz+1
+      end
+    EOF
+  end
+
   specify "brackets on their own line, followed by a comma" do
     # See https://github.com/vim-ruby/vim-ruby/issues/124 for details
     assert_correct_indenting <<-EOF
