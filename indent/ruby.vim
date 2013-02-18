@@ -430,7 +430,12 @@ function GetRubyIndent(...)
     elseif closing.pos != -1
       call cursor(lnum, closing.pos + 1)
       normal! %
-      return indent('.')
+
+      if s:Match(line('.'), s:ruby_indent_keywords)
+        return indent('.') + &sw
+      else
+        return indent('.')
+      endif
     else
       call cursor(clnum, vcol)
     end
