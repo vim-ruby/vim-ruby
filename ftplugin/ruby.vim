@@ -317,7 +317,6 @@ function! s:gf(count,map,edit) abort
   else
     let target = expand('<cfile>')
   endif
-  let g:target = target
   let found = findfile(target, &path, a:count)
   if found ==# ''
     return 'norm! '.a:count.a:map
