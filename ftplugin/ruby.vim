@@ -63,32 +63,67 @@ endif
 setlocal comments=:#
 setlocal commentstring=#\ %s
 
-if !exists("s:ruby_path")
-  if exists("g:ruby_path")
-    let s:ruby_path = type(g:ruby_path) == type([]) ? join(g:ruby_path,',') : g:ruby_path
+if !exists('g:ruby_version_paths')
+  let g:ruby_version_paths = {}
+endif
+
+function! s:query_path(root)
+  let code = "print $:.join(%q{,})"
+  if &shell =~# 'sh' && $PATH !~# '\s'
+    let prefix = 'env PATH='.$PATH.' '
   else
-    if has("ruby") && has("win32")
-      ruby ::VIM::command( 'let s:ruby_paths = split("%s",",")' % $:.join(%q{,}) )
-    elseif executable('ruby')
-      let s:code = "print $:.join(%q{,})"
-      if executable('env') && $PATH !~# '\s'
-        let prefix = 'env PATH='.$PATH.' '
-      else
-        let prefix = ''
-      endif
-      if &shellxquote == "'"
-        let s:ruby_paths = split(system(prefix.'ruby -e "' . s:code . '"'),',')
-      else
-        let s:ruby_paths = split(system(prefix."ruby -e '" . s:code . "'"),',')
-      endif
-    else
-      let s:ruby_paths = split($RUBYLIB,':')
-    endif
-    let s:ruby_path = substitute(join(s:ruby_paths,","), '\%(^\|,\)\.\%(,\|$\)', ',,', '')
-    if &g:path !~# '\v^\.%(,/%(usr|emx)/include)=,,$'
-      let s:ruby_path = substitute(&g:path,',,$',',','') . ',' . s:ruby_path
+    let prefix = ''
+  endif
+  if &shellxquote == "'"
+    let path_check = prefix.'ruby -e "' . code . '"'
+  else
+    let path_check = prefix."ruby -e '" . code . "'"
+  endif
+
+  let cd = haslocaldir() ? 'lcd' : 'cd'
+  let cwd = getcwd()
+  try
+    exe cd fnameescape(a:root)
+    return split(system(path_check),',')
+  finally
+    exe cd fnameescape(cwd)
+  endtry
+endfunction
+
+function! s:build_path(path)
+  let path = join(map(copy(a:path), 'v:val ==# "." ? "" : v:val'), ',')
+  if &g:path !~# '\v^\.%(,/%(usr|emx)/include)=,,$'
+    let path = substitute(&g:path,',,$',',','') . ',' . path
+  endif
+  return path
+endfunction
+
+if !exists('b:ruby_version') && !exists('g:ruby_path')
+  let s:version_file = findfile('.ruby-version', '.;')
+  if !empty(s:version_file)
+    let b:ruby_version = get(readfile(s:version_file, '', 1), '')
+    if !has_key(g:ruby_version_paths, b:ruby_version)
+      let g:ruby_version_paths[b:ruby_version] = s:query_path(fnamemodify(s:version_file, ':p:h'))
     endif
   endif
+endif
+
+if exists("g:ruby_path")
+  let s:ruby_path = type(g:ruby_path) == type([]) ? join(g:ruby_path, ',') : g:ruby_path
+elseif has_key(g:ruby_version_paths, get(b:, 'ruby_version', ''))
+  let s:ruby_paths = g:ruby_version_paths[b:ruby_version]
+  let s:ruby_path = s:build_path(s:ruby_paths)
+else
+  if !exists('g:ruby_default_path')
+    if has("ruby") && has("win32")
+      ruby ::VIM::command( 'let g:ruby_default_path = split("%s",",")' % $:.join(%q{,}) )
+    elseif executable('ruby')
+      let g:ruby_default_path = s:query_path($HOME)
+    else
+      let g:ruby_default_path = map(split($RUBYLIB,':'), 'v:val ==# "." ? "" : v:val')
+    endif
+  endif
+  let s:ruby_path = s:build_path(g:ruby_default_path)
 endif
 
 if stridx(&l:path, s:ruby_path) == -1
