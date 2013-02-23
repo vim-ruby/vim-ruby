@@ -123,7 +123,8 @@ else
       let g:ruby_default_path = map(split($RUBYLIB,':'), 'v:val ==# "." ? "" : v:val')
     endif
   endif
-  let s:ruby_path = s:build_path(g:ruby_default_path)
+  let s:ruby_paths = g:ruby_default_path
+  let s:ruby_path = s:build_path(s:ruby_paths)
 endif
 
 if stridx(&l:path, s:ruby_path) == -1
