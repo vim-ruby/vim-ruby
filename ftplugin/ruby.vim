@@ -98,7 +98,7 @@ function! s:build_path(path)
   return path
 endfunction
 
-if !exists('b:ruby_version') && !exists('g:ruby_path')
+if !exists('b:ruby_version') && !exists('g:ruby_path') && isdirectory(expand('%:p:h'))
   let s:version_file = findfile('.ruby-version', '.;')
   if !empty(s:version_file)
     let b:ruby_version = get(readfile(s:version_file, '', 1), '')
