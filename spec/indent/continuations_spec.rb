@@ -112,4 +112,14 @@ describe "Indenting" do
       }
     EOF
   end
+
+  specify "string with an and#" do
+    # See https://github.com/vim-ruby/vim-ruby/issues/108 for details
+    assert_correct_indenting <<-EOF
+      outside_block "and#" do
+        inside_block do
+        end
+      end
+    EOF
+  end
 end
