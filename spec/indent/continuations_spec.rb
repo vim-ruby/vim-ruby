@@ -122,4 +122,12 @@ describe "Indenting" do
       end
     EOF
   end
+
+  specify "continuation with a symbol at the end" do
+    # See https://github.com/vim-ruby/vim-ruby/issues/132 for details
+    assert_correct_indenting <<-EOF
+      foo = :+
+      # Next indents correctly
+    EOF
+  end
 end
