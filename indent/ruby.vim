@@ -32,14 +32,14 @@ set cpo&vim
 " 1. Variables {{{1
 " ============
 
-" Regex of syntax group names that are or delimit strings/symbols or are comments.
+" Regex of syntax group names that are or delimit string or are comments.
 let s:syng_strcom = '\<ruby\%(Regexp\|RegexpDelimiter\|RegexpEscape' .
-      \ '\|Symbol\|String\|StringDelimiter\|StringEscape\|ASCIICode' .
+      \ '\|String\|StringDelimiter\|StringEscape\|ASCIICode' .
       \ '\|Interpolation\|NoInterpolation\|Comment\|Documentation\)\>'
 
-" Regex of syntax group names that are strings or symbols.
+" Regex of syntax group names that are strings.
 let s:syng_string =
-      \ '\<ruby\%(String\|Symbol\|Interpolation\|NoInterpolation\|StringEscape\)\>'
+      \ '\<ruby\%(String\|Interpolation\|NoInterpolation\|StringEscape\)\>'
 
 " Regex of syntax group names that are strings or documentation.
 let s:syng_stringdoc =
