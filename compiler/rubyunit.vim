@@ -2,7 +2,6 @@
 " Language:		Test::Unit - Ruby Unit Testing Framework
 " Maintainer:		Doug Kearns <dougkearns@gmail.com>
 " URL:			https://github.com/vim-ruby/vim-ruby
-" Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
 
 if exists("current_compiler")

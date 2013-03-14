@@ -2,7 +2,6 @@
 " Language:		Ruby
 " Maintainer:		Nikolai Weibull <now at bitwi.se>
 " URL:			https://github.com/vim-ruby/vim-ruby
-" Anon CVS:		See above site
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
 
 " 0. Initialization {{{1
