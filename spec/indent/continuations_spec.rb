@@ -130,4 +130,13 @@ describe "Indenting" do
       # Next indents correctly
     EOF
   end
+
+  specify "continuation with a hanging comma" do
+    # See https://github.com/vim-ruby/vim-ruby/issues/139 for details
+    assert_correct_indenting <<-EOF
+      thing :foo
+      thing 'a',
+        'b'
+    EOF
+  end
 end
