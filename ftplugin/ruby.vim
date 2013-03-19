@@ -67,7 +67,7 @@ if !exists('g:ruby_version_paths')
 endif
 
 function! s:query_path(root)
-  let code = "print $:.join(%q{,})"
+  let code = "print $:.join %q{,}"
   if &shell =~# 'sh' && $PATH !~# '\s'
     let prefix = 'env PATH='.$PATH.' '
   else
