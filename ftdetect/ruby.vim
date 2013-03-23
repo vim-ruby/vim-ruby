@@ -56,4 +56,7 @@ au BufNewFile,BufRead Puppetfile		set filetype=ruby
 " Buildr Buildfile
 au BufNewFile,BufRead [Bb]uildfile		set filetype=ruby
 
+" Appraisal
+au BufNewFile,BufRead Appraisals		set filetype=ruby
+
 " vim: nowrap sw=2 sts=2 ts=8 noet:
