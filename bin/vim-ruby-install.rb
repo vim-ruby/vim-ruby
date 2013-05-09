@@ -12,7 +12,7 @@
 #
 
 require 'rbconfig'
-include Config
+include RbConfig
 require 'fileutils'
 require 'optparse'
 require 'pathname'
