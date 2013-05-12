@@ -21,4 +21,22 @@ describe "Indenting" do
       something_else
     EOF
   end
+
+  specify "heredocs" do
+    assert_correct_indenting <<-EOF
+      def one
+        two = <<-THREE
+        four
+        THREE
+      end
+    EOF
+
+    assert_correct_indenting <<-EOF
+      def one
+        two = <<THREE
+      four
+      THREE
+      end
+    EOF
+  end
 end
