@@ -97,5 +97,6 @@ let b:undo_ftplugin = "setl cms< "
       \ " | unlet! b:browsefilter b:match_words | " . s:undo_ftplugin
 
 let &cpo = s:save_cpo
+unlet s:save_cpo
 
 " vim: nowrap sw=2 sts=2 ts=8:
