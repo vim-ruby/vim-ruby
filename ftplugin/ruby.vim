@@ -83,9 +83,9 @@ function! s:query_path(root)
   let cwd = getcwd()
   try
     exe cd fnameescape(a:root)
-    let path = split(system(path_check),',')
+    silent! let path = split(system(path_check),',')
     exe cd fnameescape(cwd)
-    return path
+    return get(l:, 'path', '')
   finally
     exe cd fnameescape(cwd)
   endtry
