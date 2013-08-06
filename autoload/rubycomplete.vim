@@ -266,6 +266,28 @@ class VimRubyCompletion
     end
   end
 
+  def load_gems
+    fpath = VIM::evaluate("get(g:, 'rubycomplete_gemfile_path', 'Gemfile')")
+    return unless File.file?(fpath) && File.readable?(fpath)
+    want_bundler = VIM::evaluate("get(g:, 'rubycomplete_use_bundler')")
+    parse_file = !want_bundler
+    begin
+      require 'bundler'
+      Bundler.setup
+      Bundler.require
+    rescue Exception
+      parse_file = true
+    end
+    if parse_file
+      File.new(fpath).each_line do |line|
+        begin
+          require $1 if /\s*gem\s*['"]([^'"]+)/.match(line)
+        rescue Exception
+        end
+      end
+    end
+  end
+
   def load_buffer_class(name)
     dprint "load_buffer_class(%s) START" % name
     classdef = get_buffer_entity(name, 's:GetBufferRubyClass("%s")')
@@ -587,6 +609,10 @@ class VimRubyCompletion
       load_requires
       load_rails
     end
+
+    want_gems = VIM::evaluate("get(g:, 'rubycomplete_load_gemfile')")
+    load_gems unless want_gems.to_i.zero?
+    
 
     input = VIM::Buffer.current.line
     cpos = VIM::Window.current.cursor[1] - 1
