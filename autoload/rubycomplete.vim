@@ -149,7 +149,7 @@ function! s:GetRubyVarType(v)
     let ctors = ctors.'\)'
 
     let fstr = '=\s*\([^ \t]\+.' . ctors .'\>\|[\[{"''/]\|%[xwQqr][(\[{@]\|[A-Za-z0-9@:\-()\.]\+...\?\|lambda\|&\)'
-    let sstr = ''.a:v.'\>\s*[+\-*/]*'.fstr
+    let sstr = ''.escape(a:v, '*').'\>\s*[+\-*/]*'.fstr
     let [lnum,lcol] = searchpos(sstr,'nb',stopline)
     if lnum != 0 && lcol != 0
         let str = matchstr(getline(lnum),fstr,lcol)
