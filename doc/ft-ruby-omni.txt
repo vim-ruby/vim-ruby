@@ -36,5 +36,13 @@ Notes:
    project. The feature is disabled by default, to enable it add >
      let g:rubycomplete_rails = 1
 <  to your vimrc
+ - Vim can parse a Gemfile, in case gems are being implicitly required. To
+   activate the feature: >
+     let g:rubycomplete_load_gemfile = 1
+<  To specify an alternative path, use: >
+     let g:rubycomplete_gemfile_path = 'Gemfile.aux'
+<  To use Bundler.require instead of parsing the Gemfile, set: >
+     let g:rubycomplete_use_bundler = 1
+<
 
  vim:tw=78:sw=4:ts=8:ft=help:norl:
