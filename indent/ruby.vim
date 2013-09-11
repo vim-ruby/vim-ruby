@@ -299,18 +299,20 @@ function s:ExtraBrackets(lnum)
 endfunction
 
 function s:Match(lnum, regex)
-  let col = match(getline(a:lnum), '\C'.a:regex) + 1
-  return col > 0 && !s:IsInStringOrComment(a:lnum, col) ? col : 0
-endfunction
+  let line   = getline(a:lnum)
+  let offset = match(line, '\C'.a:regex)
+  let col    = offset + 1
 
-function s:MatchLast(lnum, regex)
-  let line = getline(a:lnum)
-  let col = match(line, '.*\zs' . a:regex)
-  while col != -1 && s:IsInStringOrComment(a:lnum, col)
-    let line = strpart(line, 0, col)
-    let col = match(line, '.*' . a:regex)
+  while offset > -1 && s:IsInStringOrComment(a:lnum, col)
+    let offset = match(line, '\C'.a:regex, offset + 1)
+    let col = offset + 1
   endwhile
-  return col + 1
+
+  if offset > -1
+    return col
+  else
+    return 0
+  endif
 endfunction
 
 " 3. GetRubyIndent Function {{{1
