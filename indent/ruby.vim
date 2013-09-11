@@ -175,7 +175,7 @@ function s:GetMSL(lnum)
       "       something
       "
       return msl
-    elseif s:Match(line, s:non_bracket_continuation_regex) &&
+    elseif s:Match(lnum, s:non_bracket_continuation_regex) &&
           \ s:Match(msl, s:non_bracket_continuation_regex)
       " If the current line is a non-bracket continuation and so is the
       " previous one, keep its indent and continue looking for an MSL.
