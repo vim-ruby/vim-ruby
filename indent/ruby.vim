@@ -34,7 +34,7 @@ set cpo&vim
 " Regex of syntax group names that are or delimit strings/symbols or are comments.
 let s:syng_strcom = '\<ruby\%(Regexp\|RegexpDelimiter\|RegexpEscape' .
       \ '\|Symbol\|String\|StringDelimiter\|StringEscape\|ASCIICode' .
-      \ '\|Interpolation\|NoInterpolation\|Comment\|Documentation\)\>'
+      \ '\|Interpolation\|InterpolationDelimiter\|NoInterpolation\|Comment\|Documentation\)\>'
 
 " Regex of syntax group names that are strings.
 let s:syng_string =
