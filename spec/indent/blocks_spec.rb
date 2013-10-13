@@ -34,14 +34,14 @@ describe "Indenting" do
   end
 
   specify "case-insensitive matching" do
-    @vim.set 'ignorecase'
+    vim.set 'ignorecase'
     assert_correct_indenting <<-EOF
       module X
         Class.new do
         end
       end
     EOF
-    @vim.set 'ignorecase&'
+    vim.set 'ignorecase&'
   end
 
   specify "blocks with tuple arguments" do
