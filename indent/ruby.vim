@@ -51,13 +51,13 @@ let s:skip_expr =
 " Regex used for words that, at the start of a line, add a level of indent.
 let s:ruby_indent_keywords = '^\s*\zs\<\%(module\|class\|def\|if\|for' .
       \ '\|while\|until\|else\|elsif\|case\|when\|unless\|begin\|ensure' .
-      \ '\|rescue\):\@!\>' .
+      \ '\|rescue\|private\|protected):\@!\>' .
       \ '\|\%([=,*/%+-]\|<<\|>>\|:\s\)\s*\zs' .
       \    '\<\%(if\|for\|while\|until\|case\|unless\|begin\):\@!\>'
 
 " Regex used for words that, at the start of a line, remove a level of indent.
 let s:ruby_deindent_keywords =
-      \ '^\s*\zs\<\%(ensure\|else\|rescue\|elsif\|when\|end\):\@!\>'
+      \ '^\s*\zs\<\%(private\|protected\|ensure\|else\|rescue\|elsif\|when\|end\):\@!\>'
 
 " Regex that defines the start-match for the 'end' keyword.
 "let s:end_start_regex = '\%(^\|[^.]\)\<\%(module\|class\|def\|if\|for\|while\|until\|case\|unless\|begin\|do\)\>'
