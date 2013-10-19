@@ -14,7 +14,7 @@ endif
 let b:did_indent = 1
 
 if !exists('g:ruby_indent_private_protected_style')
-  " Possible values: "normal", "indent"
+  " Possible values: "normal", "indent", "outdent"
   let g:ruby_indent_private_protected_style = 'normal'
 endif
 
@@ -367,13 +367,20 @@ function GetRubyIndent(...)
   let line = getline(clnum)
   let ind = -1
 
+  " If this line is a private/protected keyword, align according to the
+  " closest class declaration.
   if g:ruby_indent_private_protected_style == 'indent'
-    " If this line is a private/protected keyword, align according to the
-    " closest class declaration.
     if s:Match(clnum, s:private_protected_regex)
       let class_line = s:SearchCode(s:class_regex, 'Wb')
       if class_line > 0
         return indent(class_line) + &sw
+      endif
+    endif
+  elseif g:ruby_indent_private_protected_style == 'outdent'
+    if s:Match(clnum, s:private_protected_regex)
+      let class_line = s:SearchCode(s:class_regex, 'Wb')
+      if class_line > 0
+        return indent(class_line)
       endif
     endif
   endif
@@ -454,7 +461,7 @@ function GetRubyIndent(...)
   let line = getline(lnum)
   let ind = indent(lnum)
 
-  if g:ruby_indent_private_protected_style == 'indent'
+  if g:ruby_indent_private_protected_style == 'indent' || g:ruby_indent_private_protected_style == 'outdent'
     " If the previous line was a private/protected keyword, add a level of indent
     if s:Match(lnum, s:private_protected_regex)
       return indent(s:GetMSL(lnum)) + &sw
