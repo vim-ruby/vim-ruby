@@ -49,6 +49,21 @@ describe "Indenting" do
         def two
         end
 
+        class Two
+        end
+
+        private
+
+          def four
+          end
+      end
+    EOF
+
+    assert_correct_indenting <<-EOF
+      class One
+        def two
+        end
+
         private :two
         protected :two
 
@@ -69,6 +84,21 @@ describe "Indenting" do
       protected
 
         def three
+        end
+
+      private
+
+        def four
+        end
+      end
+    EOF
+
+    assert_correct_indenting <<-EOF
+      class One
+        def two
+        end
+
+        class Two
         end
 
       private

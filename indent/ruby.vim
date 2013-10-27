@@ -95,11 +95,6 @@ let s:continuation_regex =
 " Regex that defines bracket continuations
 let s:bracket_continuation_regex = '%\@<!\%([({[]\)\s*\%(#.*\)\=$'
 
-" Regex that matches a class/module definition
-let s:class_regex =
-      \ '\C\%(^\s*\|[=,*/%+\-|;{]\|<<\|>>\|:\s\)\s*\zs' .
-      \ '\<\%(module\|class\):\@!\>'
-
 " Regex that defines the first part of a splat pattern
 let s:splat_regex = '[[,(]\s*\*\s*\%(#.*\)\=$'
 
@@ -329,23 +324,23 @@ function s:Match(lnum, regex)
   endif
 endfunction
 
-" Search for a pattern match with search(), ignoring strings or comments.
+" Locates the containing class/module's definition line, ignoring nested classes
+" along the way.
 "
-" Note that you should NOT use the "n" or "c" flags here, since it may loop
-" indefinitely. You should use the "W" flag for the same reason.
-"
-function s:SearchCode(pattern, flags)
+function! s:FindContainingClass()
   let saved_position = getpos('.')
 
-  let [lnum, col] = searchpos(a:pattern, a:flags)
-
-  while lnum > 0 && s:IsInStringOrComment(lnum, col)
-    let [lnum, col] = searchpos(a:pattern, a:flags)
-  endwhile
+  while searchpair(s:end_start_regex, s:end_middle_regex, s:end_end_regex, 'bW',
+        \ s:end_skip_expr) > 0
+    if expand('<cword>') =~# '\<class\|module\>'
+      let found_lnum = line('.')
+      call setpos('.', saved_position)
+      return found_lnum
+    endif
+  endif
 
   call setpos('.', saved_position)
-
-  return lnum
+  return 0
 endfunction
 
 " 3. GetRubyIndent Function {{{1
@@ -372,14 +367,14 @@ function GetRubyIndent(...)
   " closest class declaration.
   if g:ruby_indent_private_protected_style == 'indent'
     if s:Match(clnum, s:private_protected_regex)
-      let class_line = s:SearchCode(s:class_regex, 'Wb')
+      let class_line = s:FindContainingClass()
       if class_line > 0
         return indent(class_line) + &sw
       endif
     endif
   elseif g:ruby_indent_private_protected_style == 'outdent'
     if s:Match(clnum, s:private_protected_regex)
-      let class_line = s:SearchCode(s:class_regex, 'Wb')
+      let class_line = s:FindContainingClass()
       if class_line > 0
         return indent(class_line)
       endif
