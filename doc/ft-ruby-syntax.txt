@@ -6,6 +6,7 @@ There are a number of options to the Ruby syntax highlighting.
 2. Whitespace errors                  |ruby_space_errors|
 3. Folds                              |ruby_fold|
 4. Reducing expensive operations      |ruby_no_expensive| |ruby_minlines|
+5. Reducing expensive operations      |ruby_indent_access_modifier_style|
 
 
 1. Ruby operators				*ruby_operators*
@@ -60,5 +61,48 @@ the "ruby_minlines" variable to a value larger than 50: >
 <
 Ideally, this value should be a number of lines large enough to embrace your
 largest class or module.
+
+5. Access modifier indentation			*ruby_indent_access_modifier_style*
+
+Different access modifier indentation styles can be used by setting: >
+
+	:let g:ruby_indent_access_modifier_style
+	:let g:ruby_indent_access_modifier_style = 'indent'
+	:let g:ruby_indent_access_modifier_style = 'outdent'
+<
+By default, the normal access modifier style is used.
+Access modifier style 'normal':
+  class Indent
+    private :method
+    protected :method
+    private
+    def method; end
+    protected
+    def method; end
+    public
+    def method; end
+  end
+Access modifier style 'indent':
+  class Indent
+    private :method
+    protected :method
+    private
+      def method; end
+    protected
+      def method; end
+    public
+    def method; end
+  end
+Access modifier style 'outdent':
+  class Indent
+    private :method
+    protected :method
+  private
+    def method; end
+  protected
+    def method; end
+  public
+    def method; end
+  end
 
  vim:tw=78:sw=4:ts=8:ft=help:norl:
