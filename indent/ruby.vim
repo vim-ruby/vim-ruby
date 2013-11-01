@@ -22,9 +22,9 @@ setlocal nosmartindent
 
 " Now, set up our indentation expression and keys that trigger it.
 setlocal indentexpr=GetRubyIndent(v:lnum)
-setlocal indentkeys=0{,0},0),0],!^F,o,O,e
+setlocal indentkeys=0{,0},0),0],!^F,o,O,e,:
 setlocal indentkeys+==end,=else,=elsif,=when,=ensure,=rescue,==begin,==end
-setlocal indentkeys+==private,=protected,:=private,:=protected
+setlocal indentkeys+==private,=protected
 
 " Only define the function once.
 if exists("*GetRubyIndent")
