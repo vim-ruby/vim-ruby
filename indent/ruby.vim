@@ -464,13 +464,13 @@ function GetRubyIndent(...)
     " If the previous line was a private/protected keyword, add a
     " level of indent
     if s:Match(lnum, s:indent_access_modifier_regex)
-      return indent(s:GetMSL(lnum)) + &sw
+      return indent(lnum) + &sw
     endif
   elseif g:ruby_indent_access_modifier_style == 'outdent'
     " If the previous line was a private/protected/public keyword, remove
     " a level of indent
     if s:Match(lnum, s:access_modifier_regex)
-      return indent(s:GetMSL(lnum)) + &sw
+      return indent(lnum) + &sw
     endif
   endif
 
