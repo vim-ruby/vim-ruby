@@ -2,7 +2,7 @@
 
 1. Ruby motions				|ruby-motion|
 2. Ruby text objects			|ruby-text-objects|
-3. Access modifier indentation		|ruby-text-objects|
+3. Access modifier indentation		|ruby-access-modifier-indentation|
 
 
 ==============================================================================
@@ -61,7 +61,8 @@ iM			"inner class", select contents of "class"/"end"
 			block, excluding the "class" and "end" themselves.
 
 ==============================================================================
-3. Access modifier indentation				*ruby-motion*
+3. Access modifier indentation             *ruby-access-modifier-indentation*
+                                           *g:ruby_indent_access_modifier_style*
 
 Different access modifier indentation styles can be used by setting: >
 
@@ -69,8 +70,10 @@ Different access modifier indentation styles can be used by setting: >
 	:let g:ruby_indent_access_modifier_style = 'indent'
 	:let g:ruby_indent_access_modifier_style = 'outdent'
 <
-By default, the normal access modifier style is used.
-Access modifier style 'normal':
+By default, the "normal" access modifier style is used.
+
+Access modifier style "normal":
+>
   class Indent
     private :method
     protected :method
@@ -81,7 +84,9 @@ Access modifier style 'normal':
     public
     def method; end
   end
-Access modifier style 'indent':
+<
+Access modifier style "indent":
+>
   class Indent
     private :method
     protected :method
@@ -92,7 +97,9 @@ Access modifier style 'indent':
     public
     def method; end
   end
-Access modifier style 'outdent':
+<
+Access modifier style "outdent":
+>
   class Indent
     private :method
     protected :method
@@ -103,5 +110,6 @@ Access modifier style 'outdent':
   public
     def method; end
   end
+<
 
  vim:tw=78:sw=4:ts=8:ft=help:norl:
