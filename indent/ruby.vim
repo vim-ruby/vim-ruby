@@ -13,18 +13,18 @@ if exists("b:did_indent")
 endif
 let b:did_indent = 1
 
-if !exists('g:ruby_indent_private_protected_style')
+if !exists('g:ruby_indent_access_modifier_style')
   " Possible values: "normal", "indent", "outdent"
-  let g:ruby_indent_private_protected_style = 'normal'
+  let g:ruby_indent_access_modifier_style = 'normal'
 endif
 
 setlocal nosmartindent
 
 " Now, set up our indentation expression and keys that trigger it.
 setlocal indentexpr=GetRubyIndent(v:lnum)
-setlocal indentkeys=0{,0},0),0],!^F,o,O,e
+setlocal indentkeys=0{,0},0),0],!^F,o,O,e,:
 setlocal indentkeys+==end,=else,=elsif,=when,=ensure,=rescue,==begin,==end
-setlocal indentkeys+==private,=protected,:=private,:=protected
+setlocal indentkeys+==private,=protected,=public
 
 " Only define the function once.
 if exists("*GetRubyIndent")
@@ -98,8 +98,11 @@ let s:bracket_continuation_regex = '%\@<!\%([({[]\)\s*\%(#.*\)\=$'
 " Regex that defines the first part of a splat pattern
 let s:splat_regex = '[[,(]\s*\*\s*\%(#.*\)\=$'
 
-" Regex that describes a private/protected access modifier
-let s:private_protected_regex = '\C^\s*\%(private\|protected\)\s*\%(#.*\)\=$'
+" Regex that describes all indent access modifiers
+let s:access_modifier_regex = '\C^\s*\%(private\|public\|protected\)\s*\%(#.*\)\=$'
+
+" Regex that describes the indent access modifiers (excludes public)
+let s:indent_access_modifier_regex = '\C^\s*\%(private\|protected\)\s*\%(#.*\)\=$'
 
 " Regex that defines blocks.
 "
@@ -363,17 +366,17 @@ function GetRubyIndent(...)
   let line = getline(clnum)
   let ind = -1
 
-  " If this line is a private/protected keyword, align according to the
-  " closest class declaration.
-  if g:ruby_indent_private_protected_style == 'indent'
-    if s:Match(clnum, s:private_protected_regex)
+  " If this line is an access modifier keyword, align according to the closest
+  " class declaration.
+  if g:ruby_indent_access_modifier_style == 'indent'
+    if s:Match(clnum, s:access_modifier_regex)
       let class_line = s:FindContainingClass()
       if class_line > 0
         return indent(class_line) + &sw
       endif
     endif
-  elseif g:ruby_indent_private_protected_style == 'outdent'
-    if s:Match(clnum, s:private_protected_regex)
+  elseif g:ruby_indent_access_modifier_style == 'outdent'
+    if s:Match(clnum, s:access_modifier_regex)
       let class_line = s:FindContainingClass()
       if class_line > 0
         return indent(class_line)
@@ -457,9 +460,16 @@ function GetRubyIndent(...)
   let line = getline(lnum)
   let ind = indent(lnum)
 
-  if g:ruby_indent_private_protected_style == 'indent' || g:ruby_indent_private_protected_style == 'outdent'
-    " If the previous line was a private/protected keyword, add a level of indent
-    if s:Match(lnum, s:private_protected_regex)
+  if g:ruby_indent_access_modifier_style == 'indent'
+    " If the previous line was a private/protected keyword, add a
+    " level of indent
+    if s:Match(lnum, s:indent_access_modifier_regex)
+      return indent(s:GetMSL(lnum)) + &sw
+    endif
+  elseif g:ruby_indent_access_modifier_style == 'outdent'
+    " If the previous line was a private/protected/public keyword, remove
+    " a level of indent
+    if s:Match(lnum, s:access_modifier_regex)
       return indent(s:GetMSL(lnum)) + &sw
     endif
   endif
