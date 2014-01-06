@@ -55,9 +55,10 @@ let s:skip_expr =
       \ "synIDattr(synID(line('.'),col('.'),1),'name') =~ '".s:syng_strcom."'"
 
 " Regex used for words that, at the start of a line, add a level of indent.
-let s:ruby_indent_keywords = '^\s*\zs\<\%(module\|class\|def\|if\|for' .
-      \ '\|while\|until\|else\|elsif\|case\|when\|unless\|begin\|ensure' .
-      \ '\|rescue\):\@!\>' .
+let s:ruby_indent_keywords =
+      \ '^\s*\zs\<\%(module\|class\|if\|for' .
+      \   '\|while\|until\|else\|elsif\|case\|when\|unless\|begin\|ensure\|rescue' .
+      \   '\|\%(public\|protected\|private\)\=\s*def\):\@!\>' .
       \ '\|\%([=,*/%+-]\|<<\|>>\|:\s\)\s*\zs' .
       \    '\<\%(if\|for\|while\|until\|case\|unless\|begin\):\@!\>'
 
@@ -70,7 +71,8 @@ let s:ruby_deindent_keywords =
 " TODO: the do here should be restricted somewhat (only at end of line)?
 let s:end_start_regex =
       \ '\C\%(^\s*\|[=,*/%+\-|;{]\|<<\|>>\|:\s\)\s*\zs' .
-      \ '\<\%(module\|class\|def\|if\|for\|while\|until\|case\|unless\|begin\):\@!\>' .
+      \ '\<\%(module\|class\|if\|for\|while\|until\|case\|unless\|begin' .
+      \   '\|\%(public\|protected\|private\)\=\s*def\):\@!\>' .
       \ '\|\%(^\|[^.:@$]\)\@<=\<do:\@!\>'
 
 " Regex that defines the middle-match for the 'end' keyword.
@@ -99,10 +101,10 @@ let s:bracket_continuation_regex = '%\@<!\%([({[]\)\s*\%(#.*\)\=$'
 let s:splat_regex = '[[,(]\s*\*\s*\%(#.*\)\=$'
 
 " Regex that describes all indent access modifiers
-let s:access_modifier_regex = '\C^\s*\%(private\|public\|protected\)\s*\%(#.*\)\=$'
+let s:access_modifier_regex = '\C^\s*\%(public\|protected\|private\)\s*\%(#.*\)\=$'
 
 " Regex that describes the indent access modifiers (excludes public)
-let s:indent_access_modifier_regex = '\C^\s*\%(private\|protected\)\s*\%(#.*\)\=$'
+let s:indent_access_modifier_regex = '\C^\s*\%(protected\|private\)\s*\%(#.*\)\=$'
 
 " Regex that defines blocks.
 "
