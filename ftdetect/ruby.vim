@@ -2,7 +2,7 @@
 au BufNewFile,BufRead *.rb,*.rbw,*.gemspec	set filetype=ruby
 
 " Ruby on Rails
-au BufNewFile,BufRead *.builder,*.rxml,*.rjs	set filetype=ruby
+au BufNewFile,BufRead *.builder,*.rxml,*.rjs,*.ruby	set filetype=ruby
 
 " Rakefile
 au BufNewFile,BufRead [rR]akefile,*.rake	set filetype=ruby
