@@ -16,7 +16,7 @@ For regular users:
      - vim-ruby-devel-YYYY.MM.DD.tar.gz  (cutting-edge features we'd like you
        to test)
   - Please give feedback through the bug tracking and feature request features
-    of github.
+    of GitHub.
   - Feel free to join discussions on the vim-ruby-devel mailing list:
     http://rubyforge.org/mail/?group_id=16
 
@@ -29,19 +29,18 @@ Contents of the project:
   - The autoload, compiler, ftdetect, ftplugin, indent and syntax directories
     contain the ruby*.vim files that are to be copied to a location somewhere
     in the Vim 'runtimepath'.
-  - vim-ruby-install.rb performs this copying.
 
 How you get these files into Vim:
   - By downloading the project via a snapshot or Git, you can keep up with
     the latest, make changes, and install the files to a Vim directory.
   - By downloading one of the tarballs, you can easily install the latest
     stable or development version wherever you like on your machine.  No
-    README, no vim-ruby-install.rb, just Vim files.  You would typically
-    install these into either $VIM/vimfiles, for system-wide use, or $HOME/.vim
-    ($HOME/vimfiles on Windows) for personal use.
+    README etc. just Vim files.  You would typically install these into either
+    $VIM/vimfiles, for system-wide use, or $HOME/.vim ($HOME/vimfiles on
+    Windows) for personal use.
   - Remember that when you install Vim in the first place, all of these files
     are present.  The purpose of downloading and installing them from
-    github is to get the latest version of them.
+    GitHub is to get the latest version of them.
 
 Git topics:
   - Project was migrated from CVS in August, 2008.

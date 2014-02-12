@@ -32,5 +32,4 @@ Manually
 --------
 
 [Download](https://github.com/vim-ruby/vim-ruby/archives/master) and
-extract an archive, and run `bin/vim-ruby-install.rb` to copy the
-relevant files to `~/.vim`.
+extract the relevant files to `~/.vim` (or `$HOME/vimfiles` on Windows).
