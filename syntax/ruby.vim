@@ -197,7 +197,7 @@ syn match   rubyControl	       "\<\%(and\|break\|in\|next\|not\|or\|redo\|rescue
 syn match   rubyOperator       "\<defined?" display
 syn match   rubyKeyword	       "\<\%(super\|yield\)\>[?!]\@!"
 syn match   rubyBoolean	       "\<\%(true\|false\)\>[?!]\@!"
-syn match   rubyPseudoVariable "\<\%(nil\|self\|__ENCODING__\|__FILE__\|__LINE__\|__callee__\|__method__\)\>[?!]\@!" " TODO: reorganise
+syn match   rubyPseudoVariable "\<\%(nil\|self\|__ENCODING__\|__dir__\|__FILE__\|__LINE__\|__callee__\|__method__\)\>[?!]\@!" " TODO: reorganise
 syn match   rubyBeginEnd       "\<\%(BEGIN\|END\)\>[?!]\@!"
 
 " Expensive Mode - match 'end' with the appropriate opening keyword for syntax
