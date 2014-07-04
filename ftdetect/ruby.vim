@@ -26,7 +26,7 @@ au BufNewFile,BufRead .pryrc			call s:setf('ruby')
 au BufNewFile,BufRead *.ru			call s:setf('ruby')
 
 " Capistrano
-au BufNewFile,BufRead Capfile			call s:setf('ruby')
+au BufNewFile,BufRead Capfile,*.cap 		call s:setf('ruby')
 
 " Bundler
 au BufNewFile,BufRead Gemfile			call s:setf('ruby')
