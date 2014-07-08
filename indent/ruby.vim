@@ -90,9 +90,13 @@ let s:end_skip_expr = s:skip_expr .
 let s:non_bracket_continuation_regex = '\%([\\.,:*/%+]\|\<and\|\<or\|\%(<%\)\@<![=-]\|\W[|&?]\|||\|&&\)\s*\%(#.*\)\=$'
 
 " Regex that defines continuation lines.
-" TODO: this needs to deal with if ...: and so on
 let s:continuation_regex =
       \ '\%(%\@<![({[\\.,:*/%+]\|\<and\|\<or\|\%(<%\)\@<![=-]\|\W[|&?]\|||\|&&\)\s*\%(#.*\)\=$'
+
+" Regex that defines continuable keywords
+let s:continuable_regex =
+      \ '\C\%(^\s*\|[=,*/%+\-|;{]\|<<\|>>\|:\s\)\s*\zs' .
+      \ '\<\%(if\|for\|while\|until\|unless\):\@!\>'
 
 " Regex that defines bracket continuations
 let s:bracket_continuation_regex = '%\@<!\%([({[]\)\s*\%(#.*\)\=$'
@@ -486,6 +490,10 @@ function GetRubyIndent(...)
     if s:Match(lnum, s:access_modifier_regex)
       return indent(lnum) + &sw
     endif
+  endif
+
+  if s:Match(lnum, s:continuable_regex) && s:Match(lnum, s:continuation_regex)
+    return indent(s:GetMSL(lnum)) + &sw + &sw
   endif
 
   " If the previous line ended with a block opening, add a level of indent.
