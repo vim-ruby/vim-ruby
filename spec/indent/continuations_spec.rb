@@ -176,4 +176,15 @@ describe "Indenting" do
         'b'
     EOF
   end
+
+  specify "continuation with if" do
+    # See https://github.com/vim-ruby/vim-ruby/issues/17 for details
+    assert_correct_indenting <<-EOF
+      foo and
+        (bar and
+         baz) and
+        bing
+    EOF
+  end
+
 end
