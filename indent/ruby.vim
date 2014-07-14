@@ -101,6 +101,9 @@ let s:continuable_regex =
 " Regex that defines bracket continuations
 let s:bracket_continuation_regex = '%\@<!\%([({[]\)\s*\%(#.*\)\=$'
 
+" Regex that defines end of bracket continuation followed by another continuation
+let s:bracket_switch_continuation_regex = '^\([^(]\+).\+\)\+'.s:continuation_regex
+
 " Regex that defines the first part of a splat pattern
 let s:splat_regex = '[[,(]\s*\*\s*\%(#.*\)\=$'
 
@@ -583,10 +586,14 @@ function GetRubyIndent(...)
   let p_lnum = lnum
   let lnum = s:GetMSL(lnum)
 
-  " If the previous line wasn't a MSL and is continuation return its indent.
-  " TODO: the || s:IsInString() thing worries me a bit.
+  " If the previous line wasn't a MSL.
   if p_lnum != lnum
-    if s:Match(p_lnum, s:non_bracket_continuation_regex) || s:IsInString(p_lnum,strlen(line))
+    " If previous line ends bracket and begins non-bracket continuation decrese indent by 1.
+    if s:Match(p_lnum, s:bracket_switch_continuation_regex)
+      return ind - 1
+    " If previous line is a continuation return its indent.
+    " TODO: the || s:IsInString() thing worries me a bit.
+    elseif s:Match(p_lnum, s:non_bracket_continuation_regex) || s:IsInString(p_lnum,strlen(line))
       return ind
     endif
   endif

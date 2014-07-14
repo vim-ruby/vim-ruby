@@ -177,7 +177,7 @@ describe "Indenting" do
     EOF
   end
 
-  specify "continuation with if" do
+  specify "continuations in an if-clause condition" do
     # See https://github.com/vim-ruby/vim-ruby/issues/215 for details
     assert_correct_indenting <<-EOF
       if foo || bar ||
@@ -185,6 +185,16 @@ describe "Indenting" do
           baz || bing
         puts "foo"
       end
+    EOF
+  end
+
+  specify "continuations with round brackets" do
+    # See https://github.com/vim-ruby/vim-ruby/issues/17 for details
+    assert_correct_indenting <<-EOF
+      foo and
+        (bar and
+         baz) and
+        bing
     EOF
   end
 
