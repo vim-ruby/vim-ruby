@@ -102,7 +102,7 @@ let s:continuable_regex =
 let s:bracket_continuation_regex = '%\@<!\%([({[]\)\s*\%(#.*\)\=$'
 
 " Regex that defines end of bracket continuation followed by another continuation
-let s:bracket_switch_continuation_regex = '^\([^(]\+).\+\)\+'.s:continuation_regex
+let s:bracket_switch_continuation_regex = '^\([^(]\+\zs).\+\)\+'.s:continuation_regex
 
 " Regex that defines the first part of a splat pattern
 let s:splat_regex = '[[,(]\s*\*\s*\%(#.*\)\=$'
