@@ -588,7 +588,7 @@ function GetRubyIndent(...)
 
   " If the previous line wasn't a MSL.
   if p_lnum != lnum
-    " If previous line ends bracket and begins non-bracket continuation decrese indent by 1.
+    " If previous line ends bracket and begins non-bracket continuation decrease indent by 1.
     if s:Match(p_lnum, s:bracket_switch_continuation_regex)
       return ind - 1
     " If previous line is a continuation return its indent.
