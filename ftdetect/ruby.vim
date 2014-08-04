@@ -62,4 +62,7 @@ au BufNewFile,BufRead Appraisals		set filetype=ruby
 " CocoaPods
 au BufNewFile,BufRead Podfile,*.podspec		set filetype=ruby
 
+" SimpleCov
+au BufNewFile,BufRead .simplecov		set filetype=ruby
+
 " vim: nowrap sw=2 sts=2 ts=8 noet:
