@@ -539,10 +539,17 @@ function GetRubyIndent(...)
       call cursor(lnum, closing.pos + 1)
       normal! %
 
-      if s:Match(line('.'), s:ruby_indent_keywords)
-        return indent('.') + &sw
+      let msl = line('.')
+      let tentative_msl = s:GetMSL(msl)
+      while msl != tentative_msl
+        let msl = tentative_msl
+        let tentative_msl = s:GetMSL(msl)
+      endwhile
+
+      if s:Match(msl, s:ruby_indent_keywords)
+        return indent(msl) + &sw
       else
-        return indent('.')
+        return indent(msl)
       endif
     else
       call cursor(clnum, vcol)
