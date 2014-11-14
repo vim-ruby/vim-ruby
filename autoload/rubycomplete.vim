@@ -603,6 +603,28 @@ class VimRubyCompletion
     b.get_completions base
   end
 
+  def get_method_signature(method)
+    return nil if method.parameters.blank
+    
+    %((#{method.parameters.collect { |p|
+        case p.first
+        when :key
+          "#{p.second}: #{p.second}"
+        when :req
+          p.second
+        when :block
+          "&#{p.second}"
+        when :rest
+          "*#{p.second}"
+        when :keyrest
+          "**#{p.second}"
+        else
+          "#{p.first} #{p.second}"
+        end
+    }.join(', ')
+      }))
+  end
+
   def get_completions(base)
     loading_allowed = VIM::evaluate("exists('g:rubycomplete_buffer_loading') && g:rubycomplete_buffer_loading")
     if loading_allowed.to_i == 1
@@ -798,11 +820,11 @@ class VimRubyCompletion
     constants = clean_sel( constants, message )
 
     valid = []
-    valid += methods.collect { |m| { :name => m.to_s, :type => 'm' } }
+    valid += methods.collect { |m| { :name => m.to_s,  :type => 'm', signature: get_method_signature(m) } }
     valid += variables.collect { |v| { :name => v.to_s, :type => 'v' } }
     valid += classes.collect { |c| { :name => c.to_s, :type => 't' } }
     valid += constants.collect { |d| { :name => d.to_s, :type => 'd' } }
-    valid.sort! { |x,y| x[:name] <=> y[:name] }
+    " valid.sort! { |x,y| x[:name] <=> y[:name] }
 
     outp = ""
 
@@ -810,7 +832,19 @@ class VimRubyCompletion
     rg.step(150) do |x|
       stpos = 0+x
       enpos = 150+x
-      valid[stpos..enpos].each { |c| outp += "{'word':'%s','item':'%s','kind':'%s'}," % [ c[:name], c[:name], c[:type] ].map{|x|escape_vim_singlequote_string(x)} }
+      valid[stpos..enpos].each { |c|
+          keys = %i(word item kind)
+          keys.insert(c[:signature], -2) if c[:signature]
+
+          expr = '{' + keys.map { |k| "'#{k}':'\%s'" }.join(',') + '}'
+          #expr = "{'word':'%s','item':'%s','kind':'%s'},"
+
+          if c[:signature]
+                outp += "" % [ c[:name], c[:name], c[:signature], c[:type] ].map{|x|escape_vim_singlequote_string(x)}
+          else
+                outp += "" % [ c[:name], c[:name], c[:type] ].map{|x|escape_vim_singlequote_string(x)}
+          end
+      }
       outp.sub!(/,$/, '')
 
       VIM::command("call extend(g:rubycomplete_completions, [%s])" % outp)
