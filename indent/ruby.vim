@@ -18,6 +18,11 @@ if !exists('g:ruby_indent_access_modifier_style')
   let g:ruby_indent_access_modifier_style = 'normal'
 endif
 
+if !exists('g:ruby_indent_param_style')
+  " Possible values: "param", "line"
+  let g:ruby_indent_param_style = "param"
+endif
+
 setlocal nosmartindent
 
 " Now, set up our indentation expression and keys that trigger it.
@@ -533,7 +538,7 @@ function GetRubyIndent(...)
 
     if opening.pos != -1
       if opening.type == '(' && searchpair('(', '', ')', 'bW', s:skip_expr) > 0
-        if col('.') + 1 == col('$')
+        if col('.') + 1 == col('$') || g:ruby_indent_param_style == "line"
           return ind + sw
         else
           return virtcol('.')

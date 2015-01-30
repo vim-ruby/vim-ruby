@@ -110,6 +110,27 @@ Access modifier style "outdent":
   public
     def method; end
   end
-<
+
+==============================================================================
+4. Parameter Indentation                   *ruby-parameter-indentation*
+                                           *g:ruby_indent_param_style*
+
+Different styles for parameter indentation can be set by using
+g:ruby_indent_param_style:
+
+	:let g:ruby_indent_param_style = 'param'
+	:let g:ruby_indent_param_style = 'line'
+	
+By default, the "param" indentation style is used:
+
+Parameter indentation style "param":
+>
+some_method(arg1,
+            arg2)
+
+Parameter indentation style "line":
+
+some_method(arg1,
+  arg2)
 
  vim:tw=78:sw=4:ts=8:ft=help:norl:
