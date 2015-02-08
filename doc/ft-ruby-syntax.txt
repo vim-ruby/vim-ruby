@@ -61,4 +61,11 @@ the "ruby_minlines" variable to a value larger than 50: >
 Ideally, this value should be a number of lines large enough to embrace your
 largest class or module.
 
+5. Spellchecking strings			*ruby_spellcheck_strings*
+
+Ruby syntax will perform spellchecking of strings if you define "ruby_spellcheck_strings": >
+
+	:let ruby_spellcheck_strings = 1
+<
+
  vim:tw=78:sw=4:ts=8:ft=help:norl:
