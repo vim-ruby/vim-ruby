@@ -214,18 +214,6 @@ function s:GetMSL(lnum)
       "     three
       "
       let msl = lnum
-    elseif s:Match(lnum, s:non_bracket_continuation_regex) &&
-          \ (s:Match(msl, s:bracket_continuation_regex) || s:Match(msl, s:block_continuation_regex))
-      " If the current line is a bracket continuation or a block-starter, but
-      " the previous is a non-bracket one, respect the previous' indentation,
-      " and stop here.
-      "
-      " Example:
-      "   method_call one,
-      "     two {
-      "     three
-      "
-      return lnum
     elseif s:Match(lnum, s:bracket_continuation_regex) &&
           \ (s:Match(msl, s:bracket_continuation_regex) || s:Match(msl, s:block_continuation_regex))
       " If both lines are bracket continuations (the current may also be a
@@ -633,9 +621,9 @@ function GetRubyIndent(...)
     return ind
   endif
 
-  " If the previous line ended with [*+/.,-=], but wasn't a block ending or a
-  " closing bracket, indent one extra level.
-  if s:Match(lnum, s:non_bracket_continuation_regex) && !s:Match(lnum, '^\s*\([\])}]\|end\)')
+  " If the previous line ended with [*+/.,-=], but wasn't a closing bracket,
+  " indent one extra level.
+  if s:Match(lnum, s:non_bracket_continuation_regex) && !s:Match(lnum, '^\s*\([\])}]\)')
     if lnum == p_lnum
       let ind = msl_ind + sw
     else
