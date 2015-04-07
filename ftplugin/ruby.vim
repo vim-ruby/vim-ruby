@@ -107,6 +107,11 @@ if !exists('b:ruby_version') && !exists('g:ruby_path') && isdirectory(expand('%:
     if !has_key(g:ruby_version_paths, b:ruby_version)
       let g:ruby_version_paths[b:ruby_version] = s:query_path(fnamemodify(s:version_file, ':p:h'))
     endif
+  else
+    let b:rbenv_version = system('rbenv version-name')
+    if !empty(b:rbenv_version)
+      let b:ruby_version = substitute(b:rbenv_version,'\n','','')
+    end
   endif
 endif
 
