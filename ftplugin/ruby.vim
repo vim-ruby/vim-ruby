@@ -146,6 +146,14 @@ let b:undo_ftplugin = "setl fo< inc< inex< sua< def< com< cms< path< tags< kp<"
       \."| if exists('&ofu') && has('ruby') | setl ofu< | endif"
       \."| if has('balloon_eval') && exists('+bexpr') | setl bexpr< | endif"
 
+function! s:silmap(mode, map) abort
+  let from = matchstr(a:map, '\S\+')
+  if empty(maparg(from, a:mode))
+    exe a:mode.'noremap <silent><buffer><script>' a:map
+    let b:undo_ftplugin .= '| '.a:mode.'unmap <buffer> '.from
+  endif
+endfunction
+
 if !exists("g:no_plugin_maps") && !exists("g:no_ruby_maps")
   nnoremap <silent> <buffer> [m :<C-U>call <SID>searchsyn('\<def\>','rubyDefine','b','n')<CR>
   nnoremap <silent> <buffer> ]m :<C-U>call <SID>searchsyn('\<def\>','rubyDefine','','n')<CR>
@@ -189,34 +197,23 @@ if !exists("g:no_plugin_maps") && !exists("g:no_ruby_maps")
           \."| sil! exe 'xunmap <buffer> iM' | sil! exe 'xunmap <buffer> aM'"
   endif
 
-  if maparg("\<C-]>",'n') == ''
-    cnoremap <buffer> <SID>foldopen <Bar>if &foldopen =~# 'tag'<Bar>exe 'norm! zv'<Bar>endif
-    nnoremap <silent> <script> <buffer> <C-]>       :<C-U>exe  v:count1."tag <C-R>=RubyCursorIdentifier()<CR>"<SID>foldopen<CR>
-    nnoremap <silent> <script> <buffer> g<C-]>      :<C-U>exe         "tjump <C-R>=RubyCursorIdentifier()<CR>"<SID>foldopen<CR>
-    nnoremap <silent> <script> <buffer> g]          :<C-U>exe       "tselect <C-R>=RubyCursorIdentifier()<CR>"<SID>foldopen<CR>
-    nnoremap <silent> <script> <buffer> <C-W>]      :<C-U>exe v:count1."stag <C-R>=RubyCursorIdentifier()<CR>"<SID>foldopen<CR>
-    nnoremap <silent> <script> <buffer> <C-W><C-]>  :<C-U>exe v:count1."stag <C-R>=RubyCursorIdentifier()<CR>"<SID>foldopen<CR>
-    nnoremap <silent> <script> <buffer> <C-W>g<C-]> :<C-U>exe        "stjump <C-R>=RubyCursorIdentifier()<CR>"<SID>foldopen<CR>
-    nnoremap <silent> <script> <buffer> <C-W>g]     :<C-U>exe      "stselect <C-R>=RubyCursorIdentifier()<CR>"<SID>foldopen<CR>
-    nnoremap <silent> <script> <buffer> <C-W>}      :<C-U>exe          "ptag <C-R>=RubyCursorIdentifier()<CR>"<CR>
-    nnoremap <silent> <script> <buffer> <C-W>g}     :<C-U>exe        "ptjump <C-R>=RubyCursorIdentifier()<CR>"<CR>
-    let b:undo_ftplugin = b:undo_ftplugin
-          \."| sil! exe 'nunmap <buffer> <C-]>'| sil! exe 'nunmap <buffer> g<C-]>'| sil! exe 'nunmap <buffer> g]'"
-          \."| sil! exe 'nunmap <buffer> <C-W>]'| sil! exe 'nunmap <buffer> <C-W><C-]>'"
-          \."| sil! exe 'nunmap <buffer> <C-W>g<C-]>'| sil! exe 'nunmap <buffer> <C-W>g]'"
-          \."| sil! exe 'nunmap <buffer> <C-W>}'| sil! exe 'nunmap <buffer> <C-W>g}'"
-  endif
+  cnoremap <buffer> <SID>foldopen <Bar>if &foldopen =~# 'tag'<Bar>exe 'norm! zv'<Bar>endif
+  call s:silmap('n', '<C-]>       :<C-U>exe  v:count1."tag <C-R>=RubyCursorIdentifier()<CR>"<SID>foldopen<CR>')
+  call s:silmap('n', 'g<C-]>      :<C-U>exe         "tjump <C-R>=RubyCursorIdentifier()<CR>"<SID>foldopen<CR>')
+  call s:silmap('n', 'g]          :<C-U>exe       "tselect <C-R>=RubyCursorIdentifier()<CR>"<SID>foldopen<CR>')
+  call s:silmap('n', '<C-W>]      :<C-U>exe v:count1."stag <C-R>=RubyCursorIdentifier()<CR>"<SID>foldopen<CR>')
+  call s:silmap('n', '<C-W><C-]>  :<C-U>exe v:count1."stag <C-R>=RubyCursorIdentifier()<CR>"<SID>foldopen<CR>')
+  call s:silmap('n', '<C-W>g<C-]> :<C-U>exe        "stjump <C-R>=RubyCursorIdentifier()<CR>"<SID>foldopen<CR>')
+  call s:silmap('n', '<C-W>g]     :<C-U>exe      "stselect <C-R>=RubyCursorIdentifier()<CR>"<SID>foldopen<CR>')
+  call s:silmap('n', '<C-W>}      :<C-U>exe          "ptag <C-R>=RubyCursorIdentifier()<CR>"<CR>')
+  call s:silmap('n', '<C-W>g}     :<C-U>exe        "ptjump <C-R>=RubyCursorIdentifier()<CR>"<CR>')
 
-  if maparg("gf",'n') == ''
-    " By using findfile() rather than gf's normal behavior, we prevent
-    " erroneously editing a directory.
-    nnoremap <silent> <buffer> gf         :<C-U>exe <SID>gf(v:count1,"gf",'edit')<CR>
-    nnoremap <silent> <buffer> <C-W>f     :<C-U>exe <SID>gf(v:count1,"\<Lt>C-W>f",'split')<CR>
-    nnoremap <silent> <buffer> <C-W><C-F> :<C-U>exe <SID>gf(v:count1,"\<Lt>C-W>\<Lt>C-F>",'split')<CR>
-    nnoremap <silent> <buffer> <C-W>gf    :<C-U>exe <SID>gf(v:count1,"\<Lt>C-W>gf",'tabedit')<CR>
-    let b:undo_ftplugin = b:undo_ftplugin
-          \."| sil! exe 'nunmap <buffer> gf' | sil! exe 'nunmap <buffer> <C-W>f' | sil! exe 'nunmap <buffer> <C-W><C-F>' | sil! exe 'nunmap <buffer> <C-W>gf'"
-  endif
+  " By using findfile() rather than gf's normal behavior, we prevent
+  " erroneously editing a directory.
+  call s:silmap('n', 'gf         :<C-U>exe <SID>gf(v:count1,"gf","edit")<CR>')
+  call s:silmap('n', '<C-W>f     :<C-U>exe <SID>gf(v:count1,"\<Lt>C-W>f","split")<CR>')
+  call s:silmap('n', '<C-W><C-F> :<C-U>exe <SID>gf(v:count1,"\<Lt>C-W>\<Lt>C-F>","split")<CR>')
+  call s:silmap('n', '<C-W>gf    :<C-U>exe <SID>gf(v:count1,"\<Lt>C-W>gf","tabedit")<CR>')
 endif
 
 let &cpo = s:cpo_save
