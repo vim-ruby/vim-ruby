@@ -216,6 +216,16 @@ if !exists("g:no_plugin_maps") && !exists("g:no_ruby_maps")
   call s:silmap('n', '<C-W>gf    :<C-U>exe <SID>gf(v:count1,"\<Lt>C-W>gf","tabedit")<CR>')
 endif
 
+if !exists('b:cfile_fn')
+  let b:cfile_fn = 'RubyCursorFile'
+  let b:undo_ftplugin = b:undo_ftplugin . '| unlet! b:cfile_fn'
+endif
+
+if !exists('b:cword_fn')
+  let b:cword_fn = 'RubyCursorIdentifier'
+  let b:undo_ftplugin = b:undo_ftplugin . '| unlet! b:cword_fn'
+endif
+
 let &cpo = s:cpo_save
 unlet s:cpo_save
 
@@ -327,7 +337,7 @@ function! s:wrap_a(back,forward)
   endif
 endfunction
 
-function! RubyCursorIdentifier()
+function! RubyCursorIdentifier() abort
   let asciicode    = '\%(\w\|[]})\"'."'".']\)\@<!\%(?\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\=\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)\)'
   let number       = '\%(\%(\w\|[]})\"'."'".']\s*\)\@<!-\)\=\%(\<[[:digit:]_]\+\%(\.[[:digit:]_]\+\)\=\%([Ee][[:digit:]_]\+\)\=\>\|\<0[xXbBoOdD][[:xdigit:]_]\+\>\)\|'.asciicode
   let operator     = '\%(\[\]\|<<\|<=>\|[!<>]=\=\|===\=\|[!=]\~\|>>\|\*\*\|\.\.\.\=\|=>\|[~^&|*/%+-]\)'
@@ -341,19 +351,33 @@ function! RubyCursorIdentifier()
   return stripped == '' ? expand("<cword>") : stripped
 endfunction
 
-function! s:gf(count,map,edit) abort
+function! RubyCursorFile() abort
+  let cfile = expand('<cfile>')
   if getline('.') =~# '^\s*require_relative\s*\(["'']\).*\1\s*$'
-    let target = matchstr(getline('.'),'\(["'']\)\zs.\{-\}\ze\1')
-    return a:edit.' %:h/'.target.'.rb'
+    return expand('%:p:h') . '/' . matchstr(getline('.'),'\(["'']\)\zs.\{-\}\ze\1') . '.rb'
   elseif getline('.') =~# '^\s*\%(require[( ]\|load[( ]\|autoload[( ]:\w\+,\)\s*\s*\%(::\)\=File\.expand_path(\(["'']\)\.\./.*\1,\s*__FILE__)\s*$'
     let target = matchstr(getline('.'),'\(["'']\)\.\./\zs.\{-\}\ze\1')
-    return a:edit.' %:h/'.target.'.rb'
+    return expand('%:p:h') . '/' . target . '.rb'
   elseif getline('.') =~# '^\s*\%(require \|load \|autoload :\w\+,\)\s*\(["'']\).*\1\s*$'
-    let target = matchstr(getline('.'),'\(["'']\)\zs.\{-\}\ze\1')
+    return matchstr(getline('.'),'\(["'']\)\zs.\{-\}\ze\1')
+  elseif s:synname() ==# 'rubyConstant'
+    let cfile = substitute(cfile,'\.\w\+$','','')
+    let cfile = substitute(cfile,'::','/','g')
+    let cfile = substitute(cfile,'\(\u\+\)\(\u\l\)','\1_\2', 'g')
+    let cfile = substitute(cfile,'\(\l\|\d\)\(\u\)','\1_\2', 'g')
+    return tolower(cfile) . '.rb'
   else
-    let target = expand('<cfile>')
+    return cfile
   endif
-  let found = findfile(target, &path, a:count)
+endfunction
+
+function! s:gf(count,map,edit) abort
+  let target = RubyCursorFile()
+  if target =~# '/$'
+    let found = finddir(target, &path, a:count)
+  else
+    let found = findfile(target, &path, a:count)
+  endif
   if found ==# ''
     return 'norm! '.a:count.a:map
   else
