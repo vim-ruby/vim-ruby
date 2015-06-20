@@ -212,6 +212,12 @@ if !exists("g:no_plugin_maps") && !exists("g:no_ruby_maps")
   call s:silmap('n', '<C-W>}      :<C-U>exe          "ptag <C-R>=RubyCursorIdentifier()<CR>"<CR>')
   call s:silmap('n', '<C-W>g}     :<C-U>exe        "ptjump <C-R>=RubyCursorIdentifier()<CR>"<CR>')
 
+  cmap <buffer><script><expr> <Plug><cword> substitute(RubyCursorIdentifier(),'^$',"\022\027",'')
+  cmap <buffer><script><expr> <Plug><cfile> substitute(RubyCursorFile(),'^$',"\022\006",'')
+  let b:undo_ftplugin .= "| sil! cunmap <buffer> <Plug><cword>| sil! cunmap <buffer> <Plug><cfile>"
+  call s:map('c', '', '<C-R><C-W> <Plug><cword>')
+  call s:map('c', '', '<C-R><C-F> <Plug><cfile>')
+
   " By using findfile() rather than gf's normal behavior, we prevent
   " erroneously editing a directory.
   call s:silmap('n', 'gf         :<C-U>exe <SID>gf(v:count1,"gf","edit")<CR>')
