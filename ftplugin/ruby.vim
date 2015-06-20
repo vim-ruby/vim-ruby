@@ -347,27 +347,34 @@ endfunction
 
 function! RubyCursorFile() abort
   let cfile = expand('<cfile>')
-  let ext = getline('.') =~# '^\s*load\>' ? '' : '.rb'
-  if getline('.') =~# '^\s*require_relative\s*\(["'']\).*\1\s*$'
-    return expand('%:p:h') . '/' . matchstr(getline('.'),'\(["'']\)\zs.\{-\}\ze\1') . '.rb'
-  elseif getline('.') =~# '^\s*\%(require[( ]\|load[( ]\|autoload[( ]:\w\+,\)\s*\%(::\)\=File\.expand_path(\(["'']\)\.\./.*\1,\s*__FILE__)\s*$'
-    let target = matchstr(getline('.'),'\(["'']\)\.\./\zs.\{-\}\ze\1')
-    return expand('%:p:h') . '/' . target . ext
-  elseif getline('.') =~# '^\s*\%(require \|load \|autoload :\w\+,\)\s*\(["'']\).*\1\s*$'
-    return matchstr(getline('.'),'\(["'']\)\zs.\{-\}\ze\1') . ext
-  elseif s:synname() ==# 'rubyConstant'
-    let cfile = substitute(cfile,'\.\w\+$','','')
+  let pre = matchstr(strpart(getline('.'), 0, col('.')-1), '.*\f\@<!')
+  let post = matchstr(strpart(getline('.'), col('.')), '\f\@!.*')
+  let ext = getline('.') =~# '^\s*\%(require\|autoload\)\>' ? '.rb' : ''
+  if s:synname() ==# 'rubyConstant'
+    let cfile = substitute(cfile,'\.\w\+[?!=]\=$','','')
     let cfile = substitute(cfile,'::','/','g')
     let cfile = substitute(cfile,'\(\u\+\)\(\u\l\)','\1_\2', 'g')
     let cfile = substitute(cfile,'\(\l\|\d\)\(\u\)','\1_\2', 'g')
     return tolower(cfile) . '.rb'
+  elseif getline('.') =~# '^\s*require_relative\s*\(["'']\).*\1\s*$'
+    let cfile = expand('%:p:h') . '/' . matchstr(getline('.'),'\(["'']\)\zs.\{-\}\ze\1') . '.rb'
+  elseif getline('.') =~# '^\s*\%(require[( ]\|load[( ]\|autoload[( ]:\w\+,\)\s*\%(::\)\=File\.expand_path(\(["'']\)\.\./.*\1,\s*__FILE__)\s*$'
+    let target = matchstr(getline('.'),'\(["'']\)\.\.\zs/.\{-\}\ze\1')
+    let cfile = expand('%:p:h') . target . ext
+  elseif getline('.') =~# '^\s*\%(require \|load \|autoload :\w\+,\)\s*\(["'']\).*\1\s*$'
+    return fnameescape(matchstr(getline('.'),'\(["'']\)\zs.\{-\}\ze\1') . ext)
+  elseif pre.post =~# '\<File.expand_path[( ].*[''"]\{2\}, *__FILE__\>' && cfile =~# '^\.\.'
+    let cfile = expand('%:p:h') . strpart(cfile, 2)
   else
     return cfile
   endif
+  let cwdpat = '^\M' . substitute(getcwd(), '[\/]', '\\[\\/]', 'g').'\ze\[\/]'
+  let cfile = substitute(cfile, cwdpat, '.', '')
+  return fnameescape(cfile)
 endfunction
 
 function! s:gf(count,map,edit) abort
-  let target = RubyCursorFile()
+  let target = expand(RubyCursorFile())
   if target =~# '/$'
     let found = finddir(target, &path, a:count)
   else
