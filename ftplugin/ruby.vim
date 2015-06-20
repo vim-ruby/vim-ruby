@@ -353,13 +353,14 @@ endfunction
 
 function! RubyCursorFile() abort
   let cfile = expand('<cfile>')
+  let ext = getline('.') =~# '^\s*load\>' ? '' : '.rb'
   if getline('.') =~# '^\s*require_relative\s*\(["'']\).*\1\s*$'
     return expand('%:p:h') . '/' . matchstr(getline('.'),'\(["'']\)\zs.\{-\}\ze\1') . '.rb'
-  elseif getline('.') =~# '^\s*\%(require[( ]\|load[( ]\|autoload[( ]:\w\+,\)\s*\s*\%(::\)\=File\.expand_path(\(["'']\)\.\./.*\1,\s*__FILE__)\s*$'
+  elseif getline('.') =~# '^\s*\%(require[( ]\|load[( ]\|autoload[( ]:\w\+,\)\s*\%(::\)\=File\.expand_path(\(["'']\)\.\./.*\1,\s*__FILE__)\s*$'
     let target = matchstr(getline('.'),'\(["'']\)\.\./\zs.\{-\}\ze\1')
-    return expand('%:p:h') . '/' . target . '.rb'
+    return expand('%:p:h') . '/' . target . ext
   elseif getline('.') =~# '^\s*\%(require \|load \|autoload :\w\+,\)\s*\(["'']\).*\1\s*$'
-    return matchstr(getline('.'),'\(["'']\)\zs.\{-\}\ze\1')
+    return matchstr(getline('.'),'\(["'']\)\zs.\{-\}\ze\1') . ext
   elseif s:synname() ==# 'rubyConstant'
     let cfile = substitute(cfile,'\.\w\+$','','')
     let cfile = substitute(cfile,'::','/','g')
