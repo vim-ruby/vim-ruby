@@ -146,12 +146,16 @@ let b:undo_ftplugin = "setl fo< inc< inex< sua< def< com< cms< path< tags< kp<"
       \."| if exists('&ofu') && has('ruby') | setl ofu< | endif"
       \."| if has('balloon_eval') && exists('+bexpr') | setl bexpr< | endif"
 
-function! s:silmap(mode, map) abort
+function! s:map(mode, flags, map) abort
   let from = matchstr(a:map, '\S\+')
-  if empty(maparg(from, a:mode))
-    exe a:mode.'noremap <silent><buffer><script>' a:map
-    let b:undo_ftplugin .= '| '.a:mode.'unmap <buffer> '.from
+  if empty(mapcheck(from, a:mode))
+    exe a:mode.'map' '<buffer>'.(a:0 ? a:1 : '') a:map
+    let b:undo_ftplugin .= '|sil! '.a:mode.'unmap <buffer> '.from
   endif
+endfunction
+
+function! s:silmap(mode, map) abort
+  call s:map(a:mode, '<silent><script>', a:map)
 endfunction
 
 if !exists("g:no_plugin_maps") && !exists("g:no_ruby_maps")
