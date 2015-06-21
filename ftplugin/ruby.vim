@@ -216,16 +216,6 @@ if !exists("g:no_plugin_maps") && !exists("g:no_ruby_maps")
   call s:silmap('n', '<C-W>gf    :<C-U>exe <SID>gf(v:count1,"\<Lt>C-W>gf","tabedit")<CR>')
 endif
 
-if !exists('b:cfile_fn')
-  let b:cfile_fn = 'RubyCursorFile'
-  let b:undo_ftplugin = b:undo_ftplugin . '| unlet! b:cfile_fn'
-endif
-
-if !exists('b:cword_fn')
-  let b:cword_fn = 'RubyCursorIdentifier'
-  let b:undo_ftplugin = b:undo_ftplugin . '| unlet! b:cword_fn'
-endif
-
 let &cpo = s:cpo_save
 unlet s:cpo_save
 
