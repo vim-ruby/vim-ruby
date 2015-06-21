@@ -218,12 +218,11 @@ if !exists("g:no_plugin_maps") && !exists("g:no_ruby_maps")
   call s:map('c', '', '<C-R><C-W> <Plug><cword>')
   call s:map('c', '', '<C-R><C-F> <Plug><cfile>')
 
-  " By using findfile() rather than gf's normal behavior, we prevent
-  " erroneously editing a directory.
-  call s:silmap('n', 'gf         :<C-U>exe <SID>gf(v:count1,"gf","edit")<CR>')
-  call s:silmap('n', '<C-W>f     :<C-U>exe <SID>gf(v:count1,"\<Lt>C-W>f","split")<CR>')
-  call s:silmap('n', '<C-W><C-F> :<C-U>exe <SID>gf(v:count1,"\<Lt>C-W>\<Lt>C-F>","split")<CR>')
-  call s:silmap('n', '<C-W>gf    :<C-U>exe <SID>gf(v:count1,"\<Lt>C-W>gf","tabedit")<CR>')
+  nmap <buffer><script> <SID>: :<C-U><C-R>=v:count ? v:count : ''<CR>
+  call s:map('n', '<silent>', 'gf         <SID>:find <Plug><cfile><CR>')
+  call s:map('n', '<silent>', '<C-W>f     <SID>:sfind <Plug><cfile><CR>')
+  call s:map('n', '<silent>', '<C-W><C-F> <SID>:sfind <Plug><cfile><CR>')
+  call s:map('n', '<silent>', '<C-W>gf    <SID>:tabfind <Plug><cfile><CR>')
 endif
 
 let &cpo = s:cpo_save
@@ -377,20 +376,6 @@ function! RubyCursorFile() abort
   let cwdpat = '^\M' . substitute(getcwd(), '[\/]', '\\[\\/]', 'g').'\ze\[\/]'
   let cfile = substitute(cfile, cwdpat, '.', '')
   return fnameescape(cfile)
-endfunction
-
-function! s:gf(count,map,edit) abort
-  let target = expand(RubyCursorFile())
-  if target =~# '/$'
-    let found = finddir(target, &path, a:count)
-  else
-    let found = findfile(target, &path, a:count)
-  endif
-  if found ==# ''
-    return 'norm! '.a:count.a:map
-  else
-    return a:edit.' '.fnameescape(found)
-  endif
 endfunction
 
 "
