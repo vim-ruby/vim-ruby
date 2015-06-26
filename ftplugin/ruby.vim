@@ -351,7 +351,13 @@ function! RubyCursorIdentifier() abort
 endfunction
 
 function! RubyCursorFile() abort
-  let cfile = expand('<cfile>')
+  let isfname = &isfname
+  try
+    set isfname+=:
+    let cfile = expand('<cfile>')
+  finally
+    let isfname = &isfname
+  endtry
   let pre = matchstr(strpart(getline('.'), 0, col('.')-1), '.*\f\@<!')
   let post = matchstr(strpart(getline('.'), col('.')), '\f\@!.*')
   let ext = getline('.') =~# '^\s*\%(require\|autoload\)\>' ? '.rb' : ''
