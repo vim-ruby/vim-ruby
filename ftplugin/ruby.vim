@@ -377,7 +377,7 @@ function! RubyCursorFile() abort
   elseif pre.post =~# '\<File.expand_path[( ].*[''"]\{2\}, *__FILE__\>' && cfile =~# '^\.\.'
     let cfile = expand('%:p:h') . strpart(cfile, 2)
   else
-    return cfile
+    return substitute(cfile, '\C\v^(.*):(\d+)%(:in)=$', '+\2 \1', '')
   endif
   let cwdpat = '^\M' . substitute(getcwd(), '[\/]', '\\[\\/]', 'g').'\ze\[\/]'
   let cfile = substitute(cfile, cwdpat, '.', '')
