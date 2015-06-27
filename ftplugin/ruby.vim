@@ -154,11 +154,14 @@ function! s:map(mode, flags, map) abort
   endif
 endfunction
 
-function! s:silmap(mode, map) abort
-  call s:map(a:mode, '<silent><script>', a:map)
-endfunction
+cmap <buffer><script><expr> <Plug><cword> substitute(RubyCursorIdentifier(),'^$',"\022\027",'')
+cmap <buffer><script><expr> <Plug><cfile> substitute(RubyCursorFile(),'^$',"\022\006",'')
+let b:undo_ftplugin .= "| sil! cunmap <buffer> <Plug><cword>| sil! cunmap <buffer> <Plug><cfile>"
 
 if !exists("g:no_plugin_maps") && !exists("g:no_ruby_maps")
+  nmap <buffer><script> <SID>:  :<C-U>
+  nmap <buffer><script> <SID>c: :<C-U><C-R>=v:count ? v:count : ''<CR>
+
   nnoremap <silent> <buffer> [m :<C-U>call <SID>searchsyn('\<def\>','rubyDefine','b','n')<CR>
   nnoremap <silent> <buffer> ]m :<C-U>call <SID>searchsyn('\<def\>','rubyDefine','','n')<CR>
   nnoremap <silent> <buffer> [M :<C-U>call <SID>searchsyn('\<end\>','rubyDefine','b','n')<CR>
@@ -201,28 +204,24 @@ if !exists("g:no_plugin_maps") && !exists("g:no_ruby_maps")
           \."| sil! exe 'xunmap <buffer> iM' | sil! exe 'xunmap <buffer> aM'"
   endif
 
-  cnoremap <buffer> <SID>foldopen <Bar>if &foldopen =~# 'tag'<Bar>exe 'norm! zv'<Bar>endif
-  call s:silmap('n', '<C-]>       :<C-U>exe  v:count1."tag <C-R>=RubyCursorIdentifier()<CR>"<SID>foldopen<CR>')
-  call s:silmap('n', 'g<C-]>      :<C-U>exe         "tjump <C-R>=RubyCursorIdentifier()<CR>"<SID>foldopen<CR>')
-  call s:silmap('n', 'g]          :<C-U>exe       "tselect <C-R>=RubyCursorIdentifier()<CR>"<SID>foldopen<CR>')
-  call s:silmap('n', '<C-W>]      :<C-U>exe v:count1."stag <C-R>=RubyCursorIdentifier()<CR>"<SID>foldopen<CR>')
-  call s:silmap('n', '<C-W><C-]>  :<C-U>exe v:count1."stag <C-R>=RubyCursorIdentifier()<CR>"<SID>foldopen<CR>')
-  call s:silmap('n', '<C-W>g<C-]> :<C-U>exe        "stjump <C-R>=RubyCursorIdentifier()<CR>"<SID>foldopen<CR>')
-  call s:silmap('n', '<C-W>g]     :<C-U>exe      "stselect <C-R>=RubyCursorIdentifier()<CR>"<SID>foldopen<CR>')
-  call s:silmap('n', '<C-W>}      :<C-U>exe          "ptag <C-R>=RubyCursorIdentifier()<CR>"<CR>')
-  call s:silmap('n', '<C-W>g}     :<C-U>exe        "ptjump <C-R>=RubyCursorIdentifier()<CR>"<CR>')
-
-  cmap <buffer><script><expr> <Plug><cword> substitute(RubyCursorIdentifier(),'^$',"\022\027",'')
-  cmap <buffer><script><expr> <Plug><cfile> substitute(RubyCursorFile(),'^$',"\022\006",'')
-  let b:undo_ftplugin .= "| sil! cunmap <buffer> <Plug><cword>| sil! cunmap <buffer> <Plug><cfile>"
   call s:map('c', '', '<C-R><C-W> <Plug><cword>')
   call s:map('c', '', '<C-R><C-F> <Plug><cfile>')
 
-  nmap <buffer><script> <SID>: :<C-U><C-R>=v:count ? v:count : ''<CR>
-  call s:map('n', '<silent>', 'gf         <SID>:find <Plug><cfile><CR>')
-  call s:map('n', '<silent>', '<C-W>f     <SID>:sfind <Plug><cfile><CR>')
-  call s:map('n', '<silent>', '<C-W><C-F> <SID>:sfind <Plug><cfile><CR>')
-  call s:map('n', '<silent>', '<C-W>gf    <SID>:tabfind <Plug><cfile><CR>')
+  nmap <buffer><script><expr> <SID>tagzv &foldopen =~# 'tag' ? 'zv' : ''
+  call s:map('n', '<silent>', '<C-]>         <SID>c:tag <Plug><cword><CR><SID>tagzv')
+  call s:map('n', '<silent>', 'g<C-]>       <SID>:tjump <Plug><cword><CR><SID>tagzv')
+  call s:map('n', '<silent>', 'g]         <SID>:tselect <Plug><cword><CR><SID>tagzv')
+  call s:map('n', '<silent>', '<C-W>]       <SID>c:stag <Plug><cword><CR><SID>tagzv')
+  call s:map('n', '<silent>', '<C-W><C-]>   <SID>c:stag <Plug><cword><CR><SID>tagzv')
+  call s:map('n', '<silent>', '<C-W>g<C-]> <SID>:stjump <Plug><cword><CR><SID>tagzv')
+  call s:map('n', '<silent>', '<C-W>g]   <SID>:stselect <Plug><cword><CR><SID>tagzv')
+  call s:map('n', '<silent>', '<C-W>}       <SID>c:ptag <Plug><cword><CR>')
+  call s:map('n', '<silent>', '<C-W>g}     <SID>:ptjump <Plug><cword><CR>')
+
+  call s:map('n', '<silent>', 'gf           <SID>c:find <Plug><cfile><CR>')
+  call s:map('n', '<silent>', '<C-W>f      <SID>c:sfind <Plug><cfile><CR>')
+  call s:map('n', '<silent>', '<C-W><C-F>  <SID>c:sfind <Plug><cfile><CR>')
+  call s:map('n', '<silent>', '<C-W>gf   <SID>c:tabfind <Plug><cfile><CR>')
 endif
 
 let &cpo = s:cpo_save
