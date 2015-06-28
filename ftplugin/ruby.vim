@@ -339,13 +339,13 @@ function! RubyCursorIdentifier() abort
   let asciicode    = '\%(\w\|[]})\"'."'".']\)\@<!\%(?\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\=\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)\)'
   let number       = '\%(\%(\w\|[]})\"'."'".']\s*\)\@<!-\)\=\%(\<[[:digit:]_]\+\%(\.[[:digit:]_]\+\)\=\%([Ee][[:digit:]_]\+\)\=\>\|\<0[xXbBoOdD][[:xdigit:]_]\+\>\)\|'.asciicode
   let operator     = '\%(\[\]\|<<\|<=>\|[!<>]=\=\|===\=\|[!=]\~\|>>\|\*\*\|\.\.\.\=\|=>\|[~^&|*/%+-]\)'
-  let method       = '\%(\<[_a-zA-Z]\w*\>\%([?!]\|\s*=>\@!\)\=\)'
+  let method       = '\%(\.[_a-zA-Z]\w*\s*=>\@!\|\<[_a-zA-Z]\w*\>[?!]\=\)'
   let global       = '$\%([!$&"'."'".'*+,./:;<=>?@\`~]\|-\=\w\+\>\)'
   let symbolizable = '\%(\%(@@\=\)\w\+\>\|'.global.'\|'.method.'\|'.operator.'\)'
   let pattern      = '\C\s*\%('.number.'\|\%(:\@<!:\)\='.symbolizable.'\)'
   let [lnum, col]  = searchpos(pattern,'bcn',line('.'))
   let raw          = matchstr(getline('.')[col-1 : ],pattern)
-  let stripped     = substitute(substitute(raw,'\s\+=$','=',''),'^\s*:\=','','')
+  let stripped     = substitute(substitute(raw,'\s\+=$','=',''),'^\s*[:.]\=','','')
   return stripped == '' ? expand("<cword>") : stripped
 endfunction
 
