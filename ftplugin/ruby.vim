@@ -67,7 +67,7 @@ if !exists('g:ruby_version_paths')
   let g:ruby_version_paths = {}
 endif
 
-function! s:query_path(root)
+function! s:query_path(root) abort
   let code = "print $:.join %q{,}"
   if &shell =~# 'sh'
     let prefix = 'env PATH='.shellescape($PATH).' '
@@ -92,7 +92,7 @@ function! s:query_path(root)
   endtry
 endfunction
 
-function! s:build_path(path)
+function! s:build_path(path) abort
   let path = join(map(copy(a:path), 'v:val ==# "." ? "" : v:val'), ',')
   if &g:path !~# '\v^\.%(,/%(usr|emx)/include)=,,$'
     let path = substitute(&g:path,',,$',',','') . ',' . path
@@ -232,7 +232,7 @@ if exists("g:did_ruby_ftplugin_functions")
 endif
 let g:did_ruby_ftplugin_functions = 1
 
-function! RubyBalloonexpr()
+function! RubyBalloonexpr() abort
   if !exists('s:ri_found')
     let s:ri_found = executable('ri')
   endif
@@ -281,7 +281,7 @@ function! RubyBalloonexpr()
   endif
 endfunction
 
-function! s:searchsyn(pattern,syn,flags,mode)
+function! s:searchsyn(pattern, syn, flags, mode) abort
   let cnt = v:count1
   norm! m'
   if a:mode ==# 'v'
@@ -303,11 +303,11 @@ function! s:searchsyn(pattern,syn,flags,mode)
   endwhile
 endfunction
 
-function! s:synname()
+function! s:synname() abort
   return synIDattr(synID(line('.'),col('.'),0),'name')
 endfunction
 
-function! s:wrap_i(back,forward)
+function! s:wrap_i(back,forward) abort
   execute 'norm k'.a:forward
   let line = line('.')
   execute 'norm '.a:back
@@ -317,7 +317,7 @@ function! s:wrap_i(back,forward)
   execute 'norm jV'.a:forward.'k'
 endfunction
 
-function! s:wrap_a(back,forward)
+function! s:wrap_a(back,forward) abort
   execute 'norm '.a:forward
   if line('.') < line('$') && getline(line('.')+1) ==# ''
     let after = 1
@@ -372,7 +372,7 @@ function! RubyCursorFile() abort
     let target = matchstr(getline('.'),'\(["'']\)\.\.\zs/.\{-\}\ze\1')
     let cfile = expand('%:p:h') . target . ext
   elseif getline('.') =~# '^\s*\%(require \|load \|autoload :\w\+,\)\s*\(["'']\).*\1\s*$'
-    return fnameescape(matchstr(getline('.'),'\(["'']\)\zs.\{-\}\ze\1') . ext)
+    let cfile = matchstr(getline('.'),'\(["'']\)\zs.\{-\}\ze\1') . ext
   elseif pre.post =~# '\<File.expand_path[( ].*[''"]\{2\}, *__FILE__\>' && cfile =~# '^\.\.'
     let cfile = expand('%:p:h') . strpart(cfile, 2)
   else
@@ -380,7 +380,11 @@ function! RubyCursorFile() abort
   endif
   let cwdpat = '^\M' . substitute(getcwd(), '[\/]', '\\[\\/]', 'g').'\ze\[\/]'
   let cfile = substitute(cfile, cwdpat, '.', '')
-  return fnameescape(cfile)
+  if fnameescape(cfile) !=# cfile
+    return '+ '.fnameescape(cfile)
+  else
+    return cfile
+  endif
 endfunction
 
 "
