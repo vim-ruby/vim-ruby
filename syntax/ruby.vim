@@ -17,6 +17,29 @@ if has("folding") && exists("ruby_fold")
   setlocal foldmethod=syntax
 endif
 
+let s:foldable_groups = split(
+      \	  get(
+      \	    b:,
+      \	    'ruby_foldable_groups',
+      \	    get(g:, 'ruby_foldable_groups', 'ALL')
+      \	  )
+      \	)
+
+function! s:foldable(...) abort "{{{
+  if index(s:foldable_groups, 'ALL') > -1
+    return 1
+  endif
+
+  for l:i in a:000
+    if index(s:foldable_groups, l:i) > -1
+      return 1
+    endif
+  endfor
+
+  return 0
+endfunction "}}}
+
+
 syn cluster rubyNotTop contains=@rubyExtendedStringSpecial,@rubyRegexpSpecial,@rubyDeclaration,rubyConditional,rubyExceptional,rubyMethodExceptional,rubyTodo
 
 if exists("ruby_space_errors")
