@@ -104,6 +104,39 @@ end
 
 
 
+# %r {{{
+# Generalized Regular Expression
+if arg == '%r'
+  %Q[~`!@\#$%^&*_-+=|:;"',.?/].split(//).each do |s|
+    puts <<-END.gsub(/^\s{4}/, '')
+      %r#{s}
+        foo
+        \\#{s}
+        \\\\\\#{s}
+        bar
+      #{s}
+
+
+    END
+  end
+
+  %w({} <> [] ()).each do |pair|
+    puts <<-END.gsub(/^\s{4}/, '')
+      %r#{pair[0]}
+        foo
+        \\#{pair[1]}
+        \\\\\\#{pair[1]}
+        bar
+      #{pair[1]}
+
+
+    END
+  end
+end
+# }}}
+
+
+
 puts "#\svim:foldmethod=syntax"
 
 

@@ -146,11 +146,19 @@ syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="\%(\%(^\|\<\%(and\|o
 syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="\%(\h\k*\s\+\)\@<=/[ \t=]\@!" end="/[iomxneus]*" skip="\\\\\|\\/" contains=@rubyRegexpSpecial fold
 
 " Generalized Regular Expression
-syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r\z([~`!@#$%^&*_\-+=|\:;"',.? /]\)" end="\z1[iomxneus]*" skip="\\\\\|\\\z1" contains=@rubyRegexpSpecial fold
-syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r{"				 end="}[iomxneus]*"   skip="\\\\\|\\}"	 contains=@rubyRegexpSpecial fold
-syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r<"				 end=">[iomxneus]*"   skip="\\\\\|\\>"	 contains=@rubyRegexpSpecial,rubyNestedAngleBrackets,rubyDelimEscape fold
-syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r\["				 end="\][iomxneus]*"  skip="\\\\\|\\\]"	 contains=@rubyRegexpSpecial fold
-syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r("				 end=")[iomxneus]*"   skip="\\\\\|\\)"	 contains=@rubyRegexpSpecial fold
+if s:foldable('%')
+  syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r\z([~`!@#$%^&*_\-+=|\:;"',.? /]\)"  end="\z1[iomxneus]*" skip="\\\\\|\\\z1"	contains=@rubyRegexpSpecial fold
+  syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r{"				    end="}[iomxneus]*"   skip="\\\\\|\\}"	contains=@rubyRegexpSpecial fold
+  syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r<"				    end=">[iomxneus]*"   skip="\\\\\|\\>"	contains=@rubyRegexpSpecial,rubyNestedAngleBrackets,rubyDelimEscape fold
+  syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r\["				    end="\][iomxneus]*"  skip="\\\\\|\\\]"	contains=@rubyRegexpSpecial fold
+  syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r("				    end=")[iomxneus]*"   skip="\\\\\|\\)"	contains=@rubyRegexpSpecial fold
+else
+  syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r\z([~`!@#$%^&*_\-+=|\:;"',.? /]\)"  end="\z1[iomxneus]*" skip="\\\\\|\\\z1"	contains=@rubyRegexpSpecial
+  syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r{"				    end="}[iomxneus]*"   skip="\\\\\|\\}"	contains=@rubyRegexpSpecial
+  syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r<"				    end=">[iomxneus]*"   skip="\\\\\|\\>"	contains=@rubyRegexpSpecial,rubyNestedAngleBrackets,rubyDelimEscape
+  syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r\["				    end="\][iomxneus]*"  skip="\\\\\|\\\]"	contains=@rubyRegexpSpecial
+  syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r("				    end=")[iomxneus]*"   skip="\\\\\|\\)"	contains=@rubyRegexpSpecial
+endif
 
 " Normal String and Shell Command Output
 if exists('ruby_spellcheck_strings')
