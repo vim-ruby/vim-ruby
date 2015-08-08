@@ -137,6 +137,42 @@ end
 
 
 
+# %i / %I {{{
+# Array of Symbols
+# Array of interpolated Symbols
+if %w(%i %I).include?(arg)
+  %w(i I).each do |leading|
+    %Q[~`!@\#$%^&*_-+=|:;"',.?/].split(//).each do |s|
+      puts <<-END.gsub(/^\s{6}/, '')
+        %#{leading}#{s}
+          foo
+          \\#{s}
+          \\\\\\#{s}
+          bar
+        #{s}
+
+
+      END
+    end
+
+    %w({} <> [] ()).each do |pair|
+      puts <<-END.gsub(/^\s{6}/, '')
+        %#{leading}#{pair[0]}
+          foo
+          \\#{pair[1]}
+          \\\\\\#{pair[1]}
+          bar
+        #{pair[1]}
+
+
+      END
+    end
+  end
+end
+# }}}
+
+
+
 puts "#\svim:foldmethod=syntax"
 
 
