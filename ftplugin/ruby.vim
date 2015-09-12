@@ -102,7 +102,7 @@ endfunction
 
 if !exists('b:ruby_version') && !exists('g:ruby_path') && isdirectory(expand('%:p:h'))
   let s:version_file = findfile('.ruby-version', '.;')
-  if !empty(s:version_file)
+  if !empty(s:version_file) && filereadable(s:version_file)
     let b:ruby_version = get(readfile(s:version_file, '', 1), '')
     if !has_key(g:ruby_version_paths, b:ruby_version)
       let g:ruby_version_paths[b:ruby_version] = s:query_path(fnamemodify(s:version_file, ':p:h'))
