@@ -71,4 +71,7 @@ au BufNewFile,BufRead Podfile,*.podspec		call s:setf('ruby')
 " Routefile
 au BufNewFile,BufRead [rR]outefile		call s:setf('ruby')
 
+" SimpleCov
+au BufNewFile,BufRead .simplecov		set filetype=ruby
+
 " vim: nowrap sw=2 sts=2 ts=8 noet:
