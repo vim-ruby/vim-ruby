@@ -173,6 +173,59 @@ end
 
 
 
+# regex (Normal Regular Expression) {{{
+if arg == 'regexp'
+  'iomxneus'.split('').unshift('').each do |option|
+    puts "\n# Begin test for option '#{option}' {{{\n\n"
+
+    puts <<-END.gsub(/^\s{4}/, '')
+        /
+          foo
+          \\\/
+          \\\\\\\/
+          bar
+        /#{option}
+
+
+    END
+
+    %w(and or while until unless if elsif when not then else).each do |s|
+      puts <<-END.gsub(/^\s{6}/, '')
+        #{s}/
+          foo
+          \\\/
+          \\\\\\\/
+          bar
+        /#{option}
+
+
+      END
+    end
+
+    %w(; \ ~ = ! | \( & , { [ < > ? : * + -).each do |s|
+      puts <<-END.gsub(/^\s{6}/, '')
+        #{s}/
+          foo
+          \\\/
+          \\\\\\\/
+          bar
+        /#{option}
+
+
+      END
+    end
+
+    puts "# }}} End test for option '#{option}'\n"
+  end
+
+  puts "\n# Test for ternary operation (8c1c484) {{{\n\n"
+  puts 'yo = 4 ? /quack#{3}/ : /quack/'
+  puts "\n# }}} End test for ternary operation\n"
+end
+# }}}
+
+
+
 puts "#\svim:foldmethod=syntax"
 
 
