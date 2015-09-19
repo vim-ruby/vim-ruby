@@ -215,6 +215,19 @@ if arg == 'regexp'
       END
     end
 
+    [' ', "\t", '=', 'OK'].each do |s|
+      puts <<-END.gsub(/^\s{6}/, '')
+        _foo  /#{s}
+          foo
+          \\\/
+          \\\\\\\/
+          bar
+        /#{option}
+
+
+      END
+    end
+
     puts "# }}} End test for option '#{option}'\n"
   end
 

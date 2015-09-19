@@ -235,6 +235,38 @@
   /
 
 
+  _foo  / 
+    foo
+    \/
+    \\\/
+    bar
+  /
+
+
+  _foo  /	
+    foo
+    \/
+    \\\/
+    bar
+  /
+
+
+  _foo  /=
+    foo
+    \/
+    \\\/
+    bar
+  /
+
+
+  _foo  /OK
+    foo
+    \/
+    \\\/
+    bar
+  /
+
+
 # }}} End test for option ''
 
 # Begin test for option 'i' {{{
@@ -464,6 +496,38 @@
 
 
   -/
+    foo
+    \/
+    \\\/
+    bar
+  /i
+
+
+  _foo  / 
+    foo
+    \/
+    \\\/
+    bar
+  /i
+
+
+  _foo  /	
+    foo
+    \/
+    \\\/
+    bar
+  /i
+
+
+  _foo  /=
+    foo
+    \/
+    \\\/
+    bar
+  /i
+
+
+  _foo  /OK
     foo
     \/
     \\\/
@@ -707,6 +771,38 @@
   /o
 
 
+  _foo  / 
+    foo
+    \/
+    \\\/
+    bar
+  /o
+
+
+  _foo  /	
+    foo
+    \/
+    \\\/
+    bar
+  /o
+
+
+  _foo  /=
+    foo
+    \/
+    \\\/
+    bar
+  /o
+
+
+  _foo  /OK
+    foo
+    \/
+    \\\/
+    bar
+  /o
+
+
 # }}} End test for option 'o'
 
 # Begin test for option 'm' {{{
@@ -936,6 +1032,38 @@
 
 
   -/
+    foo
+    \/
+    \\\/
+    bar
+  /m
+
+
+  _foo  / 
+    foo
+    \/
+    \\\/
+    bar
+  /m
+
+
+  _foo  /	
+    foo
+    \/
+    \\\/
+    bar
+  /m
+
+
+  _foo  /=
+    foo
+    \/
+    \\\/
+    bar
+  /m
+
+
+  _foo  /OK
     foo
     \/
     \\\/
@@ -1179,6 +1307,38 @@
   /x
 
 
+  _foo  / 
+    foo
+    \/
+    \\\/
+    bar
+  /x
+
+
+  _foo  /	
+    foo
+    \/
+    \\\/
+    bar
+  /x
+
+
+  _foo  /=
+    foo
+    \/
+    \\\/
+    bar
+  /x
+
+
+  _foo  /OK
+    foo
+    \/
+    \\\/
+    bar
+  /x
+
+
 # }}} End test for option 'x'
 
 # Begin test for option 'n' {{{
@@ -1408,6 +1568,38 @@
 
 
   -/
+    foo
+    \/
+    \\\/
+    bar
+  /n
+
+
+  _foo  / 
+    foo
+    \/
+    \\\/
+    bar
+  /n
+
+
+  _foo  /	
+    foo
+    \/
+    \\\/
+    bar
+  /n
+
+
+  _foo  /=
+    foo
+    \/
+    \\\/
+    bar
+  /n
+
+
+  _foo  /OK
     foo
     \/
     \\\/
@@ -1651,6 +1843,38 @@
   /e
 
 
+  _foo  / 
+    foo
+    \/
+    \\\/
+    bar
+  /e
+
+
+  _foo  /	
+    foo
+    \/
+    \\\/
+    bar
+  /e
+
+
+  _foo  /=
+    foo
+    \/
+    \\\/
+    bar
+  /e
+
+
+  _foo  /OK
+    foo
+    \/
+    \\\/
+    bar
+  /e
+
+
 # }}} End test for option 'e'
 
 # Begin test for option 'u' {{{
@@ -1887,6 +2111,38 @@
   /u
 
 
+  _foo  / 
+    foo
+    \/
+    \\\/
+    bar
+  /u
+
+
+  _foo  /	
+    foo
+    \/
+    \\\/
+    bar
+  /u
+
+
+  _foo  /=
+    foo
+    \/
+    \\\/
+    bar
+  /u
+
+
+  _foo  /OK
+    foo
+    \/
+    \\\/
+    bar
+  /u
+
+
 # }}} End test for option 'u'
 
 # Begin test for option 's' {{{
@@ -2116,6 +2372,38 @@
 
 
   -/
+    foo
+    \/
+    \\\/
+    bar
+  /s
+
+
+  _foo  / 
+    foo
+    \/
+    \\\/
+    bar
+  /s
+
+
+  _foo  /	
+    foo
+    \/
+    \\\/
+    bar
+  /s
+
+
+  _foo  /=
+    foo
+    \/
+    \\\/
+    bar
+  /s
+
+
+  _foo  /OK
     foo
     \/
     \\\/
