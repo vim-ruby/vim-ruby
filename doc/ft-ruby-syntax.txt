@@ -59,6 +59,7 @@ value is space-separated keywords, known keywords were:
     case       "case" block
     do         "do" block
     %          Literal with "%" notation, e.g.: %w(STRING), %!STRING!
+    /          Regexp
 
 5. Reducing expensive operations		*ruby_no_expensive*
 
