@@ -173,6 +173,26 @@ end
 
 
 
+# string  {{{
+# Normal String and Shell Command Output
+if arg == 'string'
+  %w(' " `).each do |quote|
+    puts <<-END.gsub(/^\s{4}/, '')
+      #{quote}
+        foo
+        \\#{quote}
+        \\\\\\#{quote}
+        bar
+      #{quote}
+
+
+    END
+  end
+end
+# }}}
+
+
+
 # regex (Normal Regular Expression) {{{
 if arg == 'regexp'
   'iomxneus'.split('').unshift('').each do |option|

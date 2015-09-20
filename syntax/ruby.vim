@@ -166,14 +166,25 @@ else
 endif
 
 " Normal String and Shell Command Output
-if exists('ruby_spellcheck_strings')
-  syn region rubyString matchgroup=rubyStringDelimiter start="\"" end="\"" skip="\\\\\|\\\"" contains=@rubyStringSpecial,@Spell fold
-  syn region rubyString matchgroup=rubyStringDelimiter start="'"  end="'"  skip="\\\\\|\\'"  contains=rubyQuoteEscape,@Spell    fold
+if s:foldable('%')
+  if exists('ruby_spellcheck_strings')
+    syn region rubyString matchgroup=rubyStringDelimiter start="\"" end="\"" skip="\\\\\|\\\"" contains=@rubyStringSpecial,@Spell fold
+    syn region rubyString matchgroup=rubyStringDelimiter start="'"  end="'"  skip="\\\\\|\\'"  contains=rubyQuoteEscape,@Spell    fold
+  else
+    syn region rubyString matchgroup=rubyStringDelimiter start="\"" end="\"" skip="\\\\\|\\\"" contains=@rubyStringSpecial fold
+    syn region rubyString matchgroup=rubyStringDelimiter start="'"  end="'"  skip="\\\\\|\\'"  contains=rubyQuoteEscape    fold
+  endif
+  syn region rubyString matchgroup=rubyStringDelimiter start="`" end="`" skip="\\\\\|\\`" contains=@rubyStringSpecial fold
 else
-  syn region rubyString matchgroup=rubyStringDelimiter start="\"" end="\"" skip="\\\\\|\\\"" contains=@rubyStringSpecial fold
-  syn region rubyString matchgroup=rubyStringDelimiter start="'"  end="'"  skip="\\\\\|\\'"  contains=rubyQuoteEscape    fold
+  if exists('ruby_spellcheck_strings')
+    syn region rubyString matchgroup=rubyStringDelimiter start="\"" end="\"" skip="\\\\\|\\\"" contains=@rubyStringSpecial,@Spell
+    syn region rubyString matchgroup=rubyStringDelimiter start="'"  end="'"  skip="\\\\\|\\'"  contains=rubyQuoteEscape,@Spell
+  else
+    syn region rubyString matchgroup=rubyStringDelimiter start="\"" end="\"" skip="\\\\\|\\\"" contains=@rubyStringSpecial
+    syn region rubyString matchgroup=rubyStringDelimiter start="'"  end="'"  skip="\\\\\|\\'"  contains=rubyQuoteEscape
+  endif
+  syn region rubyString matchgroup=rubyStringDelimiter start="`" end="`" skip="\\\\\|\\`" contains=@rubyStringSpecial
 endif
-syn region rubyString matchgroup=rubyStringDelimiter start="`" end="`" skip="\\\\\|\\`" contains=@rubyStringSpecial fold
 
 " Generalized Single Quoted String, Symbol and Array of Strings
 if s:foldable('%')
