@@ -259,6 +259,29 @@ end
 
 
 
+# symbol {{{
+# Symbol region
+if arg == 'symbol'
+  %w(' ").each do |quote|
+    %Q_]})\"':_.split(//).unshift('').each do |s|
+      puts <<-END.gsub(/^\s{6}/, '')
+        #{s}:#{quote}
+          foo
+          \\#{quote}
+          \\\\\\#{quote}
+          bar
+        #{quote}
+      #{"  #{s} # close string to ensure next case clean" if %w(' ").include?(s) && s != quote }
+
+
+      END
+    end
+  end
+end
+# }}}
+
+
+
 puts "#\svim:foldmethod=syntax"
 
 
