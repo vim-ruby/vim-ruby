@@ -282,6 +282,87 @@ end
 
 
 
+# heredoc {{{
+# Here Documents
+if arg == 'heredoc'
+  puts "\n# Begin of valid cases {{{\n\n"
+
+  %w(' " `).unshift('').each do |quote|
+    puts <<-END.gsub(/^\s{6}/, '')
+        <<#{quote}_LABEL#{quote}.?!, foo
+          bar baz
+      _LABEL
+      \n
+
+        <<-#{quote}_LABEL#{quote}.?!, foo
+          bar baz
+        _LABEL
+
+
+    END
+  end
+
+  puts "# }}} End of valid cases'\n\n"
+
+
+  puts "\n# Begin of INVALID cases {{{\n\n"
+
+  # NOTE: for simplification, omit test for different quotes " ' `,
+  # they are all invalid anyway
+
+  %w(class ::).each do |s|
+    puts <<-END.gsub(/^\s{6}/, '')
+      #{s}\n <<LABEL
+        foo
+      LABEL
+
+
+    END
+  end
+
+  %Q_]})\"'._.split(//).each do |s|
+    puts <<-END.gsub(/^\s{4}/, '')
+    #{s} <<LABEL
+      foo
+    LABEL
+    #{"  #{s} # close to ensure next case clean" if %w(' ").include?(s)}
+
+    END
+  end
+
+  %w(09 aZ _w).each do |s|
+    puts <<-END.gsub(/^\s{6}/, '')
+      #{s}<<LABEL
+        foo
+      LABEL
+
+
+    END
+  end
+
+  %w(' " `).unshift('').each do |quote|
+    puts <<-END.gsub(/^\s{6}/, '')
+      <<LABEL foo<<#{quote}_bar
+        baz
+      LABEL
+      #{"  #{quote} # close to ensure next case clean" if %w(' ").include?(quote)}
+      \n
+
+      <<LABEL foo<<-#{quote}_bar
+        baz
+      LABEL
+      #{"  #{quote} # close to ensure next case clean" if %w(' ").include?(quote)}
+
+
+    END
+  end
+
+  puts "# }}} End of INVALID cases'\n\n"
+end
+# }}}
+
+
+
 puts "#\svim:foldmethod=syntax"
 
 

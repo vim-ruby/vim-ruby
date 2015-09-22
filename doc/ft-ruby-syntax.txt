@@ -62,6 +62,7 @@ value is space-separated keywords, known keywords were:
     /          Regexp
     string     String and shell command output (surrounded by ', ", `)
     :          Symbol
+    <<         Here documents
 
 5. Reducing expensive operations		*ruby_no_expensive*
 
