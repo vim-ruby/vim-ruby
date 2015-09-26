@@ -363,9 +363,9 @@ end
 
 
 
-# def  {{{
-# rubyMethodBlock and rubyBlock
-if arg == 'def'
+# blocks  {{{
+# simple blocks (def, class, module, do, begin, case)
+if arg == 'blocks'
   puts <<-END.gsub(/^\s{4}/, '')
     def
       foo
@@ -377,7 +377,7 @@ if arg == 'def'
 
   END
 
-  %w(class module).each do |s|
+  %w(class module do begin case).each do |s|
     puts <<-END.gsub(/^\s{6}/, '')
       #{s}
         foo
