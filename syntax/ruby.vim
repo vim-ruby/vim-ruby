@@ -329,9 +329,23 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   syn match  rubyClass	"\<class\>"  nextgroup=rubyClassDeclaration  skipwhite skipnl
   syn match  rubyModule "\<module\>" nextgroup=rubyModuleDeclaration skipwhite skipnl
 
-  syn region rubyMethodBlock start="\<def\>"	matchgroup=rubyDefine end="\%(\<def\_s\+\)\@<!\<end\>" contains=ALLBUT,@rubyNotTop fold
-  syn region rubyBlock	     start="\<class\>"	matchgroup=rubyClass  end="\<end\>"		       contains=ALLBUT,@rubyNotTop fold
-  syn region rubyBlock	     start="\<module\>" matchgroup=rubyModule end="\<end\>"		       contains=ALLBUT,@rubyNotTop fold
+  if s:foldable('def')
+    syn region rubyMethodBlock start="\<def\>"	matchgroup=rubyDefine end="\%(\<def\_s\+\)\@<!\<end\>" contains=ALLBUT,@rubyNotTop fold
+  else
+    syn region rubyMethodBlock start="\<def\>"	matchgroup=rubyDefine end="\%(\<def\_s\+\)\@<!\<end\>" contains=ALLBUT,@rubyNotTop
+  endif
+
+  if s:foldable('class')
+    syn region rubyBlock start="\<class\>"	matchgroup=rubyClass end="\<end\>" contains=ALLBUT,@rubyNotTop fold
+  else
+    syn region rubyBlock start="\<class\>"	matchgroup=rubyClass end="\<end\>" contains=ALLBUT,@rubyNotTop
+  endif
+
+  if s:foldable('module')
+    syn region rubyBlock start="\<module\>" matchgroup=rubyModule end="\<end\>" contains=ALLBUT,@rubyNotTop fold
+  else
+    syn region rubyBlock start="\<module\>" matchgroup=rubyModule end="\<end\>" contains=ALLBUT,@rubyNotTop
+  endif
 
   " modifiers
   syn match rubyConditionalModifier "\<\%(if\|unless\)\>"    display

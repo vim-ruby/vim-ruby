@@ -56,6 +56,9 @@ value is space-separated keywords, known keywords were:
     ALL        Most block syntax (default)
     NONE       Nothing
     if         "if" block
+    def        "def" block
+    class      "class" block
+    module     "module" block
     case       "case" block
     do         "do" block
     %          Literal with "%" notation, e.g.: %w(STRING), %!STRING!

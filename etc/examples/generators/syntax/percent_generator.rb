@@ -363,6 +363,34 @@ end
 
 
 
+# def  {{{
+# rubyMethodBlock and rubyBlock
+if arg == 'def'
+  puts <<-END.gsub(/^\s{4}/, '')
+    def
+      foo
+      def
+        bar
+      end
+    end
+
+
+  END
+
+  %w(class module).each do |s|
+    puts <<-END.gsub(/^\s{6}/, '')
+      #{s}
+        foo
+      end
+
+
+    END
+  end
+end
+# }}}
+
+
+
 puts "#\svim:foldmethod=syntax"
 
 
