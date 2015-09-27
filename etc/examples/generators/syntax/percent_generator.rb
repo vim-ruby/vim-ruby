@@ -391,6 +391,31 @@ end
 
 
 
+# {}, []  {{{
+# curly bracket block and hash literal
+if arg == 'brackets'
+  puts <<-END.gsub(/^\s{4}/, '')
+    {
+      foo
+    }
+
+
+  END
+
+  %w<_xxx ] } )>.unshift('').each do |s|
+    puts <<-END.gsub(/^\s{6}/, '')
+      #{s}[
+        foo
+      ]
+
+
+    END
+  end
+end
+# }}}
+
+
+
 puts "#\svim:foldmethod=syntax"
 
 

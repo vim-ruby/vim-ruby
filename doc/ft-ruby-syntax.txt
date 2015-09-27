@@ -62,6 +62,8 @@ value is space-separated keywords, known keywords were:
     do         "do" block
     begin      "begin" block
     case       "case" block
+    {          Curly bracket block or hash literal
+    [          Array literal
     %          Literal with "%" notation, e.g.: %w(STRING), %!STRING!
     /          Regexp
     string     String and shell command output (surrounded by ', ", `)
