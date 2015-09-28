@@ -589,6 +589,25 @@ end
 
 
 
+# __END__ {{{
+if arg == '__END__'
+  puts <<-EOF.gsub(/^ {4}/, '')
+      __END__
+      invalid
+      invalid
+
+
+    __END__
+      valid
+      valid
+
+
+  EOF
+end
+# }}}
+
+
+
 puts "#\svim:foldmethod=syntax"
 
 

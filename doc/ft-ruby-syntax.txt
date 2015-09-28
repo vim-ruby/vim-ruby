@@ -71,6 +71,7 @@ value is space-separated keywords, known keywords were:
     :          Symbol
     #          Multiline comment
     <<         Here documents
+    __END__    Source code after "__END__" directive
 
 5. Reducing expensive operations		*ruby_no_expensive*
 

@@ -465,7 +465,11 @@ syn match  rubySymbol		"\%([{(,]\_s*\)\@<=[[:space:],{]\l\w*[!?]\=::\@!"hs=s+1,h
 syn match  rubySymbol		"[[:space:],{(]\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[!?]\=:[[:space:],]\@="hs=s+1,he=e-1
 
 " __END__ Directive
-syn region rubyData matchgroup=rubyDataDirective start="^__END__$" end="\%$" fold
+if s:foldable('__END__')
+  syn region rubyData matchgroup=rubyDataDirective start="^__END__$" end="\%$" fold
+else
+  syn region rubyData matchgroup=rubyDataDirective start="^__END__$" end="\%$"
+endif
 
 hi def link rubyClass			rubyDefine
 hi def link rubyModule			rubyDefine
