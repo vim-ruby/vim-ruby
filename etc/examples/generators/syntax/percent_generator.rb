@@ -567,6 +567,28 @@ end
 
 
 
+# comment {{{
+if arg == 'comment'
+  puts <<-END.gsub(/^ {4}/, '')
+      # foo
+      # foo
+        # bar
+
+      baz
+
+
+
+    =begin foo bar
+      comment
+    =end baz
+
+
+  END
+end
+# }}}
+
+
+
 puts "#\svim:foldmethod=syntax"
 
 
