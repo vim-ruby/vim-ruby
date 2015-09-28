@@ -508,6 +508,65 @@ end
 
 
 
+# for {{{
+# rubyRepeatExpression (for, while, until)
+if arg == 'for'
+  puts <<-END.gsub(/^ {4}/, '')
+    for 1
+      foo
+    end
+
+
+  END
+
+  %w(until while).each do |start|
+    puts <<-END.gsub(/^ {6}/, '')
+      #{start} 1
+        foo
+      end
+
+
+      baz ...= #{start} 1
+        foo
+      end
+
+
+    END
+
+    '{:,;([<>~\*/%&^|+-'.split(//).each do |expr|
+      puts <<-END.gsub(/^ {8}/, '')
+        foo #{expr} #{start} 1
+          bar
+        end
+
+
+      END
+    end
+
+    # INVALID cases
+    puts <<-END.gsub(/^ {6}/, '')
+      not_BOF #{start} 1
+        bar
+      end
+
+
+    END
+
+    ['?', '!'].each do |mark|
+      puts <<-END.gsub(/^ {8}/, '')
+        _foo#{mark} #{start} 1
+          bar
+        end
+
+
+      END
+    end
+  end
+end
+# }}}
+
+
+
 puts "#\svim:foldmethod=syntax"
 
 

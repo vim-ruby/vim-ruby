@@ -62,6 +62,7 @@ value is space-separated keywords, known keywords were:
     do         "do" block
     begin      "begin" block
     case       "case" block
+    for        "for", "while", "until" loops
     {          Curly bracket block or hash literal
     [          Array literal
     %          Literal with "%" notation, e.g.: %w(STRING), %!STRING!
