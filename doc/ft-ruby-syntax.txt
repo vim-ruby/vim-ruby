@@ -55,7 +55,7 @@ value is space-separated keywords, known keywords were:
     --------  ------------------------------------- ~
     ALL        Most block syntax (default)
     NONE       Nothing
-    if         "if" block
+    if         "if" or "unless" block
     def        "def" block
     class      "class" block
     module     "module" block

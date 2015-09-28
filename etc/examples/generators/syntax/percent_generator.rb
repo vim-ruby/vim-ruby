@@ -416,6 +416,98 @@ end
 
 
 
+# if {{{
+# if/else blocks
+if arg == 'if'
+  %w(if unless).each do |start|
+    puts <<-END.gsub(/^ {6}/, '')
+      #{start} 1
+        foo
+      else
+        bar
+      end
+
+      foo \\
+        #{start} 1
+          foo
+        else
+          bar
+        end
+
+      baz ...= #{start} 1
+        foo
+      else
+        bar
+      end
+
+
+    END
+
+    ['?', '!'].each do |mark|
+      puts <<-END.gsub(/^ {8}/, '')
+        42foo#{mark} #{start} 1
+          bar
+        else
+          baz
+        end
+
+
+      END
+    end
+
+    '{:,;([<>~\*%&^|+=-'.split(//).each do |expr|
+      puts <<-END.gsub(/^ {8}/, '')
+        foo #{expr} #{start} 1
+          bar
+        else
+          baz
+        end
+
+
+      END
+    end
+
+    # c7cb532 match correct `end`
+    puts <<-END.gsub(/^ {6}/, '')
+      #{start} 1
+        (1..5).end
+        :: end
+      end
+
+      #{start} 1
+      ..end
+
+
+    END
+
+    # INVALID cases
+    puts <<-END.gsub(/^ {6}/, '')
+      not_BOF #{start} 1
+        bar
+      else
+        baz
+      end
+
+
+    END
+
+    ['?', '!'].each do |mark|
+      puts <<-END.gsub(/^ {8}/, '')
+        _foo#{mark} #{start} 1
+          bar
+        else
+          baz
+        end
+
+
+      END
+    end
+  end
+end
+# }}}
+
+
+
 puts "#\svim:foldmethod=syntax"
 
 
