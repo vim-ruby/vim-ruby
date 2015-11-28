@@ -287,7 +287,7 @@ syn match   rubySharpBang "\%^#!.*" display
 syn keyword rubyTodo	  FIXME NOTE TODO OPTIMIZE HACK REVIEW XXX todo contained
 syn match   rubyComment   "#.*" contains=rubySharpBang,rubySpaceError,rubyTodo,@Spell
 if !exists("ruby_no_comment_fold")
-  syn region rubyMultilineComment start="\%(\%(^\s*#.*\n\)\@<!\%(^\s*#.*\n\)\)\%(\(^\s*#.*\n\)\{1,}\)\@=" end="\%(^\s*#.*\n\)\@<=\%(^\s*#.*\n\)\%(^\s*#\)\@!" contains=rubyComment transparent fold keepend
+  syn region rubyMultilineComment start="^\s*#.*\n\%(^\s*#\)\@=" end="^\s*#.*\n\%(^\s*#\)\@!" contains=rubyComment transparent fold keepend
   syn region rubyDocumentation	  start="^=begin\ze\%(\s.*\)\=$" end="^=end\%(\s.*\)\=$" contains=rubySpaceError,rubyTodo,@Spell fold
 else
   syn region rubyDocumentation	  start="^=begin\s*$" end="^=end\s*$" contains=rubySpaceError,rubyTodo,@Spell
