@@ -25,6 +25,7 @@ CompilerSet errorformat=
     \%-Z\ \ \ \ \ %\\+\#\ %f:%l:%.%#,
     \%E\ \ %\\d%\\+)%.%#,
     \%C\ \ \ \ \ %m,
+    \%C%\\s%#,
     \%-G%.%#
 
 let &cpo = s:cpo_save
