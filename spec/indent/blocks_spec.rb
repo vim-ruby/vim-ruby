@@ -1,6 +1,62 @@
 require 'spec_helper'
 
 describe "Indenting" do
+  after :each do
+    vim.command 'let g:ruby_indent_block_style = "expression"'
+  end
+
+  specify "indented blocks with expression style" do
+    vim.command 'let g:ruby_indent_block_style = "expression"'
+
+    assert_correct_indenting <<-EOF
+        a
+          .b do |x|
+          something
+        end
+    EOF
+
+    assert_correct_indenting <<-EOF
+      a
+        .b { |x|
+        something
+      }
+    EOF
+  end
+
+  specify "indented blocks with do style" do
+    vim.command 'let g:ruby_indent_block_style = "do"'
+
+    assert_correct_indenting <<-EOF
+        a
+          .b do |x|
+            something
+          end
+    EOF
+
+    # Check that "do" style indentation does not mess up indentation
+    # following the bock.
+    assert_correct_indenting <<-EOF
+      a
+        .b do |x|
+          something
+        end
+
+      class A
+      end
+    EOF
+
+    # Check that "do" style indenting works properly for brace blocks.
+    assert_correct_indenting <<-EOF
+      a
+        .b { |x|
+          something
+        }
+
+      class A
+      end
+    EOF
+  end
+
   specify "'do' indenting" do
     assert_correct_indenting <<-EOF
       do

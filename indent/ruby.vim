@@ -18,6 +18,11 @@ if !exists('g:ruby_indent_access_modifier_style')
   let g:ruby_indent_access_modifier_style = 'normal'
 endif
 
+if !exists('g:ruby_indent_block_style')
+  " Possible values: "expression", "do"
+  let g:ruby_indent_block_style = 'expression'
+endif
+
 setlocal nosmartindent
 
 " Now, set up our indentation expression and keys that trigger it.
@@ -179,7 +184,7 @@ function s:PrevNonBlankNonString(lnum)
 endfunction
 
 " Find line above 'lnum' that started the continuation 'lnum' may be part of.
-function s:GetMSL(lnum)
+function s:GetMSL(lnum, ignore_block_continuation)
   " Start on the line we're at and use its indent.
   let msl = a:lnum
   let msl_body = getline(msl)
@@ -188,6 +193,27 @@ function s:GetMSL(lnum)
     " If we have a continuation line, or we're in a string, use line as MSL.
     " Otherwise, terminate search as we have found our MSL already.
     let line = getline(lnum)
+
+    if g:ruby_indent_block_style == 'expression' ||
+          \ a:ignore_block_continuation == 1
+      let block = s:Match(lnum, s:block_regex) &&
+            \ !s:Match(msl, s:continuation_regex) &&
+            \ !s:Match(msl, s:block_continuation_regex)
+    elseif g:ruby_indent_block_style == 'do'
+      let block = s:Match(lnum, s:block_regex) ||
+            \ s:Match(msl, s:block_continuation_regex)
+    endif
+
+    if block
+      " If the previous line is a block-starter and the current one is
+      " mostly ordinary, use the current one as the MSL.
+      "
+      " Example:
+      "   method_call do
+      "     something
+      "     something_else
+      return msl
+    endif
 
     if s:Match(msl, s:leading_operator_regex)
       " If the current line starts with a leading operator, keep its indent
@@ -235,17 +261,6 @@ function s:GetMSL(lnum)
       "   method_call(
       "     other_method_call(
       "       foo
-      return msl
-    elseif s:Match(lnum, s:block_regex) &&
-          \ !s:Match(msl, s:continuation_regex) &&
-          \ !s:Match(msl, s:block_continuation_regex)
-      " If the previous line is a block-starter and the current one is
-      " mostly ordinary, use the current one as the MSL.
-      "
-      " Example:
-      "   method_call do
-      "     something
-      "     something_else
       return msl
     else
       let col = match(line, s:continuation_regex) + 1
@@ -418,7 +433,7 @@ function GetRubyIndent(...)
       if line[col-1]==')' && col('.') != col('$') - 1
         let ind = virtcol('.') - 1
       else
-        let ind = indent(s:GetMSL(line('.')))
+        let ind = indent(s:GetMSL(line('.'),0))
       endif
     endif
     return ind
@@ -435,7 +450,7 @@ function GetRubyIndent(...)
     call cursor(clnum, 1)
     if searchpair(s:end_start_regex, s:end_middle_regex, s:end_end_regex, 'bW',
           \ s:end_skip_expr) > 0
-      let msl  = s:GetMSL(line('.'))
+      let msl  = s:GetMSL(line('.'),0)
       let line = getline(line('.'))
 
       if strpart(line, 0, col('.') - 1) =~ '=\s*$' &&
@@ -469,7 +484,7 @@ function GetRubyIndent(...)
 
   " If the current line starts with a leading operator, add a level of indent.
   if s:Match(clnum, s:leading_operator_regex)
-    return indent(s:GetMSL(clnum)) + sw
+    return indent(s:GetMSL(clnum,1)) + sw
   endif
 
   " 3.3. Work on the previous line. {{{2
@@ -507,12 +522,12 @@ function GetRubyIndent(...)
   endif
 
   if s:Match(lnum, s:continuable_regex) && s:Match(lnum, s:continuation_regex)
-    return indent(s:GetMSL(lnum)) + sw + sw
+    return indent(s:GetMSL(lnum,1)) + sw + sw
   endif
 
   " If the previous line ended with a block opening, add a level of indent.
   if s:Match(lnum, s:block_regex)
-    let msl = s:GetMSL(lnum)
+    let msl = s:GetMSL(lnum,0)
 
     if getline(msl) =~ '=\s*\(#.*\)\=$'
       " in the case of assignment to the msl, align to the starting line,
@@ -527,7 +542,7 @@ function GetRubyIndent(...)
   " If the previous line started with a leading operator, use its MSL's level
   " of indent
   if s:Match(lnum, s:leading_operator_regex)
-    return indent(s:GetMSL(lnum))
+    return indent(s:GetMSL(lnum,1))
   endif
 
   " If the previous line ended with the "*" of a splat, add a level of indent
@@ -562,7 +577,7 @@ function GetRubyIndent(...)
       if s:Match(line('.'), s:ruby_indent_keywords)
         return indent('.') + sw
       else
-        return indent('.')
+        return indent(s:GetMSL(line('.'),1))
       endif
     else
       call cursor(clnum, vcol)
@@ -578,7 +593,7 @@ function GetRubyIndent(...)
           \ s:end_skip_expr) > 0
       let n = line('.')
       let ind = indent('.')
-      let msl = s:GetMSL(n)
+      let msl = s:GetMSL(n,1)
       if msl != n
         let ind = indent(msl)
       end
@@ -604,7 +619,7 @@ function GetRubyIndent(...)
 
   " Set up variables to use and search for MSL to the previous line.
   let p_lnum = lnum
-  let lnum = s:GetMSL(lnum)
+  let lnum = s:GetMSL(lnum,1)
 
   " If the previous line wasn't a MSL.
   if p_lnum != lnum

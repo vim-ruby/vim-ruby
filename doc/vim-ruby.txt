@@ -3,7 +3,7 @@
 1. Ruby motions				|ruby-motion|
 2. Ruby text objects			|ruby-text-objects|
 3. Access modifier indentation		|ruby-access-modifier-indentation|
-
+4. Block style indentation		|ruby-block-indentation|
 
 ==============================================================================
 1. Ruby motions						*ruby-motion*
@@ -110,6 +110,32 @@ Access modifier style "outdent":
   public
     def method; end
   end
+<
+
+==============================================================================
+4. Block style indentation                      *ruby-block-style-indentation*
+                                                *g:ruby_indent_block_style*
+
+Different block indentation styles can be used by setting: >
+
+	:let g:ruby_indent_block_style = 'expression'
+	:let g:ruby_indent_block_style = 'do'
+<
+By default, the "expression" block indent style is used.
+
+Block indent style "expression":
+>
+  first
+    .second do |x|
+    something
+  end
+<
+Block indent style "do":
+>
+  first
+    .second do |x|
+      something
+    end
 <
 
  vim:tw=78:sw=4:ts=8:ft=help:norl:
