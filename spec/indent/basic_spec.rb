@@ -38,5 +38,13 @@ describe "Indenting" do
       THREE
       end
     EOF
+
+    assert_correct_indenting <<-EOF
+      def one
+        two = <<~THREE
+        four
+        THREE
+      end
+    EOF
   end
 end

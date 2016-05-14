@@ -82,4 +82,18 @@ describe "Indenting" do
       end
     EOF
   end
+
+  specify "blocks with default arguments" do
+    assert_correct_indenting <<-EOF
+      proc do |a = 1|
+        puts a
+      end
+    EOF
+
+    assert_correct_indenting <<-EOF
+      proc do |a: "asdf", b:|
+        puts a, b
+      end
+    EOF
+  end
 end
