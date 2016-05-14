@@ -60,7 +60,7 @@ if arg == '%Q'
       END
     end
 
-    puts "  %#{leading} foo\\ \\\\\\ bar \n\n" unless leading == 'W'
+    puts "  %#{leading} foo\\ \\\\\\ bar\nbaz \n\n" unless leading == 'W'
   end
 end
 # }}}
@@ -97,7 +97,7 @@ if arg == '%q'
       END
     end
 
-    puts "  %#{leading} foo\\ \\\\\\ bar \n\n" if leading == 'q'
+    puts "  %#{leading} foo\\ \\\\\\ bar\nbaz \n\n" unless leading == 'w'
   end
 end
 # }}}
@@ -119,6 +119,8 @@ if arg == '%r'
 
     END
   end
+
+  puts "  %r foo\\ \\\\\\ bar\nbaz \n\n"
 
   %w({} <> [] ()).each do |pair|
     puts <<-END.gsub(/^\s{4}/, '')
@@ -297,6 +299,11 @@ if arg == 'heredoc'
         <<-#{quote}_LABEL#{quote}.?!, foo
           bar baz
         _LABEL
+      \n
+
+          <<~#{quote}_LABEL#{quote}.?!, foo
+            bar baz
+          _LABEL
 
 
     END
