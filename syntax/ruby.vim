@@ -9,10 +9,12 @@
 " Thanks to perl.vim authors, and to Reimer Behrends. :-) (MN)
 " ----------------------------------------------------------------------------
 
+" Prelude {{{1
 if exists("b:current_syntax")
   finish
 endif
 
+" Folding Config {{{1
 if has("folding") && exists("ruby_fold")
   setlocal foldmethod=syntax
 endif
@@ -25,7 +27,7 @@ let s:foldable_groups = split(
       \	  )
       \	)
 
-function! s:foldable(...) abort "{{{
+function! s:foldable(...) abort
   if index(s:foldable_groups, 'ALL') > -1
     return 1
   endif
@@ -37,8 +39,7 @@ function! s:foldable(...) abort "{{{
   endfor
 
   return 0
-endfunction "}}}
-
+endfunction
 
 syn cluster rubyNotTop contains=@rubyExtendedStringSpecial,@rubyRegexpSpecial,@rubyDeclaration,rubyConditional,rubyExceptional,rubyMethodExceptional,rubyTodo
 
@@ -51,14 +52,14 @@ if exists("ruby_space_errors")
   endif
 endif
 
-" Operators
+" Operators {{{1
 if exists("ruby_operators")
   syn match  rubyOperator "[~!^|*/%+-]\|&\.\@!\|\%(class\s*\)\@<!<<\|<=>\|<=\|\%(<\|\<class\s\+\u\w*\s*\)\@<!<[^<]\@=\|===\|==\|=\~\|>>\|>=\|=\@<!>\|\*\*\|\.\.\.\|\.\.\|::"
   syn match  rubyOperator "->\|-=\|/=\|\*\*=\|\*=\|&&=\|&=\|&&\|||=\||=\|||\|%=\|+=\|!\~\|!="
   syn region rubyBracketOperator matchgroup=rubyOperator start="\%(\w[?!]\=\|[]})]\)\@<=\[\s*" end="\s*]" contains=ALLBUT,@rubyNotTop
 endif
 
-" Expression Substitution and Backslash Notation
+" Expression Substitution and Backslash Notation {{{1
 syn match rubyStringEscape "\\\\\|\\[abefnrstv]\|\\\o\{1,3}\|\\x\x\{1,2}"						    contained display
 syn match rubyStringEscape "\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)" contained display
 syn match rubyQuoteEscape  "\\[\\']"											    contained display
@@ -80,6 +81,7 @@ syn region rubyNestedCurlyBraces    start="{"  skip="\\\\\|\\}"  matchgroup=ruby
 syn region rubyNestedAngleBrackets  start="<"  skip="\\\\\|\\>"  matchgroup=rubyString end=">"	transparent contained
 syn region rubyNestedSquareBrackets start="\[" skip="\\\\\|\\\]" matchgroup=rubyString end="\]"	transparent contained
 
+" Regular Expressions {{{1
 " These are mostly Oniguruma ready
 syn region rubyRegexpComment	matchgroup=rubyRegexpSpecial   start="(?#"								  skip="\\)"  end=")"  contained
 syn region rubyRegexpParens	matchgroup=rubyRegexpSpecial   start="(\(?:\|?<\=[=!]\|?>\|?<[a-z_]\w*>\|?[imx]*-[imx]*:\=\|\%(?#\)\@!\)" skip="\\)"  end=")"  contained transparent contains=@rubyRegexpSpecial
@@ -102,7 +104,7 @@ syn cluster rubyStringSpecial	      contains=rubyInterpolation,rubyNoInterpolati
 syn cluster rubyExtendedStringSpecial contains=@rubyStringSpecial,rubyNestedParentheses,rubyNestedCurlyBraces,rubyNestedAngleBrackets,rubyNestedSquareBrackets
 syn cluster rubyRegexpSpecial	      contains=rubyInterpolation,rubyNoInterpolation,rubyStringEscape,rubyRegexpSpecial,rubyRegexpEscape,rubyRegexpBrackets,rubyRegexpCharClass,rubyRegexpDot,rubyRegexpQuantifier,rubyRegexpAnchor,rubyRegexpParens,rubyRegexpComment
 
-" Numbers and ASCII Codes
+" Numbers and ASCII Codes {{{1
 syn match rubyASCIICode "\%(\w\|[]})\"'/]\)\@<!\%(?\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\=\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)\)"
 syn match rubyInteger	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<0[xX]\x\+\%(_\x\+\)*r\=i\=\>"								display
 syn match rubyInteger	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<\%(0[dD]\)\=\%(0\|[1-9]\d*\%(_\d\+\)*\)r\=i\=\>"						display
@@ -111,7 +113,7 @@ syn match rubyInteger	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<0[bB][01]\+\%(_[01]\+\)
 syn match rubyFloat	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\.\d\+\%(_\d\+\)*r\=i\=\>"					display
 syn match rubyFloat	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\%(\.\d\+\%(_\d\+\)*\)\=\%([eE][-+]\=\d\+\%(_\d\+\)*\)r\=i\=\>"	display
 
-" Identifiers
+" Identifiers {{{1
 syn match rubyLocalVariableOrMethod "\<[_[:lower:]][_[:alnum:]]*[?!=]\=" contains=NONE display transparent
 syn match rubyBlockArgument	    "&[_[:lower:]][_[:alnum:]]"		 contains=NONE display transparent
 
@@ -147,7 +149,7 @@ syn match rubyPredefinedVariable "$\%(DEBUG\|FILENAME\|KCODE\|LOADED_FEATURES\|L
 syn match rubyPredefinedConstant "\%(\%(^\|[^.]\)\.\s*\)\@<!\<\%(ARGF\|ARGV\|ENV\|DATA\|FALSE\|NIL\|STDERR\|STDIN\|STDOUT\|TOPLEVEL_BINDING\|TRUE\)\>\%(\s*(\)\@!"
 syn match rubyPredefinedConstant "\%(\%(^\|[^.]\)\.\s*\)\@<!\<\%(RUBY_\%(VERSION\|RELEASE_DATE\|PLATFORM\|PATCHLEVEL\|REVISION\|DESCRIPTION\|COPYRIGHT\|ENGINE\)\)\>\%(\s*(\)\@!"
 
-" Normal Regular Expression
+" Normal Regular Expression {{{1
 if s:foldable('/')
   syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="\%(\%(^\|\<\%(and\|or\|while\|until\|unless\|if\|elsif\|when\|not\|then\|else\)\|[;\~=!|&(,{[<>?:*+-]\)\s*\)\@<=/" end="/[iomxneus]*" skip="\\\\\|\\/" contains=@rubyRegexpSpecial fold
   syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="\%(\h\k*\s\+\)\@<=/[ \t=]\@!" end="/[iomxneus]*" skip="\\\\\|\\/" contains=@rubyRegexpSpecial fold
@@ -156,7 +158,7 @@ else
   syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="\%(\h\k*\s\+\)\@<=/[ \t=]\@!" end="/[iomxneus]*" skip="\\\\\|\\/" contains=@rubyRegexpSpecial
 endif
 
-" Generalized Regular Expression
+" Generalized Regular Expression {{{1
 if s:foldable('%')
   syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1[iomxneus]*" skip="\\\\\|\\\z1" contains=@rubyRegexpSpecial fold
   syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r{"				end="}[iomxneus]*"   skip="\\\\\|\\}"	 contains=@rubyRegexpSpecial fold
@@ -173,21 +175,21 @@ else
   syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r\z(\s\)"				end="\z1[iomxneus]*" skip="\\\\\|\\\z1" contains=@rubyRegexpSpecial
 endif
 
-" Normal String and Shell Command Output
+" Normal String and Shell Command Output {{{1
 let s:spell_cluster = exists('ruby_spellcheck_strings') ? ',@Spell' : ''
 exe 'syn region rubyString matchgroup=rubyStringDelimiter start="\"" end="\"" skip="\\\\\|\\\"" ' .
       \ (s:foldable('%') ? 'fold' : '') . ' contains=@rubyStringSpecial' . s:spell_cluster
 exe 'syn region rubyString matchgroup=rubyStringDelimiter start="''" end="''" skip="\\\\\|\\''" ' .
-      \ (s:foldable('%') ? 'fold' : '') . ' contains=rubyQuoteEscape'    . s:spell_cluster
+      \ (s:foldable('%') ? 'fold' : '') . ' contains=rubyQuoteEscape'	 . s:spell_cluster
 
-" Shell Command Output
+" Shell Command Output {{{1
 if s:foldable('%')
   syn region rubyString matchgroup=rubyStringDelimiter start="`" end="`" skip="\\\\\|\\`" contains=@rubyStringSpecial fold
 else
   syn region rubyString matchgroup=rubyStringDelimiter start="`" end="`" skip="\\\\\|\\`" contains=@rubyStringSpecial
 endif
 
-" Generalized Single Quoted String, Symbol and Array of Strings
+" Generalized Single Quoted String, Symbol and Array of Strings {{{1
 if s:foldable('%')
   syn region rubyString matchgroup=rubyStringDelimiter start="%[qw]\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1" fold
   syn region rubyString matchgroup=rubyStringDelimiter start="%[qw]{"				     end="}"   skip="\\\\\|\\}"	  fold contains=rubyNestedCurlyBraces,rubyDelimEscape
@@ -216,7 +218,7 @@ else
   syn region rubyString matchgroup=rubyStringDelimiter start="%s\z(\s\)"			     end="\z1" skip="\\\\\|\\\z1"
 endif
 
-" Generalized Double Quoted String and Array of Strings and Shell Command Output
+" Generalized Double Quoted String and Array of Strings and Shell Command Output {{{1
 " Note: %= is not matched here as the beginning of a double quoted string
 if s:foldable('%')
   syn region rubyString matchgroup=rubyStringDelimiter start="%\z([~`!@#$%^&*_\-+|\:;"',.?/]\)"	      end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial fold
@@ -266,7 +268,7 @@ else
   syn region rubySymbol matchgroup=rubySymbolDelimiter start="%I("				  end=")"   skip="\\\\\|\\)"	contains=@rubyStringSpecial,rubyNestedParentheses,rubyDelimEscape
 endif
 
-" Here Document
+" Here Document {{{1
 syn region rubyHeredocStart matchgroup=rubyStringDelimiter start=+\%(\%(class\s*\|\%([]})"'.]\|::\)\)\_s*\|\w\)\@<!<<[-~]\=\zs\%(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)+	 end=+$+ oneline contains=ALLBUT,@rubyNotTop
 syn region rubyHeredocStart matchgroup=rubyStringDelimiter start=+\%(\%(class\s*\|\%([]})"'.]\|::\)\)\_s*\|\w\)\@<!<<[-~]\=\zs"\%([^"]*\)"+ end=+$+ oneline contains=ALLBUT,@rubyNotTop
 syn region rubyHeredocStart matchgroup=rubyStringDelimiter start=+\%(\%(class\s*\|\%([]})"'.]\|::\)\)\_s*\|\w\)\@<!<<[-~]\=\zs'\%([^']*\)'+ end=+$+ oneline contains=ALLBUT,@rubyNotTop
@@ -298,6 +300,7 @@ if exists('main_syntax') && main_syntax == 'eruby'
   let b:ruby_no_expensive = 1
 end
 
+" Module, Class and Method Declarations {{{1
 syn match  rubyAliasDeclaration    "[^[:space:];#.()]\+" contained contains=rubySymbol,rubyGlobalVariable,rubyPredefinedVariable nextgroup=rubyAliasDeclaration2 skipwhite
 syn match  rubyAliasDeclaration2   "[^[:space:];#.()]\+" contained contains=rubySymbol,rubyGlobalVariable,rubyPredefinedVariable
 syn match  rubyMethodDeclaration   "[^[:space:];#(]\+"	 contained contains=rubyConstant,rubyBoolean,rubyPseudoVariable,rubyInstanceVariable,rubyClassVariable,rubyGlobalVariable
@@ -309,7 +312,7 @@ syn match  rubyFunction "\%([[:space:].]\|^\)\@<=\%(\[\]=\=\|\*\*\|[-+!~]@\=\|[*
 
 syn cluster rubyDeclaration contains=rubyAliasDeclaration,rubyAliasDeclaration2,rubyMethodDeclaration,rubyModuleDeclaration,rubyClassDeclaration,rubyFunction,rubyBlockParameter
 
-" Keywords
+" Keywords {{{1
 " Note: the following keywords have already been defined:
 " begin case class def do end for if module unless until while
 syn match   rubyControl	       "\<\%(and\|break\|in\|next\|not\|or\|redo\|rescue\|retry\|return\)\>[?!]\@!"
@@ -319,8 +322,9 @@ syn match   rubyBoolean	       "\<\%(true\|false\)\>[?!]\@!"
 syn match   rubyPseudoVariable "\<\%(nil\|self\|__ENCODING__\|__dir__\|__FILE__\|__LINE__\|__callee__\|__method__\)\>[?!]\@!" " TODO: reorganise
 syn match   rubyBeginEnd       "\<\%(BEGIN\|END\)\>[?!]\@!"
 
-" Expensive Mode - match 'end' with the appropriate opening keyword for syntax
-" based folding and special highlighting of module/class/method definitions
+" Expensive Mode {{{1
+" Match 'end' with the appropriate opening keyword for syntax based folding
+" and special highlighting of module/class/method definitions
 if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   syn match  rubyDefine "\<alias\>"  nextgroup=rubyAliasDeclaration  skipwhite skipnl
   syn match  rubyDefine "\<def\>"    nextgroup=rubyMethodDeclaration skipwhite skipnl
@@ -416,7 +420,7 @@ else
   syn match rubyKeyword "\<\%(alias\|undef\)\>[?!]\@!"
 endif
 
-" Special Methods
+" Special Methods {{{1
 if !exists("ruby_no_special_methods")
   syn keyword rubyAccess    public protected private public_class_method private_class_method public_constant private_constant module_function
   " attr is a common variable name
@@ -431,7 +435,7 @@ if !exists("ruby_no_special_methods")
   syn keyword rubyKeyword   callcc caller lambda proc
 endif
 
-" Comments and Documentation
+" Comments and Documentation {{{1
 syn match   rubySharpBang "\%^#!.*" display
 syn keyword rubyTodo	  FIXME NOTE TODO OPTIMIZE HACK REVIEW XXX todo contained
 syn match   rubyComment   "#.*" contains=rubySharpBang,rubySpaceError,rubyTodo,@Spell
@@ -442,22 +446,25 @@ else
   syn region rubyDocumentation	  start="^=begin\s*$" end="^=end\s*$" contains=rubySpaceError,rubyTodo,@Spell
 endif
 
+" Keyword Nobbling {{{1
 " Note: this is a hack to prevent 'keywords' being highlighted as such when called as methods with an explicit receiver
 syn match rubyKeywordAsMethod "\%(\%(\.\@1<!\.\)\|::\)\_s*\%([_[:lower:]][_[:alnum:]]*\|\<\%(BEGIN\|END\)\>\)" transparent contains=NONE
 syn match rubyKeywordAsMethod "\(defined?\|exit!\)\@!\<[_[:lower:]][_[:alnum:]]*[?!]"			       transparent contains=NONE
 
+" More Symbols {{{1
 syn match  rubySymbol		"\%([{(,]\_s*\)\@<=\l\w*[!?]\=::\@!"he=e-1
 syn match  rubySymbol		"[]})\"':]\@<!\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[!?]\=:[[:space:],]\@="he=e-1
 syn match  rubySymbol		"\%([{(,]\_s*\)\@<=[[:space:],{]\l\w*[!?]\=::\@!"hs=s+1,he=e-1
 syn match  rubySymbol		"[[:space:],{(]\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[!?]\=:[[:space:],]\@="hs=s+1,he=e-1
 
-" __END__ Directive
+" __END__ Directive {{{1
 if s:foldable('__END__')
   syn region rubyData matchgroup=rubyDataDirective start="^__END__$" end="\%$" fold
 else
   syn region rubyData matchgroup=rubyDataDirective start="^__END__$" end="\%$"
 endif
 
+" Default Highlighting {{{1
 hi def link rubyClass			rubyDefine
 hi def link rubyModule			rubyDefine
 hi def link rubyMethodExceptional	rubyDefine
@@ -528,6 +535,7 @@ hi def link rubyInvalidVariable		Error
 hi def link rubyError			Error
 hi def link rubySpaceError		rubyError
 
+" Postscript {{{1
 let b:current_syntax = "ruby"
 
-" vim: nowrap sw=2 sts=2 ts=8 noet:
+" vim: nowrap sw=2 sts=2 ts=8 noet fdm=marker:
