@@ -69,7 +69,7 @@ syn match  rubyInterpolation	      "#\%(\$\|@@\=\)\w\+"    display contained con
 syn match  rubyInterpolationDelimiter "#\ze\%(\$\|@@\=\)\w\+" display contained
 syn match  rubyInterpolation	      "#\$\%(-\w\|\W\)"       display contained contains=rubyInterpolationDelimiter,rubyPredefinedVariable,rubyInvalidVariable
 syn match  rubyInterpolationDelimiter "#\ze\$\%(-\w\|\W\)"    display contained
-syn region rubyNoInterpolation	      start="\\#{" end="}"            contained
+syn region rubyNoInterpolation	      start="\\#{" end="}"	      contained
 syn match  rubyNoInterpolation	      "\\#{"		      display contained
 syn match  rubyNoInterpolation	      "\\#\%(\$\|@@\=\)\w\+"  display contained
 syn match  rubyNoInterpolation	      "\\#\$\W"		      display contained
@@ -119,7 +119,7 @@ syn match rubyBlockArgument	    "&[_[:lower:]][_[:alnum:]]"		 contains=NONE disp
 
 syn match  rubyConstant		"\%(\%(^\|[^.]\)\.\s*\)\@<!\<\u\%(\w\|[^\x00-\x7F]\)*\>\%(\s*(\)\@!"
 syn match  rubyClassVariable	"@@\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*" display
-syn match  rubyInstanceVariable "@\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*"  display
+syn match  rubyInstanceVariable "@\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*"	display
 syn match  rubyGlobalVariable	"$\%(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\|-.\)"
 syn match  rubySymbol		"[]})\"':]\@<!:\%(\^\|\~@\|\~\|<<\|<=>\|<=\|<\|===\|[=!]=\|[=!]\~\|!@\|!\|>>\|>=\|>\||\|-@\|-\|/\|\[]=\|\[]\|\*\*\|\*\|&\|%\|+@\|+\|`\)"
 syn match  rubySymbol		"[]})\"':]\@<!:\$\%(-.\|[`~<=>_,;:!?/.'"@$*\&+0]\)"
@@ -223,18 +223,18 @@ endif
 if s:foldable('%')
   syn region rubyString matchgroup=rubyStringDelimiter start="%\z([~`!@#$%^&*_\-+|\:;"',.?/]\)"	      end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial fold
   syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial fold
-  syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\={"			      end="}"   skip="\\\\\|\\}"   contains=@rubyStringSpecial,rubyNestedCurlyBraces,rubyDelimEscape    fold
-  syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\=<"			      end=">"   skip="\\\\\|\\>"   contains=@rubyStringSpecial,rubyNestedAngleBrackets,rubyDelimEscape  fold
-  syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\=\["			      end="\]"  skip="\\\\\|\\\]"  contains=@rubyStringSpecial,rubyNestedSquareBrackets,rubyDelimEscape fold
-  syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\=("			      end=")"   skip="\\\\\|\\)"   contains=@rubyStringSpecial,rubyNestedParentheses,rubyDelimEscape    fold
+  syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\={"			      end="}"	skip="\\\\\|\\}"   contains=@rubyStringSpecial,rubyNestedCurlyBraces,rubyDelimEscape	fold
+  syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\=<"			      end=">"	skip="\\\\\|\\>"   contains=@rubyStringSpecial,rubyNestedAngleBrackets,rubyDelimEscape	fold
+  syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\=\["			      end="\]"	skip="\\\\\|\\\]"  contains=@rubyStringSpecial,rubyNestedSquareBrackets,rubyDelimEscape fold
+  syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\=("			      end=")"	skip="\\\\\|\\)"   contains=@rubyStringSpecial,rubyNestedParentheses,rubyDelimEscape	fold
   syn region rubyString matchgroup=rubyStringDelimiter start="%[Qx]\z(\s\)"			      end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial fold
 else
   syn region rubyString matchgroup=rubyStringDelimiter start="%\z([~`!@#$%^&*_\-+|\:;"',.?/]\)"	      end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial
   syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial
-  syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\={"			      end="}"   skip="\\\\\|\\}"   contains=@rubyStringSpecial,rubyNestedCurlyBraces,rubyDelimEscape
-  syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\=<"			      end=">"   skip="\\\\\|\\>"   contains=@rubyStringSpecial,rubyNestedAngleBrackets,rubyDelimEscape
-  syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\=\["			      end="\]"  skip="\\\\\|\\\]"  contains=@rubyStringSpecial,rubyNestedSquareBrackets,rubyDelimEscape
-  syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\=("			      end=")"   skip="\\\\\|\\)"   contains=@rubyStringSpecial,rubyNestedParentheses,rubyDelimEscape
+  syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\={"			      end="}"	skip="\\\\\|\\}"   contains=@rubyStringSpecial,rubyNestedCurlyBraces,rubyDelimEscape
+  syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\=<"			      end=">"	skip="\\\\\|\\>"   contains=@rubyStringSpecial,rubyNestedAngleBrackets,rubyDelimEscape
+  syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\=\["			      end="\]"	skip="\\\\\|\\\]"  contains=@rubyStringSpecial,rubyNestedSquareBrackets,rubyDelimEscape
+  syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\=("			      end=")"	skip="\\\\\|\\)"   contains=@rubyStringSpecial,rubyNestedParentheses,rubyDelimEscape
   syn region rubyString matchgroup=rubyStringDelimiter start="%[Qx]\z(\s\)"			      end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial
 endif
 
