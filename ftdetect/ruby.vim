@@ -74,4 +74,7 @@ au BufNewFile,BufRead [rR]outefile		call s:setf('ruby')
 " SimpleCov
 au BufNewFile,BufRead .simplecov		set filetype=ruby
 
+" Opal
+au BufNewFile,BufRead *.opal			call s:setf('ruby')
+
 " vim: nowrap sw=2 sts=2 ts=8 noet:
