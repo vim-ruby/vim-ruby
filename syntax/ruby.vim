@@ -39,10 +39,11 @@ function! s:foldable(...) abort
   endfor
 
   return 0
-endfunction
+endfunction " }}}
 
 syn cluster rubyNotTop contains=@rubyExtendedStringSpecial,@rubyRegexpSpecial,@rubyDeclaration,rubyConditional,rubyExceptional,rubyMethodExceptional,rubyTodo
 
+" Whitespace Errors {{{1
 if exists("ruby_space_errors")
   if !exists("ruby_no_trail_space_error")
     syn match rubySpaceError display excludenl "\s\+$"
@@ -81,7 +82,7 @@ syn region rubyNestedCurlyBraces    start="{"  skip="\\\\\|\\}"  matchgroup=ruby
 syn region rubyNestedAngleBrackets  start="<"  skip="\\\\\|\\>"  matchgroup=rubyString end=">"	transparent contained
 syn region rubyNestedSquareBrackets start="\[" skip="\\\\\|\\\]" matchgroup=rubyString end="\]"	transparent contained
 
-" Regular Expressions {{{1
+" Regular Expression Metacharacters {{{1
 " These are mostly Oniguruma ready
 syn region rubyRegexpComment	matchgroup=rubyRegexpSpecial   start="(?#"								  skip="\\)"  end=")"  contained
 syn region rubyRegexpParens	matchgroup=rubyRegexpSpecial   start="(\(?:\|?<\=[=!]\|?>\|?<[a-z_]\w*>\|?[imx]*-[imx]*:\=\|\%(?#\)\@!\)" skip="\\)"  end=")"  contained transparent contains=@rubyRegexpSpecial
@@ -175,7 +176,7 @@ else
   syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r\z(\s\)"				end="\z1[iomxneus]*" skip="\\\\\|\\\z1" contains=@rubyRegexpSpecial
 endif
 
-" Normal String and Shell Command Output {{{1
+" Normal String {{{1
 let s:spell_cluster = exists('ruby_spellcheck_strings') ? ',@Spell' : ''
 exe 'syn region rubyString matchgroup=rubyStringDelimiter start="\"" end="\"" skip="\\\\\|\\\"" ' .
       \ (s:foldable('%') ? 'fold' : '') . ' contains=@rubyStringSpecial' . s:spell_cluster
@@ -238,6 +239,7 @@ else
   syn region rubyString matchgroup=rubyStringDelimiter start="%[Qx]\z(\s\)"			      end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial
 endif
 
+" Array of Symbols {{{1
 if s:foldable('%')
   " Array of Symbols
   syn region rubySymbol matchgroup=rubySymbolDelimiter start="%i\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1"	fold
@@ -296,11 +298,12 @@ else
   syn region rubyString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|\w\)\@<!<<[-~]`\z([^`]*\)`\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+3  matchgroup=rubyStringDelimiter end=+^\s*\zs\z1$+ contains=rubyHeredocStart,@rubyStringSpecial keepend
 endif
 
+" eRuby Config {{{1
 if exists('main_syntax') && main_syntax == 'eruby'
   let b:ruby_no_expensive = 1
 end
 
-" Module, Class and Method Declarations {{{1
+" Module, Class, Method and Alias Declarations {{{1
 syn match  rubyAliasDeclaration    "[^[:space:];#.()]\+" contained contains=rubySymbol,rubyGlobalVariable,rubyPredefinedVariable nextgroup=rubyAliasDeclaration2 skipwhite
 syn match  rubyAliasDeclaration2   "[^[:space:];#.()]\+" contained contains=rubySymbol,rubyGlobalVariable,rubyPredefinedVariable
 syn match  rubyMethodDeclaration   "[^[:space:];#(]\+"	 contained contains=rubyConstant,rubyBoolean,rubyPseudoVariable,rubyInstanceVariable,rubyClassVariable,rubyGlobalVariable
