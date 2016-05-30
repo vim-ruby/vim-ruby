@@ -222,15 +222,15 @@ function s:GetMSL(lnum)
     elseif s:Match(lnum, s:non_bracket_continuation_regex) &&
           \ (s:Match(msl, s:bracket_continuation_regex) || s:Match(msl, s:block_continuation_regex))
       " If the current line is a bracket continuation or a block-starter, but
-      " the previous is a non-bracket one, respect the previous' indentation,
-      " and stop here.
+      " the previous is a non-bracket one, keep going to see if the previous
+      " line is a part of another continuation.
       "
       " Example:
       "   method_call one,
       "     two {
       "     three
       "
-      return lnum
+      let msl = lnum
     elseif s:Match(lnum, s:bracket_continuation_regex) &&
           \ (s:Match(msl, s:bracket_continuation_regex) || s:Match(msl, s:block_continuation_regex))
       " If both lines are bracket continuations (the current may also be a
