@@ -138,7 +138,7 @@ endif
 syn match  rubyCapitalizedMethod	"\%(\%(^\|[^.]\)\.\s*\)\@<!\<\u\%(\w\|[^\x00-\x7F]\)*\>\%(\s*(\)*\s*(\@="
 
 syn match  rubyBlockParameter	  "\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*" contained
-syn region rubyBlockParameterList start="\%(\%(\<do\>\|{\)\s*\)\@<=|" end="|" oneline display contains=rubyBlockParameter
+syn region rubyBlockParameterList start="\%(\%(\<do\>\|{\)\_s*\)\@<=|" end="|" oneline display contains=rubyBlockParameter
 
 syn match rubyInvalidVariable	 "$[^ A-Za-z_-]"
 syn match rubyPredefinedVariable #$[!$&"'*+,./0:;<=>?@\`~]#
