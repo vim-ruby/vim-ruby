@@ -209,4 +209,19 @@ describe "Indenting" do
       )
     EOF
   end
+
+  specify "backticks" do
+    # See https://github.com/vim-ruby/vim-ruby/issues/311 for details
+    assert_correct_indenting <<-EOF
+      def foo
+        x = 1
+
+        string = ". \#{x}" \\
+          "xyz"
+
+        puts string
+        puts string
+      end
+    EOF
+  end
 end
