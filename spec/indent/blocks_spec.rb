@@ -9,17 +9,23 @@ describe "Indenting" do
     vim.command 'let g:ruby_indent_block_style = "expression"'
 
     assert_correct_indenting <<-EOF
-        a
-          .b do |x|
-          something
-        end
+      a.
+        b.
+        c do |x|
+        something
+      end
+
+      next_line
     EOF
 
     assert_correct_indenting <<-EOF
-      a
-        .b { |x|
+      a.
+        b.
+        c { |x|
         something
       }
+
+      next_line
     EOF
   end
 
@@ -27,33 +33,36 @@ describe "Indenting" do
     vim.command 'let g:ruby_indent_block_style = "do"'
 
     assert_correct_indenting <<-EOF
-        a
-          .b do |x|
-            something
-          end
+      a.
+        b.
+        c do |x|
+          something
+        end
+
+      next_line
     EOF
 
     # Check that "do" style indentation does not mess up indentation
     # following the bock.
     assert_correct_indenting <<-EOF
-      a
-        .b do |x|
+      a.
+        b.
+        c do |x|
           something
         end
 
-      class A
-      end
+      next_line
     EOF
 
     # Check that "do" style indenting works properly for brace blocks.
     assert_correct_indenting <<-EOF
-      a
-        .b { |x|
+      a.
+        b.
+        c { |x|
           something
         }
 
-      class A
-      end
+      next_line
     EOF
   end
 

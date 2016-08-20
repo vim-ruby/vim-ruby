@@ -198,4 +198,15 @@ describe "Indenting" do
     EOF
   end
 
+  specify "block within an argument list" do
+    # See https://github.com/vim-ruby/vim-ruby/issues/312 for details
+    assert_correct_indenting <<-EOF
+      foo(
+        x: 1,
+        y: [1, 2, 3].map { |i|
+          i + 1
+        }
+      )
+    EOF
+  end
 end
