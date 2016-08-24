@@ -210,7 +210,7 @@ describe "Indenting" do
     EOF
   end
 
-  specify "backticks" do
+  specify "backslashes" do
     # See https://github.com/vim-ruby/vim-ruby/issues/311 for details
     assert_correct_indenting <<-EOF
       def foo

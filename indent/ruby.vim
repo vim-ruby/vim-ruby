@@ -109,8 +109,8 @@ let s:bracket_continuation_regex = '%\@<!\%([({[]\)\s*\%(#.*\)\=$'
 " Regex that defines dot continuations
 let s:dot_continuation_regex = '%\@<!\.\s*\%(#.*\)\=$'
 
-" Regex that defines backtick continuations
-let s:backtick_continuation_regex = '%\@<!\\\s*$'
+" Regex that defines backslash continuations
+let s:backslash_continuation_regex = '%\@<!\\\s*$'
 
 " Regex that defines end of bracket continuation followed by another continuation
 let s:bracket_switch_continuation_regex = '^\([^(]\+\zs).\+\)\+'.s:continuation_regex
@@ -200,9 +200,9 @@ function s:GetMSL(lnum)
     " Otherwise, terminate search as we have found our MSL already.
     let line = getline(lnum)
 
-    if !s:Match(msl, s:backtick_continuation_regex) &&
-          \ s:Match(lnum, s:backtick_continuation_regex)
-      " If the current line doesn't end in a backtick, but the previous one
+    if !s:Match(msl, s:backslash_continuation_regex) &&
+          \ s:Match(lnum, s:backslash_continuation_regex)
+      " If the current line doesn't end in a backslash, but the previous one
       " does, look for that line's msl
       "
       " Example:
