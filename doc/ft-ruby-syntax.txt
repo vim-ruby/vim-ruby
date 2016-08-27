@@ -49,7 +49,7 @@ You can set "ruby_foldable_groups" to restrict which groups are foldable: >
 
         :let ruby_foldable_groups = 'if case %'
 <
-value is space-separated keywords, known keywords were:
+The value is a space-separated list of keywords:
 
     keyword       meaning ~
     --------  ------------------------------------- ~
@@ -95,7 +95,7 @@ the "ruby_minlines" variable to a value larger than 50: >
 Ideally, this value should be a number of lines large enough to embrace your
 largest class or module.
 
-5. Spellchecking strings			*ruby_spellcheck_strings*
+6. Spellchecking strings			*ruby_spellcheck_strings*
 
 Ruby syntax will perform spellchecking of strings if you define "ruby_spellcheck_strings": >
 
