@@ -14,6 +14,10 @@ if exists("b:current_syntax")
   finish
 endif
 
+" this file uses line continuations
+let s:cpo_sav = &cpo
+set cpo&vim
+
 " Folding Config {{{1
 if has("folding") && exists("ruby_fold")
   setlocal foldmethod=syntax
@@ -541,5 +545,8 @@ hi def link rubySpaceError		rubyError
 
 " Postscript {{{1
 let b:current_syntax = "ruby"
+
+let &cpo = s:cpo_sav
+unlet! s:cpo_sav
 
 " vim: nowrap sw=2 sts=2 ts=8 noet fdm=marker:
