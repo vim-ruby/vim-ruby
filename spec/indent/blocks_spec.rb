@@ -155,9 +155,12 @@ describe "Indenting" do
       end
     EOF
 
+    # See https://github.com/vim-ruby/vim-ruby/issues/304
     assert_correct_indenting <<-EOF
       proc do |a: "asdf", b:|
-        puts a, b
+        proc do
+          puts a, b
+        end
       end
     EOF
   end
