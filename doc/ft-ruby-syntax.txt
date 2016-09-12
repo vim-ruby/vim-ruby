@@ -1,47 +1,42 @@
-RUBY					*ruby.vim* *ft-ruby-syntax*
+RUBY						*ruby.vim* *ft-ruby-syntax*
 
-There are a number of options to the Ruby syntax highlighting.
+    Ruby: Operator highlighting		|ruby_operators|
+    Ruby: Whitespace errors		|ruby_space_errors|
+    Ruby: Folding			|ruby_fold| |ruby_foldable_groups|
+    Ruby: Reducing expensive operations	|ruby_no_expensive| |ruby_minlines|
+    Ruby: Spellchecking strings		|ruby_spellcheck_strings|
 
-1. Ruby operators                     |ruby_operators|
-2. Whitespace errors                  |ruby_space_errors|
-3. Folds                              |ruby_fold|
-4. Foldable groups                    |ruby_foldable_groups|
-5. Reducing expensive operations      |ruby_no_expensive| |ruby_minlines|
+						*ruby_operators*
+ Ruby: Operator highlighting ~
 
-
-1. Ruby operators				*ruby_operators*
-
-Ruby operators can be highlighted.
-
-This is enabled by defining "ruby_operators": >
+Operators can be highlighted by defining "ruby_operators": >
 
 	:let ruby_operators = 1
 <
-
-2. Whitespace errors				*ruby_space_errors*
+						*ruby_space_errors*
+ Ruby: Whitespace errors ~
 
 Whitespace errors can be highlighted by defining "ruby_space_errors": >
 
 	:let ruby_space_errors = 1
 <
-
 This will highlight trailing whitespace and tabs preceded by a space character
 as errors.  This can be refined by defining "ruby_no_trail_space_error" and
 "ruby_no_tab_space_error" which will ignore trailing whitespace and tabs after
 spaces respectively.
 
-3. Folds					*ruby_fold*
+					*ruby_fold* *ruby_foldable_groups*
+ Ruby: Folding ~
 
-Folds can be enabled by defining "ruby_fold": >
+Folding can be enabled by defining "ruby_fold": >
 
 	:let ruby_fold = 1
 <
+This will set the value of 'foldmethod' to "syntax" locally to the current
+buffer or window, which will enable syntax-based folding when editing Ruby
+filetypes.
 
-This will set the value |foldmethod| to "syntax" locally to the current buffer
-or window, which will enable syntax-based folding when editing Ruby filetypes.
-
-4. Foldable groups				*ruby_foldable_groups*
-
+						*ruby_foldable_groups*
 Default folding is rather detailed, i.e., small syntax units like "if", "do",
 "%w[]" may create corresponding fold levels.
 
@@ -73,7 +68,8 @@ The value is a space-separated list of keywords:
     <<         Here documents
     __END__    Source code after "__END__" directive
 
-5. Reducing expensive operations		*ruby_no_expensive*
+						*ruby_no_expensive*
+ Ruby: Reducing expensive operations ~
 
 By default, the "end" keyword is colorized according to the opening statement
 of the block it closes.  While useful, this feature can be expensive; if you
@@ -95,9 +91,11 @@ the "ruby_minlines" variable to a value larger than 50: >
 Ideally, this value should be a number of lines large enough to embrace your
 largest class or module.
 
-6. Spellchecking strings			*ruby_spellcheck_strings*
+						*ruby_spellcheck_strings*
+ Ruby: Spellchecking strings ~
 
-Ruby syntax will perform spellchecking of strings if you define "ruby_spellcheck_strings": >
+Ruby syntax will perform spellchecking of strings if you define
+"ruby_spellcheck_strings": >
 
 	:let ruby_spellcheck_strings = 1
 <
