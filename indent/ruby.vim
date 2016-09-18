@@ -390,7 +390,7 @@ function! s:FindContainingClass()
       call setpos('.', saved_position)
       return found_lnum
     endif
-  endif
+  endwhile
 
   call setpos('.', saved_position)
   return 0
