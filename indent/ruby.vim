@@ -142,265 +142,11 @@ let s:block_continuation_regex = '^\s*[^])}\t ].*'.s:block_regex
 " Regex that describes a leading operator (only a method call's dot for now)
 let s:leading_operator_regex = '^\s*[.]'
 
-" 2. Auxiliary Functions {{{1
-" ======================
-
-" Check if the character at lnum:col is inside a string, comment, or is ascii.
-function s:IsInStringOrComment(lnum, col)
-  return synIDattr(synID(a:lnum, a:col, 1), 'name') =~ s:syng_strcom
-endfunction
-
-" Check if the character at lnum:col is inside a string.
-function s:IsInString(lnum, col)
-  return synIDattr(synID(a:lnum, a:col, 1), 'name') =~ s:syng_string
-endfunction
-
-" Check if the character at lnum:col is inside a string or documentation.
-function s:IsInStringOrDocumentation(lnum, col)
-  return synIDattr(synID(a:lnum, a:col, 1), 'name') =~ s:syng_stringdoc
-endfunction
-
-" Check if the character at lnum:col is inside a string delimiter
-function s:IsInStringDelimiter(lnum, col)
-  return synIDattr(synID(a:lnum, a:col, 1), 'name') == 'rubyStringDelimiter'
-endfunction
-
-" Find line above 'lnum' that isn't empty, in a comment, or in a string.
-function s:PrevNonBlankNonString(lnum)
-  let in_block = 0
-  let lnum = prevnonblank(a:lnum)
-  while lnum > 0
-    " Go in and out of blocks comments as necessary.
-    " If the line isn't empty (with opt. comment) or in a string, end search.
-    let line = getline(lnum)
-    if line =~ '^=begin'
-      if in_block
-        let in_block = 0
-      else
-        break
-      endif
-    elseif !in_block && line =~ '^=end'
-      let in_block = 1
-    elseif !in_block && line !~ '^\s*#.*$' && !(s:IsInStringOrComment(lnum, 1)
-          \ && s:IsInStringOrComment(lnum, strlen(line)))
-      break
-    endif
-    let lnum = prevnonblank(lnum - 1)
-  endwhile
-  return lnum
-endfunction
-
-" Find line above 'lnum' that started the continuation 'lnum' may be part of.
-function s:GetMSL(lnum)
-  " Start on the line we're at and use its indent.
-  let msl = a:lnum
-  let msl_body = getline(msl)
-  let lnum = s:PrevNonBlankNonString(a:lnum - 1)
-  while lnum > 0
-    " If we have a continuation line, or we're in a string, use line as MSL.
-    " Otherwise, terminate search as we have found our MSL already.
-    let line = getline(lnum)
-
-    if !s:Match(msl, s:backslash_continuation_regex) &&
-          \ s:Match(lnum, s:backslash_continuation_regex)
-      " If the current line doesn't end in a backslash, but the previous one
-      " does, look for that line's msl
-      "
-      " Example:
-      "   foo = "bar" \
-      "     "baz"
-      "
-      let msl = lnum
-    elseif s:Match(msl, s:leading_operator_regex)
-      " If the current line starts with a leading operator, keep its indent
-      " and keep looking for an MSL.
-      let msl = lnum
-    elseif s:Match(lnum, s:splat_regex)
-      " If the above line looks like the "*" of a splat, use the current one's
-      " indentation.
-      "
-      " Example:
-      "   Hash[*
-      "     method_call do
-      "       something
-      "
-      return msl
-    elseif s:Match(lnum, s:non_bracket_continuation_regex) &&
-          \ s:Match(msl, s:non_bracket_continuation_regex)
-      " If the current line is a non-bracket continuation and so is the
-      " previous one, keep its indent and continue looking for an MSL.
-      "
-      " Example:
-      "   method_call one,
-      "     two,
-      "     three
-      "
-      let msl = lnum
-    elseif s:Match(lnum, s:dot_continuation_regex) &&
-          \ (s:Match(msl, s:bracket_continuation_regex) || s:Match(msl, s:block_continuation_regex))
-      " If the current line is a bracket continuation or a block-starter, but
-      " the previous is a dot, keep going to see if the previous line is the
-      " start of another continuation.
-      "
-      " Example:
-      "   parent.
-      "     method_call {
-      "     three
-      "
-      let msl = lnum
-    elseif s:Match(lnum, s:non_bracket_continuation_regex) &&
-          \ (s:Match(msl, s:bracket_continuation_regex) || s:Match(msl, s:block_continuation_regex))
-      " If the current line is a bracket continuation or a block-starter, but
-      " the previous is a non-bracket one, respect the previous' indentation,
-      " and stop here.
-      "
-      " Example:
-      "   method_call one,
-      "     two {
-      "     three
-      "
-      return lnum
-    elseif s:Match(lnum, s:bracket_continuation_regex) &&
-          \ (s:Match(msl, s:bracket_continuation_regex) || s:Match(msl, s:block_continuation_regex))
-      " If both lines are bracket continuations (the current may also be a
-      " block-starter), use the current one's and stop here
-      "
-      " Example:
-      "   method_call(
-      "     other_method_call(
-      "       foo
-      return msl
-    elseif s:Match(lnum, s:block_regex) &&
-          \ !s:Match(msl, s:continuation_regex) &&
-          \ !s:Match(msl, s:block_continuation_regex)
-      " If the previous line is a block-starter and the current one is
-      " mostly ordinary, use the current one as the MSL.
-      "
-      " Example:
-      "   method_call do
-      "     something
-      "     something_else
-      return msl
-    else
-      let col = match(line, s:continuation_regex) + 1
-      if (col > 0 && !s:IsInStringOrComment(lnum, col))
-            \ || s:IsInString(lnum, strlen(line))
-        let msl = lnum
-      else
-        break
-      endif
-    endif
-
-    let msl_body = getline(msl)
-    let lnum = s:PrevNonBlankNonString(lnum - 1)
-  endwhile
-  return msl
-endfunction
-
-" Check if line 'lnum' has more opening brackets than closing ones.
-function s:ExtraBrackets(lnum)
-  let opening = {'parentheses': [], 'braces': [], 'brackets': []}
-  let closing = {'parentheses': [], 'braces': [], 'brackets': []}
-
-  let line = getline(a:lnum)
-  let pos  = match(line, '[][(){}]', 0)
-
-  " Save any encountered opening brackets, and remove them once a matching
-  " closing one has been found. If a closing bracket shows up that doesn't
-  " close anything, save it for later.
-  while pos != -1
-    if !s:IsInStringOrComment(a:lnum, pos + 1)
-      if line[pos] == '('
-        call add(opening.parentheses, {'type': '(', 'pos': pos})
-      elseif line[pos] == ')'
-        if empty(opening.parentheses)
-          call add(closing.parentheses, {'type': ')', 'pos': pos})
-        else
-          let opening.parentheses = opening.parentheses[0:-2]
-        endif
-      elseif line[pos] == '{'
-        call add(opening.braces, {'type': '{', 'pos': pos})
-      elseif line[pos] == '}'
-        if empty(opening.braces)
-          call add(closing.braces, {'type': '}', 'pos': pos})
-        else
-          let opening.braces = opening.braces[0:-2]
-        endif
-      elseif line[pos] == '['
-        call add(opening.brackets, {'type': '[', 'pos': pos})
-      elseif line[pos] == ']'
-        if empty(opening.brackets)
-          call add(closing.brackets, {'type': ']', 'pos': pos})
-        else
-          let opening.brackets = opening.brackets[0:-2]
-        endif
-      endif
-    endif
-
-    let pos = match(line, '[][(){}]', pos + 1)
-  endwhile
-
-  " Find the rightmost brackets, since they're the ones that are important in
-  " both opening and closing cases
-  let rightmost_opening = {'type': '(', 'pos': -1}
-  let rightmost_closing = {'type': ')', 'pos': -1}
-
-  for opening in opening.parentheses + opening.braces + opening.brackets
-    if opening.pos > rightmost_opening.pos
-      let rightmost_opening = opening
-    endif
-  endfor
-
-  for closing in closing.parentheses + closing.braces + closing.brackets
-    if closing.pos > rightmost_closing.pos
-      let rightmost_closing = closing
-    endif
-  endfor
-
-  return [rightmost_opening, rightmost_closing]
-endfunction
-
-function s:Match(lnum, regex)
-  let line   = getline(a:lnum)
-  let offset = match(line, '\C'.a:regex)
-  let col    = offset + 1
-
-  while offset > -1 && s:IsInStringOrComment(a:lnum, col)
-    let offset = match(line, '\C'.a:regex, offset + 1)
-    let col = offset + 1
-  endwhile
-
-  if offset > -1
-    return col
-  else
-    return 0
-  endif
-endfunction
-
-" Locates the containing class/module's definition line, ignoring nested classes
-" along the way.
-"
-function! s:FindContainingClass()
-  let saved_position = getpos('.')
-
-  while searchpair(s:end_start_regex, s:end_middle_regex, s:end_end_regex, 'bW',
-        \ s:end_skip_expr) > 0
-    if expand('<cword>') =~# '\<class\|module\>'
-      let found_lnum = line('.')
-      call setpos('.', saved_position)
-      return found_lnum
-    endif
-  endwhile
-
-  call setpos('.', saved_position)
-  return 0
-endfunction
-
-" 3. GetRubyIndent Function {{{1
+" 2. GetRubyIndent Function {{{1
 " =========================
 
 function GetRubyIndent(...)
-  " 3.1. Setup {{{2
+  " 2.1. Setup {{{2
   " ----------
 
   let indent_info = {}
@@ -433,7 +179,7 @@ function GetRubyIndent(...)
 
   let indent_callback_names = []
 
-  " 3.2. Work on the current line {{{2
+  " 2.2. Work on the current line {{{2
   " -----------------------------
   call extend(indent_callback_names, [
         \ 's:AccessModifier',
@@ -445,7 +191,7 @@ function GetRubyIndent(...)
         \ 's:LeadingOperator',
         \ ])
 
-  " 3.3. Work on the previous line. {{{2
+  " 2.3. Work on the previous line. {{{2
   " -------------------------------
   call extend(indent_callback_names, [
         \ 's:EmptyInsideString',
@@ -460,7 +206,7 @@ function GetRubyIndent(...)
         \ 's:AfterIndentKeyword',
         \ ])
 
-  " 3.4. Work on the MSL line. {{{2
+  " 2.4. Work on the MSL line. {{{2
   " --------------------------
   call extend(indent_callback_names, [
         \ 's:PreviousNotMSL',
@@ -483,6 +229,9 @@ function GetRubyIndent(...)
   " By default, just return the previous line's indent
   return indent(indent_info.plnum)
 endfunction
+
+" 3. Indenting Logic Callbacks {{{1
+" ============================
 
 function! s:AccessModifier(info)
   let info = a:info
@@ -822,6 +571,260 @@ function! s:ContinuedHangingOperator(info)
   endif
 
   return -1
+endfunction
+
+" 4. Auxiliary Functions {{{1
+" ======================
+
+" Check if the character at lnum:col is inside a string, comment, or is ascii.
+function s:IsInStringOrComment(lnum, col)
+  return synIDattr(synID(a:lnum, a:col, 1), 'name') =~ s:syng_strcom
+endfunction
+
+" Check if the character at lnum:col is inside a string.
+function s:IsInString(lnum, col)
+  return synIDattr(synID(a:lnum, a:col, 1), 'name') =~ s:syng_string
+endfunction
+
+" Check if the character at lnum:col is inside a string or documentation.
+function s:IsInStringOrDocumentation(lnum, col)
+  return synIDattr(synID(a:lnum, a:col, 1), 'name') =~ s:syng_stringdoc
+endfunction
+
+" Check if the character at lnum:col is inside a string delimiter
+function s:IsInStringDelimiter(lnum, col)
+  return synIDattr(synID(a:lnum, a:col, 1), 'name') == 'rubyStringDelimiter'
+endfunction
+
+" Find line above 'lnum' that isn't empty, in a comment, or in a string.
+function s:PrevNonBlankNonString(lnum)
+  let in_block = 0
+  let lnum = prevnonblank(a:lnum)
+  while lnum > 0
+    " Go in and out of blocks comments as necessary.
+    " If the line isn't empty (with opt. comment) or in a string, end search.
+    let line = getline(lnum)
+    if line =~ '^=begin'
+      if in_block
+        let in_block = 0
+      else
+        break
+      endif
+    elseif !in_block && line =~ '^=end'
+      let in_block = 1
+    elseif !in_block && line !~ '^\s*#.*$' && !(s:IsInStringOrComment(lnum, 1)
+          \ && s:IsInStringOrComment(lnum, strlen(line)))
+      break
+    endif
+    let lnum = prevnonblank(lnum - 1)
+  endwhile
+  return lnum
+endfunction
+
+" Find line above 'lnum' that started the continuation 'lnum' may be part of.
+function s:GetMSL(lnum)
+  " Start on the line we're at and use its indent.
+  let msl = a:lnum
+  let msl_body = getline(msl)
+  let lnum = s:PrevNonBlankNonString(a:lnum - 1)
+  while lnum > 0
+    " If we have a continuation line, or we're in a string, use line as MSL.
+    " Otherwise, terminate search as we have found our MSL already.
+    let line = getline(lnum)
+
+    if !s:Match(msl, s:backslash_continuation_regex) &&
+          \ s:Match(lnum, s:backslash_continuation_regex)
+      " If the current line doesn't end in a backslash, but the previous one
+      " does, look for that line's msl
+      "
+      " Example:
+      "   foo = "bar" \
+      "     "baz"
+      "
+      let msl = lnum
+    elseif s:Match(msl, s:leading_operator_regex)
+      " If the current line starts with a leading operator, keep its indent
+      " and keep looking for an MSL.
+      let msl = lnum
+    elseif s:Match(lnum, s:splat_regex)
+      " If the above line looks like the "*" of a splat, use the current one's
+      " indentation.
+      "
+      " Example:
+      "   Hash[*
+      "     method_call do
+      "       something
+      "
+      return msl
+    elseif s:Match(lnum, s:non_bracket_continuation_regex) &&
+          \ s:Match(msl, s:non_bracket_continuation_regex)
+      " If the current line is a non-bracket continuation and so is the
+      " previous one, keep its indent and continue looking for an MSL.
+      "
+      " Example:
+      "   method_call one,
+      "     two,
+      "     three
+      "
+      let msl = lnum
+    elseif s:Match(lnum, s:dot_continuation_regex) &&
+          \ (s:Match(msl, s:bracket_continuation_regex) || s:Match(msl, s:block_continuation_regex))
+      " If the current line is a bracket continuation or a block-starter, but
+      " the previous is a dot, keep going to see if the previous line is the
+      " start of another continuation.
+      "
+      " Example:
+      "   parent.
+      "     method_call {
+      "     three
+      "
+      let msl = lnum
+    elseif s:Match(lnum, s:non_bracket_continuation_regex) &&
+          \ (s:Match(msl, s:bracket_continuation_regex) || s:Match(msl, s:block_continuation_regex))
+      " If the current line is a bracket continuation or a block-starter, but
+      " the previous is a non-bracket one, respect the previous' indentation,
+      " and stop here.
+      "
+      " Example:
+      "   method_call one,
+      "     two {
+      "     three
+      "
+      return lnum
+    elseif s:Match(lnum, s:bracket_continuation_regex) &&
+          \ (s:Match(msl, s:bracket_continuation_regex) || s:Match(msl, s:block_continuation_regex))
+      " If both lines are bracket continuations (the current may also be a
+      " block-starter), use the current one's and stop here
+      "
+      " Example:
+      "   method_call(
+      "     other_method_call(
+      "       foo
+      return msl
+    elseif s:Match(lnum, s:block_regex) &&
+          \ !s:Match(msl, s:continuation_regex) &&
+          \ !s:Match(msl, s:block_continuation_regex)
+      " If the previous line is a block-starter and the current one is
+      " mostly ordinary, use the current one as the MSL.
+      "
+      " Example:
+      "   method_call do
+      "     something
+      "     something_else
+      return msl
+    else
+      let col = match(line, s:continuation_regex) + 1
+      if (col > 0 && !s:IsInStringOrComment(lnum, col))
+            \ || s:IsInString(lnum, strlen(line))
+        let msl = lnum
+      else
+        break
+      endif
+    endif
+
+    let msl_body = getline(msl)
+    let lnum = s:PrevNonBlankNonString(lnum - 1)
+  endwhile
+  return msl
+endfunction
+
+" Check if line 'lnum' has more opening brackets than closing ones.
+function s:ExtraBrackets(lnum)
+  let opening = {'parentheses': [], 'braces': [], 'brackets': []}
+  let closing = {'parentheses': [], 'braces': [], 'brackets': []}
+
+  let line = getline(a:lnum)
+  let pos  = match(line, '[][(){}]', 0)
+
+  " Save any encountered opening brackets, and remove them once a matching
+  " closing one has been found. If a closing bracket shows up that doesn't
+  " close anything, save it for later.
+  while pos != -1
+    if !s:IsInStringOrComment(a:lnum, pos + 1)
+      if line[pos] == '('
+        call add(opening.parentheses, {'type': '(', 'pos': pos})
+      elseif line[pos] == ')'
+        if empty(opening.parentheses)
+          call add(closing.parentheses, {'type': ')', 'pos': pos})
+        else
+          let opening.parentheses = opening.parentheses[0:-2]
+        endif
+      elseif line[pos] == '{'
+        call add(opening.braces, {'type': '{', 'pos': pos})
+      elseif line[pos] == '}'
+        if empty(opening.braces)
+          call add(closing.braces, {'type': '}', 'pos': pos})
+        else
+          let opening.braces = opening.braces[0:-2]
+        endif
+      elseif line[pos] == '['
+        call add(opening.brackets, {'type': '[', 'pos': pos})
+      elseif line[pos] == ']'
+        if empty(opening.brackets)
+          call add(closing.brackets, {'type': ']', 'pos': pos})
+        else
+          let opening.brackets = opening.brackets[0:-2]
+        endif
+      endif
+    endif
+
+    let pos = match(line, '[][(){}]', pos + 1)
+  endwhile
+
+  " Find the rightmost brackets, since they're the ones that are important in
+  " both opening and closing cases
+  let rightmost_opening = {'type': '(', 'pos': -1}
+  let rightmost_closing = {'type': ')', 'pos': -1}
+
+  for opening in opening.parentheses + opening.braces + opening.brackets
+    if opening.pos > rightmost_opening.pos
+      let rightmost_opening = opening
+    endif
+  endfor
+
+  for closing in closing.parentheses + closing.braces + closing.brackets
+    if closing.pos > rightmost_closing.pos
+      let rightmost_closing = closing
+    endif
+  endfor
+
+  return [rightmost_opening, rightmost_closing]
+endfunction
+
+function s:Match(lnum, regex)
+  let line   = getline(a:lnum)
+  let offset = match(line, '\C'.a:regex)
+  let col    = offset + 1
+
+  while offset > -1 && s:IsInStringOrComment(a:lnum, col)
+    let offset = match(line, '\C'.a:regex, offset + 1)
+    let col = offset + 1
+  endwhile
+
+  if offset > -1
+    return col
+  else
+    return 0
+  endif
+endfunction
+
+" Locates the containing class/module's definition line, ignoring nested classes
+" along the way.
+"
+function! s:FindContainingClass()
+  let saved_position = getpos('.')
+
+  while searchpair(s:end_start_regex, s:end_middle_regex, s:end_end_regex, 'bW',
+        \ s:end_skip_expr) > 0
+    if expand('<cword>') =~# '\<class\|module\>'
+      let found_lnum = line('.')
+      call setpos('.', saved_position)
+      return found_lnum
+    endif
+  endwhile
+
+  call setpos('.', saved_position)
+  return 0
 endfunction
 
 " }}}1
