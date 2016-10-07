@@ -434,8 +434,6 @@ function GetRubyIndent(...)
   " 3.2. Work on the current line {{{2
   " -----------------------------
 
-  let ind = -1
-
   " If this line is an access modifier keyword, align according to the closest
   " class declaration.
   if g:ruby_indent_access_modifier_style == 'indent'
@@ -537,9 +535,6 @@ function GetRubyIndent(...)
     return 0
   endif
 
-  " Set up variables for the previous line.
-  let ind = indent(indent_info.plnum)
-
   if g:ruby_indent_access_modifier_style == 'indent'
     " If the previous line was a private/protected keyword, add a
     " level of indent.
@@ -596,13 +591,13 @@ function GetRubyIndent(...)
     if opening.pos != -1
       if opening.type == '(' && searchpair('(', '', ')', 'bW', s:skip_expr) > 0
         if col('.') + 1 == col('$')
-          return ind + sw
+          return indent(indent_info.plnum) + sw
         else
           return virtcol('.')
         endif
       else
         let nonspace = matchend(indent_info.pline, '\S', opening.pos + 1) - 1
-        return nonspace > 0 ? nonspace : ind + sw
+        return nonspace > 0 ? nonspace : indent(indent_info.plnum) + sw
       endif
     elseif closing.pos != -1
       call cursor(indent_info.plnum, closing.pos + 1)
@@ -656,11 +651,12 @@ function GetRubyIndent(...)
   if indent_info.plnum != indent_info.pline_msl
     " If previous line ends bracket and begins non-bracket continuation decrease indent by 1.
     if s:Match(indent_info.plnum, s:bracket_switch_continuation_regex)
-      return ind - 1
+      " TODO (2016-10-07) Wrong/unused? How could it be "1"?
+      return indent(indent_info.plnum) - 1
     " If previous line is a continuation return its indent.
     " TODO: the || s:IsInString() thing worries me a bit.
     elseif s:Match(indent_info.plnum, s:non_bracket_continuation_regex) || s:IsInString(indent_info.plnum, strlen(line))
-      return ind
+      return indent(indent_info.plnum)
     endif
   endif
 
@@ -688,7 +684,8 @@ function GetRubyIndent(...)
 
   " }}}2
 
-  return ind
+  " By default, just return the previous line's indent
+  return indent(indent_info.plnum)
 endfunction
 
 " }}}1
