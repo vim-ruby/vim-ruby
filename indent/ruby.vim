@@ -410,24 +410,26 @@ function GetRubyIndent(...)
     let sw = &sw
   endif
 
+  let indent_info = {}
+
   " For the current line, use the first argument if given, else v:lnum
-  let clnum = a:0 ? a:1 : v:lnum
-  let cline = getline(clnum)
+  let indent_info.clnum = a:0 ? a:1 : v:lnum
+  let indent_info.cline = getline(indent_info.clnum)
 
   " Set up variables for restoring position in file.  Could use clnum here.
   let vcol = col('.')
 
   " Previous line number
-  let plnum = s:PrevNonBlankNonString(clnum - 1)
-  let pline = getline(plnum)
+  let indent_info.plnum = s:PrevNonBlankNonString(indent_info.clnum - 1)
+  let indent_info.pline = getline(indent_info.plnum)
 
   " Most Significant line based on the current one -- in case it's a
   " contination of something above
-  let cline_msl = s:GetMSL(clnum)
+  let indent_info.cline_msl = s:GetMSL(indent_info.clnum)
 
   " Most Significant line based on the previous one -- in case it's a
   " contination of something above
-  let pline_msl = s:GetMSL(plnum)
+  let indent_info.pline_msl = s:GetMSL(indent_info.plnum)
 
   " 3.2. Work on the current line {{{2
   " -----------------------------
@@ -437,14 +439,14 @@ function GetRubyIndent(...)
   " If this line is an access modifier keyword, align according to the closest
   " class declaration.
   if g:ruby_indent_access_modifier_style == 'indent'
-    if s:Match(clnum, s:access_modifier_regex)
+    if s:Match(indent_info.clnum, s:access_modifier_regex)
       let class_lnum = s:FindContainingClass()
       if class_lnum > 0
         return indent(class_lnum) + sw
       endif
     endif
   elseif g:ruby_indent_access_modifier_style == 'outdent'
-    if s:Match(clnum, s:access_modifier_regex)
+    if s:Match(indent_info.clnum, s:access_modifier_regex)
       let class_lnum = s:FindContainingClass()
       if class_lnum > 0
         return indent(class_lnum)
@@ -455,31 +457,31 @@ function GetRubyIndent(...)
   " If we got a closing bracket on an empty line, find its match and indent
   " according to it.  For parentheses we indent to its column - 1, for the
   " others we indent to the containing line's MSL's level.  Return -1 if fail.
-  let col = matchend(cline, '^\s*[]})]')
-  if col > 0 && !s:IsInStringOrComment(clnum, col)
-    call cursor(clnum, col)
-    let bs = strpart('(){}[]', stridx(')}]', cline[col - 1]) * 2, 2)
+  let col = matchend(indent_info.cline, '^\s*[]})]')
+  if col > 0 && !s:IsInStringOrComment(indent_info.clnum, col)
+    call cursor(indent_info.clnum, col)
+    let bs = strpart('(){}[]', stridx(')}]', indent_info.cline[col - 1]) * 2, 2)
     if searchpair(escape(bs[0], '\['), '', bs[1], 'bW', s:skip_expr) > 0
-      if cline[col-1]==')' && col('.') != col('$') - 1
+      if indent_info.cline[col-1]==')' && col('.') != col('$') - 1
         let ind = virtcol('.') - 1
       elseif g:ruby_indent_block_style == 'do'
-        let ind = indent(clnum)
+        let ind = indent(indent_info.clnum)
       else " g:ruby_indent_block_style == 'expression'
-        let ind = indent(cline_msl)
+        let ind = indent(indent_info.cline_msl)
       endif
     endif
     return ind
   endif
 
   " If we have a =begin or =end set indent to first column.
-  if match(cline, '^\s*\%(=begin\|=end\)$') != -1
+  if match(indent_info.cline, '^\s*\%(=begin\|=end\)$') != -1
     return 0
   endif
 
   " If we have a deindenting keyword, find its match and indent to its level.
   " TODO: this is messy
-  if s:Match(clnum, s:ruby_deindent_keywords)
-    call cursor(clnum, 1)
+  if s:Match(indent_info.clnum, s:ruby_deindent_keywords)
+    call cursor(indent_info.clnum, 1)
     if searchpair(s:end_start_regex, s:end_middle_regex, s:end_end_regex, 'bW',
           \ s:end_skip_expr) > 0
       let msl  = s:GetMSL(line('.'))
@@ -505,81 +507,81 @@ function GetRubyIndent(...)
   endif
 
   " If we are in a multi-line string or line-comment, don't do anything to it.
-  if s:IsInStringOrDocumentation(clnum, matchend(cline, '^\s*') + 1)
+  if s:IsInStringOrDocumentation(indent_info.clnum, matchend(indent_info.cline, '^\s*') + 1)
     return indent('.')
   endif
 
   " If we are at the closing delimiter of a "<<" heredoc-style string, set the
   " indent to 0.
-  if cline =~ '^\k\+\s*$'
-        \ && s:IsInStringDelimiter(clnum, 1)
-        \ && search('\V<<'.cline, 'nbW') > 0
+  if indent_info.cline =~ '^\k\+\s*$'
+        \ && s:IsInStringDelimiter(indent_info.clnum, 1)
+        \ && search('\V<<'.indent_info.cline, 'nbW') > 0
     return 0
   endif
 
   " If the current line starts with a leading operator, add a level of indent.
-  if s:Match(clnum, s:leading_operator_regex)
-    return indent(cline_msl) + sw
+  if s:Match(indent_info.clnum, s:leading_operator_regex)
+    return indent(indent_info.cline_msl) + sw
   endif
 
   " 3.3. Work on the previous line. {{{2
   " -------------------------------
 
   " If the line is empty and inside a string, use the previous line.
-  if cline =~ '^\s*$' && plnum != prevnonblank(clnum - 1)
-    return indent(prevnonblank(clnum))
+  if indent_info.cline =~ '^\s*$' && indent_info.plnum != prevnonblank(indent_info.clnum - 1)
+    return indent(prevnonblank(indent_info.clnum))
   endif
 
   " At the start of the file use zero indent.
-  if plnum == 0
+  if indent_info.plnum == 0
     return 0
   endif
 
   " Set up variables for the previous line.
-  let ind = indent(plnum)
+  let ind = indent(indent_info.plnum)
 
   if g:ruby_indent_access_modifier_style == 'indent'
     " If the previous line was a private/protected keyword, add a
     " level of indent.
-    if s:Match(plnum, s:indent_access_modifier_regex)
-      return indent(plnum) + sw
+    if s:Match(indent_info.plnum, s:indent_access_modifier_regex)
+      return indent(indent_info.plnum) + sw
     endif
   elseif g:ruby_indent_access_modifier_style == 'outdent'
     " If the previous line was a private/protected/public keyword, add
     " a level of indent, since the keyword has been out-dented.
-    if s:Match(plnum, s:access_modifier_regex)
-      return indent(plnum) + sw
+    if s:Match(indent_info.plnum, s:access_modifier_regex)
+      return indent(indent_info.plnum) + sw
     endif
   endif
 
-  if s:Match(plnum, s:continuable_regex) && s:Match(plnum, s:continuation_regex)
-    return indent(pline_msl) + sw + sw
+  if s:Match(indent_info.plnum, s:continuable_regex) && s:Match(indent_info.plnum, s:continuation_regex)
+    return indent(indent_info.pline_msl) + sw + sw
   endif
 
   " If the previous line ended with a block opening, add a level of indent.
-  if s:Match(plnum, s:block_regex)
+  if s:Match(indent_info.plnum, s:block_regex)
     if g:ruby_indent_block_style == 'do'
       " don't align to the msl, align to the "do"
-      let ind = indent(plnum) + sw
-    elseif getline(pline_msl) =~ '=\s*\(#.*\)\=$'
+      let ind = indent(indent_info.plnum) + sw
+    elseif getline(indent_info.pline_msl) =~ '=\s*\(#.*\)\=$'
       " in the case of assignment to the msl, align to the starting line,
       " not to the msl
-      let ind = indent(plnum) + sw
+      let ind = indent(indent_info.plnum) + sw
     else
-      let ind = indent(pline_msl) + sw
+      let ind = indent(indent_info.pline_msl) + sw
     endif
     return ind
   endif
 
   " If the previous line started with a leading operator, use its MSL's level
   " of indent
-  if s:Match(plnum, s:leading_operator_regex)
-    return indent(pline_msl)
+  if s:Match(indent_info.plnum, s:leading_operator_regex)
+    return indent(indent_info.pline_msl)
   endif
 
   " If the previous line ended with the "*" of a splat, add a level of indent
-  if pline =~ s:splat_regex
-    return indent(plnum) + sw
+  if indent_info.pline =~ s:splat_regex
+    return indent(indent_info.plnum) + sw
   endif
 
   " If the previous line contained unclosed opening brackets and we are still
@@ -588,8 +590,8 @@ function GetRubyIndent(...)
   "
   " If it contained hanging closing brackets, find the rightmost one, find its
   " match and indent according to that.
-  if pline =~ '[[({]' || pline =~ '[])}]\s*\%(#.*\)\=$'
-    let [opening, closing] = s:ExtraBrackets(plnum)
+  if indent_info.pline =~ '[[({]' || indent_info.pline =~ '[])}]\s*\%(#.*\)\=$'
+    let [opening, closing] = s:ExtraBrackets(indent_info.plnum)
 
     if opening.pos != -1
       if opening.type == '(' && searchpair('(', '', ')', 'bW', s:skip_expr) > 0
@@ -599,11 +601,11 @@ function GetRubyIndent(...)
           return virtcol('.')
         endif
       else
-        let nonspace = matchend(pline, '\S', opening.pos + 1) - 1
+        let nonspace = matchend(indent_info.pline, '\S', opening.pos + 1) - 1
         return nonspace > 0 ? nonspace : ind + sw
       endif
     elseif closing.pos != -1
-      call cursor(plnum, closing.pos + 1)
+      call cursor(indent_info.plnum, closing.pos + 1)
       normal! %
 
       if s:Match(line('.'), s:ruby_indent_keywords)
@@ -612,15 +614,15 @@ function GetRubyIndent(...)
         return indent(s:GetMSL(line('.')))
       endif
     else
-      call cursor(clnum, vcol)
+      call cursor(indent_info.clnum, vcol)
     end
   endif
 
   " If the previous line ended with an "end", match that "end"s beginning's
   " indent.
-  let col = s:Match(plnum, '\%(^\|[^.:@$]\)\<end\>\s*\%(#.*\)\=$')
+  let col = s:Match(indent_info.plnum, '\%(^\|[^.:@$]\)\<end\>\s*\%(#.*\)\=$')
   if col > 0
-    call cursor(plnum, col)
+    call cursor(indent_info.plnum, col)
     if searchpair(s:end_start_regex, '', s:end_end_regex, 'bW',
           \ s:end_skip_expr) > 0
       let n = line('.')
@@ -633,14 +635,14 @@ function GetRubyIndent(...)
     endif
   end
 
-  let col = s:Match(plnum, s:ruby_indent_keywords)
+  let col = s:Match(indent_info.plnum, s:ruby_indent_keywords)
   if col > 0
-    call cursor(plnum, col)
+    call cursor(indent_info.plnum, col)
     let ind = virtcol('.') - 1 + sw
     " TODO: make this better (we need to count them) (or, if a searchpair
     " fails, we know that something is lacking an end and thus we indent a
     " level
-    if s:Match(plnum, s:end_end_regex)
+    if s:Match(indent_info.plnum, s:end_end_regex)
       let ind = indent('.')
     endif
     return ind
@@ -651,13 +653,13 @@ function GetRubyIndent(...)
 
   " Set up variables to use and search for MSL to the previous line.
   " If the previous line wasn't a MSL.
-  if plnum != pline_msl
+  if indent_info.plnum != indent_info.pline_msl
     " If previous line ends bracket and begins non-bracket continuation decrease indent by 1.
-    if s:Match(plnum, s:bracket_switch_continuation_regex)
+    if s:Match(indent_info.plnum, s:bracket_switch_continuation_regex)
       return ind - 1
     " If previous line is a continuation return its indent.
     " TODO: the || s:IsInString() thing worries me a bit.
-    elseif s:Match(plnum, s:non_bracket_continuation_regex) || s:IsInString(plnum, strlen(line))
+    elseif s:Match(indent_info.plnum, s:non_bracket_continuation_regex) || s:IsInString(indent_info.plnum, strlen(line))
       return ind
     endif
   endif
@@ -665,9 +667,9 @@ function GetRubyIndent(...)
   " If the MSL line had an indenting keyword in it, add a level of indent.
   " TODO: this does not take into account contrived things such as
   " module Foo; class Bar; end
-  if s:Match(pline_msl, s:ruby_indent_keywords)
-    let ind = indent(pline_msl) + sw
-    if s:Match(pline_msl, s:end_end_regex)
+  if s:Match(indent_info.pline_msl, s:ruby_indent_keywords)
+    let ind = indent(indent_info.pline_msl) + sw
+    if s:Match(indent_info.pline_msl, s:end_end_regex)
       let ind = ind - sw
     endif
     return ind
@@ -675,11 +677,11 @@ function GetRubyIndent(...)
 
   " If the previous line ended with [*+/.,-=], but wasn't a block ending or a
   " closing bracket, indent one extra level.
-  if s:Match(pline_msl, s:non_bracket_continuation_regex) && !s:Match(pline_msl, '^\s*\([\])}]\|end\)')
-    if pline_msl == plnum
-      let ind = indent(pline_msl) + sw
+  if s:Match(indent_info.pline_msl, s:non_bracket_continuation_regex) && !s:Match(indent_info.pline_msl, '^\s*\([\])}]\|end\)')
+    if indent_info.pline_msl == indent_info.plnum
+      let ind = indent(indent_info.pline_msl) + sw
     else
-      let ind = indent(pline_msl)
+      let ind = indent(indent_info.pline_msl)
     endif
     return ind
   endif
