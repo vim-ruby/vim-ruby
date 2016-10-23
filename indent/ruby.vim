@@ -4,6 +4,9 @@
 " URL:			https://github.com/vim-ruby/vim-ruby
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
 
+" TODO Extract "basic" checks to top, optimize them as much as possible
+" TODO Order checks based on common occurrence?
+
 " 0. Initialization {{{1
 " =================
 
@@ -163,25 +166,15 @@ function GetRubyIndent(...)
   let indent_info.cline = getline(indent_info.clnum)
 
   " Set up variables for restoring position in file.  Could use clnum here.
-  let vcol = col('.')
-
-  " Previous line number
-  let indent_info.plnum = s:PrevNonBlankNonString(indent_info.clnum - 1)
-  let indent_info.pline = getline(indent_info.plnum)
+  let indent_info.col = col('.')
 
   " Most Significant line based on the current one -- in case it's a
   " contination of something above
   let indent_info.cline_msl = s:GetMSL(indent_info.clnum)
 
-  " Most Significant line based on the previous one -- in case it's a
-  " contination of something above
-  let indent_info.pline_msl = s:GetMSL(indent_info.plnum)
-
-  let indent_callback_names = []
-
   " 2.2. Work on the current line {{{2
   " -----------------------------
-  call extend(indent_callback_names, [
+  let indent_callback_names = [
         \ 's:AccessModifier',
         \ 's:ClosingBracketOnEmptyLine',
         \ 's:BlockComment',
@@ -189,11 +182,21 @@ function GetRubyIndent(...)
         \ 's:MultilineStringOrLineComment',
         \ 's:ClosingHeredocDelimiter',
         \ 's:LeadingOperator',
-        \ ])
+        \ ]
+
+  for callback_name in indent_callback_names
+    " Decho "Running: ".callback_name
+    let indent = call(function(callback_name), [indent_info])
+
+    if indent >= 0
+      " Decho "Match: ".callback_name
+      return indent
+    endif
+  endfor
 
   " 2.3. Work on the previous line. {{{2
   " -------------------------------
-  call extend(indent_callback_names, [
+  let indent_callback_names = [
         \ 's:EmptyInsideString',
         \ 's:StartOfFile',
         \ 's:AfterAccessModifier',
@@ -204,15 +207,33 @@ function GetRubyIndent(...)
         \ 's:AfterUnbalancedBracket',
         \ 's:AfterEndKeyword',
         \ 's:AfterIndentKeyword',
-        \ ])
+        \ ]
+
+  " Previous line number
+  let indent_info.plnum = s:PrevNonBlankNonString(indent_info.clnum - 1)
+  let indent_info.pline = getline(indent_info.plnum)
+
+  " Most Significant line based on the previous one -- in case it's a
+  " contination of something above
+  let indent_info.pline_msl = s:GetMSL(indent_info.plnum)
+
+  for callback_name in indent_callback_names
+    " Decho "Running: ".callback_name
+    let indent = call(function(callback_name), [indent_info])
+
+    if indent >= 0
+      " Decho "Match: ".callback_name
+      return indent
+    endif
+  endfor
 
   " 2.4. Work on the MSL line. {{{2
   " --------------------------
-  call extend(indent_callback_names, [
+  let indent_callback_names = [
         \ 's:PreviousNotMSL',
         \ 's:IndentingKeywordInMSL',
         \ 's:ContinuedHangingOperator',
-        \ ])
+        \ ]
 
   for callback_name in indent_callback_names
     " Decho "Running: ".callback_name
@@ -233,8 +254,8 @@ endfunction
 " 3. Indenting Logic Callbacks {{{1
 " ============================
 
-function! s:AccessModifier(info)
-  let info = a:info
+function! s:AccessModifier(cline_info)
+  let info = a:cline_info
 
   " If this line is an access modifier keyword, align according to the closest
   " class declaration.
@@ -257,8 +278,8 @@ function! s:AccessModifier(info)
   return -1
 endfunction
 
-function! s:ClosingBracketOnEmptyLine(info)
-  let info = a:info
+function! s:ClosingBracketOnEmptyLine(cline_info)
+  let info = a:cline_info
 
   " If we got a closing bracket on an empty line, find its match and indent
   " according to it.  For parentheses we indent to its column - 1, for the
@@ -285,16 +306,16 @@ function! s:ClosingBracketOnEmptyLine(info)
   return -1
 endfunction
 
-function! s:BlockComment(info)
+function! s:BlockComment(cline_info)
   " If we have a =begin or =end set indent to first column.
-  if match(a:info.cline, '^\s*\%(=begin\|=end\)$') != -1
+  if match(a:cline_info.cline, '^\s*\%(=begin\|=end\)$') != -1
     return 0
   endif
   return -1
 endfunction
 
-function! s:DeindentingKeyword(info)
-  let info = a:info
+function! s:DeindentingKeyword(cline_info)
+  let info = a:cline_info
 
   " If we have a deindenting keyword, find its match and indent to its level.
   " TODO: this is messy
@@ -328,16 +349,18 @@ function! s:DeindentingKeyword(info)
   return -1
 endfunction
 
-function! s:MultilineStringOrLineComment(info)
+function! s:MultilineStringOrLineComment(cline_info)
+  let info = a:cline_info
+
   " If we are in a multi-line string or line-comment, don't do anything to it.
-  if s:IsInStringOrDocumentation(a:info.clnum, matchend(a:info.cline, '^\s*') + 1)
-    return indent(a:info.clnum)
+  if s:IsInStringOrDocumentation(info.clnum, matchend(info.cline, '^\s*') + 1)
+    return indent(info.clnum)
   endif
   return -1
 endfunction
 
-function! s:ClosingHeredocDelimiter(info)
-  let info = a:info
+function! s:ClosingHeredocDelimiter(cline_info)
+  let info = a:cline_info
 
   " If we are at the closing delimiter of a "<<" heredoc-style string, set the
   " indent to 0.
@@ -350,33 +373,35 @@ function! s:ClosingHeredocDelimiter(info)
   return -1
 endfunction
 
-function! s:LeadingOperator(info)
+function! s:LeadingOperator(cline_info)
   " If the current line starts with a leading operator, add a level of indent.
-  if s:Match(a:info.clnum, s:leading_operator_regex)
-    return indent(a:info.cline_msl) + a:info.sw
+  if s:Match(a:cline_info.clnum, s:leading_operator_regex)
+    return indent(a:cline_info.cline_msl) + a:cline_info.sw
   endif
   return -1
 endfunction
 
-function! s:EmptyInsideString(info)
+function! s:EmptyInsideString(pline_info)
   " If the line is empty and inside a string, use the previous line.
   " TODO (2016-10-07) This doesn't seem right, investigate
-  if a:info.cline =~ '^\s*$' && a:info.plnum != prevnonblank(a:info.clnum - 1)
-    return indent(prevnonblank(a:info.clnum))
+  let info = a:pline_info
+
+  if info.cline =~ '^\s*$' && info.plnum != prevnonblank(info.clnum - 1)
+    return indent(prevnonblank(info.clnum))
   endif
   return -1
 endfunction
 
-function! s:StartOfFile(info)
+function! s:StartOfFile(pline_info)
   " At the start of the file use zero indent.
-  if a:info.plnum == 0
+  if a:pline_info.plnum == 0
     return 0
   endif
   return -1
 endfunction
 
-function! s:AfterAccessModifier(info)
-  let info = a:info
+function! s:AfterAccessModifier(pline_info)
+  let info = a:pline_info
 
   if g:ruby_indent_access_modifier_style == 'indent'
     " If the previous line was a private/protected keyword, add a
@@ -394,17 +419,19 @@ function! s:AfterAccessModifier(info)
   return -1
 endfunction
 
-function! s:ContinuedLine(info)
+function! s:ContinuedLine(pline_info)
+  let info = a:pline_info
+
   " TODO (2016-10-07) Why two shiftwidths? Investigate
-  if s:Match(a:info.plnum, s:continuable_regex) &&
-        \ s:Match(a:info.plnum, s:continuation_regex)
-    return indent(a:info.pline_msl) + a:info.sw + a:info.sw
+  if s:Match(info.plnum, s:continuable_regex) &&
+        \ s:Match(info.plnum, s:continuation_regex)
+    return indent(info.pline_msl) + info.sw + info.sw
   endif
   return -1
 endfunction
 
-function! s:AfterBlockOpening(info)
-  let info = a:info
+function! s:AfterBlockOpening(pline_info)
+  let info = a:pline_info
 
   " If the previous line ended with a block opening, add a level of indent.
   if s:Match(info.plnum, s:block_regex)
@@ -425,25 +452,27 @@ function! s:AfterBlockOpening(info)
   return -1
 endfunction
 
-function! s:AfterLeadingOperator(info)
+function! s:AfterLeadingOperator(pline_info)
   " If the previous line started with a leading operator, use its MSL's level
   " of indent
-  if s:Match(a:info.plnum, s:leading_operator_regex)
-    return indent(a:info.pline_msl)
+  if s:Match(a:pline_info.plnum, s:leading_operator_regex)
+    return indent(a:pline_info.pline_msl)
   endif
   return -1
 endfunction
 
-function! s:AfterHangingSplat(info)
+function! s:AfterHangingSplat(pline_info)
+  let info = a:pline_info
+
   " If the previous line ended with the "*" of a splat, add a level of indent
-  if a:info.pline =~ s:splat_regex
-    return indent(a:info.plnum) + a:info.sw
+  if info.pline =~ s:splat_regex
+    return indent(info.plnum) + info.sw
   endif
   return -1
 endfunction
 
-function! s:AfterUnbalancedBracket(info)
-  let info = a:info
+function! s:AfterUnbalancedBracket(pline_info)
+  let info = a:pline_info
 
   " If the previous line contained unclosed opening brackets and we are still
   " in them, find the rightmost one and add indent depending on the bracket
@@ -475,15 +504,15 @@ function! s:AfterUnbalancedBracket(info)
         return indent(s:GetMSL(line('.')))
       endif
     else
-      call cursor(info.clnum, vcol)
+      call cursor(info.clnum, info.col)
     end
   endif
 
   return -1
 endfunction
 
-function! s:AfterEndKeyword(info)
-  let info = a:info
+function! s:AfterEndKeyword(pline_info)
+  let info = a:pline_info
   " If the previous line ended with an "end", match that "end"s beginning's
   " indent.
   let col = s:Match(info.plnum, '\%(^\|[^.:@$]\)\<end\>\s*\%(#.*\)\=$')
@@ -503,8 +532,8 @@ function! s:AfterEndKeyword(info)
   return -1
 endfunction
 
-function! s:AfterIndentKeyword(info)
-  let info = a:info
+function! s:AfterIndentKeyword(pline_info)
+  let info = a:pline_info
   let col = s:Match(info.plnum, s:ruby_indent_keywords)
 
   if col > 0
@@ -522,8 +551,8 @@ function! s:AfterIndentKeyword(info)
   return -1
 endfunction
 
-function! s:PreviousNotMSL(info)
-  let info = a:info
+function! s:PreviousNotMSL(msl_info)
+  let info = a:msl_info
 
   " If the previous line wasn't a MSL
   if info.plnum != info.pline_msl
@@ -541,8 +570,8 @@ function! s:PreviousNotMSL(info)
   return -1
 endfunction
 
-function! s:IndentingKeywordInMSL(info)
-  let info = a:info
+function! s:IndentingKeywordInMSL(msl_info)
+  let info = a:msl_info
   " If the MSL line had an indenting keyword in it, add a level of indent.
   " TODO: this does not take into account contrived things such as
   " module Foo; class Bar; end
@@ -556,8 +585,8 @@ function! s:IndentingKeywordInMSL(info)
   return -1
 endfunction
 
-function! s:ContinuedHangingOperator(info)
-  let info = a:info
+function! s:ContinuedHangingOperator(msl_info)
+  let info = a:msl_info
 
   " If the previous line ended with [*+/.,-=], but wasn't a block ending or a
   " closing bracket, indent one extra level.
@@ -625,7 +654,6 @@ endfunction
 function s:GetMSL(lnum)
   " Start on the line we're at and use its indent.
   let msl = a:lnum
-  let msl_body = getline(msl)
   let lnum = s:PrevNonBlankNonString(a:lnum - 1)
   while lnum > 0
     " If we have a continuation line, or we're in a string, use line as MSL.
@@ -722,7 +750,6 @@ function s:GetMSL(lnum)
       endif
     endif
 
-    let msl_body = getline(msl)
     let lnum = s:PrevNonBlankNonString(lnum - 1)
   endwhile
   return msl
