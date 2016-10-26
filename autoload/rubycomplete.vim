@@ -93,7 +93,7 @@ function! s:GetBufferRubyEntity( name, type, ... )
 
     let stopline = 1
 
-    let crex = '^\s*\<' . a:type . '\>\s*\<' . escape(a:name, '*') . '\>\s*\(<\s*.*\s*\)\?'
+    let crex = '^\s*\<' . a:type . '\>\s*\<' . a:name . '\>\s*\(<\s*.*\s*\)\?'
     let [lnum,lcol] = searchpos( crex, 'w' )
     "let [lnum,lcol] = searchpairpos( crex . '\zs', '', '\(end\|}\)', 'w' )
 
@@ -462,17 +462,12 @@ class VimRubyCompletion
 
     bootfile = rails_config + "boot.rb"
     envfile = rails_config + "environment.rb"
+    appfile = rails_config + "application.rb"
     if File.exists?( bootfile ) && File.exists?( envfile )
       begin
         require bootfile
         require envfile
-        begin
-          require 'console_app'
-          require 'console_with_helpers'
-        rescue Exception
-          dprint "Rails 1.1+ Error %s" % $!
-          # assume 1.0
-        end
+        require appfile
         #eval( "Rails::Initializer.run" ) #not necessary?
         VIM::command('let s:rubycomplete_rails_loaded = 1')
         dprint "rails loaded"
