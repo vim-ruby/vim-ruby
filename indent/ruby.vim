@@ -415,13 +415,19 @@ function! s:AfterAccessModifier(pline_info)
   return -1
 endfunction
 
+" Example:
+"
+"   if foo || bar ||
+"       baz || bing
+"     puts "foo"
+"   end
+"
 function! s:ContinuedLine(pline_info)
   let info = a:pline_info
 
-  " TODO (2016-10-07) Why two shiftwidths? Investigate
   if s:Match(info.plnum, s:continuable_regex) &&
         \ s:Match(info.plnum, s:continuation_regex)
-    return indent(info.pline_msl) + info.sw + info.sw
+    return indent(s:GetMSL(info.plnum)) + info.sw + info.sw
   endif
   return -1
 endfunction
