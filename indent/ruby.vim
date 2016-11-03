@@ -168,10 +168,6 @@ function GetRubyIndent(...)
   " Set up variables for restoring position in file.  Could use clnum here.
   let indent_info.col = col('.')
 
-  " Most Significant line based on the current one -- in case it's a
-  " contination of something above
-  let indent_info.cline_msl = s:GetMSL(indent_info.clnum)
-
   " 2.2. Work on the current line {{{2
   " -----------------------------
   let indent_callback_names = [
@@ -213,10 +209,6 @@ function GetRubyIndent(...)
   let indent_info.plnum = s:PrevNonBlankNonString(indent_info.clnum - 1)
   let indent_info.pline = getline(indent_info.plnum)
 
-  " Most Significant line based on the previous one -- in case it's a
-  " contination of something above
-  let indent_info.pline_msl = s:GetMSL(indent_info.plnum)
-
   for callback_name in indent_callback_names
     " Decho "Running: ".callback_name
     let indent = call(function(callback_name), [indent_info])
@@ -234,6 +226,10 @@ function GetRubyIndent(...)
         \ 's:IndentingKeywordInMSL',
         \ 's:ContinuedHangingOperator',
         \ ]
+
+  " Most Significant line based on the previous one -- in case it's a
+  " contination of something above
+  let indent_info.pline_msl = s:GetMSL(indent_info.plnum)
 
   for callback_name in indent_callback_names
     " Decho "Running: ".callback_name
@@ -296,7 +292,7 @@ function! s:ClosingBracketOnEmptyLine(cline_info)
       elseif g:ruby_indent_block_style == 'do'
         let ind = indent(info.clnum)
       else " g:ruby_indent_block_style == 'expression'
-        let ind = indent(info.cline_msl)
+        let ind = indent(s:GetMSL(info.clnum))
       endif
     endif
 
@@ -376,7 +372,7 @@ endfunction
 function! s:LeadingOperator(cline_info)
   " If the current line starts with a leading operator, add a level of indent.
   if s:Match(a:cline_info.clnum, s:leading_operator_regex)
-    return indent(a:cline_info.cline_msl) + a:cline_info.sw
+    return indent(s:GetMSL(a:cline_info.clnum)) + a:cline_info.sw
   endif
   return -1
 endfunction
@@ -438,12 +434,16 @@ function! s:AfterBlockOpening(pline_info)
     if g:ruby_indent_block_style == 'do'
       " don't align to the msl, align to the "do"
       let ind = indent(info.plnum) + info.sw
-    elseif getline(info.pline_msl) =~ '=\s*\(#.*\)\=$'
-      " in the case of assignment to the msl, align to the starting line,
-      " not to the msl
-      let ind = indent(info.plnum) + info.sw
     else
-      let ind = indent(info.pline_msl) + info.sw
+      let pline_msl = s:GetMSL(info.plnum)
+
+      if getline(pline_msl) =~ '=\s*\(#.*\)\=$'
+        " in the case of assignment to the msl, align to the starting line,
+        " not to the msl
+        let ind = indent(info.plnum) + info.sw
+      else
+        let ind = indent(pline_msl) + info.sw
+      endif
     endif
 
     return ind
@@ -456,7 +456,7 @@ function! s:AfterLeadingOperator(pline_info)
   " If the previous line started with a leading operator, use its MSL's level
   " of indent
   if s:Match(a:pline_info.plnum, s:leading_operator_regex)
-    return indent(a:pline_info.pline_msl)
+    return indent(s:GetMSL(a:pline_info.plnum))
   endif
   return -1
 endfunction
