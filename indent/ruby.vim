@@ -181,11 +181,11 @@ function GetRubyIndent(...)
         \ ]
 
   for callback_name in indent_callback_names
-    " Decho "Running: ".callback_name
+"    Decho "Running: ".callback_name
     let indent = call(function(callback_name), [indent_info])
 
     if indent >= 0
-      " Decho "Match: ".callback_name
+"      Decho "Match: ".callback_name
       return indent
     endif
   endfor
@@ -210,11 +210,11 @@ function GetRubyIndent(...)
   let indent_info.pline = getline(indent_info.plnum)
 
   for callback_name in indent_callback_names
-    " Decho "Running: ".callback_name
+"    Decho "Running: ".callback_name
     let indent = call(function(callback_name), [indent_info])
 
     if indent >= 0
-      " Decho "Match: ".callback_name
+"      Decho "Match: ".callback_name
       return indent
     endif
   endfor
@@ -232,11 +232,11 @@ function GetRubyIndent(...)
   let indent_info.pline_msl = s:GetMSL(indent_info.plnum)
 
   for callback_name in indent_callback_names
-    " Decho "Running: ".callback_name
+"    Decho "Running: ".callback_name
     let indent = call(function(callback_name), [indent_info])
 
     if indent >= 0
-      " Decho "Match: ".callback_name
+"      Decho "Match: ".callback_name
       return indent
     endif
   endfor
@@ -244,6 +244,7 @@ function GetRubyIndent(...)
   " }}}2
 
   " By default, just return the previous line's indent
+"  Decho "Default case matched"
   return indent(indent_info.plnum)
 endfunction
 
