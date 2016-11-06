@@ -379,8 +379,8 @@ function! s:LeadingOperator(cline_info)
 endfunction
 
 function! s:EmptyInsideString(pline_info)
-  " If the line is empty and inside a string, use the previous line.
-  " TODO (2016-10-07) This doesn't seem right, investigate
+  " If the line is empty and inside a string (plnum would not be the real
+  " prevnonblank in that case), use the previous line's indent
   let info = a:pline_info
 
   if info.cline =~ '^\s*$' && info.plnum != prevnonblank(info.clnum - 1)
