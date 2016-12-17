@@ -285,15 +285,16 @@ function! s:ClosingBracketOnEmptyLine(cline_info)
 
   if col > 0 && !s:IsInStringOrComment(info.clnum, col)
     call cursor(info.clnum, col)
-    let bs = strpart('(){}[]', stridx(')}]', info.cline[col - 1]) * 2, 2)
+    let closing_bracket = info.cline[col - 1]
+    let bracket_pair = strpart('(){}[]', stridx(')}]', closing_bracket) * 2, 2)
 
-    if searchpair(escape(bs[0], '\['), '', bs[1], 'bW', s:skip_expr) > 0
-      if info.cline[col-1]==')' && col('.') != col('$') - 1
+    if searchpair(escape(bracket_pair[0], '\['), '', bracket_pair[1], 'bW', s:skip_expr) > 0
+      if closing_bracket == ')' && col('.') != col('$') - 1
         let ind = virtcol('.') - 1
       elseif g:ruby_indent_block_style == 'do'
         let ind = indent(info.clnum)
       else " g:ruby_indent_block_style == 'expression'
-        let ind = indent(s:GetMSL(info.clnum))
+        let ind = indent(s:GetMSL(line('.')))
       endif
     endif
 
