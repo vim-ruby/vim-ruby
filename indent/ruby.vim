@@ -245,7 +245,7 @@ function GetRubyIndent(...)
 
   " By default, just return the previous line's indent
 "  Decho "Default case matched"
-  return -1
+  return indent(indent_info.plnum)
 endfunction
 
 " 3. Indenting Logic Callbacks {{{1
