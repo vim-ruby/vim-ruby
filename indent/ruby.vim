@@ -226,7 +226,7 @@ function GetRubyIndent(...)
 
   " Most Significant line based on the previous one -- in case it's a
   " contination of something above
-  let indent_info.pline_msl = s:GetMSL(indent_info.plnum)
+  let indent_info.plnum_msl = s:GetMSL(indent_info.plnum)
 
   for callback_name in indent_callback_names
 "    Decho "Running: ".callback_name
@@ -440,14 +440,14 @@ function! s:AfterBlockOpening(pline_info)
       " don't align to the msl, align to the "do"
       let ind = indent(info.plnum) + info.sw
     else
-      let pline_msl = s:GetMSL(info.plnum)
+      let plnum_msl = s:GetMSL(info.plnum)
 
-      if getline(pline_msl) =~ '=\s*\(#.*\)\=$'
+      if getline(plnum_msl) =~ '=\s*\(#.*\)\=$'
         " in the case of assignment to the msl, align to the starting line,
         " not to the msl
         let ind = indent(info.plnum) + info.sw
       else
-        let ind = indent(pline_msl) + info.sw
+        let ind = indent(plnum_msl) + info.sw
       endif
     endif
 
@@ -560,7 +560,7 @@ function! s:PreviousNotMSL(msl_info)
   let info = a:msl_info
 
   " If the previous line wasn't a MSL
-  if info.plnum != info.pline_msl
+  if info.plnum != info.plnum_msl
     " If previous line ends bracket and begins non-bracket continuation decrease indent by 1.
     if s:Match(info.plnum, s:bracket_switch_continuation_regex)
       " TODO (2016-10-07) Wrong/unused? How could it be "1"?
@@ -580,9 +580,9 @@ function! s:IndentingKeywordInMSL(msl_info)
   " If the MSL line had an indenting keyword in it, add a level of indent.
   " TODO: this does not take into account contrived things such as
   " module Foo; class Bar; end
-  if s:Match(info.pline_msl, s:ruby_indent_keywords)
-    let ind = indent(info.pline_msl) + info.sw
-    if s:Match(info.pline_msl, s:end_end_regex)
+  if s:Match(info.plnum_msl, s:ruby_indent_keywords)
+    let ind = indent(info.plnum_msl) + info.sw
+    if s:Match(info.plnum_msl, s:end_end_regex)
       let ind = ind - info.sw
     endif
     return ind
@@ -595,11 +595,11 @@ function! s:ContinuedHangingOperator(msl_info)
 
   " If the previous line ended with [*+/.,-=], but wasn't a block ending or a
   " closing bracket, indent one extra level.
-  if s:Match(info.pline_msl, s:non_bracket_continuation_regex) && !s:Match(info.pline_msl, '^\s*\([\])}]\|end\)')
-    if info.pline_msl == info.plnum
-      let ind = indent(info.pline_msl) + info.sw
+  if s:Match(info.plnum_msl, s:non_bracket_continuation_regex) && !s:Match(info.plnum_msl, '^\s*\([\])}]\|end\)')
+    if info.plnum_msl == info.plnum
+      let ind = indent(info.plnum_msl) + info.sw
     else
-      let ind = indent(info.pline_msl)
+      let ind = indent(info.plnum_msl)
     endif
     return ind
   endif
