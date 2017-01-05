@@ -4,9 +4,6 @@
 " URL:			https://github.com/vim-ruby/vim-ruby
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
 
-" TODO Extract "basic" checks to top, optimize them as much as possible
-" TODO Order checks based on common occurrence?
-
 " 0. Initialization {{{1
 " =================
 
