@@ -46,5 +46,28 @@ describe "Indenting" do
         THREE
       end
     EOF
+
+    # See https://github.com/vim-ruby/vim-ruby/issues/318 for details
+    assert_correct_indenting <<-EOF
+      def foo
+        <<-EOS
+          one
+            \#{two} three
+              four
+        EOS
+      end
+    EOF
+  end
+
+  specify "comments" do
+    assert_correct_indenting <<-EOF
+      def one
+        example do |something|
+      =begin
+           something that is ignored
+      =end
+        end
+      end
+    EOF
   end
 end
