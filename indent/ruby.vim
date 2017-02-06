@@ -289,7 +289,7 @@ function! s:ClosingBracketOnEmptyLine(cline_info)
       if closing_bracket == ')' && col('.') != col('$') - 1
         let ind = virtcol('.') - 1
       elseif g:ruby_indent_block_style == 'do'
-        let ind = indent(info.clnum)
+        let ind = indent(line('.'))
       else " g:ruby_indent_block_style == 'expression'
         let ind = indent(s:GetMSL(line('.')))
       endif
