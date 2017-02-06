@@ -195,9 +195,9 @@ function GetRubyIndent(...)
         \ 's:AfterAccessModifier',
         \ 's:ContinuedLine',
         \ 's:AfterBlockOpening',
-        \ 's:AfterLeadingOperator',
         \ 's:AfterHangingSplat',
         \ 's:AfterUnbalancedBracket',
+        \ 's:AfterLeadingOperator',
         \ 's:AfterEndKeyword',
         \ 's:AfterIndentKeyword',
         \ ]
