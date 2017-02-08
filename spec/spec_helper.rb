@@ -13,19 +13,14 @@ Vimrunner::RSpec.configure do |config|
   end
 
   def assert_correct_indenting(extension='rb', string)
-    whitespace = string.scan(/^\s*/).first
-    string = string.split("\n").map { |line| line.gsub /^#{whitespace}/, '' }.join("\n").strip
-
     filename = "test.#{extension}"
 
-    File.open filename, 'w' do |f|
-      f.write string
-    end
+    IO.write filename, string
 
     vim.edit filename
     vim.normal 'gg=G'
     vim.write
 
-    IO.read(filename).strip.should eq string
+    expect(IO.read(filename)).to eq string
   end
 end
