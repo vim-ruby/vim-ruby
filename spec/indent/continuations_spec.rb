@@ -52,25 +52,101 @@ describe "Indenting" do
     EOF
   end
 
-  specify "continuations after assignment" do
-    assert_correct_indenting <<~EOF
-      variable =
-        if condition?
-          1
-        else
-          2
-        end
-    EOF
+  describe "assignments" do
+    after :each do
+      vim.command 'let g:ruby_indent_assignment_style = "hanging"'
+    end
 
-    assert_correct_indenting <<~EOF
-      variable = # evil comment
-        case something
+    specify "continuations after assignment" do
+      assert_correct_indenting <<~EOF
+        variable =
+          if condition?
+            1
+          else
+            2
+          end
+      EOF
+
+      assert_correct_indenting <<~EOF
+        variable = # evil comment
+          case something
+          when 'something'
+            something_else
+          else
+            other
+          end
+      EOF
+
+      assert_correct_indenting <<~EOF
+        variable = case something
+                   when 'something'
+                     something_else
+                   else
+                     other
+                   end
+      EOF
+
+      assert_correct_indenting <<~EOF
+        variable = if something == something_else
+                     something_else
+                   elsif other == none
+                     none
+                   else
+                     other
+                   end
+      EOF
+
+      assert_correct_indenting <<~EOF
+        variable = while
+                     break something
+                   end
+      EOF
+
+      assert_correct_indenting <<~EOF
+        variable = if [].
+                       map { |x| x * 2 }.
+                       filter { |x| x % 3 == 0 }.
+                       empty?
+                     something
+                   end
+      EOF
+
+      vim.command 'let g:ruby_indent_assignment_style = "variable"'
+
+      assert_correct_indenting <<~EOF
+        variable = case something # evil comment
         when 'something'
           something_else
         else
           other
         end
-    EOF
+      EOF
+
+      assert_correct_indenting <<~EOF
+        variable = if something == something_else
+          something_else
+        elsif other == none
+          none
+        else
+          other
+        end
+      EOF
+
+      assert_correct_indenting <<~EOF
+        variable = while
+          break something
+        end
+      EOF
+
+      assert_correct_indenting <<~EOF
+        variable = if [].
+            map { |x| x * 2 }.
+            filter { |x| x % 3 == 0 }.
+            empty?
+          something
+        end
+      EOF
+    end
   end
 
   specify "continuations after hanging comma" do

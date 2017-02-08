@@ -18,6 +18,11 @@ if !exists('g:ruby_indent_access_modifier_style')
   let g:ruby_indent_access_modifier_style = 'normal'
 endif
 
+if !exists('g:ruby_indent_assignment_style')
+  " Possible values: "variable", "hanging"
+  let g:ruby_indent_assignment_style = 'hanging'
+endif
+
 if !exists('g:ruby_indent_block_style')
   " Possible values: "expression", "do"
   let g:ruby_indent_block_style = 'expression'
@@ -182,7 +187,7 @@ function GetRubyIndent(...)
     let indent = call(function(callback_name), [indent_info])
 
     if indent >= 0
-"      Decho "Match: ".callback_name
+"      Decho "Match: ".callback_name." indent=".indent." info=".string(indent_info)
       return indent
     endif
   endfor
@@ -211,7 +216,7 @@ function GetRubyIndent(...)
     let indent = call(function(callback_name), [indent_info])
 
     if indent >= 0
-"      Decho "Match: ".callback_name
+"      Decho "Match: ".callback_name." indent=".indent." info=".string(indent_info)
       return indent
     endif
   endfor
@@ -233,7 +238,7 @@ function GetRubyIndent(...)
     let indent = call(function(callback_name), [indent_info])
 
     if indent >= 0
-"      Decho "Match: ".callback_name
+"      Decho "Match: ".callback_name." indent=".indent." info=".string(indent_info)
       return indent
     endif
   endfor
@@ -322,10 +327,16 @@ function! s:DeindentingKeyword(cline_info)
       let msl  = s:GetMSL(line('.'))
       let line = getline(line('.'))
 
-      if strpart(line, 0, col('.') - 1) =~ '=\s*$' &&
+      if s:IsAssignment(line, col('.')) &&
             \ strpart(line, col('.') - 1, 2) !~ 'do'
-        " assignment to case/begin/etc, on the same line, hanging indent
-        let ind = virtcol('.') - 1
+        " assignment to case/begin/etc, on the same line
+        if g:ruby_indent_assignment_style == 'hanging'
+          " hanging indent
+          let ind = virtcol('.') - 1
+        else
+          " align with variable
+          let ind = indent(line('.'))
+        endif
       elseif g:ruby_indent_block_style == 'do'
         " align to line of the "do", not to the MSL
         let ind = indent(line('.'))
@@ -424,9 +435,21 @@ endfunction
 function! s:ContinuedLine(pline_info)
   let info = a:pline_info
 
+  let col = s:Match(info.plnum, s:ruby_indent_keywords)
   if s:Match(info.plnum, s:continuable_regex) &&
         \ s:Match(info.plnum, s:continuation_regex)
-    return indent(s:GetMSL(info.plnum)) + info.sw + info.sw
+    if col > 0 && s:IsAssignment(info.pline, col)
+      if g:ruby_indent_assignment_style == 'hanging'
+        " hanging indent
+        let ind = col - 1
+      else
+        " align with variable
+        let ind = indent(info.plnum)
+      endif
+    else
+      let ind = indent(s:GetMSL(info.plnum))
+    endif
+    return ind + info.sw + info.sw
   endif
   return -1
 endfunction
@@ -549,6 +572,14 @@ function! s:AfterIndentKeyword(pline_info)
     " level
     if s:Match(info.plnum, s:end_end_regex)
       let ind = indent('.')
+    elseif s:IsAssignment(info.pline, col)
+      if g:ruby_indent_assignment_style == 'hanging'
+        " hanging indent
+        let ind = col + info.sw - 1
+      else
+        " align with variable
+        let ind = indent(info.plnum) + info.sw
+      endif
     endif
     return ind
   endif
@@ -580,10 +611,19 @@ function! s:IndentingKeywordInMSL(msl_info)
   " If the MSL line had an indenting keyword in it, add a level of indent.
   " TODO: this does not take into account contrived things such as
   " module Foo; class Bar; end
-  if s:Match(info.plnum_msl, s:ruby_indent_keywords)
+  let col = s:Match(info.plnum_msl, s:ruby_indent_keywords)
+  if col > 0
     let ind = indent(info.plnum_msl) + info.sw
     if s:Match(info.plnum_msl, s:end_end_regex)
       let ind = ind - info.sw
+    elseif s:IsAssignment(getline(info.plnum_msl), col)
+      if g:ruby_indent_assignment_style == 'hanging'
+        " hanging indent
+        let ind = col + info.sw - 1
+      else
+        " align with variable
+        let ind = indent(info.plnum_msl) + info.sw
+      endif
     endif
     return ind
   endif
@@ -628,6 +668,10 @@ endfunction
 " Check if the character at lnum:col is inside a string delimiter
 function s:IsInStringDelimiter(lnum, col)
   return synIDattr(synID(a:lnum, a:col, 1), 'name') == 'rubyStringDelimiter'
+endfunction
+
+function s:IsAssignment(str, pos)
+  return strpart(a:str, 0, a:pos - 1) =~ '=\s*$'
 endfunction
 
 " Find line above 'lnum' that isn't empty, in a comment, or in a string.
