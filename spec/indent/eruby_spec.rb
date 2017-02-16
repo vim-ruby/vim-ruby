@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "Indenting" do
   specify "closing html tag after multiline eruby tag" do
-    assert_correct_indenting 'erb', <<-EOF
+    assert_correct_indenting 'erb', <<~EOF
       <form>
         <div>
           <%= text_field_tag :email, nil,

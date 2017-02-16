@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "Indenting" do
   specify "nested blocks" do
-    assert_correct_indenting <<-EOF
+    assert_correct_indenting <<~EOF
       var.func1(:param => 'value') do
         var.func2(:param => 'value') do
           puts "test"
@@ -10,7 +10,7 @@ describe "Indenting" do
       end
     EOF
 
-    assert_correct_indenting <<-EOF
+    assert_correct_indenting <<~EOF
       var.func1(:param => 'value') {
         var.func2(:param => 'value') {
           foo({ bar => baz })
@@ -20,7 +20,7 @@ describe "Indenting" do
       }
     EOF
 
-    assert_correct_indenting <<-EOF
+    assert_correct_indenting <<~EOF
       var.
         func1(:param => 'value') {
         var.func2(:param => 'value') {
@@ -31,7 +31,7 @@ describe "Indenting" do
   end
 
   specify "nested hashes" do
-    assert_correct_indenting <<-EOF
+    assert_correct_indenting <<~EOF
       foo, bar = {
         :bar => {
           :one => 'two',
@@ -40,7 +40,7 @@ describe "Indenting" do
       }
     EOF
 
-    assert_correct_indenting <<-EOF
+    assert_correct_indenting <<~EOF
       foo,
         bar = {
         :bar => {
@@ -53,7 +53,7 @@ describe "Indenting" do
   end
 
   specify "nested blocks with a continuation and function call inbetween" do
-    assert_correct_indenting <<-EOF
+    assert_correct_indenting <<~EOF
       var.
         func1(:param => 'value') {
         func1_5(:param => 'value')
