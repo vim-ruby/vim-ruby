@@ -3,7 +3,8 @@
 1. Ruby motions				|ruby-motion|
 2. Ruby text objects			|ruby-text-objects|
 3. Access modifier indentation		|ruby-access-modifier-indentation|
-4. Block style indentation		|ruby-block-indentation|
+4. Block style indentation		|ruby-block-style-indentation|
+5. Assignment style indentation		|ruby-assignment-style-indentation|
 
 ==============================================================================
 1. Ruby motions						*ruby-motion*
@@ -113,27 +114,51 @@ Access modifier style "outdent":
 <
 
 ==============================================================================
-4. Block style indentation                      *ruby-block-style-indentation*
-                                                *g:ruby_indent_block_style*
+4. Block style indentation                        *ruby-block-style-indentation*
+                                                     *g:ruby_indent_block_style*
 
 Different block indentation styles can be used by setting: >
 
-	:let g:ruby_indent_block_style = 'expression'
-	:let g:ruby_indent_block_style = 'do'
+    :let g:ruby_indent_block_style = 'expression'
+    :let g:ruby_indent_block_style = 'do'
 <
 By default, the "expression" block indent style is used.
 
 Block indent style "expression":
 >
-  first
-    .second do |x|
-    something
-  end
+    first
+      .second do |x|
+      something
+    end
 <
 Block indent style "do":
 >
-  first
-    .second do |x|
+    first
+      .second do |x|
+        something
+      end
+<
+
+==============================================================================
+5. Assignment style indentation              *ruby-assignment-style-indentation*
+                                                *g:ruby_indent_assignment_style*
+
+Different styles of indenting assignment for multiline expressions:
+>
+    :let g:ruby_indent_assignment_style = 'hanging'
+    :let g:ruby_indent_assignment_style = 'variable'
+<
+By default, the "hanging" style is used.
+
+Assignment indent style "hanging":
+>
+    x = if condition
+          something
+        end
+<
+Assignment indent style "variable":
+>
+    x = if condition
       something
     end
 <
