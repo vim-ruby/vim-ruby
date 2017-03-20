@@ -10,6 +10,7 @@
 " ----------------------------------------------------------------------------
 
 " {{{ requirement checks
+:set completeopt=longest,menuone
 
 function! s:ErrMsg(msg)
     echohl ErrorMsg
@@ -50,6 +51,10 @@ endif
 
 if !exists("g:rubycomplete_include_objectspace")
     let g:rubycomplete_include_objectspace = 0
+endif
+
+if !exists("g:rubycomplete_sort_completions")
+    let g:rubycomplete_sort_completions = 0
 endif
 " }}} configuration failsafe initialization
 
@@ -605,6 +610,32 @@ class VimRubyCompletion
     b.get_completions base
   end
 
+  def get_method_signature(method, obj)
+    return 'ass' if obj.nil?
+    # return method if obj.nil?
+    method = obj.instance_method(method) if method.class == Symbol
+    return nil if (!method.respond_to?(:parameters) || method.parameters.nil?) # only proceed if we have Ruby 1.9's UnboundMethod passed
+    
+    # return "superazz"
+    %((#{method.parameters.collect { |p|
+        case p.first
+        when :key
+          "#{p.second}: #{p.second}"
+        when :req
+          p.second
+        when :block
+          "&#{p.second}"
+        when :rest
+          "*#{p.second}"
+        when :keyrest
+          "**#{p.second}"
+        else
+          "#{p.first} #{p.second}"
+        end
+    }.join(', ')
+      }))
+  end
+
   def get_completions(base)
     loading_allowed = VIM::evaluate("exists('g:rubycomplete_buffer_loading') && g:rubycomplete_buffer_loading")
     if loading_allowed.to_i == 1
@@ -662,6 +693,7 @@ class VimRubyCompletion
         receiver = $1
         methods = Object.constants
         methods.grep(/^#{receiver}/).collect{|e| "::" + e}
+        receiving_obj = eval(receiver).singleton_class
 
       when /^(((::)?[A-Z][^:.\(]*)+?)::?([^:.]*)$/ # Constant or class methods
         receiver = $1
@@ -670,6 +702,7 @@ class VimRubyCompletion
         load_buffer_class( receiver )
         begin
           classes = eval("#{receiver}.constants")
+          receiving_obj = eval(receiver).singleton_class
           #methods = eval("#{receiver}.methods")
         rescue Exception
           dprint "exception: %s" % $!
@@ -712,6 +745,8 @@ class VimRubyCompletion
           load_buffer_class( vartype )
 
           begin
+            # abdo addition
+            receiving_obj = eval(vartype)
             methods = eval("#{vartype}.instance_methods")
             variables = eval("#{vartype}.instance_variables")
           rescue Exception
@@ -760,6 +795,10 @@ class VimRubyCompletion
           message = input
           load_buffer_class( receiver )
           begin
+            #methods = eval( "#{receiver}.instance_methods" )
+            #receiving_obj = eval(receiver)
+            #string_obj = 'here0'
+            #methods = methods.map { |m| get_method_signature(m, receiving_obj) || m } # get UnboundMethods instead of symbols
             methods = eval( "#{receiver}.instance_methods" )
             variables += add_rails_columns( "#{receiver}" )
           rescue Exception
@@ -800,11 +839,26 @@ class VimRubyCompletion
     constants = clean_sel( constants, message )
 
     valid = []
-    valid += methods.collect { |m| { :name => m.to_s, :type => 'm' } }
-    valid += variables.collect { |v| { :name => v.to_s, :type => 'v' } }
-    valid += classes.collect { |c| { :name => c.to_s, :type => 't' } }
-    valid += constants.collect { |d| { :name => d.to_s, :type => 'd' } }
-    valid.sort! { |x,y| x[:name] <=> y[:name] }
+    receiving_obj ||= eval(receiver).singleton_class
+    valid += methods.collect { |m|
+        signature = get_method_signature(m, receiving_obj);
+
+        {
+                                     abbr: m.to_s,
+                                     kind: 'm',
+                                     menu: signature,
+                                     item: m.to_s,
+                                     word: m.to_s + signature
+        }
+    }
+    valid += variables.collect { |v| { :abbr => v.to_s, :type => 'v' } }
+    valid += classes.collect { |c| { :abbr => c.to_s, :type => 't' } }
+    valid += constants.collect { |d| { :abbr => d.to_s, :type => 'd' } }
+
+    # do not sort methods by default because a lot of unrelevant methods would appear on top
+    if (VIM::evaluate("exists('g:rubycomplete_sort_completions') && g:rubycomplete_sort_completions"))
+      valid.sort! { |x,y| x[:name] <=> y[:name] }
+    end
 
     outp = ""
 
@@ -812,7 +866,12 @@ class VimRubyCompletion
     rg.step(150) do |x|
       stpos = 0+x
       enpos = 150+x
-      valid[stpos..enpos].each { |c| outp += "{'word':'%s','item':'%s','kind':'%s'}," % [ c[:name], c[:name], c[:type] ].map{|x|escape_vim_singlequote_string(x)} }
+      valid[stpos..enpos].each { |c|
+          keys = [:word, :item, :menu, :kind, :abbr]
+
+          expr = '{' + keys.map { |k| "'#{k}':'\%s'" }.join(',') + '},'
+          outp += expr % keys.map { |k| escape_vim_singlequote_string(c[k]) }
+      }
       outp.sub!(/,$/, '')
 
       VIM::command("call extend(g:rubycomplete_completions, [%s])" % outp)
