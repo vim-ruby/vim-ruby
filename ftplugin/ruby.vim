@@ -13,10 +13,12 @@ let b:did_ftplugin = 1
 let s:cpo_save = &cpo
 set cpo&vim
 
-if has("gui_running") && !has("gui_win32")
-  setlocal keywordprg=ri\ -T\ -f\ bs
-else
-  setlocal keywordprg=ri
+if !exists('g:ruby_keywordprg_override') || g:ruby_keywordprg_override == 0
+  if has("gui_running") && !has("gui_win32")
+    setlocal keywordprg=ri\ -T\ -f\ bs
+  else
+    setlocal keywordprg=ri
+  endif
 endif
 
 " Matchit support
