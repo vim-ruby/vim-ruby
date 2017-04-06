@@ -12,7 +12,7 @@
 Vim provides motions such as |[m| and |]m| for jumping to the start or end of
 a method definition. Out of the box, these work for curly-bracket languages,
 but not for ruby. The |vim-ruby| plugin enhances these motions, by making them
-also work on ruby files.
+work on ruby files, and also adds a motion for working with ruby blocks.
 
 							*ruby-]m*
 ]m			Go to start of next method definition.
@@ -38,12 +38,24 @@ also work on ruby files.
 							*ruby-[]*
 []			Go to end of previous module or class definition.
 
+                                                        *ruby-]b*
+]b                      Go to start of next ruby block.
+
+                                                        *ruby-]B*
+]B                      Go to end of next ruby block.
+
+                                                        *ruby-[b*
+[b                      Go to start of previous ruby block.
+
+                                                        *ruby-[B*
+[B                      Go to end of previous ruby block.
+
 ==============================================================================
 2. Ruby text objects					*ruby-text-objects*
 
 Vim's |text-objects| can be used to select or operate upon regions of text
 that are defined by structure. The |vim-ruby| plugin adds text objects for
-operating on methods and classes.
+operating on methods, classes, and blocks.
 
 							*ruby-v_am* *ruby-am*
 am			"a method", select from "def" until matching "end"
@@ -60,6 +72,14 @@ aM			"a class", select from "class" until matching "end"
 							*ruby-v_iM* *ruby-iM*
 iM			"inner class", select contents of "class"/"end"
 			block, excluding the "class" and "end" themselves.
+
+                                                        *ruby-v_ab* *ruby-am*
+ab                      "a block", linewise select from "do" until matching
+                        "end" keyword.
+
+                                                        *ruby-v_ib* *ruby-ib*
+ib                      "inner block", select contents of "do"/"end" block,
+                        excluding the "do" and "end" themselves.
 
 ==============================================================================
 3. Access modifier indentation             *ruby-access-modifier-indentation*
