@@ -171,6 +171,15 @@ if !exists("g:no_plugin_maps") && !exists("g:no_ruby_maps")
   xnoremap <silent> <buffer> [M :<C-U>call <SID>searchsyn('\<end\>','rubyDefine','b','v')<CR>
   xnoremap <silent> <buffer> ]M :<C-U>call <SID>searchsyn('\<end\>','rubyDefine','','v')<CR>
 
+  nnoremap <silent> <buffer> [b :<C-U>call <SID>searchsyn('\<do\>','rubyControl','b','n')<CR>
+  nnoremap <silent> <buffer> ]b :<C-U>call <SID>searchsyn('\<do\>','rubyControl','','n')<CR>
+  nnoremap <silent> <buffer> [B :<C-U>call <SID>searchsyn('\<end\>','rubyControl','b','n')<CR>
+  nnoremap <silent> <buffer> ]B :<C-U>call <SID>searchsyn('\<end\>','rubyControl','','n')<CR>
+  xnoremap <silent> <buffer> [b :<C-U>call <SID>searchsyn('\<do\>','rubyControl','b','v')<CR>
+  xnoremap <silent> <buffer> ]b :<C-U>call <SID>searchsyn('\<do\>','rubyControl','','v')<CR>
+  xnoremap <silent> <buffer> [B :<C-U>call <SID>searchsyn('\<end\>','rubyControl','b','v')<CR>
+  xnoremap <silent> <buffer> ]B :<C-U>call <SID>searchsyn('\<end\>','rubyControl','','v')<CR>
+
   nnoremap <silent> <buffer> [[ :<C-U>call <SID>searchsyn('\<\%(class\<Bar>module\)\>','rubyModule\<Bar>rubyClass','b','n')<CR>
   nnoremap <silent> <buffer> ]] :<C-U>call <SID>searchsyn('\<\%(class\<Bar>module\)\>','rubyModule\<Bar>rubyClass','','n')<CR>
   nnoremap <silent> <buffer> [] :<C-U>call <SID>searchsyn('\<end\>','rubyModule\<Bar>rubyClass','b','n')<CR>
@@ -189,6 +198,12 @@ if !exists("g:no_plugin_maps") && !exists("g:no_ruby_maps")
     onoremap <silent> <buffer> am :<C-U>call <SID>wrap_a('[m',']M')<CR>
     xnoremap <silent> <buffer> im :<C-U>call <SID>wrap_i('[m',']M')<CR>
     xnoremap <silent> <buffer> am :<C-U>call <SID>wrap_a('[m',']M')<CR>
+
+    onoremap <silent> <buffer> ib :<C-U>call <SID>wrap_i('[b',']B')<CR>
+    onoremap <silent> <buffer> ab :<C-U>call <SID>wrap_a('[b',']B')<CR>
+    xnoremap <silent> <buffer> ib :<C-U>call <SID>wrap_i('[b',']B')<CR>
+    xnoremap <silent> <buffer> ab :<C-U>call <SID>wrap_a('[b',']B')<CR>
+
     let b:undo_ftplugin = b:undo_ftplugin
           \."| sil! exe 'ounmap <buffer> im' | sil! exe 'ounmap <buffer> am'"
           \."| sil! exe 'xunmap <buffer> im' | sil! exe 'xunmap <buffer> am'"
