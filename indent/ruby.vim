@@ -150,7 +150,7 @@ let s:leading_operator_regex = '^\s*[.]'
 " 2. GetRubyIndent Function {{{1
 " =========================
 
-function GetRubyIndent(...)
+function! GetRubyIndent(...) abort
   " 2.1. Setup {{{2
   " ----------
 
@@ -253,7 +253,7 @@ endfunction
 " 3. Indenting Logic Callbacks {{{1
 " ============================
 
-function! s:AccessModifier(cline_info)
+function! s:AccessModifier(cline_info) abort
   let info = a:cline_info
 
   " If this line is an access modifier keyword, align according to the closest
@@ -277,7 +277,7 @@ function! s:AccessModifier(cline_info)
   return -1
 endfunction
 
-function! s:ClosingBracketOnEmptyLine(cline_info)
+function! s:ClosingBracketOnEmptyLine(cline_info) abort
   let info = a:cline_info
 
   " If we got a closing bracket on an empty line, find its match and indent
@@ -306,7 +306,7 @@ function! s:ClosingBracketOnEmptyLine(cline_info)
   return -1
 endfunction
 
-function! s:BlockComment(cline_info)
+function! s:BlockComment(cline_info) abort
   " If we have a =begin or =end set indent to first column.
   if match(a:cline_info.cline, '^\s*\%(=begin\|=end\)$') != -1
     return 0
@@ -314,7 +314,7 @@ function! s:BlockComment(cline_info)
   return -1
 endfunction
 
-function! s:DeindentingKeyword(cline_info)
+function! s:DeindentingKeyword(cline_info) abort
   let info = a:cline_info
 
   " If we have a deindenting keyword, find its match and indent to its level.
@@ -355,7 +355,7 @@ function! s:DeindentingKeyword(cline_info)
   return -1
 endfunction
 
-function! s:MultilineStringOrLineComment(cline_info)
+function! s:MultilineStringOrLineComment(cline_info) abort
   let info = a:cline_info
 
   " If we are in a multi-line string or line-comment, don't do anything to it.
@@ -365,7 +365,7 @@ function! s:MultilineStringOrLineComment(cline_info)
   return -1
 endfunction
 
-function! s:ClosingHeredocDelimiter(cline_info)
+function! s:ClosingHeredocDelimiter(cline_info) abort
   let info = a:cline_info
 
   " If we are at the closing delimiter of a "<<" heredoc-style string, set the
@@ -379,7 +379,7 @@ function! s:ClosingHeredocDelimiter(cline_info)
   return -1
 endfunction
 
-function! s:LeadingOperator(cline_info)
+function! s:LeadingOperator(cline_info) abort
   " If the current line starts with a leading operator, add a level of indent.
   if s:Match(a:cline_info.clnum, s:leading_operator_regex)
     return indent(s:GetMSL(a:cline_info.clnum)) + a:cline_info.sw
@@ -387,7 +387,7 @@ function! s:LeadingOperator(cline_info)
   return -1
 endfunction
 
-function! s:EmptyInsideString(pline_info)
+function! s:EmptyInsideString(pline_info) abort
   " If the line is empty and inside a string (plnum would not be the real
   " prevnonblank in that case), use the previous line's indent
   let info = a:pline_info
@@ -398,7 +398,7 @@ function! s:EmptyInsideString(pline_info)
   return -1
 endfunction
 
-function! s:StartOfFile(pline_info)
+function! s:StartOfFile(pline_info) abort
   " At the start of the file use zero indent.
   if a:pline_info.plnum == 0
     return 0
@@ -406,7 +406,7 @@ function! s:StartOfFile(pline_info)
   return -1
 endfunction
 
-function! s:AfterAccessModifier(pline_info)
+function! s:AfterAccessModifier(pline_info) abort
   let info = a:pline_info
 
   if g:ruby_indent_access_modifier_style == 'indent'
@@ -432,7 +432,7 @@ endfunction
 "     puts "foo"
 "   end
 "
-function! s:ContinuedLine(pline_info)
+function! s:ContinuedLine(pline_info) abort
   let info = a:pline_info
 
   let col = s:Match(info.plnum, s:ruby_indent_keywords)
@@ -454,7 +454,7 @@ function! s:ContinuedLine(pline_info)
   return -1
 endfunction
 
-function! s:AfterBlockOpening(pline_info)
+function! s:AfterBlockOpening(pline_info) abort
   let info = a:pline_info
 
   " If the previous line ended with a block opening, add a level of indent.
@@ -480,7 +480,7 @@ function! s:AfterBlockOpening(pline_info)
   return -1
 endfunction
 
-function! s:AfterLeadingOperator(pline_info)
+function! s:AfterLeadingOperator(pline_info) abort
   " If the previous line started with a leading operator, use its MSL's level
   " of indent
   if s:Match(a:pline_info.plnum, s:leading_operator_regex)
@@ -489,7 +489,7 @@ function! s:AfterLeadingOperator(pline_info)
   return -1
 endfunction
 
-function! s:AfterHangingSplat(pline_info)
+function! s:AfterHangingSplat(pline_info) abort
   let info = a:pline_info
 
   " If the previous line ended with the "*" of a splat, add a level of indent
@@ -499,7 +499,7 @@ function! s:AfterHangingSplat(pline_info)
   return -1
 endfunction
 
-function! s:AfterUnbalancedBracket(pline_info)
+function! s:AfterUnbalancedBracket(pline_info) abort
   let info = a:pline_info
 
   " If the previous line contained unclosed opening brackets and we are still
@@ -539,7 +539,7 @@ function! s:AfterUnbalancedBracket(pline_info)
   return -1
 endfunction
 
-function! s:AfterEndKeyword(pline_info)
+function! s:AfterEndKeyword(pline_info) abort
   let info = a:pline_info
   " If the previous line ended with an "end", match that "end"s beginning's
   " indent.
@@ -560,7 +560,7 @@ function! s:AfterEndKeyword(pline_info)
   return -1
 endfunction
 
-function! s:AfterIndentKeyword(pline_info)
+function! s:AfterIndentKeyword(pline_info) abort
   let info = a:pline_info
   let col = s:Match(info.plnum, s:ruby_indent_keywords)
 
@@ -587,7 +587,7 @@ function! s:AfterIndentKeyword(pline_info)
   return -1
 endfunction
 
-function! s:PreviousNotMSL(msl_info)
+function! s:PreviousNotMSL(msl_info) abort
   let info = a:msl_info
 
   " If the previous line wasn't a MSL
@@ -606,7 +606,7 @@ function! s:PreviousNotMSL(msl_info)
   return -1
 endfunction
 
-function! s:IndentingKeywordInMSL(msl_info)
+function! s:IndentingKeywordInMSL(msl_info) abort
   let info = a:msl_info
   " If the MSL line had an indenting keyword in it, add a level of indent.
   " TODO: this does not take into account contrived things such as
@@ -630,7 +630,7 @@ function! s:IndentingKeywordInMSL(msl_info)
   return -1
 endfunction
 
-function! s:ContinuedHangingOperator(msl_info)
+function! s:ContinuedHangingOperator(msl_info) abort
   let info = a:msl_info
 
   " If the previous line ended with [*+/.,-=], but wasn't a block ending or a
@@ -651,31 +651,31 @@ endfunction
 " ======================
 
 " Check if the character at lnum:col is inside a string, comment, or is ascii.
-function s:IsInStringOrComment(lnum, col)
+function! s:IsInStringOrComment(lnum, col) abort
   return synIDattr(synID(a:lnum, a:col, 1), 'name') =~ s:syng_strcom
 endfunction
 
 " Check if the character at lnum:col is inside a string.
-function s:IsInString(lnum, col)
+function! s:IsInString(lnum, col) abort
   return synIDattr(synID(a:lnum, a:col, 1), 'name') =~ s:syng_string
 endfunction
 
 " Check if the character at lnum:col is inside a string or documentation.
-function s:IsInStringOrDocumentation(lnum, col)
+function! s:IsInStringOrDocumentation(lnum, col) abort
   return synIDattr(synID(a:lnum, a:col, 1), 'name') =~ s:syng_stringdoc
 endfunction
 
 " Check if the character at lnum:col is inside a string delimiter
-function s:IsInStringDelimiter(lnum, col)
+function! s:IsInStringDelimiter(lnum, col) abort
   return synIDattr(synID(a:lnum, a:col, 1), 'name') == 'rubyStringDelimiter'
 endfunction
 
-function s:IsAssignment(str, pos)
+function! s:IsAssignment(str, pos) abort
   return strpart(a:str, 0, a:pos - 1) =~ '=\s*$'
 endfunction
 
 " Find line above 'lnum' that isn't empty, in a comment, or in a string.
-function s:PrevNonBlankNonString(lnum)
+function! s:PrevNonBlankNonString(lnum) abort
   let in_block = 0
   let lnum = prevnonblank(a:lnum)
   while lnum > 0
@@ -700,7 +700,7 @@ function s:PrevNonBlankNonString(lnum)
 endfunction
 
 " Find line above 'lnum' that started the continuation 'lnum' may be part of.
-function s:GetMSL(lnum)
+function! s:GetMSL(lnum) abort
   " Start on the line we're at and use its indent.
   let msl = a:lnum
   let lnum = s:PrevNonBlankNonString(a:lnum - 1)
@@ -805,7 +805,7 @@ function s:GetMSL(lnum)
 endfunction
 
 " Check if line 'lnum' has more opening brackets than closing ones.
-function s:ExtraBrackets(lnum)
+function! s:ExtraBrackets(lnum) abort
   let opening = {'parentheses': [], 'braces': [], 'brackets': []}
   let closing = {'parentheses': [], 'braces': [], 'brackets': []}
 
@@ -867,7 +867,7 @@ function s:ExtraBrackets(lnum)
   return [rightmost_opening, rightmost_closing]
 endfunction
 
-function s:Match(lnum, regex)
+function! s:Match(lnum, regex) abort
   let line   = getline(a:lnum)
   let offset = match(line, '\C'.a:regex)
   let col    = offset + 1
@@ -887,7 +887,7 @@ endfunction
 " Locates the containing class/module's definition line, ignoring nested classes
 " along the way.
 "
-function! s:FindContainingClass()
+function! s:FindContainingClass() abort
   let saved_position = getpos('.')
 
   while searchpair(s:end_start_regex, s:end_middle_regex, s:end_end_regex, 'bW',
