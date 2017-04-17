@@ -13,6 +13,9 @@ let b:did_ftplugin = 1
 let s:cpo_save = &cpo
 set cpo&vim
 
+" Standard Ruby indentation style
+setlocal shiftwidth=2 softtabstop=2 expandtab
+
 if has("gui_running") && !has("gui_win32")
   setlocal keywordprg=ri\ -T\ -f\ bs
 else
@@ -141,7 +144,7 @@ if (has("gui_win32") || has("gui_gtk")) && !exists("b:browsefilter")
                      \ "All Files (*.*)\t*.*\n"
 endif
 
-let b:undo_ftplugin = "setl fo< inc< inex< sua< def< com< cms< path< tags< kp<"
+let b:undo_ftplugin = "setl fo< inc< inex< sua< def< com< cms< path< tags< kp< sw< sts< et<"
       \."| unlet! b:browsefilter b:match_ignorecase b:match_words b:match_skip"
       \."| if exists('&ofu') && has('ruby') | setl ofu< | endif"
       \."| if has('balloon_eval') && exists('+bexpr') | setl bexpr< | endif"
