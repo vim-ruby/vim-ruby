@@ -47,22 +47,21 @@ set cpo&vim
 " 1. Variables {{{1
 " ============
 
-" Regex of syntax group names that are or delimit strings/symbols or are comments.
-let s:syng_strcom = '\<ruby\%(Regexp\|RegexpDelimiter\|RegexpEscape' .
-      \ '\|Symbol\|String\|StringDelimiter\|StringEscape\|ASCIICode' .
-      \ '\|Interpolation\|InterpolationDelimiter\|NoInterpolation\|Comment\|Documentation\)\>'
-
-" Regex of syntax group names that are strings.
+" Syntax group names that are strings.
 let s:syng_string =
-      \ '\<ruby\%(String\|Interpolation\|InterpolationDelimiter\|NoInterpolation\|StringEscape\)\>'
+      \ ['String', 'Interpolation', 'InterpolationDelimiter', 'NoInterpolation', 'StringEscape']
 
-" Regex of syntax group names that are strings or documentation.
-let s:syng_stringdoc =
-      \ '\<ruby\%(String\|Interpolation\|InterpolationDelimiter\|NoInterpolation\|StringEscape\|Documentation\)\>'
+" Syntax group names that are strings or documentation.
+let s:syng_stringdoc = s:syng_string + ['Documentation']
+
+" Syntax group names that are or delimit strings/symbols/regexes or are comments.
+let s:syng_strcom = s:syng_stringdoc +
+      \ ['Regexp', 'RegexpDelimiter', 'RegexpEscape',
+      \ 'Symbol', 'StringDelimiter', 'ASCIICode', 'Comment']
 
 " Expression used to check whether we should skip a match with searchpair().
 let s:skip_expr =
-      \ "synIDattr(synID(line('.'),col('.'),1),'name') =~ '".s:syng_strcom."'"
+      \ 'index(map('.string(s:syng_strcom).',"hlID(''ruby''.v:val)"), synID(line("."),col("."),1)) >= 0'
 
 " Regex used for words that, at the start of a line, add a level of indent.
 let s:ruby_indent_keywords =
@@ -650,24 +649,29 @@ endfunction
 " 4. Auxiliary Functions {{{1
 " ======================
 
+function! s:IsInRubyGroup(groups, lnum, col) abort
+  let ids = map(copy(a:groups), 'hlID("ruby".v:val)')
+  return index(ids, synID(a:lnum, a:col, 1)) >= 0
+endfunction
+
 " Check if the character at lnum:col is inside a string, comment, or is ascii.
 function! s:IsInStringOrComment(lnum, col) abort
-  return synIDattr(synID(a:lnum, a:col, 1), 'name') =~ s:syng_strcom
+  return s:IsInRubyGroup(s:syng_strcom, a:lnum, a:col)
 endfunction
 
 " Check if the character at lnum:col is inside a string.
 function! s:IsInString(lnum, col) abort
-  return synIDattr(synID(a:lnum, a:col, 1), 'name') =~ s:syng_string
+  return s:IsInRubyGroup(s:syng_string, a:lnum, a:col)
 endfunction
 
 " Check if the character at lnum:col is inside a string or documentation.
 function! s:IsInStringOrDocumentation(lnum, col) abort
-  return synIDattr(synID(a:lnum, a:col, 1), 'name') =~ s:syng_stringdoc
+  return s:IsInRubyGroup(s:syng_stringdoc, a:lnum, a:col)
 endfunction
 
 " Check if the character at lnum:col is inside a string delimiter
 function! s:IsInStringDelimiter(lnum, col) abort
-  return synIDattr(synID(a:lnum, a:col, 1), 'name') == 'rubyStringDelimiter'
+  return s:IsInRubyGroup(['StringDelimiter'], a:lnum, a:col)
 endfunction
 
 function! s:IsAssignment(str, pos) abort
