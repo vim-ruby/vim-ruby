@@ -69,7 +69,7 @@ endif
 
 function! s:query_path(root) abort
   let code = "print $:.join %q{,}"
-  if &shell =~# 'sh'
+  if &shell =~# 'sh' && empty(&shellxquote)
     let prefix = 'env PATH='.shellescape($PATH).' '
   else
     let prefix = ''
