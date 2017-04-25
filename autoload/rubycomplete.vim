@@ -501,8 +501,11 @@ class VimRubyCompletion
       i = path_elm.index( t )
       break if i
     end
-    type = path_elm[i]
-    type.downcase!
+
+    if i
+      type = path_elm[i]
+      type.downcase!
+    end
 
     dprint "type: %s" % type
     case type
