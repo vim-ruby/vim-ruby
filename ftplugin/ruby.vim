@@ -19,6 +19,9 @@ else
   setlocal keywordprg=ri
 endif
 
+" Ruby methods can include ? and ! so treat them as part of a keyword.
+setlocal iskeyword=@,!,?,48-57,_,192-255
+
 " Matchit support
 if exists("loaded_matchit") && !exists("b:match_words")
   let b:match_ignorecase = 0
