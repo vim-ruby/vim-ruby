@@ -423,11 +423,11 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   exec "syn sync minlines=" . ruby_minlines
 
 else
-  syn match rubyControl "\<def\>[?!]\@!"    nextgroup=rubyMethodDeclaration skipwhite skipnl
-  syn match rubyControl "\<class\>[?!]\@!"  nextgroup=rubyClassDeclaration  skipwhite skipnl
-  syn match rubyControl "\<module\>[?!]\@!" nextgroup=rubyModuleDeclaration skipwhite skipnl
+  syn match rubyClass   "\<class\>[?!]\@!"  nextgroup=rubyClassDeclaration  skipwhite skipnl
+  syn match rubyModule  "\<module\>[?!]\@!" nextgroup=rubyModuleDeclaration skipwhite skipnl
+  syn match rubyDefine  "\<def\>[?!]\@!"    nextgroup=rubyMethodDeclaration skipwhite skipnl
   syn match rubyControl "\<\%(case\|begin\|do\|for\|if\|unless\|while\|until\|else\|elsif\|ensure\|then\|when\|end\)\>[?!]\@!"
-  syn match rubyKeyword "\<\%(alias\|undef\)\>[?!]\@!"
+  syn match rubyDefine  "\<\%(alias\|undef\)\>[?!]\@!"
 endif
 
 " Special Methods {{{1
