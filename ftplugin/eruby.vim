@@ -45,7 +45,7 @@ elseif !exists("b:eruby_subtype")
   endif
 endif
 
-if exists("b:eruby_subtype") && b:eruby_subtype != ''
+if exists("b:eruby_subtype") && b:eruby_subtype != '' && b:eruby_subtype !=? 'eruby'
   exe "runtime! ftplugin/".b:eruby_subtype.".vim ftplugin/".b:eruby_subtype."_*.vim ftplugin/".b:eruby_subtype."/*.vim"
 else
   runtime! ftplugin/html.vim ftplugin/html_*.vim ftplugin/html/*.vim

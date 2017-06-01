@@ -47,7 +47,7 @@ if !b:eruby_nest_level
   let b:eruby_nest_level = 1
 endif
 
-if exists("b:eruby_subtype") && b:eruby_subtype != ''
+if exists("b:eruby_subtype") && b:eruby_subtype != '' && b:eruby_subtype !=? 'eruby'
   exe "runtime! syntax/".b:eruby_subtype.".vim"
   unlet! b:current_syntax
 endif
