@@ -379,8 +379,6 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
 
   if s:foldable('[')
     syn region rubyArrayLiteral	matchgroup=rubyArrayDelimiter start="\%(\w\|[\]})]\)\@<!\[" end="]" contains=ALLBUT,@rubyNotTop fold
-  else
-    syn region rubyArrayLiteral	matchgroup=rubyArrayDelimiter start="\%(\w\|[\]})]\)\@<!\[" end="]" contains=ALLBUT,@rubyNotTop
   endif
 
   " statements without 'do'
