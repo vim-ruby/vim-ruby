@@ -438,10 +438,11 @@ if !exists("ruby_no_special_methods")
   syn match   rubyControl   "\<\%(exit!\|\%(abort\|at_exit\|exit\|fork\|loop\|trap\)\>[?!]\@!\)"
   syn keyword rubyEval	    eval class_eval instance_eval module_eval
   syn keyword rubyException raise fail catch throw
-  " false positive with 'include?'
-  syn match   rubyInclude   "\<include\>[?!]\@!"
-  syn keyword rubyInclude   autoload extend load prepend refine require require_relative using
+  syn keyword rubyInclude   autoload load require require_relative
   syn keyword rubyKeyword   callcc caller lambda proc
+  " false positive with 'include?'
+  syn match   rubyMacro     "\<include\>[?!]\@!"
+  syn keyword rubyMacro     extend prepend refine using
   syn keyword rubyMacro     alias_method define_method define_singleton_method remove_method undef_method
 endif
 
