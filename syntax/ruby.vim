@@ -476,6 +476,8 @@ endif
 hi def link rubyClass			rubyDefine
 hi def link rubyModule			rubyDefine
 hi def link rubyMethodExceptional	rubyDefine
+hi def link rubyAccess			rubyDefine
+hi def link rubyAttribute		rubyDefine
 hi def link rubyDefine			Define
 hi def link rubyFunction		Function
 hi def link rubyConditional		Conditional
@@ -510,8 +512,6 @@ hi def link rubySymbol			Constant
 hi def link rubyKeyword			Keyword
 hi def link rubyOperator		Operator
 hi def link rubyBeginEnd		Statement
-hi def link rubyAccess			Statement
-hi def link rubyAttribute		Statement
 hi def link rubyEval			Statement
 hi def link rubyPseudoVariable		Constant
 hi def link rubyCapitalizedMethod	rubyLocalVariableOrMethod
