@@ -442,6 +442,7 @@ if !exists("ruby_no_special_methods")
   syn match   rubyInclude   "\<include\>[?!]\@!"
   syn keyword rubyInclude   autoload extend load prepend refine require require_relative using
   syn keyword rubyKeyword   callcc caller lambda proc
+  syn keyword rubyMacro     alias_method define_method define_singleton_method remove_method undef_method
 endif
 
 " Comments and Documentation {{{1
@@ -477,8 +478,9 @@ endif
 hi def link rubyClass			rubyDefine
 hi def link rubyModule			rubyDefine
 hi def link rubyMethodExceptional	rubyDefine
-hi def link rubyAccess			rubyDefine
-hi def link rubyAttribute		rubyDefine
+hi def link rubyAccess			rubyMacro
+hi def link rubyAttribute		rubyMacro
+hi def link rubyMacro			Macro
 hi def link rubyDefine			Define
 hi def link rubyFunction		Function
 hi def link rubyConditional		Conditional
