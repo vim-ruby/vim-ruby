@@ -527,7 +527,6 @@ hi def link rubyConstant		Type
 hi def link rubyClassName		rubyConstant
 hi def link rubyModuleName		rubyConstant
 hi def link rubyGlobalVariable		rubyIdentifier
-hi def link rubyBlockParameter		rubyIdentifier
 hi def link rubyInstanceVariable	rubyIdentifier
 hi def link rubyPredefinedIdentifier	rubyIdentifier
 hi def link rubyPredefinedConstant	rubyPredefinedIdentifier
