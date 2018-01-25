@@ -28,8 +28,8 @@ CompilerSet errorformat=
     \%W%f:%l:\ warning:\ %m,
     \%E%f:%l:in\ %*[^:]:\ %m,
     \%E%f:%l:\ %m,
-    \%-C%\tfrom\ %f:%l:in\ %.%#,
-    \%-Z%\tfrom\ %f:%l,
+    \%-C%\t%\\d%#:%#\ %#from\ %f:%l:in\ %.%#,
+    \%-Z%\t%\\d%#:%#\ %#from\ %f:%l,
     \%-Z%p^,
     \%-G%.%#
 
