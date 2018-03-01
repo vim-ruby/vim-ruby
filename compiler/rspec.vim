@@ -24,6 +24,7 @@ CompilerSet errorformat=
     \%E%f:%l:in\ `%*[^']':\ %m,
     \%-Z\ \ \ \ \ %\\+\#\ %f:%l:%.%#,
     \%E\ \ %\\d%\\+)%.%#,
+    \%C\ \ \ \ \ Failure/Error:\ %m,
     \%C\ \ \ \ \ %m,
     \%C%\\s%#,
     \%-G%.%#
