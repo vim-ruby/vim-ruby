@@ -59,7 +59,13 @@ endif
 
 " Operators {{{1
 if exists("ruby_operators")
-  syn match  rubyOperator "[~!^|*/%+-]\|&\.\@!\|\%(class\s*\)\@<!<<\|<=>\|<=\|\%(<\|\<class\s\+\u\w*\s*\)\@<!<[^<]\@=\|===\|==\|=\~\|>>\|>=\|=\@1<!>\|\*\*\|\.\.\.\|\.\.\|::"
+  syn match  rubyOperator "[!^|*/%+]\|&\.\@!\|<=>\|<=\|\%(<\|\<class\s\+\u\w*\s*\)\@<!<[^<]\@=\|===\|==\|=\~\|>>\|>=\|=\@1<!>\|\*\*\|\.\.\.\|\.\.\|::"
+
+  " Special cases: "<<", "-", "~" that are not part of a heredoc delimiter
+  syn match  rubyOperator "<<\%([-~]\|\h\|[^\x00-\x7F]\|[\"'`]\)\@!"
+  syn match  rubyOperator "<<[-~]-\%(\h\|[^\x00-\x7F]\|[\"'`]\)\@!"
+  syn match  rubyOperator "\%(<<\)\@<![~-]"
+
   syn match  rubyOperator "->\|-=\|/=\|\*\*=\|\*=\|&&=\|&=\|&&\|||=\||=\|||\|%=\|+=\|!\~\|!="
   syn region rubyBracketOperator matchgroup=rubyOperator start="\%(\w[?!]\=\|[]})]\)\@2<=\[\s*" end="\s*]" contains=ALLBUT,@rubyNotTop
 endif
