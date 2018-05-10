@@ -149,7 +149,7 @@ let b:undo_ftplugin = "setl fo< inc< inex< sua< def< com< cms< path< tags< kp<"
 function! s:map(mode, flags, map) abort
   let from = matchstr(a:map, '\S\+')
   if empty(mapcheck(from, a:mode))
-    exe a:mode.'map' '<buffer>'.(a:0 ? a:1 : '') a:map
+    exe a:mode.'map' '<buffer>' a:map
     let b:undo_ftplugin .= '|sil! '.a:mode.'unmap <buffer> '.from
   endif
 endfunction
