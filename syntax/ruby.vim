@@ -119,7 +119,7 @@ syn match rubyFloat	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<\%(0\|[1-9]\d*\%(_\d\+\)*
 syn match rubyFloat	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\%(\.\d\+\%(_\d\+\)*\)\=\%([eE][-+]\=\d\+\%(_\d\+\)*\)r\=i\=\>"	display
 
 " Identifiers {{{1
-syn match rubyLocalVariableOrMethod "\<[_[:lower:]][_[:alnum:]]*[?!=]\=" contains=NONE display transparent
+syn match rubyLocalVariableOrMethod "\<[_[:lower:]][_[:alnum:]]*[?!=]\=" contains=NONE display
 syn match rubyBlockArgument	    "&[_[:lower:]][_[:alnum:]]"		 contains=NONE display transparent
 
 syn match  rubyClassName	"\%(\%(^\|[^.]\)\.\s*\)\@<!\<\u\%(\w\|[^\x00-\x7F]\)*\>\%(\s*(\)\@!" contained
@@ -507,6 +507,7 @@ hi def link rubyConstant		Type
 hi def link rubyClassName		rubyConstant
 hi def link rubyModuleName		rubyConstant
 hi def link rubyGlobalVariable		rubyIdentifier
+hi def link rubyLocalVariableOrMethod   rubyIdentifier
 hi def link rubyInstanceVariable	rubyIdentifier
 hi def link rubyPredefinedIdentifier	rubyIdentifier
 hi def link rubyPredefinedConstant	rubyPredefinedIdentifier
