@@ -146,6 +146,11 @@ let b:undo_ftplugin = "setl fo< inc< inex< sua< def< com< cms< path< tags< kp<"
       \."| if exists('&ofu') && has('ruby') | setl ofu< | endif"
       \."| if has('balloon_eval') && exists('+bexpr') | setl bexpr< | endif"
 
+if get(g:, 'ruby_recommended_style', 1)
+  setlocal shiftwidth=2 softtabstop=2 expandtab
+  let b:undo_ftplugin .= ' | setl sw< sts< et<'
+endif
+
 function! s:map(mode, flags, map) abort
   let from = matchstr(a:map, '\S\+')
   if empty(mapcheck(from, a:mode))
