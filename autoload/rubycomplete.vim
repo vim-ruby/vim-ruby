@@ -267,7 +267,6 @@ class VimRubyCompletion
         end
       rescue Exception => e
         dprint e.inspect
-        #ignore?
       end
     end
   end
