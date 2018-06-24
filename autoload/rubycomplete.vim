@@ -351,6 +351,7 @@ class VimRubyCompletion
           ln = buf[x]
           if /^\s*(module|class|def|include)\s+/.match(ln) || is_const = /^\s*?[A-Z]([A-z]|[1-9])+\s*?[|]{0,2}=\s*?.+\s*?/.match(ln)
             clscnt += 1 if /class|module/.match($1)
+            # We must make sure to load each constant only once to avoid errors
             if is_const
                 ln.gsub!(/\s*?[|]{0,2}=\s*?/, '||=')
             end
