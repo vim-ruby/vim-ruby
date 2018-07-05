@@ -44,7 +44,6 @@ endif
 setlocal formatoptions-=t formatoptions+=croql
 
 setlocal include=^\\s*\\<\\(load\\>\\\|require\\>\\\|autoload\\s*:\\=[\"']\\=\\h\\w*[\"']\\=,\\)
-setlocal includeexpr=substitute(substitute(v:fname,'::','/','g'),'\\%(\\.rb\\)\\=$','.rb','')
 setlocal suffixesadd=.rb
 
 if exists("&ofu") && has("ruby")
@@ -141,7 +140,7 @@ if (has("gui_win32") || has("gui_gtk")) && !exists("b:browsefilter")
                      \ "All Files (*.*)\t*.*\n"
 endif
 
-let b:undo_ftplugin = "setl fo< inc< inex< sua< def< com< cms< path< tags< kp<"
+let b:undo_ftplugin = "setl fo< inc< sua< def< com< cms< path< tags< kp<"
       \."| unlet! b:browsefilter b:match_ignorecase b:match_words b:match_skip"
       \."| if exists('&ofu') && has('ruby') | setl ofu< | endif"
       \."| if has('balloon_eval') && exists('+bexpr') | setl bexpr< | endif"
