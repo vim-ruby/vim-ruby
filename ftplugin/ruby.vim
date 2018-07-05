@@ -13,6 +13,11 @@ let b:did_ftplugin = 1
 let s:cpo_save = &cpo
 set cpo&vim
 
+function! s:has_balloon() abort
+  return has("+balloonexpr") &&
+    \ ((has("+ballooneval") && &ballooneval) || (has("+balloonevalterm") && &balloonevalterm))
+endfunction
+
 if has("gui_running") && !has("gui_win32")
   setlocal keywordprg=ri\ -T\ -f\ bs
 else
@@ -50,8 +55,8 @@ if exists("&ofu") && has("ruby")
   setlocal omnifunc=rubycomplete#Complete
 endif
 
-" To activate, :set ballooneval
-if has('balloon_eval') && exists('+balloonexpr')
+" To activate, :set ballooneval or :set balloonevalterm
+if s:has_balloon()
   setlocal balloonexpr=RubyBalloonexpr()
 endif
 
@@ -143,7 +148,7 @@ endif
 let b:undo_ftplugin = "setl fo< inc< sua< def< com< cms< path< tags< kp<"
       \."| unlet! b:browsefilter b:match_ignorecase b:match_words b:match_skip"
       \."| if exists('&ofu') && has('ruby') | setl ofu< | endif"
-      \."| if has('balloon_eval') && exists('+bexpr') | setl bexpr< | endif"
+      \."| if exists('+bexpr') | setl bexpr< | endif"
 
 if get(g:, 'ruby_recommended_style', 1)
   setlocal shiftwidth=2 softtabstop=2 expandtab
