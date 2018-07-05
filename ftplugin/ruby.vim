@@ -157,9 +157,9 @@ function! s:map(mode, flags, map) abort
   endif
 endfunction
 
-cmap <buffer><script><expr> <Plug><cword> substitute(RubyCursorIdentifier(),'^$',"\022\027",'')
+cmap <buffer><script><expr> <Plug><ctag> substitute(RubyCursorTag(),'^$',"\022\027",'')
 cmap <buffer><script><expr> <Plug><cfile> substitute(RubyCursorFile(),'^$',"\022\006",'')
-let b:undo_ftplugin .= "| sil! cunmap <buffer> <Plug><cword>| sil! cunmap <buffer> <Plug><cfile>"
+let b:undo_ftplugin .= "| sil! cunmap <buffer> <Plug><ctag>| sil! cunmap <buffer> <Plug><cfile>"
 
 if !exists("g:no_plugin_maps") && !exists("g:no_ruby_maps")
   nmap <buffer><script> <SID>:  :<C-U>
@@ -207,19 +207,18 @@ if !exists("g:no_plugin_maps") && !exists("g:no_ruby_maps")
           \."| sil! exe 'xunmap <buffer> iM' | sil! exe 'xunmap <buffer> aM'"
   endif
 
-  call s:map('c', '', '<C-R><C-W> <Plug><cword>')
   call s:map('c', '', '<C-R><C-F> <Plug><cfile>')
 
   cmap <buffer><script><expr> <SID>tagzv &foldopen =~# 'tag' ? '<Bar>norm! zv' : ''
-  call s:map('n', '<silent>', '<C-]>       <SID>:exe  v:count1."tag <Plug><cword>"<SID>tagzv<CR>')
-  call s:map('n', '<silent>', 'g<C-]>      <SID>:exe         "tjump <Plug><cword>"<SID>tagzv<CR>')
-  call s:map('n', '<silent>', 'g]          <SID>:exe       "tselect <Plug><cword>"<SID>tagzv<CR>')
-  call s:map('n', '<silent>', '<C-W>]      <SID>:exe v:count1."stag <Plug><cword>"<SID>tagzv<CR>')
-  call s:map('n', '<silent>', '<C-W><C-]>  <SID>:exe v:count1."stag <Plug><cword>"<SID>tagzv<CR>')
-  call s:map('n', '<silent>', '<C-W>g<C-]> <SID>:exe        "stjump <Plug><cword>"<SID>tagzv<CR>')
-  call s:map('n', '<silent>', '<C-W>g]     <SID>:exe      "stselect <Plug><cword>"<SID>tagzv<CR>')
-  call s:map('n', '<silent>', '<C-W>}      <SID>:exe v:count1."ptag <Plug><cword>"<CR>')
-  call s:map('n', '<silent>', '<C-W>g}     <SID>:exe        "ptjump <Plug><cword>"<CR>')
+  call s:map('n', '<silent>', '<C-]>       <SID>:exe  v:count1."tag <Plug><ctag>"<SID>tagzv<CR>')
+  call s:map('n', '<silent>', 'g<C-]>      <SID>:exe         "tjump <Plug><ctag>"<SID>tagzv<CR>')
+  call s:map('n', '<silent>', 'g]          <SID>:exe       "tselect <Plug><ctag>"<SID>tagzv<CR>')
+  call s:map('n', '<silent>', '<C-W>]      <SID>:exe v:count1."stag <Plug><ctag>"<SID>tagzv<CR>')
+  call s:map('n', '<silent>', '<C-W><C-]>  <SID>:exe v:count1."stag <Plug><ctag>"<SID>tagzv<CR>')
+  call s:map('n', '<silent>', '<C-W>g<C-]> <SID>:exe        "stjump <Plug><ctag>"<SID>tagzv<CR>')
+  call s:map('n', '<silent>', '<C-W>g]     <SID>:exe      "stselect <Plug><ctag>"<SID>tagzv<CR>')
+  call s:map('n', '<silent>', '<C-W>}      <SID>:exe v:count1."ptag <Plug><ctag>"<CR>')
+  call s:map('n', '<silent>', '<C-W>g}     <SID>:exe        "ptjump <Plug><ctag>"<CR>')
 
   call s:map('n', '<silent>', 'gf           <SID>c:find <Plug><cfile><CR>')
   call s:map('n', '<silent>', '<C-W>f      <SID>c:sfind <Plug><cfile><CR>')
@@ -351,6 +350,10 @@ function! RubyCursorIdentifier() abort
   let raw          = matchstr(getline('.')[col-1 : ],pattern)
   let stripped     = substitute(substitute(raw,'\s\+=$','=',''),'^\s*[:.]\=','','')
   return stripped == '' ? expand("<cword>") : stripped
+endfunction
+
+function! RubyCursorTag() abort
+  return substitute(RubyCursorIdentifier(), '^[$@]*', '', '')
 endfunction
 
 function! RubyCursorFile() abort
