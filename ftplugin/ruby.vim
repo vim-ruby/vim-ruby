@@ -50,12 +50,6 @@ if exists("&ofu") && has("ruby")
   setlocal omnifunc=rubycomplete#Complete
 endif
 
-" To activate, :set ballooneval
-if has('balloon_eval') && exists('+balloonexpr')
-  setlocal balloonexpr=RubyBalloonexpr()
-endif
-
-
 " TODO:
 "setlocal define=^\\s*def
 
@@ -143,11 +137,16 @@ endif
 let b:undo_ftplugin = "setl inc= sua= path= tags= fo< com< cms< kp="
       \."| unlet! b:browsefilter b:match_ignorecase b:match_words b:match_skip"
       \."| if exists('&ofu') && has('ruby') | setl ofu< | endif"
-      \."| if has('balloon_eval') && exists('+bexpr') | setl bexpr< | endif"
 
 if get(g:, 'ruby_recommended_style', 1)
   setlocal shiftwidth=2 softtabstop=2 expandtab
   let b:undo_ftplugin .= ' | setl sw< sts< et<'
+endif
+
+" To activate, :set ballooneval
+if exists('+balloonexpr') && get(g:, 'ruby_balloonexpr')
+  setlocal balloonexpr=RubyBalloonexpr()
+  let b:undo_ftplugin .= "| setl bexpr="
 endif
 
 function! s:map(mode, flags, map) abort
