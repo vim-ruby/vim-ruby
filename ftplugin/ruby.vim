@@ -140,7 +140,7 @@ if (has("gui_win32") || has("gui_gtk")) && !exists("b:browsefilter")
                      \ "All Files (*.*)\t*.*\n"
 endif
 
-let b:undo_ftplugin = "setl fo< inc< sua< def< com< cms< path< tags< kp<"
+let b:undo_ftplugin = "setl inc= sua= path= tags= fo< com< cms< kp="
       \."| unlet! b:browsefilter b:match_ignorecase b:match_words b:match_skip"
       \."| if exists('&ofu') && has('ruby') | setl ofu< | endif"
       \."| if has('balloon_eval') && exists('+bexpr') | setl bexpr< | endif"
