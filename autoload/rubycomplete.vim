@@ -265,7 +265,7 @@ class VimRubyCompletion
     nums = Range.new( 1, enum )
     nums.each do |x|
 
-    ln = buf[x]
+      ln = buf[x]
       begin
         if /.*require_relative\s*(.*)$/.match( ln )
           eval( "require %s" % File.expand_path($1) )
