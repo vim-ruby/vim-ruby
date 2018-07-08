@@ -256,9 +256,7 @@ class VimRubyCompletion
 
     custom_paths = VIM::evaluate("get(g:, 'rubycomplete_load_paths', [])")
 
-  puts custom_paths
-    if custom_paths.is_a?(Array) && !custom_paths.empty?
-        puts "ASD"
+    if !custom_paths.empty?
       $LOAD_PATH.concat(custom_paths).uniq!
     end
 
