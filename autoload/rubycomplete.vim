@@ -262,7 +262,7 @@ class VimRubyCompletion
       begin
         if /.*require_relative\s*(.*)$/.match( ln )
           eval( "require %s" % File.expand_path($1) )
-        elsif /.*require\s*(.*)$/.match( ln )
+        elsif /.*require\s*(["'].*?["'])/.match( ln ) 
           eval( "require %s" % $1 )
         end
       rescue Exception => e
