@@ -253,6 +253,15 @@ class VimRubyCompletion
 
 # {{{ buffer analysis magic
   def load_requires
+
+    custom_paths = VIM::evaluate("get(g:, 'rubycomplete_load_paths', [])")
+
+  puts custom_paths
+    if custom_paths.is_a?(Array) && !custom_paths.empty?
+        puts "ASD"
+      $LOAD_PATH.concat(custom_paths).uniq!
+    end
+
     buf = VIM::Buffer.current
     enum = buf.line_number
     nums = Range.new( 1, enum )
