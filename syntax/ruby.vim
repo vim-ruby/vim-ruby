@@ -316,11 +316,11 @@ syn match  rubyAliasDeclaration2   "[^[:space:];#.()]\+" contained contains=ruby
 syn match  rubyMethodDeclaration   "[^[:space:];#(]\+"	 contained contains=rubyConstant,rubyBoolean,rubyPseudoVariable,rubyInstanceVariable,rubyClassVariable,rubyGlobalVariable
 syn match  rubyClassDeclaration    "[^[:space:];#<]\+"	 contained contains=rubyClassName,rubyOperator
 syn match  rubyModuleDeclaration   "[^[:space:];#<]\+"	 contained contains=rubyModuleName,rubyOperator
-syn match  rubyFunction "\<[_[:alpha:]][_[:alnum:]]*[?!=]\=[[:alnum:]_.:?!=]\@!" contained containedin=rubyMethodDeclaration
-syn match  rubyFunction "\%(\s\|^\)\@1<=[_[:alpha:]][_[:alnum:]]*[?!=]\=\%(\s\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2
-syn match  rubyFunction "\%([[:space:].]\|^\)\@2<=\%(\[\]=\=\|\*\*\|[-+!~]@\=\|[*/%|&^~]\|<<\|>>\|[<>]=\=\|<=>\|===\|[=!]=\|[=!]\~\|!\|`\)\%([[:space:];#(]\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2,rubyMethodDeclaration
+syn match  rubyMethodName "\<[_[:alpha:]][_[:alnum:]]*[?!=]\=[[:alnum:]_.:?!=]\@!" contained containedin=rubyMethodDeclaration
+syn match  rubyMethodName "\%(\s\|^\)\@1<=[_[:alpha:]][_[:alnum:]]*[?!=]\=\%(\s\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2
+syn match  rubyMethodName "\%([[:space:].]\|^\)\@2<=\%(\[\]=\=\|\*\*\|[-+!~]@\=\|[*/%|&^~]\|<<\|>>\|[<>]=\=\|<=>\|===\|[=!]=\|[=!]\~\|!\|`\)\%([[:space:];#(]\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2,rubyMethodDeclaration
 
-syn cluster rubyDeclaration contains=rubyAliasDeclaration,rubyAliasDeclaration2,rubyMethodDeclaration,rubyModuleDeclaration,rubyClassDeclaration,rubyFunction,rubyBlockParameter
+syn cluster rubyDeclaration contains=rubyAliasDeclaration,rubyAliasDeclaration2,rubyMethodDeclaration,rubyModuleDeclaration,rubyClassDeclaration,rubyMethodName,rubyBlockParameter
 
 " Keywords {{{1
 " Note: the following keywords have already been defined:
@@ -338,7 +338,7 @@ syn match   rubyBeginEnd       "\<\%(BEGIN\|END\)\>[?!]\@!"
 if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   syn match  rubyDefine "\<alias\>"  nextgroup=rubyAliasDeclaration  skipwhite skipnl
   syn match  rubyDefine "\<def\>"    nextgroup=rubyMethodDeclaration skipwhite skipnl
-  syn match  rubyDefine "\<undef\>"  nextgroup=rubyFunction	     skipwhite skipnl
+  syn match  rubyDefine "\<undef\>"  nextgroup=rubyMethodName	     skipwhite skipnl
   syn match  rubyClass	"\<class\>"  nextgroup=rubyClassDeclaration  skipwhite skipnl
   syn match  rubyModule "\<module\>" nextgroup=rubyModuleDeclaration skipwhite skipnl
 
@@ -483,6 +483,7 @@ hi def link rubyDefine			Define
 hi def link rubyAccess			rubyMacro
 hi def link rubyAttribute		rubyMacro
 hi def link rubyMacro			Macro
+hi def link rubyMethodName		rubyFunction
 hi def link rubyFunction		Function
 hi def link rubyConditional		Conditional
 hi def link rubyConditionalModifier	rubyConditional
