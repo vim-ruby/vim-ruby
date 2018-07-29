@@ -253,15 +253,27 @@ class VimRubyCompletion
 
 # {{{ buffer analysis magic
   def load_requires
+
+    custom_paths = VIM::evaluate("get(g:, 'rubycomplete_load_paths', [])")
+
+    if !custom_paths.empty?
+      $LOAD_PATH.concat(custom_paths).uniq!
+    end
+
     buf = VIM::Buffer.current
     enum = buf.line_number
     nums = Range.new( 1, enum )
     nums.each do |x|
+
       ln = buf[x]
       begin
-        eval( "require %s" % $1 ) if /.*require\s*(["'].*?["'])/.match( ln )
-      rescue Exception
-        #ignore?
+        if /.*require_relative\s*(.*)$/.match( ln )
+          eval( "require %s" % File.expand_path($1) )
+        elsif /.*require\s*(["'].*?["'])/.match( ln ) 
+          eval( "require %s" % $1 )
+        end
+      rescue Exception => e
+        dprint e.inspect
       end
     end
   end
@@ -344,8 +356,13 @@ class VimRubyCompletion
         if x != cur_line
           next if x == 0
           ln = buf[x]
-          if /^\s*(module|class|def|include)\s+/.match(ln)
-            clscnt += 1 if $1 == "class"
+          is_const = false
+          if /^\s*(module|class|def|include)\s+/.match(ln) || is_const = /^\s*?[A-Z]([A-z]|[1-9])*\s*?[|]{0,2}=\s*?.+\s*?/.match(ln)
+            clscnt += 1 if /class|module/.match($1)
+            # We must make sure to load each constant only once to avoid errors
+            if is_const
+                ln.gsub!(/\s*?[|]{0,2}=\s*?/, '||=')
+            end
             #dprint "\$1$1
             classdef += "%s\n" % ln
             classdef += "end\n" if /def\s+/.match(ln)
@@ -668,6 +685,7 @@ class VimRubyCompletion
         message = Regexp.quote($4)
         dprint "const or cls 2 [recv: \'%s\', msg: \'%s\']" % [ receiver, message ]
         load_buffer_class( receiver )
+        load_buffer_module( receiver )
         begin
           classes = eval("#{receiver}.constants")
           #methods = eval("#{receiver}.methods")
