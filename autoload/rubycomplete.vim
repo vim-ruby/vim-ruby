@@ -269,7 +269,7 @@ class VimRubyCompletion
       begin
         if /.*require_relative\s*(.*)$/.match( ln )
           eval( "require %s" % File.expand_path($1) )
-        elsif /.*require\s*(["'].*?["'])/.match( ln ) 
+        elsif /.*require\s*(["'].*?["'])/.match( ln )
           eval( "require %s" % $1 )
         end
       rescue Exception => e
@@ -440,7 +440,6 @@ class VimRubyCompletion
     return get_buffer_entity_list( "class" )
   end
 
-
   def load_rails
     allow_rails = VIM::evaluate("exists('g:rubycomplete_rails') && g:rubycomplete_rails")
     return if allow_rails.to_i.zero?
@@ -546,7 +545,6 @@ class VimRubyCompletion
         ret += ActiveRecord::ConnectionAdapters::SchemaStatements.methods
     end
 
-
     return ret
   end
 
@@ -631,7 +629,6 @@ class VimRubyCompletion
 
     want_gems = VIM::evaluate("get(g:, 'rubycomplete_load_gemfile')")
     load_gems unless want_gems.to_i.zero?
-    
 
     input = VIM::Buffer.current.line
     cpos = VIM::Window.current.cursor[1] - 1
@@ -806,7 +803,6 @@ class VimRubyCompletion
       methods += Kernel.public_methods
     end
 
-
     include_object = VIM::evaluate("exists('g:rubycomplete_include_object') && g:rubycomplete_include_object")
     methods = clean_sel( methods, message )
     methods = (methods-Object.instance_methods) if include_object == "0"
@@ -848,6 +844,5 @@ let s:rubycomplete_rails_loaded = 0
 
 call s:DefRuby()
 "}}} ruby-side code
-
 
 " vim:tw=78:sw=4:ts=8:et:fdm=marker:ft=vim:norl:
