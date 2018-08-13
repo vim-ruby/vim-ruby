@@ -103,7 +103,7 @@ function! s:GetBufferRubyEntity( name, type, ... )
     endif
 
     let curpos = getpos(".")
-    let [enum,ecol] = searchpairpos( crex, '', '\(end\|}\)', 'wr' )
+    let [enum,ecol] = searchpairpos( crex, '', '\(end\|}\)', 'W' )
     call cursor(lastpos[1], lastpos[2])
 
     if lnum > enum
