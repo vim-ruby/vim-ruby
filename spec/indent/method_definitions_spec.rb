@@ -13,4 +13,28 @@ describe "Indenting" do
       end
     EOF
   end
+
+  specify "method definitions prefixed with any method call" do
+    assert_correct_indenting <<~EOF
+      class Foo
+        foobar def one(x)
+        end
+        foobar? def one(x)
+        end
+        foobar! def one(x)
+        end
+
+        фубар def one(x)
+        end
+
+        foobar
+        def one(x)
+        end
+
+        FooBar1 def two(y)
+          code
+        end
+      end
+    EOF
+  end
 end
