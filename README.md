@@ -1,4 +1,4 @@
-# aramisgithub's fork of `vim-ruby`
+# arzg’s fork of `vim-ruby`
 
 The purpose of this fork is to enable a disabled feature of 
 `vim-ruby` that prevents variables, methods, and several other 
