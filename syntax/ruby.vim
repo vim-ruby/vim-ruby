@@ -119,7 +119,7 @@ syn match rubyFloat	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<\%(0\|[1-9]\d*\%(_\d\+\)*
 syn match rubyFloat	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\%(\.\d\+\%(_\d\+\)*\)\=\%([eE][-+]\=\d\+\%(_\d\+\)*\)r\=i\=\>"	display
 
 " Identifiers {{{1
-syn match rubyLocalVariableOrMethod "\<[_[:lower:]][_[:alnum:]]*[?!=]\=" contains=NONE display transparent
+syn match rubyLocalVariableOrMethod "\<[_[:lower:]][_[:alnum:]]*[?!=]\=" contains=NONE display
 syn match rubyBlockArgument	    "&[_[:lower:]][_[:alnum:]]"		 contains=NONE display transparent
 
 syn match  rubyClassName	"\%(\%(^\|[^.]\)\.\s*\)\@<!\<\u\%(\w\|[^\x00-\x7F]\)*\>\%(\s*(\)\@!" contained
@@ -459,8 +459,8 @@ endif
 
 " Keyword Nobbling {{{1
 " Note: this is a hack to prevent 'keywords' being highlighted as such when called as methods with an explicit receiver
-syn match rubyKeywordAsMethod "\%(\%(\.\@1<!\.\)\|::\)\_s*\%([_[:lower:]][_[:alnum:]]*\|\<\%(BEGIN\|END\)\>\)" transparent contains=NONE
-syn match rubyKeywordAsMethod "\(defined?\|exit!\)\@!\<[_[:lower:]][_[:alnum:]]*[?!]"			       transparent contains=NONE
+syn match rubyKeywordAsMethod "\%(\%(\.\@1<!\.\)\|::\)\_s*\%([_[:lower:]][_[:alnum:]]*\|\<\%(BEGIN\|END\)\>\)" contains=NONE
+syn match rubyKeywordAsMethod "\(defined?\|exit!\)\@!\<[_[:lower:]][_[:alnum:]]*[?!]"			       contains=NONE
 
 " More Symbols {{{1
 syn match  rubySymbol		"\%([{(,]\_s*\)\zs\l\w*[!?]\=::\@!"he=e-1
@@ -502,11 +502,14 @@ if !exists("ruby_no_identifiers")
 else
   hi def link rubyIdentifier		NONE
 endif
+
 hi def link rubyClassVariable		rubyIdentifier
 hi def link rubyConstant		Type
 hi def link rubyClassName		rubyConstant
 hi def link rubyModuleName		rubyConstant
 hi def link rubyGlobalVariable		rubyIdentifier
+hi def link rubyLocalVariableOrMethod	rubyIdentifier
+hi def link rubyKeywordAsMethod	rubyKeyword
 hi def link rubyInstanceVariable	rubyIdentifier
 hi def link rubyPredefinedIdentifier	rubyIdentifier
 hi def link rubyPredefinedConstant	rubyPredefinedIdentifier
