@@ -67,7 +67,7 @@ let s:skip_expr =
 let s:ruby_indent_keywords =
       \ '^\s*\zs\<\%(module\|class\|if\|for' .
       \   '\|while\|until\|else\|elsif\|case\|when\|unless\|begin\|ensure\|rescue' .
-      \   '\|\%(public\|protected\|private\)\=\s*def\):\@!\>' .
+      \   '\|\%(\K\k*[!?]\?\)\=\s*def\):\@!\>' .
       \ '\|\%([=,*/%+-]\|<<\|>>\|:\s\)\s*\zs' .
       \    '\<\%(if\|for\|while\|until\|case\|unless\|begin\):\@!\>'
 
@@ -81,7 +81,7 @@ let s:ruby_deindent_keywords =
 let s:end_start_regex =
       \ '\C\%(^\s*\|[=,*/%+\-|;{]\|<<\|>>\|:\s\)\s*\zs' .
       \ '\<\%(module\|class\|if\|for\|while\|until\|case\|unless\|begin' .
-      \   '\|\%(public\|protected\|private\)\=\s*def\):\@!\>' .
+      \   '\|\%(\K\k*[!?]\?\)\=\s*def\):\@!\>' .
       \ '\|\%(^\|[^.:@$]\)\@<=\<do:\@!\>'
 
 " Regex that defines the middle-match for the 'end' keyword.
