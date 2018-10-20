@@ -395,6 +395,8 @@ function! RubyCursorFile() abort
   endif
 endfunction
 
+command! -nargs=1 -buffer Ri call ri#doc('new', 'split', <f-args>)
+
 "
 " Instructions for enabling "matchit" support:
 "
