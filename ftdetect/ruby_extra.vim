@@ -14,6 +14,9 @@ au BufNewFile,BufRead Appraisals		call s:setf('ruby')
 " Autotest
 au BufNewFile,BufRead .autotest			call s:setf('ruby')
 
+" Axlsx
+au BufNewFile,BufRead *.axlsx			call s:setf('ruby')
+
 " Buildr Buildfile
 au BufNewFile,BufRead [Bb]uildfile		call s:setf('ruby')
 
