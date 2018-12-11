@@ -260,6 +260,8 @@ class VimRubyCompletion
       $LOAD_PATH.concat(custom_paths).uniq!
     end
 
+    VIM::evaluate("get(g:, 'rubycomplete_auto_require', [])").each { |f| require f }
+
     buf = VIM::Buffer.current
     enum = buf.line_number
     nums = Range.new( 1, enum )
