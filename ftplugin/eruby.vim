@@ -5,7 +5,7 @@
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
 
 " Only do this when not done yet for this buffer
-if get(b:, 'did_ftplugin') =~# '\<eruby\>'
+if exists("b:did_ftplugin")
   finish
 endif
 
@@ -23,8 +23,6 @@ endif
 
 if &filetype =~ '^eruby\.'
   let b:eruby_subtype = matchstr(&filetype,'^eruby\.\zs\w\+')
-elseif &filetype =~ '^.*\.eruby\>'
-  let b:eruby_subtype = matchstr(&filetype,'^.\{-\}\ze\.eruby\>')
 elseif !exists("b:eruby_subtype")
   let s:lines = getline(1)."\n".getline(2)."\n".getline(3)."\n".getline(4)."\n".getline(5)."\n".getline("$")
   let b:eruby_subtype = matchstr(s:lines,'eruby_subtype=\zs\w\+')
@@ -47,14 +45,11 @@ elseif !exists("b:eruby_subtype")
   endif
 endif
 
-if &filetype =~# '^eruby\>'
-  if exists("b:eruby_subtype") && b:eruby_subtype != '' && b:eruby_subtype !=? 'eruby'
-    exe "runtime! ftplugin/".b:eruby_subtype.".vim ftplugin/".b:eruby_subtype."_*.vim ftplugin/".b:eruby_subtype."/*.vim"
-  else
-    runtime! ftplugin/html.vim ftplugin/html_*.vim ftplugin/html/*.vim
-  endif
+if exists("b:eruby_subtype") && b:eruby_subtype != '' && b:eruby_subtype !=? 'eruby'
+  exe "runtime! ftplugin/".b:eruby_subtype.".vim ftplugin/".b:eruby_subtype."_*.vim ftplugin/".b:eruby_subtype."/*.vim"
+else
+  runtime! ftplugin/html.vim ftplugin/html_*.vim ftplugin/html/*.vim
 endif
-let s:did_ftplugin = get(b:, 'did_ftplugin', 1)
 unlet! b:did_ftplugin
 
 " Override our defaults if these were set by an included ftplugin.
@@ -87,7 +82,7 @@ let s:path = &l:path
 let s:suffixesadd = &l:suffixesadd
 
 runtime! ftplugin/ruby.vim ftplugin/ruby_*.vim ftplugin/ruby/*.vim
-let b:did_ftplugin = s:did_ftplugin . '.eruby'
+let b:did_ftplugin = 1
 
 " Combine the new set of values with those previously included.
 if exists("b:undo_ftplugin")
