@@ -1,9 +1,8 @@
 " Vim completion script
-" Language:             Ruby
-" Maintainer:           Mark Guzman <segfault@hasno.info>
-" URL:                  https://github.com/vim-ruby/vim-ruby
-" Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
-" Maintainer Version:   0.8.1
+" Language:		Ruby
+" Maintainer:		Mark Guzman <segfault@hasno.info>
+" URL:			https://github.com/vim-ruby/vim-ruby
+" Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
 " ----------------------------------------------------------------------------
 "
 " Ruby IRB/Complete author: Keiju ISHITSUKA(keiju@ishitsuka.com)

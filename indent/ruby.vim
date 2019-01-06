@@ -1,6 +1,7 @@
 " Vim indent file
 " Language:		Ruby
-" Maintainer:		Nikolai Weibull <now at bitwi.se>
+" Maintainer:		Andrew Radev <andrey.radev@gmail.com>
+" Previous Maintainer:	Nikolai Weibull <now at bitwi.se>
 " URL:			https://github.com/vim-ruby/vim-ruby
 " Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
 
