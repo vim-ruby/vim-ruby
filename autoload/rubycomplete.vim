@@ -224,7 +224,7 @@ rescue Exception
 end
 class VimRubyCompletion
 # {{{ constants
-  @@debug = true
+  @@debug = false
   @@ReservedWords = [
         "BEGIN", "END",
         "alias", "and",
@@ -360,7 +360,7 @@ class VimRubyCompletion
           next if x == 0
           ln = buf[x]
           is_const = false
-          if /^\s*(module|class|def|include)\s+/.match(ln) || is_const = /^\s*?[A-Z]([A-z]|[1-9])*\s*?[|]{0,2}=\s*?.+\s*?/.match(ln) || /attr_(accessor|reader)/.match(ln)
+          if /^\s*(module|class|def|include)\s+/.match(ln) || is_const = /^\s*?[A-Z]([A-z]|[1-9])*\s*?[|]{0,2}=\s*?.+\s*?/.match(ln) || /attr_(accessor|reader|writer)/.match(ln)
             clscnt += 1 if /class|module/.match($1)
             # We must make sure to load each constant only once to avoid errors
             if is_const
