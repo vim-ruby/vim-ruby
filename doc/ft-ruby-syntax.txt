@@ -68,6 +68,8 @@ The value is a space-separated list of keywords:
     <<         Here documents
     __END__    Source code after "__END__" directive
 
+NONE and ALL have priority, in that order, over all other folding groups.
+
 						*ruby_no_expensive*
  Ruby: Reducing expensive operations ~
 

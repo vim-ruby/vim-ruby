@@ -32,6 +32,10 @@ let s:foldable_groups = split(
       \	)
 
 function! s:foldable(...) abort
+  if index(s:foldable_groups, 'NONE') > -1
+    return 0
+  endif
+
   if index(s:foldable_groups, 'ALL') > -1
     return 1
   endif
