@@ -104,9 +104,9 @@ syn region rubyNestedSquareBrackets start="\[" skip="\\\\\|\\\]" matchgroup=ruby
 
 " Regular Expression Metacharacters {{{1
 " These are mostly Oniguruma ready
-syn region rubyRegexpComment	matchgroup=rubyRegexpSpecial   start="(?#"								  skip="\\)"  end=")"  contained
-syn region rubyRegexpParens	matchgroup=rubyRegexpSpecial   start="(\(?:\|?<\=[=!]\|?>\|?<[a-z_]\w*>\|?[imx]*-[imx]*:\=\|\%(?#\)\@!\)" skip="\\)"  end=")"  contained transparent contains=@rubyRegexpSpecial
-syn region rubyRegexpBrackets	matchgroup=rubyRegexpCharClass start="\[\^\="								  skip="\\\]" end="\]" contained transparent contains=rubyStringEscape,rubyRegexpEscape,rubyRegexpCharClass oneline
+syn region rubyRegexpComment	matchgroup=rubyRegexpSpecial   start="(?#"								  skip="\\\\\|\\)"  end=")"  contained
+syn region rubyRegexpParens	matchgroup=rubyRegexpSpecial   start="(\(?:\|?<\=[=!]\|?>\|?<[a-z_]\w*>\|?[imx]*-[imx]*:\=\|\%(?#\)\@!\)" skip="\\\\\|\\)"  end=")"  contained transparent contains=@rubyRegexpSpecial
+syn region rubyRegexpBrackets	matchgroup=rubyRegexpCharClass start="\[\^\="								  skip="\\\\\|\\\]" end="\]" contained transparent contains=rubyStringEscape,rubyRegexpEscape,rubyRegexpCharClass oneline
 syn match  rubyRegexpCharClass	"\\[DdHhSsWw]"	       contained display
 syn match  rubyRegexpCharClass	"\[:\^\=\%(alnum\|alpha\|ascii\|blank\|cntrl\|digit\|graph\|lower\|print\|punct\|space\|upper\|xdigit\):\]" contained
 syn match  rubyRegexpEscape	"\\[].*?+^$|\\/(){}[]" contained
