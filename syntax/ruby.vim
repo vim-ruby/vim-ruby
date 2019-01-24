@@ -320,7 +320,7 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   if !exists("ruby_minlines")
     let ruby_minlines = 500
   endif
-  exec "syn sync minlines=" . ruby_minlines
+  exe "syn sync minlines=" . ruby_minlines
 
 else
   syn match rubyControl "\<def\>[?!]\@!"    nextgroup=rubyMethodDeclaration skipwhite skipnl
