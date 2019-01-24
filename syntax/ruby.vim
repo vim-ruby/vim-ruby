@@ -153,7 +153,7 @@ syn match  rubySymbol		"[]})\"':]\@1<!:\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\
 SynFold ':' syn region rubySymbol matchgroup=rubySymbolDelimiter start="[]})\"':]\@1<!:'"  end="'"  skip="\\\\\|\\'"  contains=rubyQuoteEscape
 SynFold ':' syn region rubySymbol matchgroup=rubySymbolDelimiter start="[]})\"':]\@1<!:\"" end="\"" skip="\\\\\|\\\"" contains=@rubyStringSpecial
 
-syn match  rubyCapitalizedMethod	"\%(\%(^\|[^.]\)\.\s*\)\@<!\<\u\%(\w\|[^\x00-\x7F]\)*\>\%(\s*(\)*\s*(\@="
+syn match rubyCapitalizedMethod "\%(\%(^\|[^.]\)\.\s*\)\@<!\<\u\%(\w\|[^\x00-\x7F]\)*\>\%(\s*(\)\@="
 
 syn match  rubyBlockParameter	  "\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*" contained
 syn region rubyBlockParameterList start="\%(\%(\<do\>\|{\)\_s*\)\@32<=|" end="|" oneline display contains=rubyBlockParameter
