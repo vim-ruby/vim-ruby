@@ -1,4 +1,4 @@
-RUBY                                                    *ft-ruby-omni*
+RUBY							*ft-ruby-omni*
 
 Completion of Ruby code requires that Vim be built with |+ruby|.
 
@@ -21,11 +21,11 @@ The completions provided by CTRL-X CTRL-O are sensitive to the context:
 
 Notes:
  - Vim will load/evaluate code in order to provide completions.  This may
-   cause some code execution, which may be a concern. This is no longer
+   cause some code execution, which may be a concern.  This is no longer
    enabled by default, to enable this feature add >
      let g:rubycomplete_buffer_loading = 1
 <- In context 1 above, Vim can parse the entire buffer to add a list of
-   classes to the completion results. This feature is turned off by default,
+   classes to the completion results.  This feature is turned off by default,
    to enable it add >
      let g:rubycomplete_classes_in_global = 1
 <  to your vimrc
@@ -33,10 +33,10 @@ Notes:
  - In context 3 above, Vim will attempt to determine the methods supported by
    the object.
  - Vim can detect and load the Rails environment for files within a rails
-   project. The feature is disabled by default, to enable it add >
+   project.  The feature is disabled by default, to enable it add >
      let g:rubycomplete_rails = 1
 <  to your vimrc
- - Vim can parse a Gemfile, in case gems are being implicitly required. To
+ - Vim can parse a Gemfile, in case gems are being implicitly required.  To
    activate the feature: >
      let g:rubycomplete_load_gemfile = 1
 <  To specify an alternative path, use: >
