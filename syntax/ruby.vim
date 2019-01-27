@@ -182,13 +182,13 @@ SynFold '%' syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r\z(\s\
 
 " Normal String {{{1
 let s:spell_cluster = exists('ruby_spellcheck_strings') ? ',@Spell' : ''
-exe 'syn region rubyString matchgroup=rubyStringDelimiter start="\"" end="\"" skip="\\\\\|\\\"" ' .
-      \ (s:foldable('%') ? 'fold' : '') . ' contains=@rubyStringSpecial' . s:spell_cluster
-exe 'syn region rubyString matchgroup=rubyStringDelimiter start="''" end="''" skip="\\\\\|\\''" ' .
-      \ (s:foldable('%') ? 'fold' : '') . ' contains=rubyQuoteEscape'	 . s:spell_cluster
+let s:fold_arg      = s:foldable('string')              ? ' fold'   : ''
+exe 'syn region rubyString matchgroup=rubyStringDelimiter start="\"" end="\"" skip="\\\\\|\\\""  contains=@rubyStringSpecial' . s:spell_cluster . s:fold_arg
+exe 'syn region rubyString matchgroup=rubyStringDelimiter start="''" end="''" skip="\\\\\|\\''"  contains=rubyQuoteEscape'    . s:spell_cluster . s:fold_arg
+unlet s:spell_cluster s:fold_arg
 
 " Shell Command Output {{{1
-SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="`" end="`" skip="\\\\\|\\`" contains=@rubyStringSpecial
+SynFold 'string' syn region rubyString matchgroup=rubyStringDelimiter start="`" end="`" skip="\\\\\|\\`" contains=@rubyStringSpecial
 
 " Generalized Single Quoted String, Symbol and Array of Strings {{{1
 SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%[qw]\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1"
