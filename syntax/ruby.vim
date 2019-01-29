@@ -50,7 +50,7 @@ function! s:foldable(...) abort
 endfunction
 
 function! s:run_syntax_fold(args) abort
-  let [_, _, groups, cmd; _] = matchlist(a:args, '\(["'']\)\(.\{-}\)\1\s\+\(.*\)')
+  let [_0, _1, groups, cmd; _] = matchlist(a:args, '\(["'']\)\(.\{-}\)\1\s\+\(.*\)')
   if call('s:foldable', split(groups))
     let cmd .= ' fold'
   endif
