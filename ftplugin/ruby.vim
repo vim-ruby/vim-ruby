@@ -32,7 +32,7 @@ if exists("loaded_matchit") && !exists("b:match_words")
 
   let b:match_skip =
 	\ "synIDattr(synID(line('.'),col('.'),0),'name') =~ '" .
-	\ "\\<ruby\\%(String\\|StringDelimiter\\|ASCIICode\\|Escape\\|" .
+	\ "\\<ruby\\%(String\\|StringDelimiter\\|Character\\|Escape\\|" .
         \ "Regexp\\|RegexpDelimiter\\|" .
 	\ "Interpolation\\|NoInterpolation\\|Comment\\|Documentation\\|" .
 	\ "ConditionalModifier\\|RepeatModifier\\|OptionalDo\\|" .

@@ -82,6 +82,7 @@ endif
 
 " Expression Substitution and Backslash Notation {{{1
 syn match rubyStringEscape "\\\\\|\\[abefnrstv]\|\\\o\{1,3}\|\\x\x\{1,2}"						    contained display
+syn match rubyStringEscape "\\u\%(\x\{4}\|{\x\{1,6}\%(\s\+\x\{1,6}\)*}\)"						    contained display
 syn match rubyStringEscape "\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)" contained display
 syn match rubyQuoteEscape  "\\[\\']"											    contained display
 
@@ -125,8 +126,7 @@ syn cluster rubyStringSpecial	      contains=rubyInterpolation,rubyNoInterpolati
 syn cluster rubyExtendedStringSpecial contains=@rubyStringSpecial,rubyNestedParentheses,rubyNestedCurlyBraces,rubyNestedAngleBrackets,rubyNestedSquareBrackets
 syn cluster rubyRegexpSpecial	      contains=rubyInterpolation,rubyNoInterpolation,rubyStringEscape,rubyRegexpSpecial,rubyRegexpEscape,rubyRegexpBrackets,rubyRegexpCharClass,rubyRegexpDot,rubyRegexpQuantifier,rubyRegexpAnchor,rubyRegexpParens,rubyRegexpComment
 
-" Numbers and ASCII Codes {{{1
-syn match rubyASCIICode "\%(\w\|[]})\"'/]\)\@1<!\%(?\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\=\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)\)"
+" Numbers {{{1
 syn match rubyInteger	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<0[xX]\x\+\%(_\x\+\)*r\=i\=\>"								display
 syn match rubyInteger	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<\%(0[dD]\)\=\%(0\|[1-9]\d*\%(_\d\+\)*\)r\=i\=\>"						display
 syn match rubyInteger	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<0[oO]\=\o\+\%(_\o\+\)*r\=i\=\>"								display
@@ -179,6 +179,10 @@ SynFold '%' syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r<"				
 SynFold '%' syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r\["				    end="\][iomxneus]*"  skip="\\\\\|\\\]"  contains=@rubyRegexpSpecial
 SynFold '%' syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r("				    end=")[iomxneus]*"	 skip="\\\\\|\\)"   contains=@rubyRegexpSpecial
 SynFold '%' syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r\z(\s\)"			    end="\z1[iomxneus]*" skip="\\\\\|\\\z1" contains=@rubyRegexpSpecial
+
+" Characters {{{1
+syn match rubyCharacter "\%(\w\|[]})\"'/]\)\@1<!\%(?\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\=\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)\)"
+syn match rubyCharacter "\%(\w\|[]})\"'/]\)\@1<!?\\u\%(\x\{4}\|{\x\{1,6}}\)"
 
 " Normal String {{{1
 let s:spell_cluster = exists('ruby_spellcheck_strings') ? ',@Spell' : ''
@@ -391,7 +395,7 @@ hi def link rubyOptionalDo		rubyRepeat
 hi def link rubyControl			Statement
 hi def link rubyInclude			Include
 hi def link rubyInteger			Number
-hi def link rubyASCIICode		Character
+hi def link rubyCharacter		Character
 hi def link rubyFloat			Float
 hi def link rubyBoolean			Boolean
 hi def link rubyException		Exception
