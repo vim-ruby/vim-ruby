@@ -58,7 +58,7 @@ let s:syng_stringdoc = s:syng_string + ['Documentation']
 " Syntax group names that are or delimit strings/symbols/regexes or are comments.
 let s:syng_strcom = s:syng_stringdoc +
       \ ['Regexp', 'RegexpDelimiter', 'RegexpEscape',
-      \ 'Symbol', 'StringDelimiter', 'ASCIICode', 'Comment']
+      \ 'Symbol', 'StringDelimiter', 'Character', 'Comment']
 
 " Expression used to check whether we should skip a match with searchpair().
 let s:skip_expr =
