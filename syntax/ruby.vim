@@ -194,7 +194,7 @@ syn match rubyCharacter "\%(\w\|[]})\"'/]\)\@1<!?\\u\%(\x\{4}\|{\x\{1,6}}\)"
 
 " Normal Strings {{{1
 let s:spell_cluster = exists('ruby_spellcheck_strings') ? ',@Spell' : ''
-let s:fold_arg      = s:foldable('string')              ? ' fold'   : ''
+let s:fold_arg	    = s:foldable('string')		? ' fold'   : ''
 exe 'syn region rubyString matchgroup=rubyStringDelimiter start="\"" end="\"" skip="\\\\\|\\\""  contains=@rubyStringSpecial'		       . s:spell_cluster . s:fold_arg
 exe 'syn region rubyString matchgroup=rubyStringDelimiter start="''" end="''" skip="\\\\\|\\''"  contains=rubyQuoteEscape,rubyBackslashEscape' . s:spell_cluster . s:fold_arg
 unlet s:spell_cluster s:fold_arg
