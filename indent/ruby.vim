@@ -50,7 +50,7 @@ set cpo&vim
 
 " Syntax group names that are strings.
 let s:syng_string =
-      \ ['String', 'Interpolation', 'InterpolationDelimiter', 'NoInterpolation', 'StringEscape']
+      \ ['String', 'Interpolation', 'InterpolationDelimiter', 'StringEscape']
 
 " Syntax group names that are strings or documentation.
 let s:syng_stringdoc = s:syng_string + ['Documentation']
