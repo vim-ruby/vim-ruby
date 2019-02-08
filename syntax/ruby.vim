@@ -95,10 +95,6 @@ syn match  rubyInterpolation	      "#\%(\$\|@@\=\)\w\+"    display contained con
 syn match  rubyInterpolationDelimiter "#\ze\%(\$\|@@\=\)\w\+" display contained
 syn match  rubyInterpolation	      "#\$\%(-\w\|\W\)"       display contained contains=rubyInterpolationDelimiter,rubyPredefinedVariable,rubyInvalidVariable
 syn match  rubyInterpolationDelimiter "#\ze\$\%(-\w\|\W\)"    display contained
-syn region rubyNoInterpolation	      start="\\#{" end="}"	      contained
-syn match  rubyNoInterpolation	      "\\#{"		      display contained
-syn match  rubyNoInterpolation	      "\\#\%(\$\|@@\=\)\w\+"  display contained
-syn match  rubyNoInterpolation	      "\\#\$\W"		      display contained
 
 syn match rubyParenthesesEscape	   "\\[()]"  contained display
 syn match rubyCurlyBracesEscape	   "\\[{}]"  contained display
@@ -129,9 +125,9 @@ syn match  rubyRegexpSpecial	"\\k'\%([a-z_]\w*\|-\=\d\+\)\%([+-]\d\+\)\='" conta
 syn match  rubyRegexpSpecial	"\\g<\%([a-z_]\w*\|-\=\d\+\)>" contained display
 syn match  rubyRegexpSpecial	"\\g'\%([a-z_]\w*\|-\=\d\+\)'" contained display
 
-syn cluster rubyStringSpecial	      contains=rubyInterpolation,rubyNoInterpolation,rubyStringEscape
+syn cluster rubyStringSpecial	      contains=rubyInterpolation,rubyStringEscape
 syn cluster rubyExtendedStringSpecial contains=@rubyStringSpecial,rubyNestedParentheses,rubyNestedCurlyBraces,rubyNestedAngleBrackets,rubyNestedSquareBrackets
-syn cluster rubyRegexpSpecial	      contains=rubyInterpolation,rubyNoInterpolation,rubyStringEscape,rubyRegexpSpecial,rubyRegexpEscape,rubyRegexpBrackets,rubyRegexpCharClass,rubyRegexpDot,rubyRegexpQuantifier,rubyRegexpAnchor,rubyRegexpParens,rubyRegexpComment
+syn cluster rubyRegexpSpecial	      contains=rubyInterpolation,rubyStringEscape,rubyRegexpSpecial,rubyRegexpEscape,rubyRegexpBrackets,rubyRegexpCharClass,rubyRegexpDot,rubyRegexpQuantifier,rubyRegexpAnchor,rubyRegexpParens,rubyRegexpComment
 
 " Numbers {{{1
 syn match rubyInteger	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<0[xX]\x\+\%(_\x\+\)*r\=i\=\>"								display
@@ -448,7 +444,6 @@ hi def link rubySquareBracketsEscape	rubyStringEscape
 hi def link rubyStringEscape		Special
 
 hi def link rubyInterpolationDelimiter	Delimiter
-hi def link rubyNoInterpolation		rubyString
 hi def link rubySharpBang		PreProc
 hi def link rubyRegexpDelimiter		rubyStringDelimiter
 hi def link rubySymbolDelimiter		rubySymbol
