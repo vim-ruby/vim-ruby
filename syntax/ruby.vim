@@ -61,7 +61,7 @@ com! -nargs=* SynFold call s:run_syntax_fold(<q-args>)
 
 " }}}
 
-syn cluster rubyNotTop contains=@rubyExtendedStringSpecial,@rubyRegexpSpecial,@rubyDeclaration,rubyConditional,rubyExceptional,rubyMethodExceptional,rubyTodo,rubyModuleName,rubyClassName,rubySymbolDelimiter
+syn cluster rubyNotTop contains=@rubyExtendedStringSpecial,@rubyRegexpSpecial,@rubyDeclaration,rubyConditional,rubyExceptional,rubyMethodExceptional,rubyTodo,rubyModuleName,rubyClassName,rubySymbolDelimiter,rubyEncoding
 
 " Whitespace Errors {{{1
 if exists("ruby_space_errors")
@@ -361,9 +361,12 @@ if !exists("ruby_no_special_methods")
 endif
 
 " Comments and Documentation {{{1
-syn match   rubySharpBang "\%^#!.*" display
-syn keyword rubyTodo	  FIXME NOTE TODO OPTIMIZE HACK REVIEW XXX todo contained
-syn match   rubyComment   "#.*" contains=rubySharpBang,rubySpaceError,rubyTodo,@Spell
+syn match   rubySharpBang     "\%^#!.*" display
+syn keyword rubyTodo	      FIXME NOTE TODO OPTIMIZE HACK REVIEW XXX todo contained
+syn match   rubyEncoding      "[[:alnum:]-]\+" contained display
+syn match   rubyMagicComment  "\c\%<3l#\s*\zs\%(coding\|encoding\):"					 contained nextgroup=rubyEncoding skipwhite
+syn match   rubyMagicComment  "\c\%<10l#\s*\zs\%(frozen_string_literal\|warn_indent\|warn_past_scope\):" contained nextgroup=rubyBoolean  skipwhite
+syn match   rubyComment	      "#.*" contains=rubySharpBang,rubySpaceError,rubyTodo,rubyMagicComment,@Spell
 if !exists("ruby_no_comment_fold") && s:foldable('#')
   syn region rubyMultilineComment start="^\s*#.*\n\%(^\s*#\)\@=" end="^\s*#.*\n\%(^\s*#\)\@!" contains=rubyComment transparent fold keepend
   syn region rubyDocumentation	  start="^=begin\ze\%(\s.*\)\=$" end="^=end\%(\s.*\)\=$" contains=rubySpaceError,rubyTodo,@Spell fold
@@ -431,6 +434,8 @@ hi def link rubyPseudoVariable		Constant
 hi def link rubyCapitalizedMethod	rubyLocalVariableOrMethod
 
 hi def link rubyComment			Comment
+hi def link rubyEncoding		Constant
+hi def link rubyMagicComment		SpecialComment
 hi def link rubyData			Comment
 hi def link rubyDataDirective		Delimiter
 hi def link rubyDocumentation		Comment
