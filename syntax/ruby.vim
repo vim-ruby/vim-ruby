@@ -107,27 +107,29 @@ syn region rubyNestedAngleBrackets  start="<"  skip="\\\\\|\\>"  matchgroup=ruby
 syn region rubyNestedSquareBrackets start="\[" skip="\\\\\|\\\]" matchgroup=rubyString end="\]"	transparent contained
 
 " Regular Expression Metacharacters {{{1
-" These are mostly Oniguruma ready
-syn region rubyRegexpComment	matchgroup=rubyRegexpSpecial   start="(?#"								  skip="\\\\\|\\)"  end=")"  contained
-syn region rubyRegexpParens	matchgroup=rubyRegexpSpecial   start="(\(?:\|?<\=[=!]\|?>\|?<[a-z_]\w*>\|?[imx]*-[imx]*:\=\|\%(?#\)\@!\)" skip="\\\\\|\\)"  end=")"  contained transparent contains=@rubyRegexpSpecial
-syn region rubyRegexpBrackets	matchgroup=rubyRegexpCharClass start="\[\^\="								  skip="\\\\\|\\\]" end="\]" contained transparent contains=rubyStringEscape,rubyRegexpEscape,rubyRegexpCharClass oneline
-syn match  rubyRegexpCharClass	"\\[DdHhSsWw]"	       contained display
-syn match  rubyRegexpCharClass	"\[:\^\=\%(alnum\|alpha\|ascii\|blank\|cntrl\|digit\|graph\|lower\|print\|punct\|space\|upper\|word\|xdigit\):\]" contained
-syn match  rubyRegexpEscape	"\\[].*?+^$|\\/(){}[]" contained
-syn match  rubyRegexpQuantifier	"[*?+][?+]\="	       contained display
-syn match  rubyRegexpQuantifier	"{\d\+\%(,\d*\)\=}?\=" contained display
-syn match  rubyRegexpAnchor	"[$^]\|\\[ABbGZz]"     contained display
-syn match  rubyRegexpDot	"\."		       contained display
-syn match  rubyRegexpSpecial	"|"		       contained display
-syn match  rubyRegexpSpecial	"\\[1-9]\d\=\d\@!"     contained display
-syn match  rubyRegexpSpecial	"\\k<\%([a-z_]\w*\|-\=\d\+\)\%([+-]\d\+\)\=>" contained display
-syn match  rubyRegexpSpecial	"\\k'\%([a-z_]\w*\|-\=\d\+\)\%([+-]\d\+\)\='" contained display
-syn match  rubyRegexpSpecial	"\\g<\%([a-z_]\w*\|-\=\d\+\)>" contained display
-syn match  rubyRegexpSpecial	"\\g'\%([a-z_]\w*\|-\=\d\+\)'" contained display
+syn region rubyRegexpComment	  matchgroup=rubyRegexpSpecial	 start="(?#"								    skip="\\\\\|\\)"  end=")"  contained
+syn region rubyRegexpParens	  matchgroup=rubyRegexpSpecial	 start="(\(?:\|?<\=[=!]\|?>\|?<[a-z_]\w*>\|?[imx]*-[imx]*:\=\|\%(?#\)\@!\)" skip="\\\\\|\\)"  end=")"  contained transparent contains=@rubyRegexpSpecial
+syn region rubyRegexpBrackets	  matchgroup=rubyRegexpCharClass start="\[\^\="								    skip="\\\\\|\\\]" end="\]" contained transparent contains=rubyRegexpBrackets,rubyStringEscape,rubyRegexpEscape,rubyRegexpCharClass,rubyRegexpIntersection oneline
+syn match  rubyRegexpCharClass	  "\\[DdHhRSsWw]"	 contained display
+syn match  rubyRegexpCharClass	  "\[:\^\=\%(alnum\|alpha\|ascii\|blank\|cntrl\|digit\|graph\|lower\|print\|punct\|space\|upper\|word\|xdigit\):\]" contained
+syn match  rubyRegexpCharClass	  "\\[pP]{^\=.\{-}}"	 contained display
+syn match  rubyRegexpEscape	  "\\[].*?+^$|\\/(){}[]" contained " see commit e477f10
+syn match  rubyRegexpQuantifier	  "[*?+][?+]\="		 contained display
+syn match  rubyRegexpQuantifier	  "{\d\+\%(,\d*\)\=}?\=" contained display
+syn match  rubyRegexpAnchor	  "[$^]\|\\[ABbGZz]"	 contained display
+syn match  rubyRegexpDot	  "\.\|\\X"		 contained display
+syn match  rubyRegexpIntersection "&&"			 contained display
+syn match  rubyRegexpSpecial	  "\\K"			 contained display
+syn match  rubyRegexpSpecial	  "|"			 contained display
+syn match  rubyRegexpSpecial	  "\\[1-9]\d\=\d\@!"	 contained display
+syn match  rubyRegexpSpecial	  "\\k<\%([a-z_]\w*\|-\=\d\+\)\%([+-]\d\+\)\=>" contained display
+syn match  rubyRegexpSpecial	  "\\k'\%([a-z_]\w*\|-\=\d\+\)\%([+-]\d\+\)\='" contained display
+syn match  rubyRegexpSpecial	  "\\g<\%([a-z_]\w*\|-\=\d\+\)>"		contained display
+syn match  rubyRegexpSpecial	  "\\g'\%([a-z_]\w*\|-\=\d\+\)'"		contained display
 
 syn cluster rubyStringSpecial	      contains=rubyInterpolation,rubyStringEscape
 syn cluster rubyExtendedStringSpecial contains=@rubyStringSpecial,rubyNestedParentheses,rubyNestedCurlyBraces,rubyNestedAngleBrackets,rubyNestedSquareBrackets
-syn cluster rubyRegexpSpecial	      contains=rubyInterpolation,rubyStringEscape,rubyRegexpSpecial,rubyRegexpEscape,rubyRegexpBrackets,rubyRegexpCharClass,rubyRegexpDot,rubyRegexpQuantifier,rubyRegexpAnchor,rubyRegexpParens,rubyRegexpComment
+syn cluster rubyRegexpSpecial	      contains=rubyInterpolation,rubyStringEscape,rubyRegexpSpecial,rubyRegexpEscape,rubyRegexpBrackets,rubyRegexpCharClass,rubyRegexpDot,rubyRegexpQuantifier,rubyRegexpAnchor,rubyRegexpParens,rubyRegexpComment,rubyRegexpIntersection
 
 " Numbers {{{1
 syn match rubyInteger	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<0[xX]\x\+\%(_\x\+\)*r\=i\=\>"								display
@@ -455,6 +457,7 @@ hi def link rubyRegexpQuantifier	rubyRegexpSpecial
 hi def link rubyRegexpAnchor		rubyRegexpSpecial
 hi def link rubyRegexpDot		rubyRegexpCharClass
 hi def link rubyRegexpCharClass		rubyRegexpSpecial
+hi def link rubyRegexpIntersection	rubyRegexpSpecial
 hi def link rubyRegexpSpecial		Special
 hi def link rubyRegexpComment		Comment
 hi def link rubyRegexp			rubyString
