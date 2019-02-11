@@ -279,7 +279,7 @@ syn cluster rubyDeclaration contains=rubyAliasDeclaration,rubyAliasDeclaration2,
 " Keywords {{{1
 " Note: the following keywords have already been defined:
 " begin case class def do end for if module unless until while
-syn match   rubyControl	       "\<\%(and\|break\|in\|next\|not\|or\|redo\|rescue\|retry\|return\)\>[?!]\@!"
+syn match   rubyControl	       "\<\%(and\|break\|in\|next\|not\|or\|redo\|retry\|return\)\>[?!]\@!"
 syn match   rubyOperator       "\<defined?" display
 syn match   rubyKeyword	       "\<\%(super\|yield\)\>[?!]\@!"
 syn match   rubyBoolean	       "\<\%(true\|false\)\>[?!]\@!"
@@ -301,9 +301,10 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   SynFold 'module' syn region rubyBlock       start="\<module\>" matchgroup=rubyModule end="\<end\>"			contains=ALLBUT,@rubyNotTop
 
   " modifiers
-  syn match rubyLineContinuation    "\\$" nextgroup=rubyConditionalModifier,rubyRepeatModifier skipwhite skipnl
+  syn match rubyLineContinuation    "\\$" nextgroup=rubyConditionalModifier,rubyRepeatModifier,rubyRescueModifier skipwhite skipnl
   syn match rubyConditionalModifier "\<\%(if\|unless\)\>"
   syn match rubyRepeatModifier	    "\<\%(while\|until\)\>"
+  syn match rubyRescueModifier	    "\<rescue\>"
 
   SynFold 'do' syn region rubyDoBlock matchgroup=rubyControl start="\<do\>" end="\<end\>" contains=ALLBUT,@rubyNotTop
 
@@ -339,7 +340,7 @@ else
   syn match rubyControl "\<def\>[?!]\@!"    nextgroup=rubyMethodDeclaration skipwhite skipnl
   syn match rubyControl "\<class\>[?!]\@!"  nextgroup=rubyClassDeclaration  skipwhite skipnl
   syn match rubyControl "\<module\>[?!]\@!" nextgroup=rubyModuleDeclaration skipwhite skipnl
-  syn match rubyControl "\<\%(case\|begin\|do\|for\|if\|unless\|while\|until\|else\|elsif\|ensure\|then\|when\|end\)\>[?!]\@!"
+  syn match rubyControl "\<\%(case\|begin\|do\|for\|if\|unless\|while\|until\|else\|elsif\|rescue\|ensure\|then\|when\|end\)\>[?!]\@!"
   syn match rubyKeyword "\<\%(alias\|undef\)\>[?!]\@!"
 endif
 
@@ -401,6 +402,7 @@ hi def link rubyFunction		Function
 hi def link rubyConditional		Conditional
 hi def link rubyConditionalModifier	rubyConditional
 hi def link rubyExceptional		rubyConditional
+hi def link rubyRescueModifier		rubyExceptional
 hi def link rubyRepeat			Repeat
 hi def link rubyRepeatModifier		rubyRepeat
 hi def link rubyOptionalDo		rubyRepeat

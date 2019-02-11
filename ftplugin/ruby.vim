@@ -35,7 +35,7 @@ if exists("loaded_matchit") && !exists("b:match_words")
 	\ "\\<ruby\\%(String\\|StringDelimiter\\|Character\\|Escape\\|" .
         \ "Regexp\\|RegexpDelimiter\\|" .
 	\ "Interpolation\\|Comment\\|Documentation\\|" .
-	\ "ConditionalModifier\\|RepeatModifier\\|OptionalDo\\|" .
+	\ "ConditionalModifier\\|RepeatModifier\\|RescueModifier\\|OptionalDo\\|" .
 	\ "Function\\|BlockArgument\\|KeywordAsMethod\\|ClassVariable\\|" .
 	\ "InstanceVariable\\|GlobalVariable\\|Symbol\\)\\>'"
 endif
