@@ -66,7 +66,7 @@ com! -nargs=* SynFold call s:run_syntax_fold(<q-args>)
 
 " }}}
 
-syn cluster rubyNotTop contains=@rubyExtendedStringSpecial,@rubyRegexpSpecial,@rubyDeclaration,rubyConditional,rubyExceptional,rubyMethodExceptional,rubyTodo,rubyModuleName,rubyClassName,rubySymbolDelimiter,rubyEncoding
+syn cluster rubyNotTop contains=@rubyCommentNotTop,@rubyStringNotTop,@rubyRegexpSpecial,@rubyDeclaration,rubyConditional,rubyExceptional,rubyMethodExceptional,rubyModuleName,rubyClassName,rubySymbolDelimiter
 
 " Whitespace Errors {{{1
 if exists("ruby_space_errors")
@@ -111,6 +111,11 @@ syn region rubyNestedCurlyBraces    start="{"  skip="\\\\\|\\}"  matchgroup=ruby
 syn region rubyNestedAngleBrackets  start="<"  skip="\\\\\|\\>"  matchgroup=rubyString end=">"	transparent contained
 syn region rubyNestedSquareBrackets start="\[" skip="\\\\\|\\\]" matchgroup=rubyString end="\]"	transparent contained
 
+syn cluster rubySingleCharEscape contains=rubyBackslashEscape,rubyQuoteEscape,rubySpaceEscape,rubyParenthesesEscape,rubyCurlyBracesEscape,rubyAngleBracketsEscape,rubySquareBracketsEscape
+syn cluster rubyNestedBrackets	 contains=rubyNested.\+
+syn cluster rubyStringSpecial	 contains=rubyInterpolation,rubyStringEscape
+syn cluster rubyStringNotTop	 contains=@rubyStringSpecial,@rubyNestedBrackets,@rubySingleCharEscape
+
 " Regular Expression Metacharacters {{{1
 syn region rubyRegexpComment	  matchgroup=rubyRegexpSpecial	 start="(?#"								    skip="\\\\\|\\)"  end=")"  contained
 syn region rubyRegexpParens	  matchgroup=rubyRegexpSpecial	 start="(\(?:\|?<\=[=!]\|?>\|?<[a-z_]\w*>\|?[imx]*-[imx]*:\=\|\%(?#\)\@!\)" skip="\\\\\|\\)"  end=")"  contained transparent contains=@rubyRegexpSpecial
@@ -132,9 +137,7 @@ syn match  rubyRegexpSpecial	  "\\k'\%([a-z_]\w*\|-\=\d\+\)\%([+-]\d\+\)\='" con
 syn match  rubyRegexpSpecial	  "\\g<\%([a-z_]\w*\|-\=\d\+\)>"		contained display
 syn match  rubyRegexpSpecial	  "\\g'\%([a-z_]\w*\|-\=\d\+\)'"		contained display
 
-syn cluster rubyStringSpecial	      contains=rubyInterpolation,rubyStringEscape
-syn cluster rubyExtendedStringSpecial contains=@rubyStringSpecial,rubyNestedParentheses,rubyNestedCurlyBraces,rubyNestedAngleBrackets,rubyNestedSquareBrackets
-syn cluster rubyRegexpSpecial	      contains=rubyInterpolation,rubyStringEscape,rubyRegexpSpecial,rubyRegexpEscape,rubyRegexpBrackets,rubyRegexpCharClass,rubyRegexpDot,rubyRegexpQuantifier,rubyRegexpAnchor,rubyRegexpParens,rubyRegexpComment,rubyRegexpIntersection
+syn cluster rubyRegexpSpecial contains=@rubyStringSpecial,rubyRegexpSpecial,rubyRegexpEscape,rubyRegexpBrackets,rubyRegexpCharClass,rubyRegexpDot,rubyRegexpQuantifier,rubyRegexpAnchor,rubyRegexpParens,rubyRegexpComment,rubyRegexpIntersection
 
 " Numbers {{{1
 syn match rubyInteger	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<0[xX]\x\+\%(_\x\+\)*r\=i\=\>"								display
@@ -367,7 +370,11 @@ syn keyword rubyTodo	      FIXME NOTE TODO OPTIMIZE HACK REVIEW XXX todo contain
 syn match   rubyEncoding      "[[:alnum:]-]\+" contained display
 syn match   rubyMagicComment  "\c\%<3l#\s*\zs\%(coding\|encoding\):"					 contained nextgroup=rubyEncoding skipwhite
 syn match   rubyMagicComment  "\c\%<10l#\s*\zs\%(frozen_string_literal\|warn_indent\|warn_past_scope\):" contained nextgroup=rubyBoolean  skipwhite
-syn match   rubyComment	      "#.*" contains=rubySharpBang,rubySpaceError,rubyTodo,rubyMagicComment,@Spell
+syn match   rubyComment	      "#.*" contains=@rubyCommentSpecial,rubySpaceError,@Spell
+
+syn cluster rubyCommentSpecial contains=rubySharpBang,rubyTodo,rubyMagicComment
+syn cluster rubyCommentNotTop  contains=@rubyCommentSpecial,rubyEncoding
+
 if !exists("ruby_no_comment_fold") && s:foldable('#')
   syn region rubyMultilineComment start="^\s*#.*\n\%(^\s*#\)\@=" end="^\s*#.*\n\%(^\s*#\)\@!" contains=rubyComment transparent fold keepend
   syn region rubyDocumentation	  start="^=begin\ze\%(\s.*\)\=$" end="^=end\%(\s.*\)\=$" contains=rubySpaceError,rubyTodo,@Spell fold
