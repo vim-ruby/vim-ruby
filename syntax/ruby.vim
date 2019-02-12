@@ -172,14 +172,20 @@ syn match  rubyBlockParameter	  "\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*" co
 syn region rubyBlockParameterList start="\%(\%(\<do\>\|{\)\_s*\)\@32<=|" end="|" oneline display contains=rubyBlockParameter
 
 syn match rubyInvalidVariable	 "$[^ A-Za-z_-]"
-syn match rubyPredefinedVariable #$[!$&"'*+,./0:;<=>?@\`~]#
-syn match rubyPredefinedVariable "$\d\+"										   display
-syn match rubyPredefinedVariable "$_\>"											   display
-syn match rubyPredefinedVariable "$-[0FIKadilpvw]\>"									   display
-syn match rubyPredefinedVariable "$\%(deferr\|defout\|stderr\|stdin\|stdout\)\>"					   display
-syn match rubyPredefinedVariable "$\%(DEBUG\|FILENAME\|KCODE\|LOADED_FEATURES\|LOAD_PATH\|PROGRAM_NAME\|SAFE\|VERBOSE\)\>" display
+syn match rubyPredefinedVariable #$[!$&"'*+,./0:;<>?@\`~]#
+syn match rubyPredefinedVariable "$\d\+"									    display
+syn match rubyPredefinedVariable "$_\>"										    display
+syn match rubyPredefinedVariable "$-[0FIadilpvw]\>"								    display
+syn match rubyPredefinedVariable "$\%(stderr\|stdin\|stdout\)\>"						    display
+syn match rubyPredefinedVariable "$\%(DEBUG\|FILENAME\|LOADED_FEATURES\|LOAD_PATH\|PROGRAM_NAME\|SAFE\|VERBOSE\)\>" display
 syn match rubyPredefinedConstant "\%(\%(^\|[^.]\)\.\s*\)\@<!\<\%(ARGF\|ARGV\|ENV\|DATA\|FALSE\|NIL\|STDERR\|STDIN\|STDOUT\|TOPLEVEL_BINDING\|TRUE\)\>\%(\s*(\)\@!"
 syn match rubyPredefinedConstant "\%(\%(^\|[^.]\)\.\s*\)\@<!\<\%(RUBY_\%(VERSION\|RELEASE_DATE\|PLATFORM\|PATCHLEVEL\|REVISION\|DESCRIPTION\|COPYRIGHT\|ENGINE\)\)\>\%(\s*(\)\@!"
+
+" Deprecated/removed in 1.9
+syn match rubyPredefinedVariable "$="
+syn match rubyPredefinedVariable "$-K\>"		  display
+syn match rubyPredefinedVariable "$\%(deferr\|defout\)\>" display
+syn match rubyPredefinedVariable "$KCODE\>"		  display
 
 " Normal Regular Expressions {{{1
 SynFold '/' syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="\%(\%(^\|\<\%(and\|or\|while\|until\|unless\|if\|elsif\|when\|not\|then\|else\)\|[;\~=!|&(,{[<>?:*+-]\)\s*\)\@<=/" end="/[iomxneus]*" skip="\\\\\|\\/" contains=@rubyRegexpSpecial
