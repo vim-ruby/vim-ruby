@@ -66,7 +66,7 @@ com! -nargs=* SynFold call s:run_syntax_fold(<q-args>)
 
 " }}}
 
-syn cluster rubyNotTop contains=@rubyCommentNotTop,@rubyStringNotTop,@rubyRegexpSpecial,@rubyDeclaration,rubyConditional,rubyExceptional,rubyMethodExceptional,rubyModuleName,rubyClassName,rubySymbolDelimiter
+syn cluster rubyNotTop contains=@rubyCommentNotTop,@rubyStringNotTop,@rubyRegexpSpecial,@rubyDeclaration,@rubyExceptionHandler,rubyConditional,rubyModuleName,rubyClassName,rubySymbolDelimiter
 
 " Whitespace Errors {{{1
 if exists("ruby_space_errors")
@@ -306,8 +306,8 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   syn match  rubyModule "\<module\>" nextgroup=rubyModuleDeclaration skipwhite skipnl
 
   SynFold 'def'    syn region rubyMethodBlock start="\<def\>"	 matchgroup=rubyDefine end="\%(\<def\_s\+\)\@<!\<end\>" contains=ALLBUT,@rubyNotTop
-  SynFold 'class'  syn region rubyBlock       start="\<class\>"  matchgroup=rubyClass  end="\<end\>"			contains=ALLBUT,@rubyNotTop
-  SynFold 'module' syn region rubyBlock       start="\<module\>" matchgroup=rubyModule end="\<end\>"			contains=ALLBUT,@rubyNotTop
+  SynFold 'class'  syn region rubyClassBlock  start="\<class\>"  matchgroup=rubyClass  end="\<end\>"			contains=ALLBUT,@rubyNotTop
+  SynFold 'module' syn region rubyModuleBlock start="\<module\>" matchgroup=rubyModule end="\<end\>"			contains=ALLBUT,@rubyNotTop
 
   " modifiers
   syn match rubyLineContinuation    "\\$" nextgroup=rubyConditionalModifier,rubyRepeatModifier,rubyRescueModifier skipwhite skipnl
@@ -332,8 +332,9 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   syn match rubyConditional "\<\%(then\|else\|when\)\>[?!]\@!"	contained containedin=rubyCaseExpression
   syn match rubyConditional "\<\%(then\|else\|elsif\)\>[?!]\@!" contained containedin=rubyConditionalExpression
 
-  syn match rubyExceptional	  "\<\%(\%(\%(;\|^\)\s*\)\@<=rescue\|else\|ensure\)\>[?!]\@!" contained containedin=rubyBlockExpression
-  syn match rubyMethodExceptional "\<\%(\%(\%(;\|^\)\s*\)\@<=rescue\|else\|ensure\)\>[?!]\@!" contained containedin=rubyMethodBlock
+  syn match   rubyExceptionHandler  "\<\%(\%(\%(;\|^\)\s*\)\@<=rescue\|else\|ensure\)\>[?!]\@!" contained containedin=rubyBlockExpression,rubyDoBlock
+  syn match   rubyExceptionHandler1 "\<\%(\%(\%(;\|^\)\s*\)\@<=rescue\|else\|ensure\)\>[?!]\@!" contained containedin=rubyModuleBlock,rubyClassBlock,rubyMethodBlock
+  syn cluster rubyExceptionHandler  contains=rubyExceptionHandler,rubyExceptionHandler1
 
   " statements with optional 'do'
   syn region rubyOptionalDoLine matchgroup=rubyRepeat start="\<for\>[?!]\@!" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyOptionalDo end="\%(\<do\>\)" end="\ze\%(;\|$\)" oneline contains=ALLBUT,@rubyNotTop
@@ -405,7 +406,7 @@ SynFold '__END__' syn region rubyData matchgroup=rubyDataDirective start="^__END
 " Default Highlighting {{{1
 hi def link rubyClass			rubyDefine
 hi def link rubyModule			rubyDefine
-hi def link rubyMethodExceptional	rubyDefine
+hi def link rubyExceptionHandler1	rubyDefine
 hi def link rubyDefine			Define
 hi def link rubyAccess			rubyMacro
 hi def link rubyAttribute		rubyMacro
@@ -414,8 +415,8 @@ hi def link rubyMethodName		rubyFunction
 hi def link rubyFunction		Function
 hi def link rubyConditional		Conditional
 hi def link rubyConditionalModifier	rubyConditional
-hi def link rubyExceptional		rubyConditional
-hi def link rubyRescueModifier		rubyExceptional
+hi def link rubyExceptionHandler	rubyConditional
+hi def link rubyRescueModifier		rubyExceptionHandler
 hi def link rubyRepeat			Repeat
 hi def link rubyRepeatModifier		rubyRepeat
 hi def link rubyOptionalDo		rubyRepeat
