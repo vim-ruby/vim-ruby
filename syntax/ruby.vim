@@ -96,10 +96,9 @@ syn match rubyQuoteEscape     "\\'"  contained display
 syn match rubySpaceEscape     "\\ "  contained display
 
 syn region rubyInterpolation	      matchgroup=rubyInterpolationDelimiter start="#{" end="}" contained contains=ALLBUT,@rubyNotTop
-syn match  rubyInterpolation	      "#\%(\$\|@@\=\)\w\+"    display contained contains=rubyInterpolationDelimiter,rubyInstanceVariable,rubyClassVariable,rubyGlobalVariable,rubyPredefinedVariable
-syn match  rubyInterpolationDelimiter "#\ze\%(\$\|@@\=\)\w\+" display contained
-syn match  rubyInterpolation	      "#\$\%(-\w\|\W\)"       display contained contains=rubyInterpolationDelimiter,rubyPredefinedVariable,rubyInvalidVariable
-syn match  rubyInterpolationDelimiter "#\ze\$\%(-\w\|\W\)"    display contained
+syn match  rubyInterpolation	      "#\$\%(-\w\|[!$&"'*+,./0:;<>?@\`~_]\|\w\+\)" display contained contains=rubyInterpolationDelimiter,@rubyGlobalVariable
+syn match  rubyInterpolation	      "#@@\=\w\+"				   display contained contains=rubyInterpolationDelimiter,rubyInstanceVariable,rubyClassVariable
+syn match  rubyInterpolationDelimiter "#\ze[$@]"				   display contained
 
 syn match rubyParenthesesEscape	   "\\[()]"  contained display
 syn match rubyCurlyBracesEscape	   "\\[{}]"  contained display
@@ -186,6 +185,8 @@ syn match rubyPredefinedVariable "$="
 syn match rubyPredefinedVariable "$-K\>"		  display
 syn match rubyPredefinedVariable "$\%(deferr\|defout\)\>" display
 syn match rubyPredefinedVariable "$KCODE\>"		  display
+
+syn cluster rubyGlobalVariable contains=rubyGlobalVariable,rubyPredefinedVariable,rubyInvalidVariable
 
 " Normal Regular Expressions {{{1
 SynFold '/' syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="\%(\%(^\|\<\%(and\|or\|while\|until\|unless\|if\|elsif\|when\|not\|then\|else\)\|[;\~=!|&(,{[<>?:*+-]\)\s*\)\@<=/" end="/[iomxneus]*" skip="\\\\\|\\/" contains=@rubyRegexpSpecial
@@ -274,8 +275,8 @@ SynFold '<<' syn region rubyString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|
 SynFold '<<' syn region rubyString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|\w\)\@<!<<[-~]`\z([^`]*\)`\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+3					    matchgroup=rubyStringDelimiter end=+^\s*\zs\z1$+ contains=rubyHeredocStart,@rubyStringSpecial keepend
 
 " Module, Class, Method and Alias Declarations {{{1
-syn match  rubyAliasDeclaration    "[^[:space:];#.()]\+" contained contains=rubySymbol,rubyGlobalVariable,rubyPredefinedVariable nextgroup=rubyAliasDeclaration2 skipwhite
-syn match  rubyAliasDeclaration2   "[^[:space:];#.()]\+" contained contains=rubySymbol,rubyGlobalVariable,rubyPredefinedVariable
+syn match  rubyAliasDeclaration    "[^[:space:];#.()]\+" contained contains=rubySymbol,@rubyGlobalVariable nextgroup=rubyAliasDeclaration2 skipwhite
+syn match  rubyAliasDeclaration2   "[^[:space:];#.()]\+" contained contains=rubySymbol,@rubyGlobalVariable
 syn match  rubyMethodDeclaration   "[^[:space:];#(]\+"	 contained contains=rubyConstant,rubyBoolean,rubyPseudoVariable,rubyInstanceVariable,rubyClassVariable,rubyGlobalVariable
 syn match  rubyClassDeclaration    "[^[:space:];#<]\+"	 contained contains=rubyClassName,rubyOperator
 syn match  rubyModuleDeclaration   "[^[:space:];#<]\+"	 contained contains=rubyModuleName,rubyOperator
