@@ -80,9 +80,19 @@ endif
 
 " Operators {{{1
 if exists("ruby_operators")
-  syn match  rubyOperator "[~!^|*/%+-]\|&\.\@!\|\%(class\s*\)\@<!<<\|<=>\|<=\|\%(<\|\<class\s\+\u\w*\s*\)\@<!<[^<]\@=\|===\|==\|=\~\|>>\|>=\|=\@1<!>\|\*\*\|\.\.\.\|\.\.\|::"
-  syn match  rubyOperator "->\|-=\|/=\|\*\*=\|\*=\|&&=\|&=\|&&\|||=\||=\|||\|%=\|+=\|!\~\|!="
-  syn region rubyBracketOperator matchgroup=rubyOperator start="\%(\w[?!]\=\|[]})]\)\@2<=\[\s*" end="\s*]" contains=ALLBUT,@rubyNotTop
+  syn match  rubyDotOperator	    "\.\|&\." containedin=rubyKeywordAsMethod
+  syn match  rubyTernaryOperator    "[[:alnum:]]\@1<!?\|:"
+  syn match  rubyArithmeticOperator "\*\*\|[*/%+]\|->\@!"
+  syn match  rubyComparisonOperator "<=>\|<=\|\%(<\|\<class\s\+\u\w*\s*\)\@<!<<\@!\|>=\|[-=]\@1<!>"
+  syn match  rubyBitwiseOperator    "[~^|]\|&\.\@!\|\%(class\s*\)\@<!<<\|>>"
+  syn match  rubyBooleanOperator    "[[:alnum:]]\@1<!!\|&&\|||"
+  syn match  rubyRangeOperator	    "\.\.\.\="
+  syn match  rubyAssignmentOperator "=>\@!\|-=\|/=\|\*\*=\|\*=\|&&=\|&=\|||=\||=\|%=\|+=\|>>=\|<<=\|\^="
+  syn match  rubyEqualityOperator   "===\|==\|!=\|!\~\|=\~"
+  syn match  rubyScopeOperator	    "::"
+  syn region rubyBracketOperator    matchgroup=rubyOperator start="\%(\w[?!]\=\|[]})]\)\@2<=\[\s*" end="\s*]" contains=ALLBUT,@rubyNotTop
+
+  syn cluster rubyOperator contains=ruby.*Operator
 endif
 
 " Expression Substitution and Backslash Notation {{{1
@@ -466,7 +476,19 @@ hi def link rubyPredefinedConstant	rubyPredefinedIdentifier
 hi def link rubyPredefinedVariable	rubyPredefinedIdentifier
 hi def link rubySymbol			Constant
 hi def link rubyKeyword			Keyword
+
 hi def link rubyOperator		Operator
+hi def link rubyDotOperator		Operator
+hi def link rubyTernaryOperator		Operator
+hi def link rubyArithmeticOperator	Operator
+hi def link rubyComparisonOperator	Operator
+hi def link rubyBitwiseOperator		Operator
+hi def link rubyBooleanOperator		Operator
+hi def link rubyRangeOperator		Operator
+hi def link rubyAssignmentOperator	Operator
+hi def link rubyEqualityOperator	Operator
+hi def link rubyScopeOperator		Operator
+
 hi def link rubyBeginEnd		Statement
 hi def link rubyEval			Statement
 hi def link rubyPseudoVariable		Constant
