@@ -15,6 +15,20 @@ describe "Indenting" do
         .method_two
         .method_three
     EOF
+
+    assert_correct_indenting <<~EOF
+      some_object&.
+        method_one&.
+        method_two&.
+        method_three
+    EOF
+
+    assert_correct_indenting <<~EOF
+      some_object
+        &.method_one
+        &.method_two
+        &.method_three
+    EOF
   end
 
   specify "arrays" do

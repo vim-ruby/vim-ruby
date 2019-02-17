@@ -145,7 +145,7 @@ let s:block_regex =
 let s:block_continuation_regex = '^\s*[^])}\t ].*'.s:block_regex
 
 " Regex that describes a leading operator (only a method call's dot for now)
-let s:leading_operator_regex = '^\s*[.]'
+let s:leading_operator_regex = '^\s*\%(&\=\.\)'
 
 " 2. GetRubyIndent Function {{{1
 " =========================
