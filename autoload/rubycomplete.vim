@@ -670,11 +670,10 @@ class VimRubyCompletion
           methods.delete_if { |c| c.match( /'/ ) }
         end
 
-      when /^::([A-Z][^:\.\(]*)$/ # Absolute Constant or class methods
+      when /^::([A-Z][^:\.\(]*)?$/ # Absolute Constant or class methods
         dprint "const or cls"
         receiver = $1
-        methods = Object.constants
-        methods.grep(/^#{receiver}/).collect{|e| "::" + e}
+        methods = Object.constants.collect{ |c| c.to_s }.grep(/^#{receiver}/)
 
       when /^(((::)?[A-Z][^:.\(]*)+?)::?([^:.]*)$/ # Constant or class methods
         receiver = $1
@@ -683,13 +682,13 @@ class VimRubyCompletion
         load_buffer_class( receiver )
         load_buffer_module( receiver )
         begin
-          classes = eval("#{receiver}.constants")
-          #methods = eval("#{receiver}.methods")
+          constants = eval("#{receiver}.constants").collect{ |c| c.to_s }.grep(/^#{message}/)
+          methods = eval("#{receiver}.methods").collect{ |m| m.to_s }.grep(/^#{message}/)
         rescue Exception
           dprint "exception: %s" % $!
+          constants = []
           methods = []
         end
-        methods.grep(/^#{message}/).collect{|e| receiver + "::" + e}
 
       when /^(:[^:.]+)\.([^.]*)$/ # Symbol
         dprint "symbol"
