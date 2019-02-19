@@ -34,8 +34,8 @@ if exists("loaded_matchit") && !exists("b:match_words")
 	\ "synIDattr(synID(line('.'),col('.'),0),'name') =~ '" .
 	\ "\\<ruby\\%(String\\|StringDelimiter\\|Character\\|Escape\\|" .
         \ "Regexp\\|RegexpDelimiter\\|" .
-	\ "Interpolation\\|NoInterpolation\\|Comment\\|Documentation\\|" .
-	\ "ConditionalModifier\\|RepeatModifier\\|OptionalDo\\|" .
+	\ "Interpolation\\|Comment\\|Documentation\\|" .
+	\ "ConditionalModifier\\|RepeatModifier\\|RescueModifier\\|OptionalDo\\|" .
 	\ "Function\\|BlockArgument\\|KeywordAsMethod\\|ClassVariable\\|" .
 	\ "InstanceVariable\\|GlobalVariable\\|Symbol\\)\\>'"
 endif

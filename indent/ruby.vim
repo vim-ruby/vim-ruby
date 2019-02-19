@@ -50,7 +50,7 @@ set cpo&vim
 
 " Syntax group names that are strings.
 let s:syng_string =
-      \ ['String', 'Interpolation', 'InterpolationDelimiter', 'NoInterpolation', 'StringEscape']
+      \ ['String', 'Interpolation', 'InterpolationDelimiter', 'StringEscape']
 
 " Syntax group names that are strings or documentation.
 let s:syng_stringdoc = s:syng_string + ['Documentation']
@@ -145,7 +145,7 @@ let s:block_regex =
 let s:block_continuation_regex = '^\s*[^])}\t ].*'.s:block_regex
 
 " Regex that describes a leading operator (only a method call's dot for now)
-let s:leading_operator_regex = '^\s*[.]'
+let s:leading_operator_regex = '^\s*\%(&\=\.\)'
 
 " 2. GetRubyIndent Function {{{1
 " =========================
