@@ -422,6 +422,10 @@ else
   syn region rubyDocumentation	  start="^=begin\s*$"		 end="^=end\s*$" contains=rubySpaceError,rubyTodo,@Spell
 endif
 
+" {{{1 Useless line continuations
+syn match rubyUselessLineContinuation "\%([.:,;{([<>~\*%&^|+=-]\|\w\@1<![?!]\)\s*\zs\\$" nextgroup=rubyUselessLineContinuation skipwhite skipempty
+syn match rubyUselessLineContinuation "\\$"						 nextgroup=rubyUselessLineContinuation skipwhite skipempty contained
+
 " Keyword Nobbling {{{1
 " Note: this is a hack to prevent 'keywords' being highlighted as such when called as methods with an explicit receiver
 syn match rubyKeywordAsMethod "\%(\%(\.\@1<!\.\)\|::\)\_s*\%([_[:lower:]][_[:alnum:]]*\|\<\%(BEGIN\|END\)\>\)" transparent contains=NONE
@@ -529,6 +533,9 @@ hi def link rubyRegexp			rubyString
 
 hi def link rubyInvalidVariable		Error
 hi def link rubyError			Error
+if exists("ruby_line_continuation_error")
+  hi def link rubyUselessLineContinuation rubyError
+endif
 hi def link rubySpaceError		rubyError
 
 " Postscript {{{1
