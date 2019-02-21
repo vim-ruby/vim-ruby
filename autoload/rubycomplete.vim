@@ -52,6 +52,23 @@ if !exists("g:rubycomplete_include_objectspace")
 endif
 " }}} configuration failsafe initialization
 
+" {{{ regex patterns
+
+" Regex that defines the start-match for the 'end' keyword.
+let s:end_start_regex =
+      \ '\C\%(^\s*\|[=,*/%+\-|;{]\|<<\|>>\|:\s\)\s*\zs' .
+      \ '\<\%(module\|class\|if\|for\|while\|until\|case\|unless\|begin' .
+      \   '\|\%(\K\k*[!?]\?\s\+\)\=def\):\@!\>' .
+      \ '\|\%(^\|[^.:@$]\)\@<=\<do:\@!\>'
+
+" Regex that defines the middle-match for the 'end' keyword.
+let s:end_middle_regex = '\<\%(ensure\|else\|\%(\%(^\|;\)\s*\)\@<=\<rescue:\@!\>\|when\|elsif\):\@!\>'
+
+" Regex that defines the end-match for the 'end' keyword.
+let s:end_end_regex = '\%(^\|[^.:@$]\)\@<=\<end:\@!\>'
+
+" }}} regex patterns
+
 " {{{ vim-side support functions
 let s:rubycomplete_debug = 0
 
@@ -102,7 +119,7 @@ function! s:GetBufferRubyEntity( name, type, ... )
     endif
 
     let curpos = getpos(".")
-    let [enum,ecol] = searchpairpos( crex, '', '\(end\|}\)', 'W' )
+    let [enum,ecol] = searchpairpos( s:end_start_regex, s:end_middle_regex, s:end_end_regex, 'W' )
     call cursor(lastpos[1], lastpos[2])
 
     if lnum > enum
