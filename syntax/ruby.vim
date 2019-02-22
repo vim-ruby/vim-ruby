@@ -363,7 +363,7 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   SynFold 'begin' syn region rubyBlockExpression matchgroup=rubyControl     start="\<begin\>" end="\<end\>" contains=ALLBUT,@rubyNotTop
   SynFold 'case'  syn region rubyCaseExpression  matchgroup=rubyConditional start="\<case\>"  end="\<end\>" contains=ALLBUT,@rubyNotTop
 
-  SynFold 'if' syn region rubyConditionalExpression matchgroup=rubyConditional start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*%&^|+=-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![?!]\)\s*\)\@<=\%(if\|unless\)\>" end="\%(\%(\%(\.\@1<!\.\)\|::\)\s*\)\@<!\<end\>" contains=ALLBUT,@rubyNotTop
+  SynFold 'if' syn region rubyConditionalExpression matchgroup=rubyConditional start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*%&^|+=-]\|\<then\s\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![?!]\)\s*\)\@<=\%(if\|unless\)\>" end="\%(\%(\%(\.\@1<!\.\)\|::\)\s*\)\@<!\<end\>" contains=ALLBUT,@rubyNotTop
 
   syn match rubyConditional "\<\%(then\|else\|when\)\>[?!]\@!"	contained containedin=rubyCaseExpression
   syn match rubyConditional "\<\%(then\|else\|elsif\)\>[?!]\@!" contained containedin=rubyConditionalExpression
