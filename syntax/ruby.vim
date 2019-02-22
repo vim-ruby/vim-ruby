@@ -180,11 +180,15 @@ syn match rubyCapitalizedMethod "\%(\%(^\|[^.]\)\.\s*\)\@<!\<\u\%(\w\|[^\x00-\x7
 syn match  rubyBlockParameter	  "\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*" contained
 syn region rubyBlockParameterList start="\%(\%(\<do\>\|{\)\_s*\)\@32<=|" end="|" oneline display contains=rubyBlockParameter
 
-syn match rubyInvalidVariable	 "$[^ A-Za-z_-]"
+if exists('ruby_global_variable_error')
+  syn match rubyGlobalVariableError "$[^A-Za-z_]"	display
+  syn match rubyGlobalVariableError "$-[^0FIKWadilpvw]" display
+endif
+
 syn match rubyPredefinedVariable #$[!$&"'*+,./0:;<>?@\`~]#
 syn match rubyPredefinedVariable "$\d\+"									    display
 syn match rubyPredefinedVariable "$_\>"										    display
-syn match rubyPredefinedVariable "$-[0FIadilpvw]\>"								    display
+syn match rubyPredefinedVariable "$-[0FIWadilpvw]\>"								    display
 syn match rubyPredefinedVariable "$\%(stderr\|stdin\|stdout\)\>"						    display
 syn match rubyPredefinedVariable "$\%(DEBUG\|FILENAME\|LOADED_FEATURES\|LOAD_PATH\|PROGRAM_NAME\|SAFE\|VERBOSE\)\>" display
 syn match rubyPredefinedConstant "\%(\%(^\|[^.]\)\.\s*\)\@<!\<\%(ARGF\|ARGV\|ENV\|DATA\|FALSE\|NIL\|STDERR\|STDIN\|STDOUT\|TOPLEVEL_BINDING\|TRUE\)\>\%(\s*(\)\@!"
@@ -196,7 +200,7 @@ syn match rubyPredefinedVariable "$-K\>"		  display
 syn match rubyPredefinedVariable "$\%(deferr\|defout\)\>" display
 syn match rubyPredefinedVariable "$KCODE\>"		  display
 
-syn cluster rubyGlobalVariable contains=rubyGlobalVariable,rubyPredefinedVariable,rubyInvalidVariable
+syn cluster rubyGlobalVariable contains=rubyGlobalVariable,rubyPredefinedVariable,rubyGlobalVariableError
 
 " Normal Regular Expressions {{{1
 SynFold '/' syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="\%(\%(^\|\<\%(and\|or\|while\|until\|unless\|if\|elsif\|when\|not\|then\|else\)\|[;\~=!|&(,{[<>?:*+-]\)\s*\)\@<=/" end="/[iomxneus]*" skip="\\\\\|\\/" contains=@rubyRegexpSpecial
@@ -531,11 +535,11 @@ hi def link rubyRegexpSpecial		Special
 hi def link rubyRegexpComment		Comment
 hi def link rubyRegexp			rubyString
 
-hi def link rubyInvalidVariable		Error
 hi def link rubyError			Error
 if exists("ruby_line_continuation_error")
   hi def link rubyUselessLineContinuation rubyError
 endif
+hi def link rubyGlobalVariableError	rubyError
 hi def link rubySpaceError		rubyError
 
 " Postscript {{{1

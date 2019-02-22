@@ -29,12 +29,12 @@ spaces respectively.
 						*ruby_syntax_errors*
  Ruby: Syntax errors ~
 
-Some syntax related errors can be highlighted: >
-
+Redundant line continuations and predefined global variable look-alikes (such
+as $# and $-z) can be highlighted as errors by defining:
+>
 	:let ruby_line_continuation_error = 1
+	:let ruby_global_variable_error   = 1
 <
-This will highlight redundant line continuations as an error.
-
 						*ruby_fold*
  Ruby: Folding ~
 
