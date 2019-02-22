@@ -149,28 +149,28 @@ syn match  rubyRegexpSpecial	  "\\g'\%([a-z_]\w*\|-\=\d\+\)'"		contained display
 syn cluster rubyRegexpSpecial contains=@rubyStringSpecial,rubyRegexpSpecial,rubyRegexpEscape,rubyRegexpBrackets,rubyRegexpCharClass,rubyRegexpDot,rubyRegexpQuantifier,rubyRegexpAnchor,rubyRegexpParens,rubyRegexpComment,rubyRegexpIntersection
 
 " Numbers {{{1
-syn match rubyInteger	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<0[xX]\x\+\%(_\x\+\)*r\=i\=\>"							   display
-syn match rubyInteger	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<\%(0[dD]\)\=\%(0\|[1-9]\d*\%(_\d\+\)*\)r\=i\=\>"					   display
-syn match rubyInteger	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<0[oO]\=\o\+\%(_\o\+\)*r\=i\=\>"							   display
-syn match rubyInteger	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<0[bB][01]\+\%(_[01]\+\)*r\=i\=\>"							   display
-syn match rubyFloat	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\.\d\+\%(_\d\+\)*r\=i\=\>"				   display
-syn match rubyFloat	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\%(\.\d\+\%(_\d\+\)*\)\=\%([eE][-+]\=\d\+\%(_\d\+\)*\)i\=\>" display
+syn match rubyInteger "\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<0[xX]\x\+\%(_\x\+\)*r\=i\=\>"								 display
+syn match rubyInteger "\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<\%(0[dD]\)\=\%(0\|[1-9]\d*\%(_\d\+\)*\)r\=i\=\>"					 display
+syn match rubyInteger "\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<0[oO]\=\o\+\%(_\o\+\)*r\=i\=\>"							 display
+syn match rubyInteger "\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<0[bB][01]\+\%(_[01]\+\)*r\=i\=\>"							 display
+syn match rubyFloat   "\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\.\d\+\%(_\d\+\)*r\=i\=\>"					 display
+syn match rubyFloat   "\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\%(\.\d\+\%(_\d\+\)*\)\=\%([eE][-+]\=\d\+\%(_\d\+\)*\)i\=\>" display
 
 " Identifiers {{{1
 syn match rubyLocalVariableOrMethod "\<[_[:lower:]][_[:alnum:]]*[?!=]\=" contains=NONE display transparent
 syn match rubyBlockArgument	    "&[_[:lower:]][_[:alnum:]]"		 contains=NONE display transparent
 
-syn match  rubyClassName	"\%(\%(^\|[^.]\)\.\s*\)\@<!\<\u\%(\w\|[^\x00-\x7F]\)*\>\%(\s*(\)\@!" contained
-syn match  rubyModuleName	"\%(\%(^\|[^.]\)\.\s*\)\@<!\<\u\%(\w\|[^\x00-\x7F]\)*\>\%(\s*(\)\@!" contained
-syn match  rubyConstant		"\%(\%(^\|[^.]\)\.\s*\)\@<!\<\u\%(\w\|[^\x00-\x7F]\)*\>\%(\s*(\)\@!"
-syn match  rubyClassVariable	"@@\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*" display
-syn match  rubyInstanceVariable "@\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*"	display
-syn match  rubyGlobalVariable	"$\%(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\|-.\)"
-syn match  rubySymbolDelimiter	":" contained
-syn match  rubySymbol		"[]})\"':]\@1<!:\%(\^\|\~@\|\~\|<<\|<=>\|<=\|<\|===\|[=!]=\|[=!]\~\|!@\|!\|>>\|>=\|>\||\|-@\|-\|/\|\[]=\|\[]\|\*\*\|\*\|&\|%\|+@\|+\|`\)" contains=rubySymbolDelimiter
-syn match  rubySymbol		"[]})\"':]\@1<!:\$\%(-.\|[`~<=>_,;:!?/.'"@$*\&+0]\)" contains=rubySymbolDelimiter
-syn match  rubySymbol		"[]})\"':]\@1<!:\%(\$\|@@\=\)\=\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*" contains=rubySymbolDelimiter
-syn match  rubySymbol		"[]})\"':]\@1<!:\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\%([?!=]>\@!\)\=" contains=rubySymbolDelimiter
+syn match rubyClassName	       "\%(\%(^\|[^.]\)\.\s*\)\@<!\<\u\%(\w\|[^\x00-\x7F]\)*\>\%(\s*(\)\@!" contained
+syn match rubyModuleName       "\%(\%(^\|[^.]\)\.\s*\)\@<!\<\u\%(\w\|[^\x00-\x7F]\)*\>\%(\s*(\)\@!" contained
+syn match rubyConstant	       "\%(\%(^\|[^.]\)\.\s*\)\@<!\<\u\%(\w\|[^\x00-\x7F]\)*\>\%(\s*(\)\@!"
+syn match rubyClassVariable    "@@\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*" display
+syn match rubyInstanceVariable "@\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*"  display
+syn match rubyGlobalVariable   "$\%(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\|-.\)"
+syn match rubySymbolDelimiter  ":" contained
+syn match rubySymbol	       "[]})\"':]\@1<!:\%(\^\|\~@\|\~\|<<\|<=>\|<=\|<\|===\|[=!]=\|[=!]\~\|!@\|!\|>>\|>=\|>\||\|-@\|-\|/\|\[]=\|\[]\|\*\*\|\*\|&\|%\|+@\|+\|`\)" contains=rubySymbolDelimiter
+syn match rubySymbol	       "[]})\"':]\@1<!:\$\%(-.\|[`~<=>_,;:!?/.'"@$*\&+0]\)"			    contains=rubySymbolDelimiter
+syn match rubySymbol	       "[]})\"':]\@1<!:\%(\$\|@@\=\)\=\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*"  contains=rubySymbolDelimiter
+syn match rubySymbol	       "[]})\"':]\@1<!:\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\%([?!=]>\@!\)\=" contains=rubySymbolDelimiter
 
 SynFold ':' syn region rubySymbol matchgroup=rubySymbolDelimiter start="[]})\"':]\@1<!:'"  end="'"  skip="\\\\\|\\'"  contains=rubyQuoteEscape,rubyBackslashEscape
 SynFold ':' syn region rubySymbol matchgroup=rubySymbolDelimiter start="[]})\"':]\@1<!:\"" end="\"" skip="\\\\\|\\\"" contains=@rubyStringSpecial
@@ -255,27 +255,27 @@ endfor
 unlet s:delimiter s:group s:names
 " }}}2
 
-SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%q{"				    end="}"   skip="\\\\\|\\}"	 contains=rubyBackslashEscape,rubyCurlyBracesEscape,rubyNestedCurlyBraces
-SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%q<"				    end=">"   skip="\\\\\|\\>"	 contains=rubyBackslashEscape,rubyAngleBracketsEscape,rubyNestedAngleBrackets
-SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%q\["				    end="\]"  skip="\\\\\|\\\]"  contains=rubyBackslashEscape,rubySquareBracketsEscape,rubyNestedSquareBrackets
-SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%q("				    end=")"   skip="\\\\\|\\)"	 contains=rubyBackslashEscape,rubyParenthesesEscape,rubyNestedParentheses
-SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%q\z(\s\)"			    end="\z1" skip="\\\\\|\\\z1" contains=rubyBackslashEscape,rubySpaceEscape
+SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%q{"	   end="}"   skip="\\\\\|\\}"	contains=rubyBackslashEscape,rubyCurlyBracesEscape,rubyNestedCurlyBraces
+SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%q<"	   end=">"   skip="\\\\\|\\>"	contains=rubyBackslashEscape,rubyAngleBracketsEscape,rubyNestedAngleBrackets
+SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%q\["	   end="\]"  skip="\\\\\|\\\]"	contains=rubyBackslashEscape,rubySquareBracketsEscape,rubyNestedSquareBrackets
+SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%q("	   end=")"   skip="\\\\\|\\)"	contains=rubyBackslashEscape,rubyParenthesesEscape,rubyNestedParentheses
+SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%q\z(\s\)" end="\z1" skip="\\\\\|\\\z1" contains=rubyBackslashEscape,rubySpaceEscape
 
-SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%w{"				    end="}"   skip="\\\\\|\\}"	 contains=rubyBackslashEscape,rubySpaceEscape,rubyCurlyBracesEscape,rubyNestedCurlyBraces
-SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%w<"				    end=">"   skip="\\\\\|\\>"	 contains=rubyBackslashEscape,rubySpaceEscape,rubyAngleBracketsEscape,rubyNestedAngleBrackets
-SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%w\["				    end="\]"  skip="\\\\\|\\\]"  contains=rubyBackslashEscape,rubySpaceEscape,rubySquareBracketsEscape,rubyNestedSquareBrackets
-SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%w("				    end=")"   skip="\\\\\|\\)"	 contains=rubyBackslashEscape,rubySpaceEscape,rubyParenthesesEscape,rubyNestedParentheses
+SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%w{"	   end="}"   skip="\\\\\|\\}"	contains=rubyBackslashEscape,rubySpaceEscape,rubyCurlyBracesEscape,rubyNestedCurlyBraces
+SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%w<"	   end=">"   skip="\\\\\|\\>"	contains=rubyBackslashEscape,rubySpaceEscape,rubyAngleBracketsEscape,rubyNestedAngleBrackets
+SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%w\["	   end="\]"  skip="\\\\\|\\\]"	contains=rubyBackslashEscape,rubySpaceEscape,rubySquareBracketsEscape,rubyNestedSquareBrackets
+SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%w("	   end=")"   skip="\\\\\|\\)"	contains=rubyBackslashEscape,rubySpaceEscape,rubyParenthesesEscape,rubyNestedParentheses
 
-SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%s{"				    end="}"   skip="\\\\\|\\}"	 contains=rubyBackslashEscape,rubyCurlyBracesEscape,rubyNestedCurlyBraces
-SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%s<"				    end=">"   skip="\\\\\|\\>"	 contains=rubyBackslashEscape,rubyAngleBracketsEscape,rubyNestedAngleBrackets
-SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%s\["				    end="\]"  skip="\\\\\|\\\]"  contains=rubyBackslashEscape,rubySquareBracketsEscape,rubyNestedSquareBrackets
-SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%s("				    end=")"   skip="\\\\\|\\)"	 contains=rubyBackslashEscape,rubyParenthesesEscape,rubyNestedParentheses
-SynFold '%' syn region rubyString matchgroup=rubySymbolDelimiter start="%s\z(\s\)"			    end="\z1" skip="\\\\\|\\\z1" contains=rubyBackslashEscape,rubySpaceEscape
+SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%s{"	   end="}"   skip="\\\\\|\\}"	contains=rubyBackslashEscape,rubyCurlyBracesEscape,rubyNestedCurlyBraces
+SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%s<"	   end=">"   skip="\\\\\|\\>"	contains=rubyBackslashEscape,rubyAngleBracketsEscape,rubyNestedAngleBrackets
+SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%s\["	   end="\]"  skip="\\\\\|\\\]"	contains=rubyBackslashEscape,rubySquareBracketsEscape,rubyNestedSquareBrackets
+SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%s("	   end=")"   skip="\\\\\|\\)"	contains=rubyBackslashEscape,rubyParenthesesEscape,rubyNestedParentheses
+SynFold '%' syn region rubyString matchgroup=rubySymbolDelimiter start="%s\z(\s\)" end="\z1" skip="\\\\\|\\\z1" contains=rubyBackslashEscape,rubySpaceEscape
 
-SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%i{"				    end="}"   skip="\\\\\|\\}"	 contains=rubyBackslashEscape,rubySpaceEscape,rubyCurlyBracesEscape,rubyNestedCurlyBraces
-SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%i<"				    end=">"   skip="\\\\\|\\>"	 contains=rubyBackslashEscape,rubySpaceEscape,rubyAngleBracketsEscape,rubyNestedAngleBrackets
-SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%i\["				    end="\]"  skip="\\\\\|\\\]"	 contains=rubyBackslashEscape,rubySpaceEscape,rubySquareBracketsEscape,rubyNestedSquareBrackets
-SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%i("				    end=")"   skip="\\\\\|\\)"	 contains=rubyBackslashEscape,rubySpaceEscape,rubyParenthesesEscape,rubyNestedParentheses
+SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%i{"	   end="}"   skip="\\\\\|\\}"	contains=rubyBackslashEscape,rubySpaceEscape,rubyCurlyBracesEscape,rubyNestedCurlyBraces
+SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%i<"	   end=">"   skip="\\\\\|\\>"	contains=rubyBackslashEscape,rubySpaceEscape,rubyAngleBracketsEscape,rubyNestedAngleBrackets
+SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%i\["	   end="\]"  skip="\\\\\|\\\]"	contains=rubyBackslashEscape,rubySpaceEscape,rubySquareBracketsEscape,rubyNestedSquareBrackets
+SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%i("	   end=")"   skip="\\\\\|\\)"	contains=rubyBackslashEscape,rubySpaceEscape,rubyParenthesesEscape,rubyNestedParentheses
 
 " Generalized Double Quoted Strings, Symbols, Array of Strings, Array of Symbols and Shell Command Output {{{1
 " Note: %= is not matched here as the beginning of a double quoted string
@@ -311,36 +311,37 @@ SynFold '<<' syn region rubyString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|
 SynFold '<<' syn region rubyString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|\w\)\@<!<<[-~]`\z([^`]*\)`\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+3					    matchgroup=rubyStringDelimiter end=+^\s*\zs\z1$+ contains=rubyHeredocStart,@rubyStringSpecial keepend
 
 " Module, Class, Method and Alias Declarations {{{1
-syn match  rubyAliasDeclaration    "[^[:space:];#.()]\+" contained contains=rubySymbol,@rubyGlobalVariable nextgroup=rubyAliasDeclaration2 skipwhite
-syn match  rubyAliasDeclaration2   "[^[:space:];#.()]\+" contained contains=rubySymbol,@rubyGlobalVariable
-syn match  rubyMethodDeclaration   "[^[:space:];#(]\+"	 contained contains=rubyConstant,rubyBoolean,rubyPseudoVariable,rubyInstanceVariable,rubyClassVariable,rubyGlobalVariable
-syn match  rubyClassDeclaration    "[^[:space:];#<]\+"	 contained contains=rubyClassName,rubyOperator
-syn match  rubyModuleDeclaration   "[^[:space:];#<]\+"	 contained contains=rubyModuleName,rubyOperator
-syn match  rubyMethodName "\<[_[:alpha:]][_[:alnum:]]*[?!=]\=[[:alnum:]_.:?!=]\@!" contained containedin=rubyMethodDeclaration
-syn match  rubyMethodName "\%(\s\|^\)\@1<=[_[:alpha:]][_[:alnum:]]*[?!=]\=\%(\s\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2
-syn match  rubyMethodName "\%([[:space:].]\|^\)\@1<=\%(\[\]=\=\|\*\*\|[-+!~]@\=\|[*/%|&^~]\|<<\|>>\|[<>]=\=\|<=>\|===\|[=!]=\|[=!]\~\|!\|`\)\%([[:space:];#(]\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2,rubyMethodDeclaration
+syn match rubyAliasDeclaration	"[^[:space:];#.()]\+" contained contains=rubySymbol,@rubyGlobalVariable nextgroup=rubyAliasDeclaration2 skipwhite
+syn match rubyAliasDeclaration2 "[^[:space:];#.()]\+" contained contains=rubySymbol,@rubyGlobalVariable
+syn match rubyMethodDeclaration "[^[:space:];#(]\+"   contained contains=rubyConstant,rubyBoolean,rubyPseudoVariable,rubyInstanceVariable,rubyClassVariable,rubyGlobalVariable
+syn match rubyClassDeclaration	"[^[:space:];#<]\+"   contained contains=rubyClassName,rubyOperator
+syn match rubyModuleDeclaration "[^[:space:];#<]\+"   contained contains=rubyModuleName,rubyOperator
+
+syn match rubyMethodName "\<[_[:alpha:]][_[:alnum:]]*[?!=]\=[[:alnum:]_.:?!=]\@!"										      contained containedin=rubyMethodDeclaration
+syn match rubyMethodName "\%(\s\|^\)\@1<=[_[:alpha:]][_[:alnum:]]*[?!=]\=\%(\s\|$\)\@="										      contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2
+syn match rubyMethodName "\%([[:space:].]\|^\)\@1<=\%(\[\]=\=\|\*\*\|[-+!~]@\=\|[*/%|&^~]\|<<\|>>\|[<>]=\=\|<=>\|===\|[=!]=\|[=!]\~\|!\|`\)\%([[:space:];#(]\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2,rubyMethodDeclaration
 
 syn cluster rubyDeclaration contains=rubyAliasDeclaration,rubyAliasDeclaration2,rubyMethodDeclaration,rubyModuleDeclaration,rubyClassDeclaration,rubyMethodName,rubyBlockParameter
 
 " Keywords {{{1
 " Note: the following keywords have already been defined:
 " begin case class def do end for if module unless until while
-syn match   rubyControl	       "\<\%(and\|break\|in\|next\|not\|or\|redo\|retry\|return\)\>[?!]\@!"
-syn match   rubyOperator       "\<defined?" display
-syn match   rubyKeyword	       "\<\%(super\|yield\)\>[?!]\@!"
-syn match   rubyBoolean	       "\<\%(true\|false\)\>[?!]\@!"
-syn match   rubyPseudoVariable "\<\%(nil\|self\|__ENCODING__\|__dir__\|__FILE__\|__LINE__\|__callee__\|__method__\)\>[?!]\@!" " TODO: reorganise
-syn match   rubyBeginEnd       "\<\%(BEGIN\|END\)\>[?!]\@!"
+syn match rubyControl	     "\<\%(and\|break\|in\|next\|not\|or\|redo\|retry\|return\)\>[?!]\@!"
+syn match rubyOperator	     "\<defined?" display
+syn match rubyKeyword	     "\<\%(super\|yield\)\>[?!]\@!"
+syn match rubyBoolean	     "\<\%(true\|false\)\>[?!]\@!"
+syn match rubyPseudoVariable "\<\%(nil\|self\|__ENCODING__\|__dir__\|__FILE__\|__LINE__\|__callee__\|__method__\)\>[?!]\@!" " TODO: reorganise
+syn match rubyBeginEnd	     "\<\%(BEGIN\|END\)\>[?!]\@!"
 
 " Expensive Mode {{{1
 " Match 'end' with the appropriate opening keyword for syntax based folding
 " and special highlighting of module/class/method definitions
 if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
-  syn match  rubyDefine "\<alias\>"  nextgroup=rubyAliasDeclaration  skipwhite skipnl
-  syn match  rubyDefine "\<def\>"    nextgroup=rubyMethodDeclaration skipwhite skipnl
-  syn match  rubyDefine "\<undef\>"  nextgroup=rubyMethodName	     skipwhite skipnl
-  syn match  rubyClass	"\<class\>"  nextgroup=rubyClassDeclaration  skipwhite skipnl
-  syn match  rubyModule "\<module\>" nextgroup=rubyModuleDeclaration skipwhite skipnl
+  syn match rubyDefine "\<alias\>"  nextgroup=rubyAliasDeclaration  skipwhite skipnl
+  syn match rubyDefine "\<def\>"    nextgroup=rubyMethodDeclaration skipwhite skipnl
+  syn match rubyDefine "\<undef\>"  nextgroup=rubyMethodName	    skipwhite skipnl
+  syn match rubyClass  "\<class\>"  nextgroup=rubyClassDeclaration  skipwhite skipnl
+  syn match rubyModule "\<module\>" nextgroup=rubyModuleDeclaration skipwhite skipnl
 
   SynFold 'def'    syn region rubyMethodBlock start="\<def\>"	 matchgroup=rubyDefine end="\%(\<def\_s\+\)\@<!\<end\>" contains=ALLBUT,@rubyNotTop
   SynFold 'class'  syn region rubyClassBlock  start="\<class\>"  matchgroup=rubyClass  end="\<end\>"			contains=ALLBUT,@rubyNotTop
@@ -355,14 +356,12 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   SynFold 'do' syn region rubyDoBlock matchgroup=rubyControl start="\<do\>" end="\<end\>" contains=ALLBUT,@rubyNotTop
 
   " curly bracket block or hash literal
-  SynFold '{' syn region rubyCurlyBlock matchgroup=rubyCurlyBlockDelimiter start="{" end="}" contains=ALLBUT,@rubyNotTop
-
-  SynFold '[' syn region rubyArrayLiteral matchgroup=rubyArrayDelimiter start="\%(\w\|[\]})]\)\@<!\[" end="]" contains=ALLBUT,@rubyNotTop
+  SynFold '{' syn region rubyCurlyBlock   matchgroup=rubyCurlyBlockDelimiter start="{"			   end="}" contains=ALLBUT,@rubyNotTop
+  SynFold '[' syn region rubyArrayLiteral matchgroup=rubyArrayDelimiter      start="\%(\w\|[\]})]\)\@<!\[" end="]" contains=ALLBUT,@rubyNotTop
 
   " statements without 'do'
-  SynFold 'begin' syn region rubyBlockExpression matchgroup=rubyControl start="\<begin\>" end="\<end\>" contains=ALLBUT,@rubyNotTop
-
-  SynFold 'case' syn region rubyCaseExpression matchgroup=rubyConditional start="\<case\>" end="\<end\>" contains=ALLBUT,@rubyNotTop
+  SynFold 'begin' syn region rubyBlockExpression matchgroup=rubyControl     start="\<begin\>" end="\<end\>" contains=ALLBUT,@rubyNotTop
+  SynFold 'case'  syn region rubyCaseExpression  matchgroup=rubyConditional start="\<case\>"  end="\<end\>" contains=ALLBUT,@rubyNotTop
 
   SynFold 'if' syn region rubyConditionalExpression matchgroup=rubyConditional start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*%&^|+=-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![?!]\)\s*\)\@<=\%(if\|unless\)\>" end="\%(\%(\%(\.\@1<!\.\)\|::\)\s*\)\@<!\<end\>" contains=ALLBUT,@rubyNotTop
 
@@ -409,21 +408,21 @@ if !exists("ruby_no_special_methods")
 endif
 
 " Comments and Documentation {{{1
-syn match   rubySharpBang     "\%^#!.*" display
-syn keyword rubyTodo	      FIXME NOTE TODO OPTIMIZE HACK REVIEW XXX todo contained
-syn match   rubyEncoding      "[[:alnum:]-]\+" contained display
-syn match   rubyMagicComment  "\c\%<3l#\s*\zs\%(coding\|encoding\):"					 contained nextgroup=rubyEncoding skipwhite
-syn match   rubyMagicComment  "\c\%<10l#\s*\zs\%(frozen_string_literal\|warn_indent\|warn_past_scope\):" contained nextgroup=rubyBoolean  skipwhite
-syn match   rubyComment	      "#.*" contains=@rubyCommentSpecial,rubySpaceError,@Spell
+syn match   rubySharpBang    "\%^#!.*" display
+syn keyword rubyTodo	     FIXME NOTE TODO OPTIMIZE HACK REVIEW XXX todo contained
+syn match   rubyEncoding     "[[:alnum:]-]\+" contained display
+syn match   rubyMagicComment "\c\%<3l#\s*\zs\%(coding\|encoding\):"					contained nextgroup=rubyEncoding skipwhite
+syn match   rubyMagicComment "\c\%<10l#\s*\zs\%(frozen_string_literal\|warn_indent\|warn_past_scope\):" contained nextgroup=rubyBoolean  skipwhite
+syn match   rubyComment	     "#.*" contains=@rubyCommentSpecial,rubySpaceError,@Spell
 
 syn cluster rubyCommentSpecial contains=rubySharpBang,rubyTodo,rubyMagicComment
 syn cluster rubyCommentNotTop  contains=@rubyCommentSpecial,rubyEncoding
 
 if !exists("ruby_no_comment_fold") && s:foldable('#')
   syn region rubyMultilineComment start="^\s*#.*\n\%(^\s*#\)\@=" end="^\s*#.*\n\%(^\s*#\)\@!" contains=rubyComment transparent fold keepend
-  syn region rubyDocumentation	  start="^=begin\ze\%(\s.*\)\=$" end="^=end\%(\s.*\)\=$" contains=rubySpaceError,rubyTodo,@Spell fold
+  syn region rubyDocumentation	  start="^=begin\ze\%(\s.*\)\=$" end="^=end\%(\s.*\)\=$"      contains=rubySpaceError,rubyTodo,@Spell fold
 else
-  syn region rubyDocumentation	  start="^=begin\s*$"		 end="^=end\s*$" contains=rubySpaceError,rubyTodo,@Spell
+  syn region rubyDocumentation	  start="^=begin\s*$"		 end="^=end\s*$"              contains=rubySpaceError,rubyTodo,@Spell
 endif
 
 " {{{1 Useless line continuations
@@ -436,10 +435,10 @@ syn match rubyKeywordAsMethod "\%(\%(\.\@1<!\.\)\|::\)\_s*\%([_[:lower:]][_[:aln
 syn match rubyKeywordAsMethod "\(defined?\|exit!\)\@!\<[_[:lower:]][_[:alnum:]]*[?!]"			       transparent contains=NONE
 
 " More Symbols {{{1
-syn match  rubySymbol		"\%([{(,]\_s*\)\@<=\l\w*[!?]\=::\@!"he=e-1
-syn match  rubySymbol		"[]})\"':]\@1<!\<\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[!?]\=:[[:space:],]\@="he=e-1
-syn match  rubySymbol		"\%([{(,]\_s*\)\@<=[[:space:],{]\l\w*[!?]\=::\@!"hs=s+1,he=e-1
-syn match  rubySymbol		"[[:space:],{(]\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[!?]\=:[[:space:],]\@="hs=s+1,he=e-1
+syn match rubySymbol "\%([{(,]\_s*\)\@<=\l\w*[!?]\=::\@!"he=e-1
+syn match rubySymbol "[]})\"':]\@1<!\<\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[!?]\=:[[:space:],]\@="he=e-1
+syn match rubySymbol "\%([{(,]\_s*\)\@<=[[:space:],{]\l\w*[!?]\=::\@!"hs=s+1,he=e-1
+syn match rubySymbol "[[:space:],{(]\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[!?]\=:[[:space:],]\@="hs=s+1,he=e-1
 
 " __END__ Directive {{{1
 SynFold '__END__' syn region rubyData matchgroup=rubyDataDirective start="^__END__$" end="\%$"
