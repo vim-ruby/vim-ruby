@@ -207,12 +207,12 @@ SynFold '/' syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="\%(\%(^\
 SynFold '/' syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="\%(\h\k*\s\+\)\@<=/\%([ \t=]\|$\)\@!"										   end="/[iomxneus]*" skip="\\\\\|\\/" contains=@rubyRegexpSpecial nextgroup=@rubyModifier skipwhite
 
 " Generalized Regular Expressions {{{1
-SynFold '%' syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1[iomxneus]*" skip="\\\\\|\\\z1" contains=@rubyRegexpSpecial nextgroup=@rubyModifier skipwhite
-SynFold '%' syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r{"				    end="}[iomxneus]*"	 skip="\\\\\|\\}"   contains=@rubyRegexpSpecial
-SynFold '%' syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r<"				    end=">[iomxneus]*"	 skip="\\\\\|\\>"   contains=@rubyRegexpSpecial,rubyNestedAngleBrackets
-SynFold '%' syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r\["				    end="\][iomxneus]*"  skip="\\\\\|\\\]"  contains=@rubyRegexpSpecial
-SynFold '%' syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r("				    end=")[iomxneus]*"	 skip="\\\\\|\\)"   contains=@rubyRegexpSpecial
-SynFold '%' syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r\z(\s\)"			    end="\z1[iomxneus]*" skip="\\\\\|\\\z1" contains=@rubyRegexpSpecial
+SynFold '%' syn region rubyRegexp matchgroup=rubyPercentRegexpDelimiter start="%r\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1[iomxneus]*" skip="\\\\\|\\\z1" contains=@rubyRegexpSpecial nextgroup=@rubyModifier skipwhite
+SynFold '%' syn region rubyRegexp matchgroup=rubyPercentRegexpDelimiter start="%r{"				   end="}[iomxneus]*"	skip="\\\\\|\\}"   contains=@rubyRegexpSpecial
+SynFold '%' syn region rubyRegexp matchgroup=rubyPercentRegexpDelimiter start="%r<"				   end=">[iomxneus]*"	skip="\\\\\|\\>"   contains=@rubyRegexpSpecial,rubyNestedAngleBrackets
+SynFold '%' syn region rubyRegexp matchgroup=rubyPercentRegexpDelimiter start="%r\["				   end="\][iomxneus]*"	skip="\\\\\|\\\]"  contains=@rubyRegexpSpecial
+SynFold '%' syn region rubyRegexp matchgroup=rubyPercentRegexpDelimiter start="%r("				   end=")[iomxneus]*"	skip="\\\\\|\\)"   contains=@rubyRegexpSpecial
+SynFold '%' syn region rubyRegexp matchgroup=rubyPercentRegexpDelimiter start="%r\z(\s\)"			   end="\z1[iomxneus]*" skip="\\\\\|\\\z1" contains=@rubyRegexpSpecial
 
 " Characters {{{1
 syn match rubyCharacter "\%(\w\|[]})\"'/]\)\@1<!\%(?\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\=\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)\)"
@@ -245,70 +245,70 @@ for s:delimiter in keys(s:names)
 
   exe 'syn match ' . s:group . ' "\V\\' . s:delimiter . '" contained display'
   exe 'syn cluster rubySingleCharEscape add=' . s:group
-  exe 'SynFold ''%'' syn region rubyString matchgroup=rubyStringDelimiter start="\V%q' . s:delimiter . '" end="\V' . s:delimiter . '" skip="\V\\\\\|\\' . s:delimiter . '" contains=rubyBackslashEscape,'		  . s:group . ' nextgroup=@rubyModifier skipwhite'
-  exe 'SynFold ''%'' syn region rubyString matchgroup=rubyStringDelimiter start="\V%w' . s:delimiter . '" end="\V' . s:delimiter . '" skip="\V\\\\\|\\' . s:delimiter . '" contains=rubyBackslashEscape,rubySpaceEscape,' . s:group . ' nextgroup=@rubyModifier skipwhite'
-  exe 'SynFold ''%'' syn region rubySymbol matchgroup=rubySymbolDelimiter start="\V%s' . s:delimiter . '" end="\V' . s:delimiter . '" skip="\V\\\\\|\\' . s:delimiter . '" contains=rubyBackslashEscape,'		  . s:group . ' nextgroup=@rubyModifier skipwhite'
-  exe 'SynFold ''%'' syn region rubySymbol matchgroup=rubySymbolDelimiter start="\V%i' . s:delimiter . '" end="\V' . s:delimiter . '" skip="\V\\\\\|\\' . s:delimiter . '" contains=rubyBackslashEscape,rubySpaceEscape,' . s:group . ' nextgroup=@rubyModifier skipwhite'
+  exe 'SynFold ''%'' syn region rubyString matchgroup=rubyPercentStringDelimiter start="\V%q' . s:delimiter . '" end="\V' . s:delimiter . '" skip="\V\\\\\|\\' . s:delimiter . '" contains=rubyBackslashEscape,'		 . s:group . ' nextgroup=@rubyModifier skipwhite'
+  exe 'SynFold ''%'' syn region rubyString matchgroup=rubyPercentStringDelimiter start="\V%w' . s:delimiter . '" end="\V' . s:delimiter . '" skip="\V\\\\\|\\' . s:delimiter . '" contains=rubyBackslashEscape,rubySpaceEscape,' . s:group . ' nextgroup=@rubyModifier skipwhite'
+  exe 'SynFold ''%'' syn region rubySymbol matchgroup=rubyPercentSymbolDelimiter start="\V%s' . s:delimiter . '" end="\V' . s:delimiter . '" skip="\V\\\\\|\\' . s:delimiter . '" contains=rubyBackslashEscape,'		 . s:group . ' nextgroup=@rubyModifier skipwhite'
+  exe 'SynFold ''%'' syn region rubySymbol matchgroup=rubyPercentSymbolDelimiter start="\V%i' . s:delimiter . '" end="\V' . s:delimiter . '" skip="\V\\\\\|\\' . s:delimiter . '" contains=rubyBackslashEscape,rubySpaceEscape,' . s:group . ' nextgroup=@rubyModifier skipwhite'
   exe 'hi def link ' . s:group . ' rubyStringEscape'
 endfor
 
 unlet s:delimiter s:group s:names
 " }}}2
 
-SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%q{"	   end="}"   skip="\\\\\|\\}"	contains=rubyBackslashEscape,rubyCurlyBracesEscape,rubyNestedCurlyBraces
-SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%q<"	   end=">"   skip="\\\\\|\\>"	contains=rubyBackslashEscape,rubyAngleBracketsEscape,rubyNestedAngleBrackets
-SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%q\["	   end="\]"  skip="\\\\\|\\\]"	contains=rubyBackslashEscape,rubySquareBracketsEscape,rubyNestedSquareBrackets
-SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%q("	   end=")"   skip="\\\\\|\\)"	contains=rubyBackslashEscape,rubyParenthesesEscape,rubyNestedParentheses
-SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%q\z(\s\)" end="\z1" skip="\\\\\|\\\z1" contains=rubyBackslashEscape,rubySpaceEscape
+SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="%q{"	  end="}"   skip="\\\\\|\\}"   contains=rubyBackslashEscape,rubyCurlyBracesEscape,rubyNestedCurlyBraces
+SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="%q<"	  end=">"   skip="\\\\\|\\>"   contains=rubyBackslashEscape,rubyAngleBracketsEscape,rubyNestedAngleBrackets
+SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="%q\["	  end="\]"  skip="\\\\\|\\\]"  contains=rubyBackslashEscape,rubySquareBracketsEscape,rubyNestedSquareBrackets
+SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="%q("	  end=")"   skip="\\\\\|\\)"   contains=rubyBackslashEscape,rubyParenthesesEscape,rubyNestedParentheses
+SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="%q\z(\s\)" end="\z1" skip="\\\\\|\\\z1" contains=rubyBackslashEscape,rubySpaceEscape
 
-SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%w{"	   end="}"   skip="\\\\\|\\}"	contains=rubyBackslashEscape,rubySpaceEscape,rubyCurlyBracesEscape,rubyNestedCurlyBraces
-SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%w<"	   end=">"   skip="\\\\\|\\>"	contains=rubyBackslashEscape,rubySpaceEscape,rubyAngleBracketsEscape,rubyNestedAngleBrackets
-SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%w\["	   end="\]"  skip="\\\\\|\\\]"	contains=rubyBackslashEscape,rubySpaceEscape,rubySquareBracketsEscape,rubyNestedSquareBrackets
-SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%w("	   end=")"   skip="\\\\\|\\)"	contains=rubyBackslashEscape,rubySpaceEscape,rubyParenthesesEscape,rubyNestedParentheses
+SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="%w{"	  end="}"   skip="\\\\\|\\}"   contains=rubyBackslashEscape,rubySpaceEscape,rubyCurlyBracesEscape,rubyNestedCurlyBraces
+SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="%w<"	  end=">"   skip="\\\\\|\\>"   contains=rubyBackslashEscape,rubySpaceEscape,rubyAngleBracketsEscape,rubyNestedAngleBrackets
+SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="%w\["	  end="\]"  skip="\\\\\|\\\]"  contains=rubyBackslashEscape,rubySpaceEscape,rubySquareBracketsEscape,rubyNestedSquareBrackets
+SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="%w("	  end=")"   skip="\\\\\|\\)"   contains=rubyBackslashEscape,rubySpaceEscape,rubyParenthesesEscape,rubyNestedParentheses
 
-SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%s{"	   end="}"   skip="\\\\\|\\}"	contains=rubyBackslashEscape,rubyCurlyBracesEscape,rubyNestedCurlyBraces
-SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%s<"	   end=">"   skip="\\\\\|\\>"	contains=rubyBackslashEscape,rubyAngleBracketsEscape,rubyNestedAngleBrackets
-SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%s\["	   end="\]"  skip="\\\\\|\\\]"	contains=rubyBackslashEscape,rubySquareBracketsEscape,rubyNestedSquareBrackets
-SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%s("	   end=")"   skip="\\\\\|\\)"	contains=rubyBackslashEscape,rubyParenthesesEscape,rubyNestedParentheses
-SynFold '%' syn region rubyString matchgroup=rubySymbolDelimiter start="%s\z(\s\)" end="\z1" skip="\\\\\|\\\z1" contains=rubyBackslashEscape,rubySpaceEscape
+SynFold '%' syn region rubySymbol matchgroup=rubyPercentSymbolDelimiter start="%s{"	  end="}"   skip="\\\\\|\\}"   contains=rubyBackslashEscape,rubyCurlyBracesEscape,rubyNestedCurlyBraces
+SynFold '%' syn region rubySymbol matchgroup=rubyPercentSymbolDelimiter start="%s<"	  end=">"   skip="\\\\\|\\>"   contains=rubyBackslashEscape,rubyAngleBracketsEscape,rubyNestedAngleBrackets
+SynFold '%' syn region rubySymbol matchgroup=rubyPercentSymbolDelimiter start="%s\["	  end="\]"  skip="\\\\\|\\\]"  contains=rubyBackslashEscape,rubySquareBracketsEscape,rubyNestedSquareBrackets
+SynFold '%' syn region rubySymbol matchgroup=rubyPercentSymbolDelimiter start="%s("	  end=")"   skip="\\\\\|\\)"   contains=rubyBackslashEscape,rubyParenthesesEscape,rubyNestedParentheses
+SynFold '%' syn region rubyString matchgroup=rubyPercentSymbolDelimiter start="%s\z(\s\)" end="\z1" skip="\\\\\|\\\z1" contains=rubyBackslashEscape,rubySpaceEscape
 
-SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%i{"	   end="}"   skip="\\\\\|\\}"	contains=rubyBackslashEscape,rubySpaceEscape,rubyCurlyBracesEscape,rubyNestedCurlyBraces
-SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%i<"	   end=">"   skip="\\\\\|\\>"	contains=rubyBackslashEscape,rubySpaceEscape,rubyAngleBracketsEscape,rubyNestedAngleBrackets
-SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%i\["	   end="\]"  skip="\\\\\|\\\]"	contains=rubyBackslashEscape,rubySpaceEscape,rubySquareBracketsEscape,rubyNestedSquareBrackets
-SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%i("	   end=")"   skip="\\\\\|\\)"	contains=rubyBackslashEscape,rubySpaceEscape,rubyParenthesesEscape,rubyNestedParentheses
+SynFold '%' syn region rubySymbol matchgroup=rubyPercentSymbolDelimiter start="%i{"	  end="}"   skip="\\\\\|\\}"   contains=rubyBackslashEscape,rubySpaceEscape,rubyCurlyBracesEscape,rubyNestedCurlyBraces
+SynFold '%' syn region rubySymbol matchgroup=rubyPercentSymbolDelimiter start="%i<"	  end=">"   skip="\\\\\|\\>"   contains=rubyBackslashEscape,rubySpaceEscape,rubyAngleBracketsEscape,rubyNestedAngleBrackets
+SynFold '%' syn region rubySymbol matchgroup=rubyPercentSymbolDelimiter start="%i\["	  end="\]"  skip="\\\\\|\\\]"  contains=rubyBackslashEscape,rubySpaceEscape,rubySquareBracketsEscape,rubyNestedSquareBrackets
+SynFold '%' syn region rubySymbol matchgroup=rubyPercentSymbolDelimiter start="%i("	  end=")"   skip="\\\\\|\\)"   contains=rubyBackslashEscape,rubySpaceEscape,rubyParenthesesEscape,rubyNestedParentheses
 
 " Generalized Double Quoted Strings, Symbols, Array of Strings, Array of Symbols and Shell Command Output {{{1
 " Note: %= is not matched here as the beginning of a double quoted string
-SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%\z([~`!@#$%^&*_\-+|\:;"',.?/]\)"	end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial nextgroup=@rubyModifier skipwhite
-SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial
-SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\={"				end="}"	  skip="\\\\\|\\}"   contains=@rubyStringSpecial,rubyNestedCurlyBraces
-SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\=<"				end=">"	  skip="\\\\\|\\>"   contains=@rubyStringSpecial,rubyNestedAngleBrackets
-SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\=\["				end="\]"  skip="\\\\\|\\\]"  contains=@rubyStringSpecial,rubyNestedSquareBrackets
-SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\=("				end=")"	  skip="\\\\\|\\)"   contains=@rubyStringSpecial,rubyNestedParentheses
-SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%[Qx]\z(\s\)"				end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial
+SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="%\z([~`!@#$%^&*_\-+|\:;"',.?/]\)"       end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial nextgroup=@rubyModifier skipwhite
+SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="%[QWx]\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial
+SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="%[QWx]\={"			       end="}"	 skip="\\\\\|\\}"   contains=@rubyStringSpecial,rubyNestedCurlyBraces
+SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="%[QWx]\=<"			       end=">"	 skip="\\\\\|\\>"   contains=@rubyStringSpecial,rubyNestedAngleBrackets
+SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="%[QWx]\=\["			       end="\]"  skip="\\\\\|\\\]"  contains=@rubyStringSpecial,rubyNestedSquareBrackets
+SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="%[QWx]\=("			       end=")"	 skip="\\\\\|\\)"   contains=@rubyStringSpecial,rubyNestedParentheses
+SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="%[Qx]\z(\s\)"			       end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial
 
 " Array of interpolated Symbols
-SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%I\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial nextgroup=@rubyModifier skipwhite
-SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%I{"				    end="}"   skip="\\\\\|\\}"	 contains=@rubyStringSpecial,rubyNestedCurlyBraces
-SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%I<"				    end=">"   skip="\\\\\|\\>"	 contains=@rubyStringSpecial,rubyNestedAngleBrackets
-SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%I\["				    end="\]"  skip="\\\\\|\\\]"	 contains=@rubyStringSpecial,rubyNestedSquareBrackets
-SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%I("				    end=")"   skip="\\\\\|\\)"	 contains=@rubyStringSpecial,rubyNestedParentheses
+SynFold '%' syn region rubySymbol matchgroup=rubyPercentSymbolDelimiter start="%I\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial nextgroup=@rubyModifier skipwhite
+SynFold '%' syn region rubySymbol matchgroup=rubyPercentSymbolDelimiter start="%I{"				   end="}"   skip="\\\\\|\\}"	contains=@rubyStringSpecial,rubyNestedCurlyBraces
+SynFold '%' syn region rubySymbol matchgroup=rubyPercentSymbolDelimiter start="%I<"				   end=">"   skip="\\\\\|\\>"	contains=@rubyStringSpecial,rubyNestedAngleBrackets
+SynFold '%' syn region rubySymbol matchgroup=rubyPercentSymbolDelimiter start="%I\["				   end="\]"  skip="\\\\\|\\\]"	contains=@rubyStringSpecial,rubyNestedSquareBrackets
+SynFold '%' syn region rubySymbol matchgroup=rubyPercentSymbolDelimiter start="%I("				   end=")"   skip="\\\\\|\\)"	contains=@rubyStringSpecial,rubyNestedParentheses
 
 " Here Documents {{{1
-syn region rubyHeredocStart matchgroup=rubyStringDelimiter start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<[-~]\=\zs\%(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)+ end=+$+ oneline contains=ALLBUT,@rubyNotTop
-syn region rubyHeredocStart matchgroup=rubyStringDelimiter start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<[-~]\=\zs"\%([^"]*\)"+				       end=+$+ oneline contains=ALLBUT,@rubyNotTop
-syn region rubyHeredocStart matchgroup=rubyStringDelimiter start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<[-~]\=\zs'\%([^']*\)'+				       end=+$+ oneline contains=ALLBUT,@rubyNotTop
-syn region rubyHeredocStart matchgroup=rubyStringDelimiter start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<[-~]\=\zs`\%([^`]*\)`+				       end=+$+ oneline contains=ALLBUT,@rubyNotTop
+syn region rubyHeredocStart matchgroup=rubyHeredocDelimiter start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<[-~]\=\zs\%(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)+ end=+$+ oneline contains=ALLBUT,@rubyNotTop
+syn region rubyHeredocStart matchgroup=rubyHeredocDelimiter start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<[-~]\=\zs"\%([^"]*\)"+					end=+$+ oneline contains=ALLBUT,@rubyNotTop
+syn region rubyHeredocStart matchgroup=rubyHeredocDelimiter start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<[-~]\=\zs'\%([^']*\)'+					end=+$+ oneline contains=ALLBUT,@rubyNotTop
+syn region rubyHeredocStart matchgroup=rubyHeredocDelimiter start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<[-~]\=\zs`\%([^`]*\)`+					end=+$+ oneline contains=ALLBUT,@rubyNotTop
 
-SynFold '<<' syn region rubyString start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<\z(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+2 matchgroup=rubyStringDelimiter end=+^\z1$+ contains=rubyHeredocStart,@rubyStringSpecial keepend
-SynFold '<<' syn region rubyString start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<"\z([^"]*\)"\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+2					  matchgroup=rubyStringDelimiter end=+^\z1$+ contains=rubyHeredocStart,@rubyStringSpecial keepend
-SynFold '<<' syn region rubyString start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<'\z([^']*\)'\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+2					  matchgroup=rubyStringDelimiter end=+^\z1$+ contains=rubyHeredocStart			  keepend
-SynFold '<<' syn region rubyString start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<`\z([^`]*\)`\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+2					  matchgroup=rubyStringDelimiter end=+^\z1$+ contains=rubyHeredocStart,@rubyStringSpecial keepend
+SynFold '<<' syn region rubyString start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<\z(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+2 matchgroup=rubyHeredocDelimiter end=+^\z1$+ contains=rubyHeredocStart,@rubyStringSpecial keepend
+SynFold '<<' syn region rubyString start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<"\z([^"]*\)"\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+2					  matchgroup=rubyHeredocDelimiter end=+^\z1$+ contains=rubyHeredocStart,@rubyStringSpecial keepend
+SynFold '<<' syn region rubyString start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<'\z([^']*\)'\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+2					  matchgroup=rubyHeredocDelimiter end=+^\z1$+ contains=rubyHeredocStart			   keepend
+SynFold '<<' syn region rubyString start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<`\z([^`]*\)`\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+2					  matchgroup=rubyHeredocDelimiter end=+^\z1$+ contains=rubyHeredocStart,@rubyStringSpecial keepend
 
-SynFold '<<' syn region rubyString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|\w\)\@<!<<[-~]\z(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+3 matchgroup=rubyStringDelimiter end=+^\s*\zs\z1$+ contains=rubyHeredocStart,@rubyStringSpecial keepend
-SynFold '<<' syn region rubyString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|\w\)\@<!<<[-~]"\z([^"]*\)"\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+3					    matchgroup=rubyStringDelimiter end=+^\s*\zs\z1$+ contains=rubyHeredocStart,@rubyStringSpecial keepend
-SynFold '<<' syn region rubyString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|\w\)\@<!<<[-~]'\z([^']*\)'\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+3					    matchgroup=rubyStringDelimiter end=+^\s*\zs\z1$+ contains=rubyHeredocStart			  keepend
-SynFold '<<' syn region rubyString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|\w\)\@<!<<[-~]`\z([^`]*\)`\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+3					    matchgroup=rubyStringDelimiter end=+^\s*\zs\z1$+ contains=rubyHeredocStart,@rubyStringSpecial keepend
+SynFold '<<' syn region rubyString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|\w\)\@<!<<[-~]\z(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+3 matchgroup=rubyHeredocDelimiter end=+^\s*\zs\z1$+ contains=rubyHeredocStart,@rubyStringSpecial keepend
+SynFold '<<' syn region rubyString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|\w\)\@<!<<[-~]"\z([^"]*\)"\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+3					    matchgroup=rubyHeredocDelimiter end=+^\s*\zs\z1$+ contains=rubyHeredocStart,@rubyStringSpecial keepend
+SynFold '<<' syn region rubyString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|\w\)\@<!<<[-~]'\z([^']*\)'\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+3					    matchgroup=rubyHeredocDelimiter end=+^\s*\zs\z1$+ contains=rubyHeredocStart			   keepend
+SynFold '<<' syn region rubyString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|\w\)\@<!<<[-~]`\z([^`]*\)`\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+3					    matchgroup=rubyHeredocDelimiter end=+^\s*\zs\z1$+ contains=rubyHeredocStart,@rubyStringSpecial keepend
 
 " Module, Class, Method and Alias Declarations {{{1
 syn match rubyAliasDeclaration	"[^[:space:];#.()]\+" contained contains=rubySymbol,@rubyGlobalVariable nextgroup=rubyAliasDeclaration2 skipwhite
@@ -522,9 +522,13 @@ hi def link rubyStringEscape		Special
 
 hi def link rubyInterpolationDelimiter	Delimiter
 hi def link rubySharpBang		PreProc
+hi def link rubyStringDelimiter		Delimiter
+hi def link rubyHeredocDelimiter	rubyStringDelimiter
+hi def link rubyPercentRegexpDelimiter	rubyRegexpDelimiter
+hi def link rubyPercentStringDelimiter	rubyStringDelimiter
+hi def link rubyPercentSymbolDelimiter	rubySymbolDelimiter
 hi def link rubyRegexpDelimiter		rubyStringDelimiter
 hi def link rubySymbolDelimiter		rubySymbol
-hi def link rubyStringDelimiter		Delimiter
 hi def link rubyString			String
 hi def link rubyRegexpEscape		rubyRegexpSpecial
 hi def link rubyRegexpQuantifier	rubyRegexpSpecial

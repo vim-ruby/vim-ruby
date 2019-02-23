@@ -32,9 +32,8 @@ if exists("loaded_matchit") && !exists("b:match_words")
 
   let b:match_skip =
 	\ "synIDattr(synID(line('.'),col('.'),0),'name') =~ '" .
-	\ "\\<ruby\\%(String\\|StringDelimiter\\|Character\\|Escape\\|" .
-        \ "Regexp\\|RegexpDelimiter\\|" .
-	\ "Interpolation\\|Comment\\|Documentation\\|" .
+	\ "\\<ruby\\%(String\\|.\+Delimiter\\|Character\\|.\+Escape\\|" .
+        \ "Regexp\\|Interpolation\\|Comment\\|Documentation\\|" .
 	\ "ConditionalModifier\\|RepeatModifier\\|RescueModifier\\|OptionalDo\\|" .
 	\ "Function\\|BlockArgument\\|KeywordAsMethod\\|ClassVariable\\|" .
 	\ "InstanceVariable\\|GlobalVariable\\|Symbol\\)\\>'"
