@@ -203,11 +203,11 @@ syn match rubyPredefinedVariable "$KCODE\>"		  display
 syn cluster rubyGlobalVariable contains=rubyGlobalVariable,rubyPredefinedVariable,rubyGlobalVariableError
 
 " Normal Regular Expressions {{{1
-SynFold '/' syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="\%(\%(^\|\<\%(and\|or\|while\|until\|unless\|if\|elsif\|when\|not\|then\|else\)\|[;\~=!|&(,{[<>?:*+-]\)\s*\)\@<=/" end="/[iomxneus]*" skip="\\\\\|\\/" contains=@rubyRegexpSpecial
-SynFold '/' syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="\%(\h\k*\s\+\)\@<=/\%([ \t=]\|$\)\@!"										   end="/[iomxneus]*" skip="\\\\\|\\/" contains=@rubyRegexpSpecial
+SynFold '/' syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="\%(\%(^\|\<\%(and\|or\|while\|until\|unless\|if\|elsif\|when\|not\|then\|else\)\|[;\~=!|&(,{[<>?:*+-]\)\s*\)\@<=/" end="/[iomxneus]*" skip="\\\\\|\\/" contains=@rubyRegexpSpecial nextgroup=@rubyModifier skipwhite
+SynFold '/' syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="\%(\h\k*\s\+\)\@<=/\%([ \t=]\|$\)\@!"										   end="/[iomxneus]*" skip="\\\\\|\\/" contains=@rubyRegexpSpecial nextgroup=@rubyModifier skipwhite
 
 " Generalized Regular Expressions {{{1
-SynFold '%' syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1[iomxneus]*" skip="\\\\\|\\\z1" contains=@rubyRegexpSpecial
+SynFold '%' syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1[iomxneus]*" skip="\\\\\|\\\z1" contains=@rubyRegexpSpecial nextgroup=@rubyModifier skipwhite
 SynFold '%' syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r{"				    end="}[iomxneus]*"	 skip="\\\\\|\\}"   contains=@rubyRegexpSpecial
 SynFold '%' syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r<"				    end=">[iomxneus]*"	 skip="\\\\\|\\>"   contains=@rubyRegexpSpecial,rubyNestedAngleBrackets
 SynFold '%' syn region rubyRegexp matchgroup=rubyRegexpDelimiter start="%r\["				    end="\][iomxneus]*"  skip="\\\\\|\\\]"  contains=@rubyRegexpSpecial
@@ -245,10 +245,10 @@ for s:delimiter in keys(s:names)
 
   exe 'syn match ' . s:group . ' "\V\\' . s:delimiter . '" contained display'
   exe 'syn cluster rubySingleCharEscape add=' . s:group
-  exe 'SynFold ''%'' syn region rubyString matchgroup=rubyStringDelimiter start="\V%q' . s:delimiter . '" end="\V' . s:delimiter . '" skip="\V\\\\\|\\' . s:delimiter . '" contains=rubyBackslashEscape,'		  . s:group
-  exe 'SynFold ''%'' syn region rubyString matchgroup=rubyStringDelimiter start="\V%w' . s:delimiter . '" end="\V' . s:delimiter . '" skip="\V\\\\\|\\' . s:delimiter . '" contains=rubyBackslashEscape,rubySpaceEscape,' . s:group
-  exe 'SynFold ''%'' syn region rubySymbol matchgroup=rubySymbolDelimiter start="\V%s' . s:delimiter . '" end="\V' . s:delimiter . '" skip="\V\\\\\|\\' . s:delimiter . '" contains=rubyBackslashEscape,'		  . s:group
-  exe 'SynFold ''%'' syn region rubySymbol matchgroup=rubySymbolDelimiter start="\V%i' . s:delimiter . '" end="\V' . s:delimiter . '" skip="\V\\\\\|\\' . s:delimiter . '" contains=rubyBackslashEscape,rubySpaceEscape,' . s:group
+  exe 'SynFold ''%'' syn region rubyString matchgroup=rubyStringDelimiter start="\V%q' . s:delimiter . '" end="\V' . s:delimiter . '" skip="\V\\\\\|\\' . s:delimiter . '" contains=rubyBackslashEscape,'		  . s:group . ' nextgroup=@rubyModifier skipwhite'
+  exe 'SynFold ''%'' syn region rubyString matchgroup=rubyStringDelimiter start="\V%w' . s:delimiter . '" end="\V' . s:delimiter . '" skip="\V\\\\\|\\' . s:delimiter . '" contains=rubyBackslashEscape,rubySpaceEscape,' . s:group . ' nextgroup=@rubyModifier skipwhite'
+  exe 'SynFold ''%'' syn region rubySymbol matchgroup=rubySymbolDelimiter start="\V%s' . s:delimiter . '" end="\V' . s:delimiter . '" skip="\V\\\\\|\\' . s:delimiter . '" contains=rubyBackslashEscape,'		  . s:group . ' nextgroup=@rubyModifier skipwhite'
+  exe 'SynFold ''%'' syn region rubySymbol matchgroup=rubySymbolDelimiter start="\V%i' . s:delimiter . '" end="\V' . s:delimiter . '" skip="\V\\\\\|\\' . s:delimiter . '" contains=rubyBackslashEscape,rubySpaceEscape,' . s:group . ' nextgroup=@rubyModifier skipwhite'
   exe 'hi def link ' . s:group . ' rubyStringEscape'
 endfor
 
@@ -279,7 +279,7 @@ SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%i("	   
 
 " Generalized Double Quoted Strings, Symbols, Array of Strings, Array of Symbols and Shell Command Output {{{1
 " Note: %= is not matched here as the beginning of a double quoted string
-SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%\z([~`!@#$%^&*_\-+|\:;"',.?/]\)"	end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial
+SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%\z([~`!@#$%^&*_\-+|\:;"',.?/]\)"	end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial nextgroup=@rubyModifier skipwhite
 SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial
 SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\={"				end="}"	  skip="\\\\\|\\}"   contains=@rubyStringSpecial,rubyNestedCurlyBraces
 SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\=<"				end=">"	  skip="\\\\\|\\>"   contains=@rubyStringSpecial,rubyNestedAngleBrackets
@@ -288,7 +288,7 @@ SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%[QWx]\=
 SynFold '%' syn region rubyString matchgroup=rubyStringDelimiter start="%[Qx]\z(\s\)"				end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial
 
 " Array of interpolated Symbols
-SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%I\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial
+SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%I\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial nextgroup=@rubyModifier skipwhite
 SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%I{"				    end="}"   skip="\\\\\|\\}"	 contains=@rubyStringSpecial,rubyNestedCurlyBraces
 SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%I<"				    end=">"   skip="\\\\\|\\>"	 contains=@rubyStringSpecial,rubyNestedAngleBrackets
 SynFold '%' syn region rubySymbol matchgroup=rubySymbolDelimiter start="%I\["				    end="\]"  skip="\\\\\|\\\]"	 contains=@rubyStringSpecial,rubyNestedSquareBrackets
@@ -348,10 +348,12 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   SynFold 'module' syn region rubyModuleBlock start="\<module\>" matchgroup=rubyModule end="\<end\>"			contains=ALLBUT,@rubyNotTop
 
   " modifiers
-  syn match rubyLineContinuation    "\\$" nextgroup=rubyConditionalModifier,rubyRepeatModifier,rubyRescueModifier skipwhite skipnl
+  syn match rubyLineContinuation    "\\$" nextgroup=@rubyModifier skipwhite skipnl
   syn match rubyConditionalModifier "\<\%(if\|unless\)\>"
   syn match rubyRepeatModifier	    "\<\%(while\|until\)\>"
   syn match rubyRescueModifier	    "\<rescue\>"
+
+  syn cluster rubyModifier contains=rubyConditionalModifier,rubyRepeatModifier,rubyRescueModifier
 
   SynFold 'do' syn region rubyDoBlock matchgroup=rubyControl start="\<do\>" end="\<end\>" contains=ALLBUT,@rubyNotTop
 
@@ -363,7 +365,7 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   SynFold 'begin' syn region rubyBlockExpression matchgroup=rubyControl     start="\<begin\>" end="\<end\>" contains=ALLBUT,@rubyNotTop
   SynFold 'case'  syn region rubyCaseExpression  matchgroup=rubyConditional start="\<case\>"  end="\<end\>" contains=ALLBUT,@rubyNotTop
 
-  SynFold 'if' syn region rubyConditionalExpression matchgroup=rubyConditional start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*%&^|+=-]\|\<then\s\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![?!]\)\s*\)\@<=\%(if\|unless\)\>" end="\%(\%(\%(\.\@1<!\.\)\|::\)\s*\)\@<!\<end\>" contains=ALLBUT,@rubyNotTop
+  SynFold 'if' syn region rubyConditionalExpression matchgroup=rubyConditional start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+=-]\|\<then\s\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![?!]\)\s*\)\@<=\%(if\|unless\)\>" end="\%(\%(\%(\.\@1<!\.\)\|::\)\s*\)\@<!\<end\>" contains=ALLBUT,@rubyNotTop
 
   syn match rubyConditional "\<\%(then\|else\|when\)\>[?!]\@!"	contained containedin=rubyCaseExpression
   syn match rubyConditional "\<\%(then\|else\|elsif\)\>[?!]\@!" contained containedin=rubyConditionalExpression
