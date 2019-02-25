@@ -58,7 +58,7 @@ let s:syng_stringdoc = s:syng_string + ['Documentation']
 " Syntax group names that are or delimit strings/symbols/regexes or are comments.
 let s:syng_strcom = s:syng_stringdoc + [
       \ 'Character',
-      \ 'Comment'
+      \ 'Comment',
       \ 'HeredocDelimiter',
       \ 'PercentRegexpDelimiter',
       \ 'PercentStringDelimiter',
