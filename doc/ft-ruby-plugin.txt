@@ -1,7 +1,24 @@
 RUBY							*ft-ruby-plugin*
 
+    Ruby: Recommended settings		|ruby-recommended|
     Ruby: Motion commands		|ruby-motion|
     Ruby: Text objects			|ruby-text-objects|
+
+							*ruby-recommended*
+							*g:ruby_recommended_style*
+ Ruby: Recommended settings ~
+
+The `g:ruby_recommended_style` variable activates indentation settings
+according to the most common ruby convention: two spaces for indentation. It's
+turned on by default to ensure an unsurprising default experience for most
+ruby developers.
+
+If you'd like to enforce your own style, it's possible to apply your own
+preferences in your own configuration in `after/ftplugin/ruby.vim`. You can
+also disable the setting by setting the variable to 0:
+>
+    let g:ruby_recommended_style = 0
+<
 
 							*ruby-motion*
  Ruby: Motion commands ~

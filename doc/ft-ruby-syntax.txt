@@ -2,6 +2,7 @@ RUBY						*ruby.vim* *ft-ruby-syntax*
 
     Ruby: Operator highlighting		|ruby_operators|
     Ruby: Whitespace errors		|ruby_space_errors|
+    Ruby: Syntax errors			|ruby_syntax_errors|
     Ruby: Folding			|ruby_fold| |ruby_foldable_groups|
     Ruby: Reducing expensive operations	|ruby_no_expensive| |ruby_minlines|
     Ruby: Spellchecking strings		|ruby_spellcheck_strings|
@@ -25,6 +26,15 @@ as errors.  This can be refined by defining "ruby_no_trail_space_error" and
 "ruby_no_tab_space_error" which will ignore trailing whitespace and tabs after
 spaces respectively.
 
+						*ruby_syntax_errors*
+ Ruby: Syntax errors ~
+
+Redundant line continuations and predefined global variable look-alikes (such
+as $# and $-z) can be highlighted as errors by defining:
+>
+	:let ruby_line_continuation_error = 1
+	:let ruby_global_variable_error   = 1
+<
 						*ruby_fold*
  Ruby: Folding ~
 

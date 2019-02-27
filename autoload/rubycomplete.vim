@@ -144,19 +144,28 @@ function! s:IsPosInClassDef(pos)
     return ret
 endfunction
 
+function! s:IsInComment(pos)
+    let stack = synstack(a:pos[0], a:pos[1])
+    if !empty(stack)
+        return synIDattr(stack[0], 'name') =~ 'ruby\%(.*Comment\|Documentation\)'
+    else
+        return 0
+    endif
+endfunction
+
 function! s:GetRubyVarType(v)
     let stopline = 1
     let vtp = ''
-    let pos = getpos('.')
+    let curpos = getpos('.')
     let sstr = '^\s*#\s*@var\s*'.escape(a:v, '*').'\>\s\+[^ \t]\+\s*$'
     let [lnum,lcol] = searchpos(sstr,'nb',stopline)
     if lnum != 0 && lcol != 0
-        call setpos('.',pos)
+        call setpos('.',curpos)
         let str = getline(lnum)
         let vtp = substitute(str,sstr,'\1','')
         return vtp
     endif
-    call setpos('.',pos)
+    call setpos('.',curpos)
     let ctors = '\(now\|new\|open\|get_instance'
     if exists('g:rubycomplete_rails') && g:rubycomplete_rails == 1 && s:rubycomplete_rails_loaded == 1
         let ctors = ctors.'\|find\|create'
@@ -166,9 +175,13 @@ function! s:GetRubyVarType(v)
 
     let fstr = '=\s*\([^ \t]\+.' . ctors .'\>\|[\[{"''/]\|%[xwQqr][(\[{@]\|[A-Za-z0-9@:\-()\.]\+...\?\|lambda\|&\)'
     let sstr = ''.escape(a:v, '*').'\>\s*[+\-*/]*'.fstr
-    let [lnum,lcol] = searchpos(sstr,'nb',stopline)
-    if lnum != 0 && lcol != 0
-        let str = matchstr(getline(lnum),fstr,lcol)
+    let pos = searchpos(sstr,'bW')
+    while pos != [0,0] && s:IsInComment(pos)
+        let pos = searchpos(sstr,'bW')
+    endwhile
+    if pos != [0,0]
+        let [lnum, col] = pos
+        let str = matchstr(getline(lnum),fstr,col)
         let str = substitute(str,'^=\s*','','')
 
         call setpos('.',pos)
@@ -190,7 +203,7 @@ function! s:GetRubyVarType(v)
         end
         return ''
     endif
-    call setpos('.',pos)
+    call setpos('.',curpos)
     return ''
 endfunction
 

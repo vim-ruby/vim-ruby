@@ -56,9 +56,20 @@ let s:syng_string =
 let s:syng_stringdoc = s:syng_string + ['Documentation']
 
 " Syntax group names that are or delimit strings/symbols/regexes or are comments.
-let s:syng_strcom = s:syng_stringdoc +
-      \ ['Regexp', 'RegexpDelimiter', 'RegexpEscape',
-      \ 'Symbol', 'StringDelimiter', 'Character', 'Comment']
+let s:syng_strcom = s:syng_stringdoc + [
+      \ 'Character',
+      \ 'Comment',
+      \ 'HeredocDelimiter',
+      \ 'PercentRegexpDelimiter',
+      \ 'PercentStringDelimiter',
+      \ 'PercentSymbolDelimiter',
+      \ 'Regexp',
+      \ 'RegexpDelimiter',
+      \ 'RegexpEscape',
+      \ 'StringDelimiter',
+      \ 'Symbol',
+      \ 'SymbolDelimiter',
+      \ ]
 
 " Expression used to check whether we should skip a match with searchpair().
 let s:skip_expr =
@@ -694,7 +705,10 @@ endfunction
 
 " Check if the character at lnum:col is inside a string delimiter
 function! s:IsInStringDelimiter(lnum, col) abort
-  return s:IsInRubyGroup(['StringDelimiter'], a:lnum, a:col)
+  return s:IsInRubyGroup(
+        \ ['HeredocDelimiter', 'PercentStringDelimiter', 'StringDelimiter'],
+        \ a:lnum, a:col
+        \ )
 endfunction
 
 function! s:IsAssignment(str, pos) abort
