@@ -95,7 +95,12 @@ if exists("ruby_operators")
   syn cluster rubyOperator contains=ruby.*Operator
 endif
 
-" Expression Substitution and Backslash Notation {{{1
+" String Interpolation and Backslash Notation {{{1
+syn region rubyInterpolation	      matchgroup=rubyInterpolationDelimiter start="#{" end="}" contained contains=ALLBUT,@rubyNotTop
+syn match  rubyInterpolation	      "#\$\%(-\w\|[!$&"'*+,./0:;<>?@\`~_]\|\w\+\)" display contained contains=rubyInterpolationDelimiter,@rubyGlobalVariable
+syn match  rubyInterpolation	      "#@@\=\w\+"				   display contained contains=rubyInterpolationDelimiter,rubyInstanceVariable,rubyClassVariable
+syn match  rubyInterpolationDelimiter "#\ze[$@]"				   display contained
+
 syn match rubyStringEscape "\\\_."											    contained display
 syn match rubyStringEscape "\\\o\{1,3}\|\\x\x\{1,2}"									    contained display
 syn match rubyStringEscape "\\u\%(\x\{4}\|{\x\{1,6}\%(\s\+\x\{1,6}\)*}\)"						    contained display
@@ -104,11 +109,6 @@ syn match rubyStringEscape "\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|
 syn match rubyBackslashEscape "\\\\" contained display
 syn match rubyQuoteEscape     "\\'"  contained display
 syn match rubySpaceEscape     "\\ "  contained display
-
-syn region rubyInterpolation	      matchgroup=rubyInterpolationDelimiter start="#{" end="}" contained contains=ALLBUT,@rubyNotTop
-syn match  rubyInterpolation	      "#\$\%(-\w\|[!$&"'*+,./0:;<>?@\`~_]\|\w\+\)" display contained contains=rubyInterpolationDelimiter,@rubyGlobalVariable
-syn match  rubyInterpolation	      "#@@\=\w\+"				   display contained contains=rubyInterpolationDelimiter,rubyInstanceVariable,rubyClassVariable
-syn match  rubyInterpolationDelimiter "#\ze[$@]"				   display contained
 
 syn match rubyParenthesesEscape	   "\\[()]"  contained display
 syn match rubyCurlyBracesEscape	   "\\[{}]"  contained display
