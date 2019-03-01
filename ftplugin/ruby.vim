@@ -151,7 +151,7 @@ endif
 function! s:map(mode, flags, map) abort
   let from = matchstr(a:map, '\S\+')
   if empty(mapcheck(from, a:mode))
-    exe a:mode.'map' '<buffer>' a:map
+    exe a:mode.'map' . '<buffer>' . a:flags . a:map
     let b:undo_ftplugin .= '|sil! '.a:mode.'unmap <buffer> '.from
   endif
 endfunction
