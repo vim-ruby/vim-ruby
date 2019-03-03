@@ -64,8 +64,7 @@ endfunction
 
 com! -nargs=* SynFold call s:run_syntax_fold(<q-args>)
 
-" }}}
-
+" Not-Top Cluster {{{1
 syn cluster rubyNotTop contains=@rubyCommentNotTop,@rubyStringNotTop,@rubyRegexpSpecial,@rubyDeclaration,@rubyExceptionHandler,rubyConditional,rubyModuleName,rubyClassName,rubySymbolDelimiter
 
 " Whitespace Errors {{{1
@@ -277,7 +276,7 @@ SynFold '%' syn region rubySymbol matchgroup=rubyPercentSymbolDelimiter start="%
 SynFold '%' syn region rubySymbol matchgroup=rubyPercentSymbolDelimiter start="%i\["	  end="\]"  skip="\\\\\|\\\]"  contains=rubyBackslashEscape,rubySpaceEscape,rubySquareBracketEscape,rubyNestedSquareBrackets
 SynFold '%' syn region rubySymbol matchgroup=rubyPercentSymbolDelimiter start="%i("	  end=")"   skip="\\\\\|\\)"   contains=rubyBackslashEscape,rubySpaceEscape,rubyParenthesisEscape,rubyNestedParentheses
 
-" Generalized Double Quoted Strings, Symbols, Array of Strings, Array of Symbols and Shell Command Output {{{1
+" Generalized Double Quoted Strings, Array of Strings, Array of Symbols and Shell Command Output {{{1
 " Note: %= is not matched here as the beginning of a double quoted string
 SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="%\z([~`!@#$%^&*_\-+|\:;"',.?/]\)"       end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial nextgroup=@rubyModifier skipwhite
 SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="%[QWx]\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial
@@ -287,7 +286,6 @@ SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="%
 SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="%[QWx]\=("			       end=")"	 skip="\\\\\|\\)"   contains=@rubyStringSpecial,rubyNestedParentheses
 SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="%[Qx]\z(\s\)"			       end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial
 
-" Array of interpolated Symbols
 SynFold '%' syn region rubySymbol matchgroup=rubyPercentSymbolDelimiter start="%I\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial nextgroup=@rubyModifier skipwhite
 SynFold '%' syn region rubySymbol matchgroup=rubyPercentSymbolDelimiter start="%I{"				   end="}"   skip="\\\\\|\\}"	contains=@rubyStringSpecial,rubyNestedCurlyBraces
 SynFold '%' syn region rubySymbol matchgroup=rubyPercentSymbolDelimiter start="%I<"				   end=">"   skip="\\\\\|\\>"	contains=@rubyStringSpecial,rubyNestedAngleBrackets
@@ -427,7 +425,7 @@ else
   syn region rubyDocumentation	  start="^=begin\s*$"		 end="^=end\s*$"              contains=rubySpaceError,rubyTodo,@Spell
 endif
 
-" {{{1 Useless line continuations
+" {{{1 Useless Line Continuations
 syn match rubyUselessLineContinuation "\%([.:,;{([<>~\*%&^|+=-]\|\w\@1<![?!]\)\s*\zs\\$" nextgroup=rubyUselessLineContinuation skipwhite skipempty
 syn match rubyUselessLineContinuation "\\$"						 nextgroup=rubyUselessLineContinuation skipwhite skipempty contained
 
