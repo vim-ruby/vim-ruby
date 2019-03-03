@@ -326,12 +326,12 @@ syn cluster rubyDeclaration contains=rubyAliasDeclaration,rubyAliasDeclaration2,
 " Keywords {{{1
 " Note: the following keywords have already been defined:
 " begin case class def do end for if module unless until while
-syn match rubyControl	     "\<\%(and\|break\|in\|next\|not\|or\|redo\|retry\|return\)\>[?!]\@!"
-syn match rubyOperator	     "\<defined?" display
-syn match rubyKeyword	     "\<\%(super\|yield\)\>[?!]\@!"
+syn match rubyControl	     "\<\%(and\|break\|in\|next\|not\|or\|redo\|retry\|return\)\>"
+syn match rubyKeyword	     "\<\%(super\|yield\)\>"
 syn match rubyBoolean	     "\<\%(true\|false\)\>[?!]\@!"
-syn match rubyPseudoVariable "\<\%(nil\|self\|__ENCODING__\|__dir__\|__FILE__\|__LINE__\|__callee__\|__method__\)\>[?!]\@!" " TODO: reorganise
-syn match rubyBeginEnd	     "\<\%(BEGIN\|END\)\>[?!]\@!"
+syn match rubyPseudoVariable "\<\(self\|nil\)\>[?!]\@!"
+syn match rubyPseudoVariable "\<__\%(ENCODING\|dir\|FILE\|LINE\|callee\|method\)__\>"
+syn match rubyBeginEnd	     "\<\%(BEGIN\|END\)\>"
 
 " Expensive Mode {{{1
 " Match 'end' with the appropriate opening keyword for syntax based folding
@@ -367,17 +367,17 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
 
   SynFold 'if' syn region rubyConditionalExpression matchgroup=rubyConditional start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+=-]\|\<then\s\|\%(\<\h\w*\)\@<![?!]\)\s*\)\@<=\%(if\|unless\)\>" end="\%(\%(\%(\.\@1<!\.\)\|::\)\s*\)\@<!\<end\>" contains=ALLBUT,@rubyNotTop
 
-  syn match rubyConditional "\<\%(then\|else\|when\)\>[?!]\@!"	contained containedin=rubyCaseExpression
-  syn match rubyConditional "\<\%(then\|else\|elsif\)\>[?!]\@!" contained containedin=rubyConditionalExpression
+  syn match rubyConditional "\<\%(then\|else\|when\)\>"	 contained containedin=rubyCaseExpression
+  syn match rubyConditional "\<\%(then\|else\|elsif\)\>" contained containedin=rubyConditionalExpression
 
-  syn match   rubyExceptionHandler  "\<\%(\%(\%(;\|^\)\s*\)\@<=rescue\|else\|ensure\)\>[?!]\@!" contained containedin=rubyBlockExpression,rubyDoBlock
-  syn match   rubyExceptionHandler1 "\<\%(\%(\%(;\|^\)\s*\)\@<=rescue\|else\|ensure\)\>[?!]\@!" contained containedin=rubyModuleBlock,rubyClassBlock,rubyMethodBlock
+  syn match   rubyExceptionHandler  "\<\%(\%(\%(;\|^\)\s*\)\@<=rescue\|else\|ensure\)\>" contained containedin=rubyBlockExpression,rubyDoBlock
+  syn match   rubyExceptionHandler1 "\<\%(\%(\%(;\|^\)\s*\)\@<=rescue\|else\|ensure\)\>" contained containedin=rubyModuleBlock,rubyClassBlock,rubyMethodBlock
   syn cluster rubyExceptionHandler  contains=rubyExceptionHandler,rubyExceptionHandler1
 
   " statements with optional 'do'
-  syn region rubyOptionalDoLine matchgroup=rubyRepeat start="\<for\>[?!]\@!" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+=-]\|\%(\<\h\w*\)\@<![!?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyOptionalDo end="\<do\>" end="\ze\%(;\|$\)" oneline contains=ALLBUT,@rubyNotTop
+  syn region rubyOptionalDoLine matchgroup=rubyRepeat start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+=-]\|\%(\<\h\w*\)\@<![!?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyOptionalDo end="\<do\>" end="\ze\%(;\|$\)" oneline contains=ALLBUT,@rubyNotTop
 
-  SynFold 'for' syn region rubyRepeatExpression start="\<for\>[?!]\@!" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+=-]\|\%(\<\h\w*\)\@<![!?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyRepeat end="\<end\>" contains=ALLBUT,@rubyNotTop nextgroup=rubyOptionalDoLine
+  SynFold 'for' syn region rubyRepeatExpression start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+=-]\|\%(\<\h\w*\)\@<![!?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyRepeat end="\<end\>" contains=ALLBUT,@rubyNotTop nextgroup=rubyOptionalDoLine
 
   if !exists("ruby_minlines")
     let ruby_minlines = 500
@@ -385,28 +385,28 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   exe "syn sync minlines=" . ruby_minlines
 
 else
-  syn match rubyControl "\<def\>[?!]\@!"    nextgroup=rubyMethodDeclaration skipwhite skipnl
-  syn match rubyControl "\<class\>[?!]\@!"  nextgroup=rubyClassDeclaration  skipwhite skipnl
-  syn match rubyControl "\<module\>[?!]\@!" nextgroup=rubyModuleDeclaration skipwhite skipnl
-  syn match rubyControl "\<\%(case\|begin\|do\|for\|if\|unless\|while\|until\|else\|elsif\|rescue\|ensure\|then\|when\|end\)\>[?!]\@!"
-  syn match rubyKeyword "\<\%(alias\|undef\)\>[?!]\@!"
+  syn match rubyControl "\<def\>"    nextgroup=rubyMethodDeclaration skipwhite skipnl
+  syn match rubyControl "\<class\>"  nextgroup=rubyClassDeclaration  skipwhite skipnl
+  syn match rubyControl "\<module\>" nextgroup=rubyModuleDeclaration skipwhite skipnl
+  syn match rubyControl "\<\%(case\|begin\|do\|for\|if\|unless\|while\|until\|else\|elsif\|rescue\|ensure\|then\|when\|end\)\>"
+  syn match rubyKeyword "\<\%(alias\|undef\)\>"
 endif
 
 " Special Methods {{{1
 if !exists("ruby_no_special_methods")
-  syn keyword rubyAccess    public protected private public_class_method private_class_method public_constant private_constant module_function
-  " attr is a common variable name
-  syn match   rubyAttribute "\%(\%(^\|;\)\s*\)\@<=attr\>\(\s*[.=]\)\@!"
-  syn keyword rubyAttribute attr_accessor attr_reader attr_writer
-  syn match   rubyControl   "\<\%(exit!\|\%(abort\|at_exit\|exit\|fork\|loop\|trap\)\>[?!]\@!\)"
-  syn keyword rubyEval	    eval class_eval instance_eval module_eval
-  syn keyword rubyException raise fail catch throw
-  syn keyword rubyInclude   autoload gem load require require_relative
-  syn keyword rubyKeyword   callcc caller lambda proc
-  " false positive with 'include?'
-  syn match   rubyMacro     "\<include\>[?!]\@!"
-  syn keyword rubyMacro     extend prepend refine using
-  syn keyword rubyMacro     alias_method define_method define_singleton_method remove_method undef_method
+  syn match rubyAccess	  "\<\%(public\|protected\|private\)\>"
+  syn match rubyAccess	  "\<\%(public_class_method\|private_class_method\)\>"
+  syn match rubyAccess	  "\<\%(public_constant\|private_constant\)\>"
+  syn match rubyAccess	  "\<module_function\>"
+  syn match rubyAttribute "\%(\%(^\|;\)\s*\)\@<=attr\>\(\s*[.=]\)\@!" " attr is a common variable name
+  syn match rubyAttribute "\<\%(attr_accessor\|attr_reader\|attr_writer\)\>"
+  syn match rubyControl   "\<\%(abort\|at_exit\|exit\|fork\|loop\|trap\)\>"
+  syn match rubyEval	  "\<\%(eval\|class_eval\|instance_eval\|module_eval\)\>"
+  syn match rubyException "\<\%(raise\|fail\|catch\|throw\)\>"
+  syn match rubyInclude   "\<\%(autoload\|gem\|load\|require\|require_relative\)\>"
+  syn match rubyKeyword   "\<\%(callcc\|caller\|lambda\|proc\)\>"
+  syn match rubyMacro	  "\<\%(extend\|include\|prepend\|refine\|using\)\>"
+  syn match rubyMacro	  "\<\%(alias_method\|define_method\|define_singleton_method\|remove_method\|undef_method\)\>"
 endif
 
 " Comments and Documentation {{{1
@@ -432,9 +432,15 @@ syn match rubyUselessLineContinuation "\%([.:,;{([<>~\*%&^|+=-]\|\w\@1<![?!]\)\s
 syn match rubyUselessLineContinuation "\\$"						 nextgroup=rubyUselessLineContinuation skipwhite skipempty contained
 
 " Keyword Nobbling {{{1
-" Note: this is a hack to prevent 'keywords' being highlighted as such when called as methods with an explicit receiver
-syn match rubyKeywordAsMethod "\%(\%(\.\@1<!\.\)\|::\)\_s*\%([_[:lower:]][_[:alnum:]]*\|\<\%(BEGIN\|END\)\>\)" transparent contains=NONE
-syn match rubyKeywordAsMethod "\(defined?\|exit!\)\@!\<[_[:lower:]][_[:alnum:]]*[?!]"			       transparent contains=NONE
+" prevent methods with keyword names (and possible ?! suffixes) being highlighted as keywords when called
+syn match rubyKeywordAsMethod "\%(\%(\.\@1<!\.\)\|::\)\_s*\%([_[:lower:]][_[:alnum:]]*\|\%(BEGIN\|END\)\>\)" transparent contains=NONE
+syn match rubyKeywordAsMethod "\<[_[:lower:]][_[:alnum:]]*[?!]"						     transparent contains=NONE
+
+" Bang/Predicate Special Methods and Operators {{{1
+if !exists("ruby_no_special_methods")
+  syn match rubyControl "\<exit!" display
+endif
+syn match rubyOperator "\<defined?" display
 
 " More Symbols {{{1
 syn match rubySymbol "\%([{(,]\_s*\)\@<=\l\w*[!?]\=::\@!"he=e-1
