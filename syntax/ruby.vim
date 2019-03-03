@@ -293,15 +293,15 @@ SynFold '%' syn region rubySymbol matchgroup=rubyPercentSymbolDelimiter start="%
 SynFold '%' syn region rubySymbol matchgroup=rubyPercentSymbolDelimiter start="%I("				   end=")"   skip="\\\\\|\\)"	contains=@rubyStringSpecial,rubyNestedParentheses
 
 " Here Documents {{{1
-syn region rubyHeredocStart matchgroup=rubyHeredocDelimiter start=+\%(\%(class\|::\|\.\@1<!\.\)\_s*\|\%([]})"']\)\s\|\w\)\@<!<<[-~]\=\zs\%(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)+ end=+$+ oneline contains=ALLBUT,@rubyNotTop
-syn region rubyHeredocStart matchgroup=rubyHeredocDelimiter start=+\%(\%(class\|::\|\.\@1<!\.\)\_s*\|\%([]})"']\)\s\|\w\)\@<!<<[-~]\=\zs"\%([^"]*\)"+					  end=+$+ oneline contains=ALLBUT,@rubyNotTop
-syn region rubyHeredocStart matchgroup=rubyHeredocDelimiter start=+\%(\%(class\|::\|\.\@1<!\.\)\_s*\|\%([]})"']\)\s\|\w\)\@<!<<[-~]\=\zs'\%([^']*\)'+					  end=+$+ oneline contains=ALLBUT,@rubyNotTop
-syn region rubyHeredocStart matchgroup=rubyHeredocDelimiter start=+\%(\%(class\|::\|\.\@1<!\.\)\_s*\|\%([]})"']\)\s\|\w\)\@<!<<[-~]\=\zs`\%([^`]*\)`+					  end=+$+ oneline contains=ALLBUT,@rubyNotTop
+syn region rubyHeredocStart matchgroup=rubyHeredocDelimiter start=+\%(\%(class\|::\|\.\@1<!\.\)\_s*\|\%([]})"'`]\)\s\|\w\)\@<!<<[-~]\=\zs\%(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)+ end=+$+ oneline contains=ALLBUT,@rubyNotTop
+syn region rubyHeredocStart matchgroup=rubyHeredocDelimiter start=+\%(\%(class\|::\|\.\@1<!\.\)\_s*\|\%([]})"'`]\)\s\|\w\)\@<!<<[-~]\=\zs"\%([^"]*\)"+					   end=+$+ oneline contains=ALLBUT,@rubyNotTop
+syn region rubyHeredocStart matchgroup=rubyHeredocDelimiter start=+\%(\%(class\|::\|\.\@1<!\.\)\_s*\|\%([]})"'`]\)\s\|\w\)\@<!<<[-~]\=\zs'\%([^']*\)'+					   end=+$+ oneline contains=ALLBUT,@rubyNotTop
+syn region rubyHeredocStart matchgroup=rubyHeredocDelimiter start=+\%(\%(class\|::\|\.\@1<!\.\)\_s*\|\%([]})"'`]\)\s\|\w\)\@<!<<[-~]\=\zs`\%([^`]*\)`+					   end=+$+ oneline contains=ALLBUT,@rubyNotTop
 
-SynFold '<<' syn region rubyString start=+\%(\%(class\|::\|\.\@1<!\.\)\_s*\|\%([]})"']\)\s\|\w\)\@<!<<\z(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+2   matchgroup=rubyHeredocDelimiter end=+^\z1$+	contains=rubyHeredocStart,@rubyStringSpecial keepend
-SynFold '<<' syn region rubyString start=+\%(\%(class\|::\|\.\@1<!\.\)\_s*\|\%([]})"']\)\s\|\w\)\@<!<<"\z([^"]*\)"\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+2					      matchgroup=rubyHeredocDelimiter end=+^\z1$+	contains=rubyHeredocStart,@rubyStringSpecial keepend
-SynFold '<<' syn region rubyString start=+\%(\%(class\|::\|\.\@1<!\.\)\_s*\|\%([]})"']\)\s\|\w\)\@<!<<'\z([^']*\)'\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+2					      matchgroup=rubyHeredocDelimiter end=+^\z1$+	contains=rubyHeredocStart		     keepend
-SynFold '<<' syn region rubyString start=+\%(\%(class\|::\|\.\@1<!\.\)\_s*\|\%([]})"']\)\s\|\w\)\@<!<<`\z([^`]*\)`\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+2					      matchgroup=rubyHeredocDelimiter end=+^\z1$+	contains=rubyHeredocStart,@rubyStringSpecial keepend
+SynFold '<<' syn region rubyString start=+\%(\%(class\|::\|\.\@1<!\.\)\_s*\|\%([]})"'`]\)\s\|\w\)\@<!<<\z(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+2  matchgroup=rubyHeredocDelimiter end=+^\z1$+	contains=rubyHeredocStart,@rubyStringSpecial keepend
+SynFold '<<' syn region rubyString start=+\%(\%(class\|::\|\.\@1<!\.\)\_s*\|\%([]})"'`]\)\s\|\w\)\@<!<<"\z([^"]*\)"\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+2				      matchgroup=rubyHeredocDelimiter end=+^\z1$+	contains=rubyHeredocStart,@rubyStringSpecial keepend
+SynFold '<<' syn region rubyString start=+\%(\%(class\|::\|\.\@1<!\.\)\_s*\|\%([]})"'`]\)\s\|\w\)\@<!<<'\z([^']*\)'\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+2				      matchgroup=rubyHeredocDelimiter end=+^\z1$+	contains=rubyHeredocStart		     keepend
+SynFold '<<' syn region rubyString start=+\%(\%(class\|::\|\.\@1<!\.\)\_s*\|\%([]})"'`]\)\s\|\w\)\@<!<<`\z([^`]*\)`\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+2				      matchgroup=rubyHeredocDelimiter end=+^\z1$+	contains=rubyHeredocStart,@rubyStringSpecial keepend
 
 SynFold '<<' syn region rubyString start=+\%(\%(class\|::\|\.\@1<!\.\)\_s*\|\%([]})]\)\s\|\w\)\@<!<<[-~]\z(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+3 matchgroup=rubyHeredocDelimiter end=+^\s*\zs\z1$+ contains=rubyHeredocStart,@rubyStringSpecial keepend
 SynFold '<<' syn region rubyString start=+\%(\%(class\|::\|\.\@1<!\.\)\_s*\|\%([]})]\)\s\|\w\)\@<!<<[-~]"\z([^"]*\)"\ze\%(.*<<[-~]\=['`"]\=\h\)\@!+hs=s+3				      matchgroup=rubyHeredocDelimiter end=+^\s*\zs\z1$+ contains=rubyHeredocStart,@rubyStringSpecial keepend
