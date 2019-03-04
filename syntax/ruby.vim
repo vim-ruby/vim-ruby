@@ -190,7 +190,7 @@ syn match rubyPredefinedVariable "$_\>"										    display
 syn match rubyPredefinedVariable "$-[0FIWadilpvw]\>"								    display
 syn match rubyPredefinedVariable "$\%(stderr\|stdin\|stdout\)\>"						    display
 syn match rubyPredefinedVariable "$\%(DEBUG\|FILENAME\|LOADED_FEATURES\|LOAD_PATH\|PROGRAM_NAME\|SAFE\|VERBOSE\)\>" display
-syn match rubyPredefinedConstant "\%(\%(^\|[^.]\)\.\s*\)\@<!\<\%(ARGF\|ARGV\|ENV\|DATA\|FALSE\|NIL\|STDERR\|STDIN\|STDOUT\|TOPLEVEL_BINDING\|TRUE\)\>\%(\s*(\)\@!"
+syn match rubyPredefinedConstant "\%(\%(^\|[^.]\)\.\s*\)\@<!\<\%(ARGF\|ARGV\|ENV\|DATA\|STDERR\|STDIN\|STDOUT\|TOPLEVEL_BINDING\)\>\%(\s*(\)\@!"
 syn match rubyPredefinedConstant "\%(\%(^\|[^.]\)\.\s*\)\@<!\<\%(RUBY_\%(VERSION\|RELEASE_DATE\|PLATFORM\|PATCHLEVEL\|REVISION\|DESCRIPTION\|COPYRIGHT\|ENGINE\)\)\>\%(\s*(\)\@!"
 
 " Deprecated/removed in 1.9
@@ -198,6 +198,8 @@ syn match rubyPredefinedVariable "$="
 syn match rubyPredefinedVariable "$-K\>"		  display
 syn match rubyPredefinedVariable "$\%(deferr\|defout\)\>" display
 syn match rubyPredefinedVariable "$KCODE\>"		  display
+" Deprecated/removed in 2.4
+syn match rubyPredefinedConstant "\%(\%(^\|[^.]\)\.\s*\)\@<!\<\%(FALSE\|NIL\|TRUE\)\>\%(\s*(\)\@!"
 
 syn cluster rubyGlobalVariable contains=rubyGlobalVariable,rubyPredefinedVariable,rubyGlobalVariableError
 
