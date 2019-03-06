@@ -79,7 +79,7 @@ endif
 
 " Operators {{{1
 if exists("ruby_operators")
-  syn match  rubyDotOperator	    "\.\|&\." containedin=rubyKeywordAsMethod
+  syn match  rubyDotOperator	    "\.\|&\."
   syn match  rubyTernaryOperator    "\%(\w\|[^\x00-\x7F]\)\@1<!?\|:"
   syn match  rubyArithmeticOperator "\*\*\|[*/%+]\|->\@!"
   syn match  rubyComparisonOperator "<=>\|<=\|\%(<\|\<class\s\+\u\w*\s*\)\@<!<<\@!\|>=\|[-=]\@1<!>"
@@ -433,8 +433,8 @@ syn match rubyUselessLineContinuation "\\$"								      nextgroup=rubyUselessLi
 
 " Keyword Nobbling {{{1
 " prevent methods with keyword names (and possible ?! suffixes) being highlighted as keywords when called
-syn match rubyKeywordAsMethod "\%(\%(\.\@1<!\.\)\|::\)\_s*\%([_[:lower:]][_[:alnum:]]*\|\%(BEGIN\|END\)\>\)" transparent contains=NONE
-syn match rubyKeywordAsMethod "\<[_[:lower:]][_[:alnum:]]*[?!]"						     transparent contains=NONE
+syn match rubyKeywordAsMethod "\%(\%(\.\@1<!\.\)\|&\.\|::\)\_s*\%([_[:lower:]][_[:alnum:]]*\|\%(BEGIN\|END\)\>\)" transparent contains=rubyDotOperator,rubyScopeOperator
+syn match rubyKeywordAsMethod "\<[_[:lower:]][_[:alnum:]]*[?!]"							  transparent contains=NONE
 
 " Bang/Predicate Special Methods and Operators {{{1
 if !exists("ruby_no_special_methods")
