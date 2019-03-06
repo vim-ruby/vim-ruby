@@ -100,10 +100,10 @@ syn match  rubyInterpolation	      "#\$\%(-\w\|[!$&"'*+,./0:;<>?@\`~_]\|\w\+\)" 
 syn match  rubyInterpolation	      "#@@\=\w\+"				   display contained contains=rubyInterpolationDelimiter,rubyInstanceVariable,rubyClassVariable
 syn match  rubyInterpolationDelimiter "#\ze[$@]"				   display contained
 
-syn match rubyStringEscape "\\\_."											    contained display
-syn match rubyStringEscape "\\\o\{1,3}\|\\x\x\{1,2}"									    contained display
-syn match rubyStringEscape "\\u\%(\x\{4}\|{\x\{1,6}\%(\s\+\x\{1,6}\)*}\)"						    contained display
-syn match rubyStringEscape "\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)" contained display
+syn match rubyStringEscape "\\\_."											   contained display
+syn match rubyStringEscape "\\\o\{1,3}\|\\x\x\{1,2}"									   contained display
+syn match rubyStringEscape "\\u\%(\x\{4}\|{\x\{1,6}\%(\s\+\x\{1,6}\)*}\)"						   contained display
+syn match rubyStringEscape "\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=.\)" contained display
 
 syn match rubyBackslashEscape "\\\\" contained display
 syn match rubyQuoteEscape     "\\'"  contained display
@@ -216,7 +216,7 @@ SynFold '%' syn region rubyRegexp matchgroup=rubyPercentRegexpDelimiter start="%
 SynFold '%' syn region rubyRegexp matchgroup=rubyPercentRegexpDelimiter start="%r\z(\s\)"			   end="\z1[iomxneus]*" skip="\\\\\|\\\z1" contains=@rubyRegexpSpecial
 
 " Characters {{{1
-syn match rubyCharacter "\%(\w\|[^\x00-\x7F]\|[]})\"'/]\)\@1<!\%(?\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\=\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)\)"
+syn match rubyCharacter "\%(\w\|[^\x00-\x7F]\|[]})\"'/]\)\@1<!\%(?\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\=\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\[[:space:]]\|\\\=[^[:space:]]\)\)"
 syn match rubyCharacter "\%(\w\|[^\x00-\x7F]\|[]})\"'/]\)\@1<!?\\u\%(\x\{4}\|{\x\{1,6}}\)"
 
 " Normal Strings {{{1
