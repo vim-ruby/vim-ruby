@@ -89,7 +89,7 @@ if exists("ruby_operators")
   syn match  rubyAssignmentOperator "=>\@!\|-=\|/=\|\*\*=\|\*=\|&&=\|&=\|||=\||=\|%=\|+=\|>>=\|<<=\|\^="
   syn match  rubyEqualityOperator   "===\|==\|!=\|!\~\|=\~"
   syn match  rubyScopeOperator	    "::"
-  syn region rubyBracketOperator    matchgroup=rubyOperator start="\%(\%(\w\|[^\x00-\x7F]\)[?!]\=\|[]})]\)\@2<=\[\s*" end="\s*]" contains=ALLBUT,@rubyNotTop
+  syn region rubyBracketOperator    matchgroup=rubyOperator start="\%(\%(\w\|[^\x00-\x7F]\)[?!]\=\|[]})]\)\@2<=\[" end="]" contains=ALLBUT,@rubyNotTop
 
   syn cluster rubyOperator contains=ruby.*Operator
 endif
@@ -358,8 +358,8 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   SynFold 'do' syn region rubyDoBlock matchgroup=rubyControl start="\<do\>" end="\<end\>" contains=ALLBUT,@rubyNotTop
 
   " curly bracket block or hash literal
-  SynFold '{' syn region rubyCurlyBlock   matchgroup=rubyCurlyBlockDelimiter start="{"			   end="}" contains=ALLBUT,@rubyNotTop
-  SynFold '[' syn region rubyArrayLiteral matchgroup=rubyArrayDelimiter      start="\%(\w\|[^\x00-\x7F]\|[\]})]\)\@<!\[" end="]" contains=ALLBUT,@rubyNotTop
+  SynFold '{' syn region rubyCurlyBlock   matchgroup=rubyCurlyBlockDelimiter start="{"						    end="}" contains=ALLBUT,@rubyNotTop
+  SynFold '[' syn region rubyArrayLiteral matchgroup=rubyArrayDelimiter      start="\%(\%(\w\|[^\x00-\x7F]\)[?!]\=\|[]})]\)\@2<!\[" end="]" contains=ALLBUT,@rubyNotTop
 
   " statements without 'do'
   SynFold 'begin' syn region rubyBlockExpression matchgroup=rubyControl     start="\<begin\>" end="\<end\>" contains=ALLBUT,@rubyNotTop
