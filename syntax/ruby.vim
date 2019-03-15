@@ -156,7 +156,6 @@ syn match rubyFloat   "\%(\%(\w\|[^\x00-\x7F]\|[]})\"']\s*\)\@<!-\)\=\<\%(0\|[1-
 syn match rubyFloat   "\%(\%(\w\|[^\x00-\x7F]\|[]})\"']\s*\)\@<!-\)\=\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\%(\.\d\+\%(_\d\+\)*\)\=\%([eE][-+]\=\d\+\%(_\d\+\)*\)i\=\>" display
 
 " Identifiers {{{1
-syn match rubyLocalVariableOrMethod "\<[_[:lower:]][_[:alnum:]]*[?!]\=" contains=NONE display transparent
 syn match rubyBlockArgument	    "&[_[:lower:]][_[:alnum:]]"		 contains=NONE display transparent
 
 syn match rubyClassName	       "\%(\%(^\|[^.]\)\.\s*\)\@<!\<[[:upper:]]\%(\w\|[^\x00-\x7F]\)*\>\%(\s*(\)\@!" contained
@@ -432,11 +431,12 @@ syn match rubyUselessLineContinuation "\%([.:,;{([<>~\*%&^|+=-]\|%(\%(\w\|[^\x00
 syn match rubyUselessLineContinuation "\\$"								      nextgroup=rubyUselessLineContinuation skipwhite skipempty contained
 
 " Keyword Nobbling {{{1
-" prevent methods with keyword names (and possible ?! suffixes) being highlighted as keywords when called
+" prevent methods with keyword names being highlighted as keywords when called
 syn match rubyKeywordAsMethod "\%(\%(\.\@1<!\.\)\|&\.\|::\)\_s*\%([_[:lower:]][_[:alnum:]]*\|\%(BEGIN\|END\)\>\)" transparent contains=rubyDotOperator,rubyScopeOperator
-syn match rubyKeywordAsMethod "\<[_[:lower:]][_[:alnum:]]*[?!]"							  transparent contains=NONE
 
-" Bang/Predicate Special Methods and Operators {{{1
+" Bang and Predicate Methods and Operators {{{1
+syn match rubyBangPredicateMethod "\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[?!]"
+
 if !exists("ruby_no_special_methods")
   syn match rubyControl "\<exit!" display
 endif
@@ -507,7 +507,7 @@ hi def link rubyScopeOperator		Operator
 hi def link rubyBeginEnd		Statement
 hi def link rubyEval			Statement
 hi def link rubyPseudoVariable		Constant
-hi def link rubyCapitalizedMethod	rubyLocalVariableOrMethod
+hi def link rubyCapitalizedMethod	NONE
 
 hi def link rubyComment			Comment
 hi def link rubyEncoding		Constant
