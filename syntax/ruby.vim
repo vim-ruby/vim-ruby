@@ -65,7 +65,7 @@ endfunction
 com! -nargs=* SynFold call s:run_syntax_fold(<q-args>)
 
 " Not-Top Cluster {{{1
-syn cluster rubyNotTop contains=@rubyCommentNotTop,@rubyStringNotTop,@rubyRegexpSpecial,@rubyDeclaration,@rubyExceptionHandler,rubyConditional,rubyModuleName,rubyClassName,rubySymbolDelimiter
+syn cluster rubyNotTop contains=@rubyCommentNotTop,@rubyStringNotTop,@rubyRegexpSpecial,@rubyDeclaration,@rubyExceptionHandler,@rubyClassOperator,rubyConditional,rubyModuleName,rubyClassName,rubySymbolDelimiter
 
 " Whitespace Errors {{{1
 if exists("ruby_space_errors")
@@ -78,20 +78,34 @@ if exists("ruby_space_errors")
 endif
 
 " Operators {{{1
-if exists("ruby_operators")
-  syn match  rubyDotOperator	    "\.\|&\."
-  syn match  rubyTernaryOperator    "\%(\w\|[^\x00-\x7F]\)\@1<!?\|:"
-  syn match  rubyArithmeticOperator "\*\*\|[*/%+]\|->\@!"
-  syn match  rubyComparisonOperator "<=>\|<=\|\%(<\|\<class\s\+\u\w*\s*\)\@<!<<\@!\|>=\|[-=]\@1<!>"
-  syn match  rubyBitwiseOperator    "[~^|]\|&\.\@!\|\%(class\s*\)\@<!<<\|>>"
-  syn match  rubyBooleanOperator    "\%(\w\|[^\x00-\x7F]\)\@1<!!\|&&\|||"
-  syn match  rubyRangeOperator	    "\.\.\.\="
-  syn match  rubyAssignmentOperator "=>\@!\|-=\|/=\|\*\*=\|\*=\|&&=\|&=\|||=\||=\|%=\|+=\|>>=\|<<=\|\^="
-  syn match  rubyEqualityOperator   "===\|==\|!=\|!\~\|=\~"
-  syn match  rubyScopeOperator	    "::"
-  syn region rubyBracketOperator    matchgroup=rubyOperator start="\%(\%(\w\|[^\x00-\x7F]\)[?!]\=\|[]})]\)\@2<=\[" end="]" contains=ALLBUT,@rubyNotTop
+if exists("ruby_operators") || exists("ruby_pseudo_operators")
+  syn match rubyDotOperator	   "\.\|&\."
 
-  syn cluster rubyOperator contains=ruby.*Operator
+  syn match rubyTernaryOperator    "\%(\w\|[^\x00-\x7F]\)\@1<!?\|:"
+  syn match rubyArithmeticOperator "\*\*\|[*/%+]\|->\@!"
+  syn match rubyComparisonOperator "<=>\|<=\|<\|>=\|[-=]\@1<!>"
+  syn match rubyBitwiseOperator    "[~^|]\|&\.\@!\|<<\|>>"
+  syn match rubyBooleanOperator    "\%(\w\|[^\x00-\x7F]\)\@1<!!\|&&\|||"
+  syn match rubyRangeOperator	   "\.\.\.\="
+  syn match rubyAssignmentOperator "=>\@!\|-=\|/=\|\*\*=\|\*=\|&&=\|&=\|||=\||=\|%=\|+=\|>>=\|<<=\|\^="
+  syn match rubyEqualityOperator   "===\|==\|!=\|!\~\|=\~"
+
+  syn region rubyBracketOperator matchgroup=rubyOperator start="\%(\%(\w\|[^\x00-\x7F]\)[?!]\=\|[]})]\)\@2<=\[" end="]" contains=ALLBUT,@rubyNotTop
+
+  syn match rubyScopeOperator	    "::"
+  syn match rubySuperClassOperator  "<"	 contained
+  syn match rubyEigenClassOperator  "<<" contained
+  syn match rubyLambdaOperator	    "->"
+  syn match rubySplatOperator	    "\%([[{(|,=]\_s*\)\@<=\*"
+  syn match rubySplatOperator	    "\%(^\|\s\)\@1<=\*\%(\h\|[^\x00-\x7F]\|[:$@[]\)\@="
+  syn match rubyDoubleSplatOperator "\%([{(|,]\_s*\)\@<=\*\*"
+  syn match rubyDoubleSplatOperator "\s\@1<=\*\*\%(\h\|[^\x00-\x7F]\|[:$@{]\)\@="
+  syn match rubyProcOperator	    "\%([[(|,]\_s*\)\@<=&"
+  syn match rubyProcOperator	    "\s\@1<=&\%(\h\|[^\x00-\x7F]\|[:$@]\|->\)\@="
+
+  syn cluster rubyClassOperator  contains=rubyEigenClassOperator,rubySuperClassOperator
+  syn cluster rubyPseudoOperator contains=rubyDotOperator,rubyScopeOperator,rubyEigenClassOperator,rubySuperClassOperator,rubyLambdaOperator,rubySplatOperator,rubyDoubleSplatOperator,rubyProcOperator
+  syn cluster rubyOperator	 contains=ruby.*Operator
 endif
 
 " String Interpolation and Backslash Notation {{{1
@@ -156,8 +170,6 @@ syn match rubyFloat   "\%(\%(\w\|[^\x00-\x7F]\|[]})\"']\s*\)\@<!-\)\=\<\%(0\|[1-
 syn match rubyFloat   "\%(\%(\w\|[^\x00-\x7F]\|[]})\"']\s*\)\@<!-\)\=\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\%(\.\d\+\%(_\d\+\)*\)\=\%([eE][-+]\=\d\+\%(_\d\+\)*\)i\=\>" display
 
 " Identifiers {{{1
-syn match rubyBlockArgument	    "&[_[:lower:]][_[:alnum:]]"		 contains=NONE display transparent
-
 syn match rubyClassName	       "\%(\%(^\|[^.]\)\.\s*\)\@<!\<[[:upper:]]\%(\w\|[^\x00-\x7F]\)*\>\%(\s*(\)\@!" contained
 syn match rubyModuleName       "\%(\%(^\|[^.]\)\.\s*\)\@<!\<[[:upper:]]\%(\w\|[^\x00-\x7F]\)*\>\%(\s*(\)\@!" contained
 syn match rubyConstant	       "\%(\%(^\|[^.]\)\.\s*\)\@<!\<[[:upper:]]\%(\w\|[^\x00-\x7F]\)*\>\%(\s*(\)\@!"
@@ -176,7 +188,7 @@ SynFold ':' syn region rubySymbol matchgroup=rubySymbolDelimiter start="[]})\"':
 syn match rubyCapitalizedMethod "\%(\%(^\|[^.]\)\.\s*\)\@<!\<\u\%(\w\|[^\x00-\x7F]\)*\>\%(\s*(\)\@="
 
 syn match  rubyBlockParameter	  "\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*" contained
-syn region rubyBlockParameterList start="\%(\%(\<do\>\|{\)\_s*\)\@32<=|" end="|" oneline display contains=rubyBlockParameter
+syn region rubyBlockParameterList start="\%(\%(\<do\>\|{\)\_s*\)\@32<=|" end="|" oneline display contains=rubyBlockParameter,rubySplatOperator,rubyDoubleSplatOperator,rubyProcOperator
 
 if exists('ruby_global_variable_error')
   syn match rubyGlobalVariableError "$[^A-Za-z_]"	display
@@ -313,8 +325,8 @@ SynFold '<<' syn region rubyString start=+\%(\%(class\|::\|\.\@1<!\.\)\_s*\|\%([
 syn match rubyAliasDeclaration	"[^[:space:];#.()]\+" contained contains=rubySymbol,@rubyGlobalVariable nextgroup=rubyAliasDeclaration2 skipwhite
 syn match rubyAliasDeclaration2 "[^[:space:];#.()]\+" contained contains=rubySymbol,@rubyGlobalVariable
 syn match rubyMethodDeclaration "[^[:space:];#(]\+"   contained contains=rubyConstant,rubyBoolean,rubyPseudoVariable,rubyInstanceVariable,rubyClassVariable,rubyGlobalVariable
-syn match rubyClassDeclaration	"[^[:space:];#<]\+"   contained contains=rubyClassName,rubyOperator
-syn match rubyModuleDeclaration "[^[:space:];#<]\+"   contained contains=rubyModuleName,rubyOperator
+syn match rubyClassDeclaration	"[^[:space:];#<]\+"   contained contains=rubyClassName,rubyScopeOperator nextgroup=rubySuperClassOperator skipwhite skipnl
+syn match rubyModuleDeclaration "[^[:space:];#<]\+"   contained contains=rubyModuleName,rubyScopeOperator
 
 syn match rubyMethodName "\<\%([_[:alpha:]]\|[^\x00-\x7F]\)\%([_[:alnum:]]\|[^\x00-\x7F]\)*[?!=]\=\%([[:alnum:]_.:?!=]\|[^\x00-\x7F]\)\@!"					contained containedin=rubyMethodDeclaration
 syn match rubyMethodName "\%(\s\|^\)\@1<=\%([_[:alpha:]]\|[^\x00-\x7F]\)\%([_[:alnum:]]\|[^\x00-\x7F]\)*[?!=]\=\%(\s\|$\)\@="							contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2
@@ -336,11 +348,11 @@ syn match rubyBeginEnd	     "\<\%(BEGIN\|END\)\>"
 " Match 'end' with the appropriate opening keyword for syntax based folding
 " and special highlighting of module/class/method definitions
 if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
-  syn match rubyDefine "\<alias\>"  nextgroup=rubyAliasDeclaration  skipwhite skipnl
-  syn match rubyDefine "\<def\>"    nextgroup=rubyMethodDeclaration skipwhite skipnl
-  syn match rubyDefine "\<undef\>"  nextgroup=rubyMethodName	    skipwhite skipnl
-  syn match rubyClass  "\<class\>"  nextgroup=rubyClassDeclaration  skipwhite skipnl
-  syn match rubyModule "\<module\>" nextgroup=rubyModuleDeclaration skipwhite skipnl
+  syn match rubyDefine "\<alias\>"  nextgroup=rubyAliasDeclaration			  skipwhite skipnl
+  syn match rubyDefine "\<def\>"    nextgroup=rubyMethodDeclaration			  skipwhite skipnl
+  syn match rubyDefine "\<undef\>"  nextgroup=rubyMethodName				  skipwhite skipnl
+  syn match rubyClass  "\<class\>"  nextgroup=rubyClassDeclaration,rubyEigenClassOperator skipwhite skipnl
+  syn match rubyModule "\<module\>" nextgroup=rubyModuleDeclaration			  skipwhite skipnl
 
   SynFold 'def'    syn region rubyMethodBlock start="\<def\>"	 matchgroup=rubyDefine end="\%(\<def\_s\+\)\@<!\<end\>" contains=ALLBUT,@rubyNotTop
   SynFold 'class'  syn region rubyClassBlock  start="\<class\>"  matchgroup=rubyClass  end="\<end\>"			contains=ALLBUT,@rubyNotTop
@@ -493,16 +505,27 @@ hi def link rubySymbol			Constant
 hi def link rubyKeyword			Keyword
 
 hi def link rubyOperator		Operator
-hi def link rubyDotOperator		Operator
-hi def link rubyTernaryOperator		Operator
-hi def link rubyArithmeticOperator	Operator
-hi def link rubyComparisonOperator	Operator
-hi def link rubyBitwiseOperator		Operator
-hi def link rubyBooleanOperator		Operator
-hi def link rubyRangeOperator		Operator
-hi def link rubyAssignmentOperator	Operator
-hi def link rubyEqualityOperator	Operator
-hi def link rubyScopeOperator		Operator
+if exists("ruby_operators")
+  hi def link rubyTernaryOperator	Operator
+  hi def link rubyArithmeticOperator	Operator
+  hi def link rubyComparisonOperator	Operator
+  hi def link rubyBitwiseOperator	Operator
+  hi def link rubyBooleanOperator	Operator
+  hi def link rubyRangeOperator		Operator
+  hi def link rubyAssignmentOperator	Operator
+  hi def link rubyEqualityOperator	Operator
+endif
+
+if exists("ruby_pseudo_operators")
+  hi def link rubyDotOperator		Special
+  hi def link rubyScopeOperator		Special
+  hi def link rubySuperClassOperator	Special
+  hi def link rubyEigenClassOperator	Special
+  hi def link rubyLambdaOperator	Special
+  hi def link rubyDoubleSplatOperator	Special
+  hi def link rubySplatOperator		Special
+  hi def link rubyProcOperator		Special
+endif
 
 hi def link rubyBeginEnd		Statement
 hi def link rubyEval			Statement

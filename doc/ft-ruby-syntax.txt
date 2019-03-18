@@ -10,10 +10,13 @@ RUBY						*ruby.vim* *ft-ruby-syntax*
 						*ruby_operators*
  Ruby: Operator highlighting ~
 
-Operators can be highlighted by defining "ruby_operators": >
+Operators, and pseudo operators, can be highlighted by defining: >
 
-	:let ruby_operators = 1
+	:let ruby_operators        = 1
+	:let ruby_pseudo_operators = 1
 <
+The supported pseudo operators are ., &., ::, *, **, &, <, << and ->.
+
 						*ruby_space_errors*
  Ruby: Whitespace errors ~
 

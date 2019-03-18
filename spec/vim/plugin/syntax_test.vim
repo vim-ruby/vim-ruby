@@ -8,6 +8,7 @@ endfunction
 function! TestSyntax(pattern, group) abort
   let pattern = '\C' . a:pattern
   call cursor(1, 1)
+  redraw
   let start_match = search(pattern, 'c') && s:CursorHasGroup(a:group)
   if s:debug
     redraw | sleep 500m
