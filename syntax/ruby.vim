@@ -360,6 +360,7 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   " curly bracket block or hash literal
   SynFold '{' syn region rubyCurlyBlock   matchgroup=rubyCurlyBlockDelimiter start="{"						    end="}" contains=ALLBUT,@rubyNotTop
   SynFold '[' syn region rubyArrayLiteral matchgroup=rubyArrayDelimiter      start="\%(\%(\w\|[^\x00-\x7F]\)[?!]\=\|[]})]\)\@2<!\[" end="]" contains=ALLBUT,@rubyNotTop
+  SynFold '(' syn region rubyParenthesedExpression matchgroup=rubyParens     start="("						    end=")" contains=ALLBUT,@rubyNotTop
 
   " statements without 'do'
   SynFold 'begin' syn region rubyBlockExpression matchgroup=rubyControl     start="\<begin\>" end="\<end\>" contains=ALLBUT,@rubyNotTop
@@ -446,7 +447,6 @@ syn match rubyOperator "\<defined?" display
 syn match rubySymbol "\%([{(,]\_s*\)\@<=\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[?!=]\=::\@!"he=e-1
 syn match rubySymbol "[]})\"':]\@1<!\<\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[!?]\=:[[:space:],]\@="he=e-1
 syn match rubySymbol "\%([{(,]\_s*\)\@<=[[:space:],{]\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[?!=]\=::\@!"hs=s+1,he=e-1
-syn match rubySymbol "[[:space:],{(]\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[!?]\=:[[:space:],]\@="hs=s+1,he=e-1
 
 " __END__ Directive {{{1
 SynFold '__END__' syn region rubyData matchgroup=rubyDataDirective start="^__END__$" end="\%$"
