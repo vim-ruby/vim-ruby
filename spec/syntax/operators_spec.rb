@@ -8,6 +8,12 @@ describe "Syntax highlighting" do
     vim.command 'unlet g:ruby_operators'
   end
 
+  specify "modulo-assignment operators" do
+    assert_correct_highlighting(<<~'EOF', '%=', 'rubyAssignmentOperator')
+      foo %= bar
+    EOF
+  end
+
   specify "ternary operators" do
     str = <<~'EOF'
       foo = bar ? 4 : 2

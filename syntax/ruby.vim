@@ -290,9 +290,9 @@ SynFold '%' syn region rubySymbol matchgroup=rubyPercentSymbolDelimiter start="%
 SynFold '%' syn region rubySymbol matchgroup=rubyPercentSymbolDelimiter start="%i("	  end=")"   skip="\\\\\|\\)"   contains=rubyBackslashEscape,rubySpaceEscape,rubyParenthesisEscape,rubyNestedParentheses
 
 " Generalized Double Quoted Strings, Array of Strings, Array of Symbols and Shell Command Output {{{1
-" Note: %= is not matched here as the beginning of a double quoted string
+SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="\%(\%(\w\|[^\x00-\x7F]\|]\)\s*\)\@<!%=" end="="	 skip="\\\\\|\\="   contains=@rubyStringSpecial nextgroup=@rubyModifier skipwhite
 SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="%\z([~`!@#$%^&*_\-+|\:;"',.?/]\)"       end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial nextgroup=@rubyModifier skipwhite
-SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="%[QWx]\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial
+SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="%[QWx]\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1" contains=@rubyStringSpecial nextgroup=@rubyModifier skipwhite
 SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="%[QWx]\={"			       end="}"	 skip="\\\\\|\\}"   contains=@rubyStringSpecial,rubyNestedCurlyBraces
 SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="%[QWx]\=<"			       end=">"	 skip="\\\\\|\\>"   contains=@rubyStringSpecial,rubyNestedAngleBrackets
 SynFold '%' syn region rubyString matchgroup=rubyPercentStringDelimiter start="%[QWx]\=\["			       end="\]"  skip="\\\\\|\\\]"  contains=@rubyStringSpecial,rubyNestedSquareBrackets
