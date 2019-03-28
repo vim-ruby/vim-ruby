@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "Syntax highlighting" do
   specify "only modifiers can appear after regexp literals" do
     # See issue #254
-    assert_correct_highlighting(<<~'EOF', 'if', 'rubyConditionalModifier')
+    assert_correct_highlighting <<~'EOF', 'if', 'rubyConditionalModifier'
       def get_regex
         /some regex/ if false
       end
@@ -25,7 +25,7 @@ describe "Syntax highlighting" do
       "Foo?   if true",
       "Foo!   if true"
     ].each do |s|
-      assert_correct_highlighting(s, 'if', 'rubyConditionalModifier')
+      assert_correct_highlighting s, 'if', 'rubyConditionalModifier'
     end
   end
 end

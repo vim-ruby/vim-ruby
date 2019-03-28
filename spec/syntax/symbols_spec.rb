@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "Syntax highlighting" do
   # See issue #356
   specify "hashes with symbol keys and values on different lines" do
-    assert_correct_highlighting(<<~'EOF', 'x', 'rubySymbol')
+    assert_correct_highlighting <<~'EOF', 'x', 'rubySymbol'
       h = {
         x:
           really_long_method_name,
@@ -16,10 +16,10 @@ describe "Syntax highlighting" do
   specify "1.9 style hash keys with keyword names" do
     str = '{ class: "hello", if: "world", def: "i am", include: "foo", case: "bar", end: "baz" }'
     %w[class if def include case end].each do |p|
-      assert_correct_highlighting(str, p, 'rubySymbol')
+      assert_correct_highlighting str, p, 'rubySymbol'
     end
 
-    assert_correct_highlighting(<<~'EOF', 'end', 'rubyDefine')
+    assert_correct_highlighting <<~'EOF', 'end', 'rubyDefine'
       def hello
         { if: "world" }
       end
@@ -28,8 +28,8 @@ describe "Syntax highlighting" do
 
   # See issue #144
   specify "1.9 style hash keys with keyword names in parameter lists" do
-    assert_correct_highlighting('{prepend: true}', 'prepend', 'rubySymbol')
-    assert_correct_highlighting(<<~'EOF', 'for', 'rubySymbol')
+    assert_correct_highlighting '{prepend: true}', 'prepend', 'rubySymbol'
+    assert_correct_highlighting <<~'EOF', 'for', 'rubySymbol'
       Subscription.generate(for: topic,
                             to:  subscriber)
     EOF
@@ -41,7 +41,7 @@ describe "Syntax highlighting" do
       validates_inclusion_of :gender, in: %w(male female), if: :gender_required?
     EOS
     [':\zsgender', 'in\ze:', 'if\ze:', ':\zsgender_required?'].each do |p|
-      assert_correct_highlighting(str, p, 'rubySymbol')
+      assert_correct_highlighting str, p, 'rubySymbol'
     end
   end
 end

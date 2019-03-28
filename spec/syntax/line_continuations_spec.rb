@@ -8,8 +8,8 @@ describe "Syntax highlighting" do
           42
         end
     EOF
-    assert_correct_highlighting(str, '\\', 'rubyUselessLineContinuation')
-    assert_correct_highlighting(str, 'if', 'rubyConditional')
+    assert_correct_highlighting str, '\\', 'rubyUselessLineContinuation'
+    assert_correct_highlighting str, 'if', 'rubyConditional'
   end
 
   specify "line continuations" do
@@ -17,7 +17,7 @@ describe "Syntax highlighting" do
       foo = 42 \
         if true
     EOF
-    assert_correct_highlighting(str, '\\', 'rubyLineContinuation')
-    assert_correct_highlighting(str, 'if', 'rubyConditionalModifier')
+    assert_correct_highlighting str, '\\', 'rubyLineContinuation'
+    assert_correct_highlighting str, 'if', 'rubyConditionalModifier'
   end
 end
