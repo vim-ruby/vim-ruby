@@ -78,6 +78,9 @@ if exists("ruby_space_errors")
 endif
 
 " Operators {{{1
+
+syn match rubyEnglishBooleanOperator "\<\%(and\|or\|not\)\>"
+
 if exists("ruby_operators") || exists("ruby_pseudo_operators")
   syn match rubyDotOperator	   "\.\|&\."
 
@@ -337,7 +340,8 @@ syn cluster rubyDeclaration contains=rubyAliasDeclaration,rubyAliasDeclaration2,
 " Keywords {{{1
 " Note: the following keywords have already been defined:
 " begin case class def do end for if module unless until while
-syn match rubyControl	     "\<\%(and\|break\|in\|next\|not\|or\|redo\|retry\|return\)\>"
+
+syn match rubyControl	     "\<\%(break\|in\|next\|redo\|retry\|return\)\>"
 syn match rubyKeyword	     "\<\%(super\|yield\)\>"
 syn match rubyBoolean	     "\<\%(true\|false\)\>[?!]\@!"
 syn match rubyPseudoVariable "\<\(self\|nil\)\>[?!]\@!"
@@ -452,7 +456,7 @@ syn match rubyBangPredicateMethod "\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[?
 if !exists("ruby_no_special_methods")
   syn match rubyControl "\<exit!" display
 endif
-syn match rubyOperator "\<defined?" display
+syn match rubyDefinedOperator "\<defined?" display
 
 " More Symbols {{{1
 syn match rubySymbol "\%([{(,]\_s*\)\@<=\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[?!=]\=::\@!"he=e-1
@@ -503,26 +507,29 @@ hi def link rubySymbol			Constant
 hi def link rubyKeyword			Keyword
 
 hi def link rubyOperator		Operator
+hi def link rubyDefinedOperator		rubyOperator
+hi def link rubyEnglishBooleanOperator	rubyOperator
 if exists("ruby_operators")
-  hi def link rubyTernaryOperator	Operator
-  hi def link rubyArithmeticOperator	Operator
-  hi def link rubyComparisonOperator	Operator
-  hi def link rubyBitwiseOperator	Operator
-  hi def link rubyBooleanOperator	Operator
-  hi def link rubyRangeOperator		Operator
-  hi def link rubyAssignmentOperator	Operator
-  hi def link rubyEqualityOperator	Operator
+  hi def link rubyTernaryOperator	rubyOperator
+  hi def link rubyArithmeticOperator	rubyOperator
+  hi def link rubyComparisonOperator	rubyOperator
+  hi def link rubyBitwiseOperator	rubyOperator
+  hi def link rubyBooleanOperator	rubyOperator
+  hi def link rubyRangeOperator		rubyOperator
+  hi def link rubyAssignmentOperator	rubyOperator
+  hi def link rubyEqualityOperator	rubyOperator
 endif
 
 if exists("ruby_pseudo_operators")
-  hi def link rubyDotOperator		Special
-  hi def link rubyScopeOperator		Special
-  hi def link rubySuperClassOperator	Special
-  hi def link rubyEigenClassOperator	Special
-  hi def link rubyLambdaOperator	Special
-  hi def link rubyDoubleSplatOperator	Special
-  hi def link rubySplatOperator		Special
-  hi def link rubyProcOperator		Special
+  hi def link rubyPseudoOperator	Special
+  hi def link rubyDotOperator		rubyPseudoOperator
+  hi def link rubyScopeOperator		rubyPseudoOperator
+  hi def link rubySuperClassOperator	rubyPseudoOperator
+  hi def link rubyEigenClassOperator	rubyPseudoOperator
+  hi def link rubyLambdaOperator	rubyPseudoOperator
+  hi def link rubyDoubleSplatOperator	rubyPseudoOperator
+  hi def link rubySplatOperator		rubyPseudoOperator
+  hi def link rubyProcOperator		rubyPseudoOperator
 endif
 
 hi def link rubyBeginEnd		Statement

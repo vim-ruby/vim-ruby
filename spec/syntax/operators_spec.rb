@@ -8,6 +8,21 @@ describe "Syntax highlighting" do
     vim.command 'unlet g:ruby_operators'
   end
 
+  specify "defined? operator" do
+    assert_correct_highlighting 'defined?', 'defined?', 'rubyDefinedOperator'
+  end
+
+  specify "English boolean operators" do
+    str = <<~'EOF'
+      not true
+      true and false
+      true or false
+    EOF
+    ['not', 'and', 'or'].each do |p|
+      assert_correct_highlighting str, p, 'rubyEnglishBooleanOperator'
+    end
+  end
+
   specify "modulo-assignment operators" do
     assert_correct_highlighting <<~'EOF', '%=', 'rubyAssignmentOperator'
       foo %= bar
