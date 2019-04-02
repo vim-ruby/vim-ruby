@@ -354,9 +354,9 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   syn match rubyClass  "\<class\>"  nextgroup=rubyClassDeclaration,rubyEigenClassOperator skipwhite skipnl
   syn match rubyModule "\<module\>" nextgroup=rubyModuleDeclaration			  skipwhite skipnl
 
-  SynFold 'def'    syn region rubyMethodBlock start="\<def\>"	 matchgroup=rubyDefine end="\%(\<def\_s\+\)\@<!\<end\>" contains=ALLBUT,@rubyNotTop
-  SynFold 'class'  syn region rubyClassBlock  start="\<class\>"  matchgroup=rubyClass  end="\<end\>"			contains=ALLBUT,@rubyNotTop
-  SynFold 'module' syn region rubyModuleBlock start="\<module\>" matchgroup=rubyModule end="\<end\>"			contains=ALLBUT,@rubyNotTop
+  SynFold 'def'    syn region rubyMethodBlock start="\<def\>"	 matchgroup=rubyDefine skip="\<end:\|\%(\<def\_s\+\)\@<=end\>" end="\<end\>" contains=ALLBUT,@rubyNotTop
+  SynFold 'class'  syn region rubyClassBlock  start="\<class\>"  matchgroup=rubyClass  skip="\<end:"			       end="\<end\>" contains=ALLBUT,@rubyNotTop
+  SynFold 'module' syn region rubyModuleBlock start="\<module\>" matchgroup=rubyModule skip="\<end:"			       end="\<end\>" contains=ALLBUT,@rubyNotTop
 
   " modifiers
   syn match rubyLineContinuation    "\\$" nextgroup=@rubyModifier skipwhite skipnl
@@ -366,17 +366,17 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
 
   syn cluster rubyModifier contains=rubyConditionalModifier,rubyRepeatModifier,rubyRescueModifier
 
-  SynFold 'do' syn region rubyDoBlock matchgroup=rubyControl start="\<do\>" end="\<end\>" contains=ALLBUT,@rubyNotTop
+  SynFold 'do' syn region rubyDoBlock matchgroup=rubyControl start="\<do\>" skip="\<end:" end="\<end\>" contains=ALLBUT,@rubyNotTop
 
   " curly bracket block or hash literal
   SynFold '{' syn region rubyCurlyBlock   matchgroup=rubyCurlyBlockDelimiter start="{"						    end="}" contains=ALLBUT,@rubyNotTop
   SynFold '[' syn region rubyArrayLiteral matchgroup=rubyArrayDelimiter      start="\%(\%(\w\|[^\x00-\x7F]\)[?!]\=\|[]})]\)\@2<!\[" end="]" contains=ALLBUT,@rubyNotTop
 
   " statements without 'do'
-  SynFold 'begin' syn region rubyBlockExpression matchgroup=rubyControl     start="\<begin\>" end="\<end\>" contains=ALLBUT,@rubyNotTop
-  SynFold 'case'  syn region rubyCaseExpression  matchgroup=rubyConditional start="\<case\>"  end="\<end\>" contains=ALLBUT,@rubyNotTop
+  SynFold 'begin' syn region rubyBlockExpression matchgroup=rubyControl     start="\<begin\>" skip="\<end:" end="\<end\>" contains=ALLBUT,@rubyNotTop
+  SynFold 'case'  syn region rubyCaseExpression  matchgroup=rubyConditional start="\<case\>"  skip="\<end:" end="\<end\>" contains=ALLBUT,@rubyNotTop
 
-  SynFold 'if' syn region rubyConditionalExpression matchgroup=rubyConditional start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+=-]\|\<then\s\|\%(\<\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)\@<![?!]\)\s*\)\@<=\%(if\|unless\)\>" end="\<end\>" contains=ALLBUT,@rubyNotTop
+  SynFold 'if' syn region rubyConditionalExpression matchgroup=rubyConditional start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+=-]\|\<then\s\|\%(\<\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)\@<![?!]\)\s*\)\@<=\%(if\|unless\)\>" skip="\<end:" end="\<end\>" contains=ALLBUT,@rubyNotTop
 
   syn match rubyConditional "\<\%(then\|else\|when\)\>"	 contained containedin=rubyCaseExpression
   syn match rubyConditional "\<\%(then\|else\|elsif\)\>" contained containedin=rubyConditionalExpression
@@ -388,7 +388,7 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   " statements with optional 'do'
   syn region rubyOptionalDoLine matchgroup=rubyRepeat start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+=-]\|\%(\<\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)\@<![!?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyOptionalDo end="\<do\>" end="\ze\%(;\|$\)" oneline contains=ALLBUT,@rubyNotTop
 
-  SynFold 'for' syn region rubyRepeatExpression start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+=-]\|\%(\<\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)\@<![!?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyRepeat end="\<end\>" contains=ALLBUT,@rubyNotTop nextgroup=rubyOptionalDoLine
+  SynFold 'for' syn region rubyRepeatExpression start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+=-]\|\%(\<\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)\@<![!?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyRepeat skip="\<end:" end="\<end\>" contains=ALLBUT,@rubyNotTop nextgroup=rubyOptionalDoLine
 
   if !exists("ruby_minlines")
     let ruby_minlines = 500
@@ -457,8 +457,6 @@ syn match rubyOperator "\<defined?" display
 " More Symbols {{{1
 syn match rubySymbol "\%([{(,]\_s*\)\@<=\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[?!=]\=::\@!"he=e-1
 syn match rubySymbol "[]})\"':]\@1<!\<\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[!?]\=:[[:space:],]\@="he=e-1
-syn match rubySymbol "\%([{(,]\_s*\)\@<=[[:space:],{]\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[?!=]\=::\@!"hs=s+1,he=e-1
-syn match rubySymbol "[[:space:],{(]\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[!?]\=:[[:space:],]\@="hs=s+1,he=e-1
 
 " __END__ Directive {{{1
 SynFold '__END__' syn region rubyData matchgroup=rubyDataDirective start="^__END__$" end="\%$"
