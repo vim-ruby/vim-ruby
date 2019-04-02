@@ -22,4 +22,11 @@ describe "Syntax highlighting" do
       end
     EOF
   end
+
+  specify "method parameters with symbol default values" do
+    assert_correct_highlighting <<~'EOF', ':baz', 'rubySymbol'
+      def foo bar=:baz
+      end
+    EOF
+  end
 end

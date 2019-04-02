@@ -459,7 +459,7 @@ endif
 syn match rubyDefinedOperator "\<defined?" display
 
 " More Symbols {{{1
-syn match rubySymbol "\%([{(,]\_s*\)\@<=\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[?!=]\=::\@!"he=e-1
+syn match rubySymbol "\%([{(,]\_s*\)\@<=\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[?!]\=::\@!"he=e-1
 syn match rubySymbol "[]})\"':]\@1<!\<\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[!?]\=:[[:space:],]\@="he=e-1
 
 " __END__ Directive {{{1
