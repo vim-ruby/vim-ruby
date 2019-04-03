@@ -389,8 +389,8 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   syn match rubyConditional "\<\%(then\|else\|elsif\)\>" contained containedin=rubyConditionalExpression
 
   syn match   rubyExceptionHandler  "\<\%(\%(\%(;\|^\)\s*\)\@<=rescue\|else\|ensure\)\>" contained containedin=rubyBlockExpression,rubyDoBlock
-  syn match   rubyExceptionHandler1 "\<\%(\%(\%(;\|^\)\s*\)\@<=rescue\|else\|ensure\)\>" contained containedin=rubyModuleBlock,rubyClassBlock,rubyMethodBlock
-  syn cluster rubyExceptionHandler  contains=rubyExceptionHandler,rubyExceptionHandler1
+  syn match   rubyExceptionHandler2 "\<\%(\%(\%(;\|^\)\s*\)\@<=rescue\|else\|ensure\)\>" contained containedin=rubyModuleBlock,rubyClassBlock,rubyMethodBlock
+  syn cluster rubyExceptionHandler  contains=rubyExceptionHandler,rubyExceptionHandler2
 
   " statements with optional 'do'
   syn region rubyOptionalDoLine matchgroup=rubyRepeat start="\<for\>" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+=-]\|\%(\<\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)\@<![!?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyOptionalDo end="\<do\>" end="\ze\%(;\|$\)" oneline contains=ALLBUT,@rubyNotTop
@@ -471,7 +471,7 @@ SynFold '__END__' syn region rubyData matchgroup=rubyDataDirective start="^__END
 " Default Highlighting {{{1
 hi def link rubyClass			rubyDefine
 hi def link rubyModule			rubyDefine
-hi def link rubyExceptionHandler1	rubyDefine
+hi def link rubyExceptionHandler2	rubyDefine
 hi def link rubyDefine			Define
 hi def link rubyAccess			rubyMacro
 hi def link rubyAttribute		rubyMacro
