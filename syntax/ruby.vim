@@ -342,12 +342,12 @@ syn cluster rubyDeclaration contains=rubyAliasDeclaration,rubyAliasDeclaration2,
 
 " Keywords {{{1
 " TODO: reorganise
-syn match rubyControl	     "\<\%(break\|in\|next\|redo\|retry\|return\)\>"
-syn match rubyKeyword	     "\<\%(super\|yield\)\>"
-syn match rubyBoolean	     "\<\%(true\|false\)\>[?!]\@!"
-syn match rubyPseudoVariable "\<\(self\|nil\)\>[?!]\@!"
-syn match rubyPseudoVariable "\<__\%(ENCODING\|dir\|FILE\|LINE\|callee\|method\)__\>"
-syn match rubyBeginEnd	     "\<\%(BEGIN\|END\)\>"
+syn match rubyControl	     "\%#=1\<\%(break\|in\|next\|redo\|retry\|return\)\>"
+syn match rubyKeyword	     "\%#=1\<\%(super\|yield\)\>"
+syn match rubyBoolean	     "\%#=1\<\%(true\|false\)\>[?!]\@!"
+syn match rubyPseudoVariable "\%#=1\<\(self\|nil\)\>[?!]\@!"
+syn match rubyPseudoVariable "\%#=1\<__\%(ENCODING\|dir\|FILE\|LINE\|callee\|method\)__\>"
+syn match rubyBeginEnd	     "\%#=1\<\%(BEGIN\|END\)\>"
 
 " Expensive Mode {{{1
 " Match 'end' with the appropriate opening keyword for syntax based folding
@@ -410,19 +410,20 @@ endif
 
 " Special Methods {{{1
 if !exists("ruby_no_special_methods")
-  syn match rubyAccess	  "\<\%(public\|protected\|private\)\>"
-  syn match rubyAccess	  "\<\%(public_class_method\|private_class_method\)\>"
-  syn match rubyAccess	  "\<\%(public_constant\|private_constant\)\>"
-  syn match rubyAccess	  "\<module_function\>"
-  syn match rubyAttribute "\%(\%(^\|;\)\s*\)\@<=attr\>\(\s*[.=]\)\@!" " attr is a common variable name
-  syn match rubyAttribute "\<\%(attr_accessor\|attr_reader\|attr_writer\)\>"
-  syn match rubyControl   "\<\%(abort\|at_exit\|exit\|fork\|loop\|trap\)\>"
-  syn match rubyEval	  "\<\%(eval\|class_eval\|instance_eval\|module_eval\)\>"
-  syn match rubyException "\<\%(raise\|fail\|catch\|throw\)\>"
-  syn match rubyInclude   "\<\%(autoload\|gem\|load\|require\|require_relative\)\>"
-  syn match rubyKeyword   "\<\%(callcc\|caller\|lambda\|proc\)\>"
-  syn match rubyMacro	  "\<\%(extend\|include\|prepend\|refine\|using\)\>"
-  syn match rubyMacro	  "\<\%(alias_method\|define_method\|define_singleton_method\|remove_method\|undef_method\)\>"
+  syn match rubyAccess	  "\<\%(public\|protected\|private\)\>" " use re=2
+  syn match rubyAccess	  "\%#=1\<\%(public\|private\)_class_method\>"
+  syn match rubyAccess	  "\%#=1\<\%(public\|private\)_constant\>"
+  syn match rubyAccess	  "\%#=1\<module_function\>"
+  syn match rubyAttribute "\%#=1\%(\%(^\|;\)\s*\)\@<=attr\>\(\s*[.=]\)\@!" " attr is a common variable name
+  syn match rubyAttribute "\%#=1\<attr_\%(accessor\|reader\|writer\)\>"
+  syn match rubyControl   "\%#=1\<\%(abort\|at_exit\|exit\|fork\|loop\|trap\)\>"
+  syn match rubyEval	  "\%#=1\<eval\>"
+  syn match rubyEval	  "\%#=1\<\%(class\|instance\|module\)_eval\>"
+  syn match rubyException "\%#=1\<\%(raise\|fail\|catch\|throw\)\>"
+  syn match rubyInclude   "\%#=1\<\%(autoload\|gem\|load\|require\%(_relative\)\=\)\>"
+  syn match rubyKeyword   "\%#=1\<\%(callcc\|caller\|lambda\|proc\)\>"
+  syn match rubyMacro	  "\%#=1\<\%(extend\|include\|prepend\|refine\|using\)\>"
+  syn match rubyMacro	  "\%#=1\<\%(alias\|define\|define_singleton\|remove\|undef\)_method\>"
 endif
 
 " Comments and Documentation {{{1
@@ -455,9 +456,9 @@ syn match rubyKeywordAsMethod "\%(\%(\.\@1<!\.\)\|&\.\|::\)\_s*\%([_[:lower:]][_
 syn match rubyBangPredicateMethod "\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[?!]"
 
 if !exists("ruby_no_special_methods")
-  syn match rubyControl "\<exit!" display
+  syn match rubyControl "\%#=1\<exit!" display
 endif
-syn match rubyDefinedOperator "\<defined?" display
+syn match rubyDefinedOperator "\%#=1\<defined?" display
 
 " 1.9-style Hash Keys and Keyword Parameters {{{1
 syn match rubySymbol "\%([{(|,]\_s*\)\@<=\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[?!]\=::\@!"he=e-1
