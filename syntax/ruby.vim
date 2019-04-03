@@ -128,8 +128,8 @@ syn match rubyBackslashEscape "\\\\" contained display
 syn match rubyQuoteEscape     "\\'"  contained display
 syn match rubySpaceEscape     "\\ "  contained display
 
-syn match rubyParenthesisEscape	   "\\[()]"  contained display
-syn match rubyCurlyBraceEscape	   "\\[{}]"  contained display
+syn match rubyParenthesisEscape	  "\\[()]"  contained display
+syn match rubyCurlyBraceEscape	  "\\[{}]"  contained display
 syn match rubyAngleBracketEscape  "\\[<>]"  contained display
 syn match rubySquareBracketEscape "\\[[\]]" contained display
 
@@ -334,16 +334,14 @@ syn match rubyMethodDeclaration "[^[:space:];#(]\+"   contained contains=rubyCon
 syn match rubyClassDeclaration	"[^[:space:];#<]\+"   contained contains=rubyClassName,rubyScopeOperator nextgroup=rubySuperClassOperator skipwhite skipnl
 syn match rubyModuleDeclaration "[^[:space:];#<]\+"   contained contains=rubyModuleName,rubyScopeOperator
 
-syn match rubyMethodName "\<\%([_[:alpha:]]\|[^\x00-\x7F]\)\%([_[:alnum:]]\|[^\x00-\x7F]\)*[?!=]\=\%([[:alnum:]_.:?!=]\|[^\x00-\x7F]\)\@!"					contained containedin=rubyMethodDeclaration
-syn match rubyMethodName "\%(\s\|^\)\@1<=\%([_[:alpha:]]\|[^\x00-\x7F]\)\%([_[:alnum:]]\|[^\x00-\x7F]\)*[?!=]\=\%(\s\|$\)\@="							contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2
+syn match rubyMethodName "\<\%([_[:alpha:]]\|[^\x00-\x7F]\)\%([_[:alnum:]]\|[^\x00-\x7F]\)*[?!=]\=\%([[:alnum:]_.:?!=]\|[^\x00-\x7F]\)\@!"			      contained containedin=rubyMethodDeclaration
+syn match rubyMethodName "\%(\s\|^\)\@1<=\%([_[:alpha:]]\|[^\x00-\x7F]\)\%([_[:alnum:]]\|[^\x00-\x7F]\)*[?!=]\=\%(\s\|$\)\@="					      contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2
 syn match rubyMethodName "\%([[:space:].]\|^\)\@1<=\%(\[\]=\=\|\*\*\|[-+!~]@\=\|[*/%|&^~]\|<<\|>>\|[<>]=\=\|<=>\|===\|[=!]=\|[=!]\~\|!\|`\)\%([[:space:];#(]\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2,rubyMethodDeclaration
 
 syn cluster rubyDeclaration contains=rubyAliasDeclaration,rubyAliasDeclaration2,rubyMethodDeclaration,rubyModuleDeclaration,rubyClassDeclaration,rubyMethodName
 
 " Keywords {{{1
-" Note: the following keywords have already been defined:
-" begin case class def do end for if module unless until while
-
+" TODO: reorganise
 syn match rubyControl	     "\<\%(break\|in\|next\|redo\|retry\|return\)\>"
 syn match rubyKeyword	     "\<\%(super\|yield\)\>"
 syn match rubyBoolean	     "\<\%(true\|false\)\>[?!]\@!"
@@ -461,7 +459,7 @@ if !exists("ruby_no_special_methods")
 endif
 syn match rubyDefinedOperator "\<defined?" display
 
-" More Symbols - 1.9-style hash keys and keyword parameters {{{1
+" 1.9-style Hash Keys and Keyword Parameters {{{1
 syn match rubySymbol "\%([{(|,]\_s*\)\@<=\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[?!]\=::\@!"he=e-1
 syn match rubySymbol "[]})\"':]\@1<!\<\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[!?]\=:[[:space:],;]\@="he=e-1
 
