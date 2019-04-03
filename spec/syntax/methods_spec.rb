@@ -29,4 +29,10 @@ describe "Syntax highlighting" do
       end
     EOF
   end
+
+  specify "unparenthesised method parameters with a required trailing keyword then semicolon" do
+    assert_correct_highlighting <<~'EOF', 'bar', 'rubySymbol'
+      def foo bar:; end
+    EOF
+  end
 end
