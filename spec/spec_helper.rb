@@ -33,6 +33,7 @@ Vimrunner::RSpec.configure do |config|
     vim.edit filename
 
     Array(patterns).each do |pattern|
+      # TODO: add a custom matcher
       expect(vim.echo("TestSyntax('#{pattern}', '#{group}')")).to eq '1'
     end
   end

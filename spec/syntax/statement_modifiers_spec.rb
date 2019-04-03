@@ -24,8 +24,8 @@ describe "Syntax highlighting" do
       "Foo    if true",
       "Foo?   if true",
       "Foo!   if true"
-    ].each do |s|
-      assert_correct_highlighting s, 'if', 'rubyConditionalModifier'
+    ].each do |str|
+      assert_correct_highlighting str, 'if', 'rubyConditionalModifier'
     end
   end
 end

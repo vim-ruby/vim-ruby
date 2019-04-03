@@ -9,18 +9,15 @@ describe "Syntax highlighting" do
   end
 
   specify "defined? operator" do
-    assert_correct_highlighting 'defined?', 'defined?', 'rubyDefinedOperator'
+    assert_correct_highlighting 'defined? foo', 'defined?', 'rubyDefinedOperator'
   end
 
   specify "English boolean operators" do
-    str = <<~'EOF'
+    assert_correct_highlighting <<~'EOF', %w[not and or], 'rubyEnglishBooleanOperator'
       not true
       true and false
       true or false
     EOF
-    ['not', 'and', 'or'].each do |p|
-      assert_correct_highlighting str, p, 'rubyEnglishBooleanOperator'
-    end
   end
 
   specify "modulo-assignment operators" do
@@ -30,11 +27,9 @@ describe "Syntax highlighting" do
   end
 
   specify "ternary operators" do
-    str = <<~'EOF'
+    assert_correct_highlighting <<~'EOF', %w[? :], 'rubyTernaryOperator'
       foo = bar ? 4 : 2
     EOF
-    assert_correct_highlighting str, '?', 'rubyTernaryOperator'
-    assert_correct_highlighting str, ':', 'rubyTernaryOperator'
   end
 
   context "bracket operators" do
@@ -70,8 +65,8 @@ describe "Syntax highlighting" do
       'foo**bar',
       'foo ** bar',
       'foo** bar',
-    ].each do |p|
-      assert_correct_highlighting p, '\*\*', 'rubyArithmeticOperator'
+    ].each do |str|
+      assert_correct_highlighting str, '\*\*', 'rubyArithmeticOperator'
     end
   end
 
@@ -118,8 +113,8 @@ describe "Syntax highlighting" do
       'foo*bar',
       'foo * bar',
       'foo* bar',
-    ].each do |p|
-      assert_correct_highlighting p, '\*', 'rubyArithmeticOperator'
+    ].each do |str|
+      assert_correct_highlighting str, '\*', 'rubyArithmeticOperator'
     end
   end
 

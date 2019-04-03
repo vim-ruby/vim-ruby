@@ -6,10 +6,8 @@ describe "Syntax highlighting" do
       def foo bar
       end
     EOF
-    ['def', 'end'].each do |p|
-      assert_correct_highlighting str, p, 'rubyDefine'
-    end
-    assert_correct_highlighting str, 'foo', 'rubyMethodName'
+    assert_correct_highlighting str, %w[def end], 'rubyDefine'
+    assert_correct_highlighting str, 'foo',       'rubyMethodName'
   end
 
   specify "method definitions named 'end'" do

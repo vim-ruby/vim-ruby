@@ -14,12 +14,10 @@ describe "Syntax highlighting" do
   end
 
   specify "multiline comments" do
-    str = <<~'EOF'
+    assert_correct_highlighting <<~'EOF', ['#.*line 1', '#.*line 2'], 'rubyComment'
       # comment line 1
       # comment line 2
     EOF
-    assert_correct_highlighting str, '#.*line 1', 'rubyComment'
-    assert_correct_highlighting str, '#.*line 2', 'rubyComment'
   end
 
   specify "embedded documentation" do
