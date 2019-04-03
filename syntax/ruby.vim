@@ -65,7 +65,7 @@ endfunction
 com! -nargs=* SynFold call s:run_syntax_fold(<q-args>)
 
 " Not-Top Cluster {{{1
-syn cluster rubyNotTop contains=@rubyCommentNotTop,@rubyStringNotTop,@rubyRegexpSpecial,@rubyDeclaration,@rubyExceptionHandler,@rubyClassOperator,rubyConditional,rubyModuleName,rubyClassName,rubySymbolDelimiter
+syn cluster rubyNotTop contains=@rubyCommentNotTop,@rubyStringNotTop,@rubyRegexpSpecial,@rubyDeclaration,@rubyExceptionHandler,@rubyClassOperator,rubyConditional,rubyModuleName,rubyClassName,rubySymbolDelimiter,rubyParentheses
 
 " Whitespace Errors {{{1
 if exists("ruby_space_errors")
@@ -91,6 +91,7 @@ if exists("ruby_operators") || exists("ruby_pseudo_operators")
   syn match rubyBooleanOperator    "\%(\w\|[^\x00-\x7F]\)\@1<!!\|&&\|||"
   syn match rubyRangeOperator	   "\.\.\.\="
   syn match rubyAssignmentOperator "=>\@!\|-=\|/=\|\*\*=\|\*=\|&&=\|&=\|||=\||=\|%=\|+=\|>>=\|<<=\|\^="
+  syn match rubyAssignmentOperator "=>\@!" containedin=rubyBlockParameterList " TODO: this is inelegant
   syn match rubyEqualityOperator   "===\|==\|!=\|!\~\|=\~"
 
   syn region rubyBracketOperator matchgroup=rubyOperator start="\%(\%(\w\|[^\x00-\x7F]\)[?!]\=\|[]})]\)\@2<=\[" end="]" contains=ALLBUT,@rubyNotTop
@@ -106,6 +107,7 @@ if exists("ruby_operators") || exists("ruby_pseudo_operators")
   syn match rubyProcOperator	    "\%([[(|,]\_s*\)\@<=&"
   syn match rubyProcOperator	    "\s\@1<=&\%(\h\|[^\x00-\x7F]\|[:$@]\|->\)\@="
 
+  syn cluster rubyProperOperator contains=rubyTernaryOperator,rubyArithmeticOperator,rubyComparisonOperator,rubyBitwiseOperator,rubyBooleanOperator,rubyRangeOperator,rubyAssignmentOperator,rubyEqualityOperator,rubyDefinedOperator,rubyEnglishBooleanOperator
   syn cluster rubyClassOperator  contains=rubyEigenClassOperator,rubySuperClassOperator
   syn cluster rubyPseudoOperator contains=rubyDotOperator,rubyScopeOperator,rubyEigenClassOperator,rubySuperClassOperator,rubyLambdaOperator,rubySplatOperator,rubyDoubleSplatOperator,rubyProcOperator
   syn cluster rubyOperator	 contains=ruby.*Operator
@@ -190,8 +192,8 @@ SynFold ':' syn region rubySymbol matchgroup=rubySymbolDelimiter start="[]})\"':
 
 syn match rubyCapitalizedMethod "\%(\%(^\|[^.]\)\.\s*\)\@<!\<\u\%(\w\|[^\x00-\x7F]\)*\>\%(\s*(\)\@="
 
-syn match  rubyBlockParameter	  "\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*" contained
-syn region rubyBlockParameterList start="\%(\%(\<do\>\|{\)\_s*\)\@32<=|" end="|" oneline display contains=rubyBlockParameter,rubySplatOperator,rubyDoubleSplatOperator,rubyProcOperator
+syn region rubyParentheses	  start="("				 end=")" contains=ALLBUT,@rubyNotTop containedin=rubyBlockParameterList
+syn region rubyBlockParameterList start="\%(\%(\<do\>\|{\)\_s*\)\@32<=|" end="|" contains=ALLBUT,@rubyNotTop,@rubyProperOperator
 
 if exists('ruby_global_variable_error')
   syn match rubyGlobalVariableError "$[^A-Za-z_]"	display
@@ -310,6 +312,7 @@ SynFold '%' syn region rubySymbol matchgroup=rubyPercentSymbolDelimiter start="%
 
 " Here Documents {{{1
 syn region rubyHeredocStart matchgroup=rubyHeredocDelimiter start=+\%(\%(class\|::\|\.\@1<!\.\)\_s*\|\%([]})"'`]\)\s\|\w\)\@<!<<[-~]\=\zs\%(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)+ end=+$+ oneline contains=ALLBUT,@rubyNotTop
+
 syn region rubyHeredocStart matchgroup=rubyHeredocDelimiter start=+\%(\%(class\|::\|\.\@1<!\.\)\_s*\|\%([]})"'`]\)\s\|\w\)\@<!<<[-~]\=\zs"\%([^"]*\)"+					   end=+$+ oneline contains=ALLBUT,@rubyNotTop
 syn region rubyHeredocStart matchgroup=rubyHeredocDelimiter start=+\%(\%(class\|::\|\.\@1<!\.\)\_s*\|\%([]})"'`]\)\s\|\w\)\@<!<<[-~]\=\zs'\%([^']*\)'+					   end=+$+ oneline contains=ALLBUT,@rubyNotTop
 syn region rubyHeredocStart matchgroup=rubyHeredocDelimiter start=+\%(\%(class\|::\|\.\@1<!\.\)\_s*\|\%([]})"'`]\)\s\|\w\)\@<!<<[-~]\=\zs`\%([^`]*\)`+					   end=+$+ oneline contains=ALLBUT,@rubyNotTop
@@ -335,7 +338,7 @@ syn match rubyMethodName "\<\%([_[:alpha:]]\|[^\x00-\x7F]\)\%([_[:alnum:]]\|[^\x
 syn match rubyMethodName "\%(\s\|^\)\@1<=\%([_[:alpha:]]\|[^\x00-\x7F]\)\%([_[:alnum:]]\|[^\x00-\x7F]\)*[?!=]\=\%(\s\|$\)\@="							contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2
 syn match rubyMethodName "\%([[:space:].]\|^\)\@1<=\%(\[\]=\=\|\*\*\|[-+!~]@\=\|[*/%|&^~]\|<<\|>>\|[<>]=\=\|<=>\|===\|[=!]=\|[=!]\~\|!\|`\)\%([[:space:];#(]\|$\)\@=" contained containedin=rubyAliasDeclaration,rubyAliasDeclaration2,rubyMethodDeclaration
 
-syn cluster rubyDeclaration contains=rubyAliasDeclaration,rubyAliasDeclaration2,rubyMethodDeclaration,rubyModuleDeclaration,rubyClassDeclaration,rubyMethodName,rubyBlockParameter
+syn cluster rubyDeclaration contains=rubyAliasDeclaration,rubyAliasDeclaration2,rubyMethodDeclaration,rubyModuleDeclaration,rubyClassDeclaration,rubyMethodName
 
 " Keywords {{{1
 " Note: the following keywords have already been defined:
@@ -459,7 +462,7 @@ endif
 syn match rubyDefinedOperator "\<defined?" display
 
 " More Symbols {{{1
-syn match rubySymbol "\%([{(,]\_s*\)\@<=\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[?!]\=::\@!"he=e-1
+syn match rubySymbol "\%([{(|,]\_s*\)\@<=\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[?!]\=::\@!"he=e-1
 syn match rubySymbol "[]})\"':]\@1<!\<\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[!?]\=:[[:space:],]\@="he=e-1
 
 " __END__ Directive {{{1

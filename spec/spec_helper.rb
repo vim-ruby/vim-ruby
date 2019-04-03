@@ -25,13 +25,15 @@ Vimrunner::RSpec.configure do |config|
     expect(IO.read(filename)).to eq string
   end
 
-  def assert_correct_highlighting(extension='rb', string, pattern, group)
+  def assert_correct_highlighting(extension='rb', string, patterns, group)
     filename = "test.#{extension}"
 
     IO.write filename, string
 
     vim.edit filename
 
-    expect(vim.echo("TestSyntax('#{pattern}', '#{group}')")).to eq '1'
+    Array(patterns).each do |pattern|
+      expect(vim.echo("TestSyntax('#{pattern}', '#{group}')")).to eq '1'
+    end
   end
 end
