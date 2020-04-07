@@ -50,6 +50,10 @@ endif
 if !exists("g:rubycomplete_include_objectspace")
     let g:rubycomplete_include_objectspace = 0
 endif
+
+if !exists("g:rubycomplete_add_local_paths")
+    let g:rubycomplete_add_local_paths = 1
+endif
 " }}} configuration failsafe initialization
 
 " {{{ regex patterns
@@ -498,12 +502,17 @@ class VimRubyCompletion
     end
 
     return if rails_base == nil
+
     $:.push rails_base unless $:.index( rails_base )
 
     rails_config = rails_base + "config/"
     rails_lib = rails_base + "lib/"
-    $:.push rails_config unless $:.index( rails_config )
-    $:.push rails_lib unless $:.index( rails_lib )
+
+    add_local_paths = VIM::evaluate("exists('g:rubycomplete_add_local_paths') && g:rubycomplete_add_local_paths")
+    if !add_local_paths.to_i.zero?
+        $:.push rails_config unless $:.index( rails_config )
+        $:.push rails_lib unless $:.index( rails_lib )
+    end
 
     bootfile = rails_config + "boot.rb"
     envfile = rails_config + "environment.rb"

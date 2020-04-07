@@ -36,7 +36,10 @@ Notes:
    project.  The feature is disabled by default, to enable it add >
      let g:rubycomplete_rails = 1
 <   to your vimrc
- - Vim can parse a Gemfile, in case gems are being implicitly required.  To
+ - The rails completion feature adds the lib and config path to LOAD_PATH.
+   To disable this add >
+     let g:rubycomplete_add_local_paths = 0
+< - Vim can parse a Gemfile, in case gems are being implicitly required.  To
    activate the feature: >
      let g:rubycomplete_load_gemfile = 1
 <   To specify an alternative path, use: >
