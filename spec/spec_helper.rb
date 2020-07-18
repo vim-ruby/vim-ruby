@@ -1,6 +1,15 @@
 require 'vimrunner'
 require 'vimrunner/rspec'
 
+RSpec.configure do |config|
+  # reset globals to default values before each test
+  config.before(:each) do
+    vim.command 'let g:ruby_indent_access_modifier_style = "normal"'
+    vim.command 'let g:ruby_indent_block_style = "do"'
+    vim.command 'let g:ruby_indent_assignment_style = "hanging"'
+  end
+end
+
 Vimrunner::RSpec.configure do |config|
   config.reuse_server = true
 
