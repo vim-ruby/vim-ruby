@@ -1,4 +1,5 @@
 RUBY							*ft-ruby-indent*
+							*vim-ruby-indent*
 
     Ruby: Access modifier indentation	|ruby-access-modifier-indentation|
     Ruby: Block style indentation	|ruby-block-style-indentation|
