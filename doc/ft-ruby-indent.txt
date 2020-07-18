@@ -64,7 +64,7 @@ Different block indentation styles can be used by setting: >
     :let g:ruby_indent_block_style = 'expression'
     :let g:ruby_indent_block_style = 'do'
 <
-By default, the "expression" block indent style is used.
+By default, the "do" block indent style is used.
 
 Block indent style "expression":
 >
