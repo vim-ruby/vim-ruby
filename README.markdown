@@ -1,7 +1,7 @@
 ## Vim-ruby
 
 This project contains Vim's runtime files for ruby support. This includes syntax
-highlighting, indentation, omnicompletion and various useful tools and mappings.
+highlighting, indentation, omnicompletion, and various useful tools and mappings.
 
 ## Installation
 
@@ -13,19 +13,20 @@ https://github.com/vim-ruby/vim-ruby/wiki/VimRubySupport
 ## Usage
 
 Ideally, vim-ruby should work "correctly" for you out of the box. However, ruby
-developers have varying preferences, so there's settings that control some of
-the details. You can get documentation for these by using `:help`:
+developers have varying preferences, so there are settings that control some of
+the details. You can get more information on these by using the native `:help`
+command:
 
 - [`:help vim-ruby-plugin`](./doc/ft-ruby-plugin.txt): Filetype settings and custom mappings
 - [`:help vim-ruby-indent`](./doc/ft-ruby-indent.txt): Indentation settings
 - [`:help vim-ruby-syntax`](./doc/ft-ruby-syntax.txt): Syntax-related tweaks
-- [`:help vim-ruby-omni`](./doc/ft-ruby-omni.txt): Information and configuration of omni completion
+- [`:help vim-ruby-omni`](./doc/ft-ruby-omni.txt): Information and settings for omni completion
 
 ## Issues
 
 If you have an issue or a feature request, it's recommended to use the github
 issue tracker: https://github.com/vim-ruby/vim-ruby/issues. Try the search box
-to look for an existing issue -- it might have been previously reported.
+to look for an existing issue -- it might have already been reported.
 
 If you don't have a github account or would rather contact us in a different
 way, you can find emails for individual maintainers in the
