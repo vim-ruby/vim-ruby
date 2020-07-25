@@ -53,3 +53,11 @@ to be conservative when considering changes to vim-ruby.
 The code is tested using [RSpec](https://rspec.info/) and
 [Vimrunner](https://github.com/AndrewRadev/vimrunner). The tests are not
 exhaustive, but they should cover a wide variety of cases.
+
+## Project history
+
+This project began in July 2003, when the current version of Vim was 6.2. It
+was migrated from CVS in August, 2008.
+
+If you're curious about individual pre-git changes, you can read some of them
+in the (unmaintained) [NEWS](./NEWS) and/or [ChangeLog](./ChangeLog) files.
