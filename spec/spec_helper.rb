@@ -7,6 +7,7 @@ RSpec.configure do |config|
     vim.command 'let g:ruby_indent_access_modifier_style = "normal"'
     vim.command 'let g:ruby_indent_block_style = "do"'
     vim.command 'let g:ruby_indent_assignment_style = "hanging"'
+    vim.command 'let g:ruby_indent_hanging_elements = 1'
   end
 end
 
