@@ -119,7 +119,7 @@ following setting.
     :let g:ruby_indent_hanging_elements = 0
 <
 By default, this setting is "1" (true) meaning that hanging indentation is
-enabled.
+enabled in some cases.
 
 Here is an example method call when the setting is true (non-zero):
 >
@@ -131,6 +131,15 @@ Here is an example method call when the setting is true (non-zero):
 And the same method call when the setting is false (zero):
 >
     render('product/show',
+      product: product,
+      on_sale: true,
+    )
+<
+Note that, even if the setting is turned on, you can still get non-hanging
+indentation by putting each argument on a separate line:
+>
+    render(
+      'product/show',
       product: product,
       on_sale: true,
     )
