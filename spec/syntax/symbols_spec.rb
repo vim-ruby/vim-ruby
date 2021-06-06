@@ -44,7 +44,7 @@ describe "Syntax highlighting" do
   end
 
   specify "nested parentheses inside symbols" do
-    assert_correct_highlighting <<~EOF, 'bar\zs)', 'rubyNestedParentheses'
+    assert_correct_highlighting <<~EOF, 'bar\zs)', 'rubySymbol'
       h = %i(
         foo(bar)baz
       )
