@@ -42,6 +42,8 @@ describe "Indenting" do
     assert_correct_indenting <<~EOF
       indented_block do
         def foo(bar) = puts(bar)
+        def foo!(bar) = puts(bar)
+        def foo?(bar) = puts(bar)
 
         def foo(bar)=puts(bar)
 

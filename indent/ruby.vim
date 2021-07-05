@@ -90,7 +90,7 @@ let s:ruby_indent_keywords =
       \    '\<\%(if\|for\|while\|until\|case\|unless\|begin\):\@!\>'
 
 " Def without an end clause: def method_call(...) = <expression>
-let s:ruby_endless_def = '\<def\s\+\k\+(.*)\s*='
+let s:ruby_endless_def = '\<def\s\+\k\+[!?]\=(.*)\s*='
 
 " Regex used for words that, at the start of a line, remove a level of indent.
 let s:ruby_deindent_keywords =
@@ -120,7 +120,7 @@ function! s:EndSkipExpr()
     return 1
   elseif getline('.') =~ s:ruby_endless_def
     return 1
-  elseif getline('.') =~ '\<def\s\+\k\+([^)]*$'
+  elseif getline('.') =~ '\<def\s\+\k\+[!?]\=([^)]*$'
     " Then it's a `def method(` with a possible `) =` later
     call search('\<def\s\+\k\+\zs(', 'W', line('.'))
     normal! %
