@@ -65,7 +65,7 @@ endfunction
 com! -nargs=* SynFold call s:run_syntax_fold(<q-args>)
 
 " Not-Top Cluster {{{1
-syn cluster rubyNotTop contains=@rubyCommentNotTop,@rubyStringNotTop,@rubyRegexpSpecial,@rubyDeclaration,@rubyExceptionHandler,@rubyClassOperator,rubyConditional,rubyModuleName,rubyClassName,rubySymbolDelimiter,rubyParentheses,@Spell
+syn cluster rubyNotTop contains=@rubyCommentNotTop,@rubyStringNotTop,@rubyRegexpSpecial,@rubyDeclaration,@rubyExceptionHandler,@rubyClassOperator,rubyConditional,rubyModuleName,rubyClassName,rubySymbolDelimiter,rubyDoubleQuoteSymbolDelimiter,rubySingleQuoteSymbolDelimiter,rubyParentheses,@Spell
 
 " Whitespace Errors {{{1
 if exists("ruby_space_errors")
