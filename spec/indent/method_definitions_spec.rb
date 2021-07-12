@@ -49,6 +49,9 @@ describe "Indenting" do
 
         def foo(bar) = bar + 1
 
+        def foo() = 1 + 1
+        def foo = 1 + 1
+
         private def foo(bar) = bar + 1
 
         def foo(bar) =
