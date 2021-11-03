@@ -363,6 +363,9 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   SynFold 'class'  syn region rubyClassBlock  start="\<class\>"  matchgroup=rubyClass  skip="\<end:"			       end="\<end\>" contains=ALLBUT,@rubyNotTop
   SynFold 'module' syn region rubyModuleBlock start="\<module\>" matchgroup=rubyModule skip="\<end:"			       end="\<end\>" contains=ALLBUT,@rubyNotTop
 
+  " endless def
+  syn match rubyDefine "\<def\s\+\ze[^[:space:];#(]\+\%(\s\+\|\s*(.*)\s*\)=" nextgroup=rubyMethodDeclaration skipwhite
+
   " modifiers
   syn match rubyLineContinuation    "\\$" nextgroup=@rubyModifier skipwhite skipnl
   syn match rubyConditionalModifier "\<\%(if\|unless\)\>"
