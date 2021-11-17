@@ -163,6 +163,8 @@ let b:undo_ftplugin .= "| sil! cunmap <buffer> <Plug><ctag>| sil! cunmap <buffer
 if !exists("g:no_plugin_maps") && !exists("g:no_ruby_maps")
   nmap <buffer><script> <SID>:  :<C-U>
   nmap <buffer><script> <SID>c: :<C-U><C-R>=v:count ? v:count : ''<CR>
+  cmap <buffer> <SID><cfile> <Plug><cfile>
+  cmap <buffer> <SID><ctag>  <Plug><ctag>
 
   nnoremap <silent> <buffer> [m :<C-U>call <SID>searchsyn('\<def\>',['rubyDefine'],'b','n')<CR>
   nnoremap <silent> <buffer> ]m :<C-U>call <SID>searchsyn('\<def\>',['rubyDefine'],'','n')<CR>
@@ -209,20 +211,20 @@ if !exists("g:no_plugin_maps") && !exists("g:no_ruby_maps")
   call s:map('c', '', '<C-R><C-F> <Plug><cfile>')
 
   cmap <buffer><script><expr> <SID>tagzv &foldopen =~# 'tag' ? '<Bar>norm! zv' : ''
-  call s:map('n', '<silent>', '<C-]>       <SID>:exe  v:count1."tag <Plug><ctag>"<SID>tagzv<CR>')
-  call s:map('n', '<silent>', 'g<C-]>      <SID>:exe         "tjump <Plug><ctag>"<SID>tagzv<CR>')
-  call s:map('n', '<silent>', 'g]          <SID>:exe       "tselect <Plug><ctag>"<SID>tagzv<CR>')
-  call s:map('n', '<silent>', '<C-W>]      <SID>:exe v:count1."stag <Plug><ctag>"<SID>tagzv<CR>')
-  call s:map('n', '<silent>', '<C-W><C-]>  <SID>:exe v:count1."stag <Plug><ctag>"<SID>tagzv<CR>')
-  call s:map('n', '<silent>', '<C-W>g<C-]> <SID>:exe        "stjump <Plug><ctag>"<SID>tagzv<CR>')
-  call s:map('n', '<silent>', '<C-W>g]     <SID>:exe      "stselect <Plug><ctag>"<SID>tagzv<CR>')
-  call s:map('n', '<silent>', '<C-W>}      <SID>:exe v:count1."ptag <Plug><ctag>"<CR>')
-  call s:map('n', '<silent>', '<C-W>g}     <SID>:exe        "ptjump <Plug><ctag>"<CR>')
+  call s:map('n', '<script><silent>', '<C-]>       <SID>:exe  v:count1."tag <Plug><ctag>"<SID>tagzv<CR>')
+  call s:map('n', '<script><silent>', 'g<C-]>      <SID>:exe         "tjump <Plug><ctag>"<SID>tagzv<CR>')
+  call s:map('n', '<script><silent>', 'g]          <SID>:exe       "tselect <Plug><ctag>"<SID>tagzv<CR>')
+  call s:map('n', '<script><silent>', '<C-W>]      <SID>:exe v:count1."stag <Plug><ctag>"<SID>tagzv<CR>')
+  call s:map('n', '<script><silent>', '<C-W><C-]>  <SID>:exe v:count1."stag <Plug><ctag>"<SID>tagzv<CR>')
+  call s:map('n', '<script><silent>', '<C-W>g<C-]> <SID>:exe        "stjump <Plug><ctag>"<SID>tagzv<CR>')
+  call s:map('n', '<script><silent>', '<C-W>g]     <SID>:exe      "stselect <Plug><ctag>"<SID>tagzv<CR>')
+  call s:map('n', '<script><silent>', '<C-W>}      <SID>:exe v:count1."ptag <Plug><ctag>"<CR>')
+  call s:map('n', '<script><silent>', '<C-W>g}     <SID>:exe        "ptjump <Plug><ctag>"<CR>')
 
-  call s:map('n', '<silent>', 'gf           <SID>c:find <Plug><cfile><CR>')
-  call s:map('n', '<silent>', '<C-W>f      <SID>c:sfind <Plug><cfile><CR>')
-  call s:map('n', '<silent>', '<C-W><C-F>  <SID>c:sfind <Plug><cfile><CR>')
-  call s:map('n', '<silent>', '<C-W>gf   <SID>c:tabfind <Plug><cfile><CR>')
+  call s:map('n', '<script><silent>', 'gf           <SID>c:find <SID><cfile><CR>')
+  call s:map('n', '<script><silent>', '<C-W>f      <SID>c:sfind <SID><cfile><CR>')
+  call s:map('n', '<script><silent>', '<C-W><C-F>  <SID>c:sfind <SID><cfile><CR>')
+  call s:map('n', '<script><silent>', '<C-W>gf   <SID>c:tabfind <SID><cfile><CR>')
 endif
 
 let &cpo = s:cpo_save
