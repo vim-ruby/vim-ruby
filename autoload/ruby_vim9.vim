@@ -29,7 +29,7 @@ var syng_strcom = syng_stringdoc + [
 
 # Expression used to check whether we should skip a match with searchpair().
 var skip_expr =
-      \ 'index(map(' .. string(syng_strcom) .. ',"hlID(''ruby''.v:val)"), synID(line("."),col("."),1)) >= 0'
+      \ 'index(mapnew(' .. string(syng_strcom) .. ', "hlID(''ruby'' .. v:val)"), synID(line("."), col("."), 1)) >= 0'
 
 # Regex used for words that, at the start of a line, add a level of indent.
 var ruby_indent_keywords =
@@ -329,7 +329,7 @@ def ContinuedLine(pline_info: dict<any>): number
 
   var col = Match(info.plnum, ruby_indent_keywords)
   if IsMatch(info.plnum, continuable_regex) &&
-        \ Match(info.plnum, continuation_regex)
+        \ IsMatch(info.plnum, continuation_regex)
     var ind = -1
     if col > 0 && IsAssignment(info.pline, col)
       if g:ruby_indent_assignment_style == 'hanging'
@@ -518,14 +518,14 @@ def IndentingKeywordInMSL(msl_info: dict<any>): number
   if col > 0 && Match(info.plnum_msl, ruby_endless_def) <= 0
     var ind = indent(info.plnum_msl) + info.sw
     if IsMatch(info.plnum_msl, end_end_regex)
-      var ind = ind - info.sw
+      ind = ind - info.sw
     elseif IsAssignment(getline(info.plnum_msl), col)
       if g:ruby_indent_assignment_style == 'hanging'
         # hanging indent
-        var ind = col + info.sw - 1
+        ind = col + info.sw - 1
       else
         # align with variable
-        var ind = indent(info.plnum_msl) + info.sw
+        ind = indent(info.plnum_msl) + info.sw
       endif
     endif
     return ind
@@ -539,10 +539,11 @@ def ContinuedHangingOperator(msl_info: dict<any>): number
   # If the previous line ended with [*+/.,-=], but wasn't a block ending or a
   # closing bracket, indent one extra level.
   if IsMatch(info.plnum_msl, non_bracket_continuation_regex) && !IsMatch(info.plnum_msl, '^\s*\([\])}]\|end\)')
+    var ind = -1
     if info.plnum_msl == info.plnum
-      var ind = indent(info.plnum_msl) + info.sw
+      ind = indent(info.plnum_msl) + info.sw
     else
-      var ind = indent(info.plnum_msl)
+      ind = indent(info.plnum_msl)
     endif
     return ind
   endif
