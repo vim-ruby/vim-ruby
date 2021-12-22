@@ -189,14 +189,14 @@ def AccessModifier(cline_info: dict<any>): number
   # If this line is an access modifier keyword, align according to the closest
   # class declaration.
   if g:ruby_indent_access_modifier_style == 'indent'
-    if Match(info.clnum, access_modifier_regex)
+    if IsMatch(info.clnum, access_modifier_regex)
       var class_lnum = FindContainingClass()
       if class_lnum > 0
         return indent(class_lnum) + info.sw
       endif
     endif
   elseif g:ruby_indent_access_modifier_style == 'outdent'
-    if Match(info.clnum, access_modifier_regex)
+    if IsMatch(info.clnum, access_modifier_regex)
       var class_lnum = FindContainingClass()
       if class_lnum > 0
         return indent(class_lnum)
@@ -254,7 +254,7 @@ def DeindentingKeyword(cline_info: dict<any>): number
 
   # If we have a deindenting keyword, find its match and indent to its level.
   # TODO: this is messy
-  if Match(info.clnum, ruby_deindent_keywords)
+  if IsMatch(info.clnum, ruby_deindent_keywords)
     var ind = -1
     call cursor(info.clnum, 1)
 
@@ -317,7 +317,7 @@ enddef
 
 def LeadingOperator(cline_info: dict<any>): number
   # If the current line starts with a leading operator, add a level of indent.
-  if Match(cline_info.clnum, leading_operator_regex)
+  if IsMatch(cline_info.clnum, leading_operator_regex)
     return indent(GetMSL(cline_info.clnum)) + cline_info.sw
   endif
   return -1
@@ -353,13 +353,13 @@ def AfterAccessModifier(pline_info: dict<any>): number
   if g:ruby_indent_access_modifier_style == 'indent'
     # If the previous line was a private/protected keyword, add a
     # level of indent.
-    if Match(info.plnum, indent_access_modifier_regex)
+    if IsMatch(info.plnum, indent_access_modifier_regex)
       return indent(info.plnum) + info.sw
     endif
   elseif g:ruby_indent_access_modifier_style == 'outdent'
     # If the previous line was a private/protected/public keyword, add
     # a level of indent, since the keyword has been out-dented.
-    if Match(info.plnum, access_modifier_regex)
+    if IsMatch(info.plnum, access_modifier_regex)
       return indent(info.plnum) + info.sw
     endif
   endif
@@ -377,7 +377,7 @@ def ContinuedLine(pline_info: dict<any>): number
   var info = pline_info
 
   var col = Match(info.plnum, ruby_indent_keywords)
-  if Match(info.plnum, continuable_regex) &&
+  if IsMatch(info.plnum, continuable_regex) &&
         \ Match(info.plnum, continuation_regex)
     var ind = -1
     if col > 0 && IsAssignment(info.pline, col)
@@ -400,7 +400,7 @@ def AfterBlockOpening(pline_info: dict<any>): number
   var info = pline_info
 
   # If the previous line ended with a block opening, add a level of indent.
-  if Match(info.plnum, block_regex)
+  if IsMatch(info.plnum, block_regex)
     var ind = -1
 
     if g:ruby_indent_block_style == 'do'
@@ -427,7 +427,7 @@ enddef
 def AfterLeadingOperator(pline_info: dict<any>): number
   # If the previous line started with a leading operator, use its MSL's level
   # of indent
-  if Match(pline_info.plnum, leading_operator_regex)
+  if IsMatch(pline_info.plnum, leading_operator_regex)
     return indent(GetMSL(pline_info.plnum))
   endif
   return -1
@@ -479,7 +479,7 @@ def AfterUnbalancedBracket(pline_info: dict<any>): number
         return indent(GetMSL(line('.')))
       endif
 
-      if Match(line('.'), ruby_indent_keywords)
+      if IsMatch(line('.'), ruby_indent_keywords)
         return indent('.') + info.sw
       else
         return indent(GetMSL(line('.')))
@@ -523,7 +523,7 @@ def AfterIndentKeyword(pline_info: dict<any>): number
     # TODO: make this better (we need to count them) (or, if a searchpair
     # fails, we know that something is lacking an end and thus we indent a
     # level
-    if Match(info.plnum, end_end_regex)
+    if IsMatch(info.plnum, end_end_regex)
       ind = indent('.')
     elseif IsAssignment(info.pline, col)
       if g:ruby_indent_assignment_style == 'hanging'
@@ -546,11 +546,11 @@ def PreviousNotMSL(msl_info: dict<any>): number
   # If the previous line wasn't a MSL
   if info.plnum != info.plnum_msl
     # If previous line ends bracket and begins non-bracket continuation decrease indent by 1.
-    if Match(info.plnum, bracket_switch_continuation_regex)
+    if IsMatch(info.plnum, bracket_switch_continuation_regex)
       # TODO (2016-10-07) Wrong/unused? How could it be "1"?
       return indent(info.plnum) - 1
       # If previous line is a continuation return its indent.
-    elseif Match(info.plnum, non_bracket_continuation_regex)
+    elseif IsMatch(info.plnum, non_bracket_continuation_regex)
       return indent(info.plnum)
     endif
   endif
@@ -566,7 +566,7 @@ def IndentingKeywordInMSL(msl_info: dict<any>): number
   var col = Match(info.plnum_msl, ruby_indent_keywords)
   if col > 0 && Match(info.plnum_msl, ruby_endless_def) <= 0
     var ind = indent(info.plnum_msl) + info.sw
-    if Match(info.plnum_msl, end_end_regex)
+    if IsMatch(info.plnum_msl, end_end_regex)
       var ind = ind - info.sw
     elseif IsAssignment(getline(info.plnum_msl), col)
       if g:ruby_indent_assignment_style == 'hanging'
@@ -587,7 +587,7 @@ def ContinuedHangingOperator(msl_info: dict<any>): number
 
   # If the previous line ended with [*+/.,-=], but wasn't a block ending or a
   # closing bracket, indent one extra level.
-  if Match(info.plnum_msl, non_bracket_continuation_regex) && !Match(info.plnum_msl, '^\s*\([\])}]\|end\)')
+  if IsMatch(info.plnum_msl, non_bracket_continuation_regex) && !IsMatch(info.plnum_msl, '^\s*\([\])}]\|end\)')
     if info.plnum_msl == info.plnum
       var ind = indent(info.plnum_msl) + info.sw
     else
@@ -671,8 +671,8 @@ def GetMSL(a_lnum: number): number
 
     # TODO number as boolean
 
-    if !Match(msl, backslash_continuation_regex) &&
-          \ Match(lnum, backslash_continuation_regex)
+    if !IsMatch(msl, backslash_continuation_regex) &&
+          \ IsMatch(lnum, backslash_continuation_regex)
       # If the current line doesn't end in a backslash, but the previous one
       # does, look for that line's msl
       #
@@ -681,11 +681,11 @@ def GetMSL(a_lnum: number): number
       #     "baz"
       #
       msl = lnum
-    elseif Match(msl, leading_operator_regex)
+    elseif IsMatch(msl, leading_operator_regex)
       # If the current line starts with a leading operator, keep its indent
       # and keep looking for an MSL.
       msl = lnum
-    elseif Match(lnum, splat_regex)
+    elseif IsMatch(lnum, splat_regex)
       # If the above line looks like the "*" of a splat, use the current one's
       # indentation.
       #
@@ -695,8 +695,8 @@ def GetMSL(a_lnum: number): number
       #       something
       #
       return msl
-    elseif Match(lnum, non_bracket_continuation_regex) &&
-          \ Match(msl, non_bracket_continuation_regex)
+    elseif IsMatch(lnum, non_bracket_continuation_regex) &&
+          \ IsMatch(msl, non_bracket_continuation_regex)
       # If the current line is a non-bracket continuation and so is the
       # previous one, keep its indent and continue looking for an MSL.
       #
@@ -706,8 +706,8 @@ def GetMSL(a_lnum: number): number
       #     three
       #
       msl = lnum
-    elseif Match(lnum, dot_continuation_regex) &&
-          \ (Match(msl, bracket_continuation_regex) || Match(msl, block_continuation_regex))
+    elseif IsMatch(lnum, dot_continuation_regex) &&
+          \ (IsMatch(msl, bracket_continuation_regex) || IsMatch(msl, block_continuation_regex))
       # If the current line is a bracket continuation or a block-starter, but
       # the previous is a dot, keep going to see if the previous line is the
       # start of another continuation.
@@ -718,8 +718,8 @@ def GetMSL(a_lnum: number): number
       #     three
       #
       msl = lnum
-    elseif Match(lnum, non_bracket_continuation_regex) &&
-          \ (Match(msl, bracket_continuation_regex) || Match(msl, block_continuation_regex))
+    elseif IsMatch(lnum, non_bracket_continuation_regex) &&
+          \ (IsMatch(msl, bracket_continuation_regex) || IsMatch(msl, block_continuation_regex))
       # If the current line is a bracket continuation or a block-starter, but
       # the previous is a non-bracket one, respect the previous' indentation,
       # and stop here.
@@ -730,8 +730,8 @@ def GetMSL(a_lnum: number): number
       #     three
       #
       return lnum
-    elseif Match(lnum, bracket_continuation_regex) &&
-          \ (Match(msl, bracket_continuation_regex) || Match(msl, block_continuation_regex))
+    elseif IsMatch(lnum, bracket_continuation_regex) &&
+          \ (IsMatch(msl, bracket_continuation_regex) || IsMatch(msl, block_continuation_regex))
       # If both lines are bracket continuations (the current may also be a
       # block-starter), use the current one's and stop here
       #
@@ -740,9 +740,9 @@ def GetMSL(a_lnum: number): number
       #     other_method_call(
       #       foo
       return msl
-    elseif Match(lnum, block_regex) &&
-          \ !Match(msl, continuation_regex) &&
-          \ !Match(msl, block_continuation_regex)
+    elseif IsMatch(lnum, block_regex) &&
+          \ !IsMatch(msl, continuation_regex) &&
+          \ !IsMatch(msl, block_continuation_regex)
       # If the previous line is a block-starter and the current one is
       # mostly ordinary, use the current one as the MSL.
       #
@@ -844,6 +844,10 @@ def Match(lnum: number, regex: string): number
   else
     return 0
   endif
+enddef
+
+def IsMatch(lnum: number, regex: string): bool
+  return Match(lnum, regex) > 0
 enddef
 
 # Locates the containing class/module's definition line, ignoring nested classes
