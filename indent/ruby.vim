@@ -106,7 +106,7 @@ let s:end_start_regex =
       \ '\|\%(^\|[^.:@$]\)\@<=\<do:\@!\>'
 
 " Regex that defines the middle-match for the 'end' keyword.
-let s:end_middle_regex = '\<\%(ensure\|else\|\%(\%(^\|;\)\s*\)\@<=\<rescue:\@!\>\|when\|in\|elsif\):\@!\>'
+let s:end_middle_regex = '\<\%(ensure\|else\|\%(\%(^\|;\)\s*\)\@<=\<rescue:\@!\>\|when\|\%(\%(^\|;\)\s*\)\@<=\<in\|elsif\):\@!\>'
 
 " Regex that defines the end-match for the 'end' keyword.
 let s:end_end_regex = '\%(^\|[^.:@$]\)\@<=\<end:\@!\>'
