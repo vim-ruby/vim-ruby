@@ -34,7 +34,7 @@ var skip_expr =
 # Regex used for words that, at the start of a line, add a level of indent.
 var ruby_indent_keywords =
       \ '^\s*\zs\<\%(module\|class\|if\|for' ..
-      \   '\|while\|until\|else\|elsif\|case\|when\|unless\|begin\|ensure\|rescue' ..
+      \   '\|while\|until\|else\|elsif\|case\|when\|in\|unless\|begin\|ensure\|rescue' ..
       \   '\|\%(\K\k*[!?]\?\s\+\)\=def\):\@!\>' ..
       \ '\|\%([=,*/%+-]\|<<\|>>\|:\s\)\s*\zs' ..
       \    '\<\%(if\|for\|while\|until\|case\|unless\|begin\):\@!\>'
@@ -44,7 +44,7 @@ var ruby_endless_def = '\<def\s\+\k\+[!?]\=\%((.*)\|\s\)\s*='
 
 # Regex used for words that, at the start of a line, remove a level of indent.
 var ruby_deindent_keywords =
-      \ '^\s*\zs\<\%(ensure\|else\|rescue\|elsif\|when\|end\):\@!\>'
+      \ '^\s*\zs\<\%(ensure\|else\|rescue\|elsif\|when\|in\|end\):\@!\>'
 
 # Regex that defines the start-match for the 'end' keyword.
 # let end_start_regex = '\%(^\|[^.]\)\<\%(module\|class\|def\|if\|for\|while\|until\|case\|unless\|begin\|do\)\>'
@@ -56,7 +56,7 @@ var end_start_regex =
       \ '\|\%(^\|[^.:@$]\)\@<=\<do:\@!\>'
 
 # Regex that defines the middle-match for the 'end' keyword.
-var end_middle_regex = '\<\%(ensure\|else\|\%(\%(^\|;\)\s*\)\@<=\<rescue:\@!\>\|when\|elsif\):\@!\>'
+var end_middle_regex = '\<\%(ensure\|else\|\%(\%(^\|;\)\s*\)\@<=\<rescue:\@!\>\|when\|\%(\%(^\|;\)\s*\)\@<=\<in\|elsif\):\@!\>'
 
 # Regex that defines the end-match for the 'end' keyword.
 var end_end_regex = '\%(^\|[^.:@$]\)\@<=\<end:\@!\>'
