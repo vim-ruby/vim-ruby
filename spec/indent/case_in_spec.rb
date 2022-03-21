@@ -17,4 +17,13 @@ describe "Indenting" do
       end #=> true
     EOF
   end
+
+  specify "does not deindent while typing" do
+    assert_correct_indent_in_insert 'rb', <<~EOF, "index = 0", <<~RESULT
+      def foo
+    EOF
+      def foo
+        index = 0
+    RESULT
+  end
 end
