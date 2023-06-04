@@ -178,7 +178,7 @@ def ClosingBracketOnEmptyLine(cline_info: dict<any>): number
           ind = virtcol('.') - 1
         else
           ind = indent(line('.'))
-        end
+        endif
       elseif g:ruby_indent_block_style == 'do'
         ind = indent(line('.'))
       else # g:ruby_indent_block_style == 'expression'
@@ -437,7 +437,7 @@ def AfterUnbalancedBracket(pline_info: dict<any>): number
       endif
     else
       call cursor(info.clnum, info.col)
-    end
+    endif
   endif
 
   return -1
@@ -457,10 +457,10 @@ def AfterEndKeyword(pline_info: dict<any>): number
       var msl = GetMSL(n)
       if msl != n
         ind = indent(msl)
-      end
+      endif
       return ind
     endif
-  end
+  endif
   return -1
 enddef
 
@@ -826,7 +826,7 @@ enddef
 # 2. GetRubyIndent Function {{{1
 # =========================
 
-def ruby_vim9#GetRubyIndent(lnum: number): number
+export def GetRubyIndent(lnum: number): number
   # 2.1. Setup {{{2
   # ----------
 
@@ -942,5 +942,7 @@ def ruby_vim9#GetRubyIndent(lnum: number): number
   #  Decho "Default case matched"
   return indent(indent_info.plnum)
 enddef
+
+defcompile
 
 # vim:set sw=2 sts=2 ts=8 et:
