@@ -57,6 +57,10 @@ au BufNewFile,BufRead *.rabl			call s:setf('ruby')
 " Routefile
 au BufNewFile,BufRead [rR]outefile		call s:setf('ruby')
 
+" RVM
+au BufNewFile,BufRead .rvmrc			call s:setf('sh')
+au BufNewFile,BufRead rvmrc			call s:setf('sh')
+
 " SimpleCov
 au BufNewFile,BufRead .simplecov		call s:setf('ruby')
 
