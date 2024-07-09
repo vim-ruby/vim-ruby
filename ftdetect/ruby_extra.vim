@@ -30,6 +30,10 @@ au BufNewFile,BufRead Berksfile			call s:setf('ruby')
 " CocoaPods
 au BufNewFile,BufRead Podfile,*.podspec		call s:setf('ruby')
 
+" Gem
+au BufNewFile,BufRead gemrc			call s:setf('yaml')
+au BufNewFile,BufRead .gemrc			call s:setf('yaml')
+
 " Guard
 au BufNewFile,BufRead Guardfile,.Guardfile	call s:setf('ruby')
 
