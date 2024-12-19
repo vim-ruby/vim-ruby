@@ -74,6 +74,49 @@ describe "Indenting" do
         # Reference: https://github.com/vim-ruby/vim-ruby/issues/450
         def self.foo = puts(bar)
         def bar.foo = puts(baz)
+
+        def +(other) = to_r + other
+        def -(other) = to_r - other
+        def *(other) = to_r * other
+        def **(other) = to_r ** other
+        def /(other) = to_r / other
+        def %(other) = to_i % other
+        def &(other) = to_i & other
+        def ^(other) = to_i ^ other
+        def >>(other) = to_i >> other
+        def <<(other) = to_i << other
+        def ==(other) = to_r == other
+        def !=(other) = to_r != other
+
+        def ===(other) = to_r === other
+        def foo.===(other) = other
+
+        def =~(other) = to_s =~ other
+        def foo.=~(other) = other
+
+        def !~(other) = to_s !~ other
+        def foo.!~(other) = other
+
+        def <=>(other) = to_r <=> other
+        def foo.<=>(other) = other
+
+        def <(other) = to_r < other
+        def >(other) = to_r > other
+
+        def <=(other) = to_r <= other
+        def foo.<=(other) = other
+        def >=(other) = to_r >= other
+        def foo.>=(other) = other
+
+        def ! = false
+        def ~ = ~to_i
+
+        def -@ = -to_r
+        def +@ = to_r
+        def !@ = false
+        def ~@ = ~to_i
+
+        def [](i) = @array[i]
       end
     EOF
   end
