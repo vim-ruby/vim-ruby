@@ -9,7 +9,7 @@ With pathogen.vim
 Install [pathogen.vim](https://github.com/tpope/vim-pathogen),
 then copy and paste:
 
-    git clone git://github.com/vim-ruby/vim-ruby.git ~/.vim/bundle/vim-ruby
+    git clone https://github.com/vim-ruby/vim-ruby.git ~/.vim/bundle/vim-ruby
 
 With Vundle
 -----------
