@@ -378,6 +378,7 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   " curly bracket block or hash literal
   SynFold '{' syn region rubyCurlyBlock   matchgroup=rubyCurlyBlockDelimiter start="{"						    end="}" contains=ALLBUT,@rubyNotTop
   SynFold '[' syn region rubyArrayLiteral matchgroup=rubyArrayDelimiter      start="\%(\%(\w\|[^\x00-\x7F]\)[?!]\=\|[]})]\)\@2<!\[" end="]" contains=ALLBUT,@rubyNotTop
+  SynFold '(' syn region rubyParenthesedExpression matchgroup=rubyParens     start="("						    end=")" contains=ALLBUT,@rubyNotTop
 
   " statements without 'do'
   SynFold 'begin' syn region rubyBlockExpression matchgroup=rubyControl     start="\<begin\>" skip="\<end:" end="\<end\>" contains=ALLBUT,@rubyNotTop
