@@ -47,6 +47,7 @@ Notes:
 <   To use custom paths that should be added to $LOAD_PATH to correctly
    resolve requires, set: >
      let g:rubycomplete_load_paths = ["/path/to/code", "./lib/example"]
-
-
+<  For automatically loading files (for example if a project has a bootstrap
+file with a bunch of require statements) set: >
+     let g:rubycomplete_auto_require = ["/path/to/file.rb", "./lib/hello.rb"]
  vim:tw=78:sw=4:ts=8:ft=help:norl:

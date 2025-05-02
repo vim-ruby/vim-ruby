@@ -288,6 +288,10 @@ class VimRubyCompletion
       $LOAD_PATH.concat(custom_paths).uniq!
     end
 
+    VIM::evaluate("get(g:, 'rubycomplete_auto_require', [])").each do |f|
+        require File.expand_path(f)
+    end
+
     buf = VIM::Buffer.current
     enum = buf.line_number
     nums = Range.new( 1, enum )
@@ -385,7 +389,7 @@ class VimRubyCompletion
           next if x == 0
           ln = buf[x]
           is_const = false
-          if /^\s*(module|class|def|include)\s+/.match(ln) || is_const = /^\s*?[A-Z]([A-z]|[1-9])*\s*?[|]{0,2}=\s*?.+\s*?/.match(ln)
+          if /^\s*(module|class|def|include)\s+/.match(ln) || is_const = /^\s*?[A-Z]([A-z]|[1-9])*\s*?[|]{0,2}=\s*?.+\s*?/.match(ln) || /attr_(accessor|reader|writer)/.match(ln)
             clscnt += 1 if /class|module/.match($1)
             # We must make sure to load each constant only once to avoid errors
             if is_const
